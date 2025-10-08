@@ -1,7 +1,5 @@
 # Hollowgear
 
-![](/images/species-1.png)
-
 ## Table of Contents
 
 1. [Chapter 1: Introduction – The Age of Steam and Soul](chapter-1-introduction.md)
