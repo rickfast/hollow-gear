@@ -330,5 +330,3 @@ Where others wield tools, a Mindweaver wields **focus**.
 -   Project an astral duplicate once per short rest for 1 minute.
 
 ---
-
-> _“The mind is the oldest machine — and the only one that dreams.”_

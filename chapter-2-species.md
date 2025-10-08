@@ -151,3 +151,39 @@ They excel as rogues, spies, or acrobats.
 
 > _“We are not children of the gods. We are children of the gears — and of the courage to turn them.”_  
 > — Tharn proverb, _The Ironwood Path_
+
+> _“The mind is the oldest machine — and the only one that dreams.”_
+
+---
+
+### 🪶 Avenar (Avian Etherborne)
+
+**Scholars of the skies — calm, calculating, and eternally curious.**
+
+The Avenar are avian Etherborne descended from the great birds that once nested in the lattice-towers of the upper cities before the Aether Collapse. When psionic storms raged across the world, their instincts for flight and mimicry evolved into something greater — the ability to map, model, and mirror the workings of thought itself.  
+Today, the Avenar are Hollowgear’s most cerebral people: archivists, strategists, and engineers of both idea and invention.
+
+Their society prizes precision and contemplation. To an Avenar, flight is freedom not of body, but of _mind_ — the ability to soar across knowledge itself.
+
+**Appearance:** Tall, sleek birdfolk with metallic feathers that shimmer from black to silver-blue under light. Their faces are framed by intricate beak-guards or data-filigree masks, and their feathers sometimes carry faint circuitry from Aether exposure.  
+**Culture:** Matriarchal and consensus-driven, governed by “choirs” — councils of thinkers who harmonize thought until unity is reached. Their architecture is open, geometric, and impossibly symmetrical.  
+**Personality:** Analytical, quiet, and courteous, but prone to arrogance when challenged intellectually.
+
+---
+
+#### **Avenar Traits**
+
+-   **Ability Score Increase:** +2 Intelligence, +1 Wisdom
+-   **Size:** Medium
+-   **Speed:** 30 ft, fly 25 ft _(you cannot fly while wearing medium or heavy armor)_
+-   **Aether Recall:** You can perfectly recall any text, sound, or symbol you’ve encountered within the last week.
+-   **Resonant Logic:** Once per short rest, when you fail an Intelligence or Wisdom check, you may reroll it. You must use the new result.
+-   **Mimetic Insight:** As a bonus action, you can analyze a creature or device within 30 ft. You learn one of the following (your choice): its AC, HP range (low/medium/high), or whether it has psionic capacity.
+-   **Featherlight Descent:** You can fall up to 60 feet without taking damage, and you always land on your feet.
+-   **Languages:** Common, Avenari (a whistling, tonal language), and one of your choice (often an academic dialect).
+
+---
+
+> _"The flight of the mind is higher than any wing could carry —  
+> and the fall, when it comes, is quieter."_  
+> — Archivist Selenn of the Skyforge Choir
