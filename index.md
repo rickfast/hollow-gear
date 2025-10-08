@@ -12,3 +12,9 @@
 6. [Chapter 6: Psionics & the Mindcraft System](chapter-6-mindcraft.md)
 7. [Chapter 7: Combat & Overheat Rules](chapter-7-combat.md)
 8. [Chapter 8: Languages & Scripts](chapter-8-languages.md)
+9. [Chapter 9: Spellcraft & Resonance](chapter-9-spells.md)
+
+Appendix
+
+-   a. [Formulae & Miracles](appendix-a-formulae-miracles.md)
+-   b. [Bestiary](appendix-b-bestiary.md)
