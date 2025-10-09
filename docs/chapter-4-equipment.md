@@ -172,3 +172,148 @@ All shields may hold **1 Mod Slot** for defensive upgrades such as _Reflective S
 > _“Steel remembers every strike. Armor remembers every wound.  
 > In the Hollowgear, both are prayers whispered through metal.”_  
 > — Elara Vox, Master Mechanist
+
+---
+
+### ⚙️ Basic Equipment
+
+The Hollowgear world is cluttered with the relics of an age when magic and machinery were one.  
+Artisans and adventurers alike carry gear that balances function, durability, and a spark of psionic craft.
+
+| Item | Cost (Cogs) | Weight | Description |
+|-------|--------------|--------|--------------|
+| **Tinker’s Tools** | 25 | 10 lb | Essential for crafting and repairing mods. |
+| **Mechanist’s Satchel** | 15 | 6 lb | Contains wrenches, microgears, soldering kit. |
+| **Steam Lantern** | 10 | 3 lb | Emits bright light 30 ft (requires Aether Cell, 10 hours). |
+| **Aether Compass** | 50 | 2 lb | Always points toward nearest psionic field or powered device. |
+| **Wireweave Rope (50 ft)** | 5 | 5 lb | Conductive, can deliver shocks or carry Aether charge. |
+| **Coolant Flask** | 8 | 2 lb | Reduces Heat by 1d4 when consumed or poured on armor. |
+| **Pressure Tent** | 10 | 8 lb | Portable, steam-insulated shelter. |
+| **Repair Paste (vial)** | 15 | ½ lb | Repairs 1d8 HP of damage to armor, weapons, or constructs. |
+| **Aether Dust Vial** | 25 | ½ lb | Refined psionic residue, reagent for mod crafting. |
+| **Chronometer Cog** | 5 | — | Keeps precise time for 100 years; valued by scholars. |
+
+---
+
+### 🔮 Common Arcane Items
+
+These items blend psionics and artifice — remnants of the old world still found in the hands of adventurers.
+
+| Item | Rarity | Description |
+|-------|---------|-------------|
+| **Aether Cell** | Common | Rechargeable psionic battery used by weapons and armor. 10 charges. |
+| **Steam Vent Harness** | Common | Emits a 10-ft radius steam cloud (1/short rest); clears 2 Heat. |
+| **Cloak of Conductivity** | Uncommon | Gain resistance to lightning damage. Wearing metal armor negates this. |
+| **Goggles of Clarity** | Common | Immune to blindness from steam, sparks, or psionic flashes. |
+| **Brass Familiar** | Uncommon | Tiny automaton (AC 13, 5 HP) that acts as a familiar once per day. |
+| **Aether Lamp** | Common | Emits pale blue light; reveals psionic signatures within 30 ft. |
+| **Magnetron Gauntlet** | Uncommon | Pull a metal object or weapon up to 30 ft once per short rest. |
+| **Cogsmith’s Ring** | Uncommon | While wearing this, gain +1 on Tinkering and Arcana checks. |
+| **Mnemonic Lens** | Uncommon | Once per long rest, recall a scene you witnessed within the last week with perfect clarity. |
+| **Wand of Residual Charge** | Uncommon | Expend a charge to deal 1d8 lightning or force damage (6 charges, recharges 1d4/day). |
+
+---
+
+### ⚔️ Uncommon & Rare Items
+
+| Item | Rarity | Description |
+|-------|---------|-------------|
+| **Aether Spire Shard** | Rare | Crystal focus. Gain +1 to psionic save DCs and power attacks. |
+| **Steamheart Core** | Rare | Replace a weapon’s power source; doubles Aether Cell capacity. |
+| **Voltaic Cloak** | Rare | When hit in melee, retaliate for 1d4 lightning damage. |
+| **Chrono Regulator** | Rare | Once per long rest, rewind your last action by 6 seconds (GM discretion). |
+| **Resonant Helm** | Rare | Grants advantage on saves vs. psionics; wearer emits soft harmonic hum. |
+| **Soul Mirror Pendant** | Rare | Absorbs up to 10 psychic damage/day; release it as 1d10 healing. |
+| **Living Steel Shield** | Rare | Restores 1 HP each hour, up to half total HP. |
+| **Aether-Linked Gloves** | Rare | When wielding powered weapons, add +1 to attack and damage rolls. |
+
+---
+
+### 🧩 Mod Blueprints
+
+Mod Blueprints are schematics, half mental and half mechanical, that describe how to install and stabilize advanced gear modifications.  
+Some are written on brass etchings, others burned into psionic glass or carried as psychic imprints.
+
+---
+
+#### **Blueprint Types**
+
+| Type | Source | Examples |
+|-------|----------|-----------|
+| **Mechanical** | Guild-forged or reverse-engineered from found tech | Overclock Coil, Pressure Vent, Reinforced Plating |
+| **Psionic** | Learned from Mindweavers or relics | Resonant Core, Flux Dampener, Soul Mirror |
+| **Hybrid** | Fusion of machine and mind | Aether Amplifier, Magnetron Housing, Entropy Lattice |
+
+---
+
+#### **Blueprint Rarity**
+
+| Tier | Learn DC | Notes |
+|------|-----------|--------|
+| I – Common | 10 | Easy to replicate from scavenged designs. |
+| II – Advanced | 13 | Requires Tinkering proficiency and lab access. |
+| III – Relic | 16 | Found in Aether Vaults; psionic encryption. |
+| IV – Prototype | 18 | Often incomplete or unstable. GM discretion. |
+
+---
+
+#### **Copying & Crafting**
+
+To copy a blueprint:
+- Requires **Tinker’s Tools** or **Calligrapher’s Supplies**, and **2 hours per tier**.
+- Costs **10 × tier² Cogs** in materials.  
+- On a failure by 5+, the resulting copy is flawed (roll Malfunction Table, Chapter 5).
+
+To craft a mod from a blueprint:
+- Requires knowing the **blueprint** and meeting **Craft DC** for that tier (see Chapter 5).  
+- Consumes **Aether Dust** and **1 Aether Cell** during assembly.  
+- Relic and Prototype mods may require **psionic focus** during crafting.
+
+---
+
+#### **Lost Blueprints**
+
+Some blueprints exist only as mental echoes — the crafter must reconstruct them from psionic resonance.  
+A Mindweaver or Artifex can attempt to recreate a lost mod by meditating near the remains of one, spending **8 hours and 1 Aether Dust vial**, and succeeding on a **DC 16 Arcana** check.
+
+---
+
+### 💎 Treasures & Trade Goods
+
+| Item | Value (Cogs) | Description |
+|-------|----------------|-------------|
+| **Aether Crystal (small)** | 100 | Stores psionic memory; used in crafting and enchantments. |
+| **Steamheart Alloy (ingot)** | 50 | Lightweight, heat-conductive metal for powered armor. |
+| **Living Steel (fragment)** | 75 | Self-healing metal used in relic weapons. |
+| **Void Iron (core)** | 150 | Corrosive psionic metal — dangerous to work with, priceless to sell. |
+| **Memory Glass (tablet)** | 200 | Preserves a visual recording of its creator’s thoughts. |
+| **Psionic Ink (bottle)** | 40 | Used to write blueprints and spell-formulas visible only to Mindweavers. |
+
+---
+
+### 🧠 Identification & Appraisal
+
+Identifying an unknown item requires one of the following:
+- **1 hour** of study with Tinker’s Tools or Arcana proficiency.  
+- **Casting Detect Magic** or **using Aether Vision** (if available).  
+- Spending **25 Cogs** for guild identification.  
+
+Psionic items may reveal fragmentary memories or emotional residue during identification — a glimpse of the creator’s mind.
+
+---
+
+### 📜 Item Customization Rules
+
+Players may modify, rename, or rebuild items with GM approval.  
+When doing so:
+- Costs **25% of the item’s value** in parts.  
+- Requires **half a workday per tier**.  
+- Allows players to re-skin, rename, or flavor the item without changing its mechanics.
+
+Example:
+> A “Voltaic Cloak” could become a “Thunder-Twine Mantle,” powered by a bound storm elemental instead of coils — mechanically identical, narratively distinct.
+
+---
+
+> *"To craft is to remember. To repair is to forgive."*  
+> — Avenar axiom, *The Song of Forms*
