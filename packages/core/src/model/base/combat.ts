@@ -308,10 +308,23 @@ export namespace CombatUtils {
 
   /**
    * Check if character is dead from massive damage
+   * In D&D 5e, if damage reduces you to 0 HP and the remaining damage 
+   * equals or exceeds your hit point maximum, you die instantly
    */
   export function isDeadFromMassiveDamage(hitPoints: HitPointData, damage: number): boolean {
-    const excessDamage = Math.abs(hitPoints.current) - damage;
-    return hitPoints.current === 0 && excessDamage >= hitPoints.maximum;
+    if (hitPoints.current > 0) {
+      // Calculate what HP would be after damage
+      const hpAfterDamage = hitPoints.current - damage;
+      if (hpAfterDamage <= 0) {
+        // Character would be reduced to 0 or below
+        const excessDamage = Math.abs(hpAfterDamage);
+        return excessDamage >= hitPoints.maximum;
+      }
+    } else if (hitPoints.current === 0) {
+      // Already at 0 HP, any damage equal to max HP kills instantly
+      return damage >= hitPoints.maximum;
+    }
+    return false;
   }
 
   /**

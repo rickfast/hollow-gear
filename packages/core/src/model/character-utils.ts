@@ -573,8 +573,7 @@ export namespace CharacterUtilities {
   }
 
   function getEquippedArmor(character: HollowGearCharacter): string | undefined {
-    // Return equipped armor name
-    return undefined; // Placeholder
+    return character.equipment.armor?.name;
   }
 
   function getEquippedShield(character: HollowGearCharacter): string | undefined {
@@ -624,8 +623,27 @@ export namespace CharacterUtilities {
   }
 
   function calculateClassDifferences(leftClasses: any[], rightClasses: any[]): string[] {
-    // Calculate differences in class levels
-    return []; // Placeholder
+    const differences: string[] = [];
+    
+    // Get all unique class names from both characters
+    const leftClassNames = new Set(leftClasses.map(cls => cls.className));
+    const rightClassNames = new Set(rightClasses.map(cls => cls.className));
+    
+    // Find classes that are in left but not in right
+    for (const className of leftClassNames) {
+      if (!rightClassNames.has(className)) {
+        differences.push(className);
+      }
+    }
+    
+    // Find classes that are in right but not in left
+    for (const className of rightClassNames) {
+      if (!leftClassNames.has(className)) {
+        differences.push(className);
+      }
+    }
+    
+    return differences;
   }
 
   function calculateEquipmentDifferences(left: HollowGearCharacter, right: HollowGearCharacter): any {
@@ -647,8 +665,72 @@ export namespace CharacterUtilities {
   }
 
   function compareFields(path: string, oldObj: any, newObj: any, changes: CharacterDiff['changes']): void {
-    // Recursive field comparison for diff creation
-    // Implementation would be similar to serialization change tracking
+    // Handle null/undefined cases
+    if (oldObj === null || oldObj === undefined) {
+      if (newObj !== null && newObj !== undefined) {
+        changes.push({
+          field: path,
+          oldValue: oldObj,
+          newValue: newObj,
+          type: "create"
+        });
+      }
+      return;
+    }
+
+    if (newObj === null || newObj === undefined) {
+      changes.push({
+        field: path,
+        oldValue: oldObj,
+        newValue: newObj,
+        type: "delete"
+      });
+      return;
+    }
+
+    // Handle primitive values
+    if (typeof oldObj !== "object" || typeof newObj !== "object") {
+      if (oldObj !== newObj) {
+        changes.push({
+          field: path,
+          oldValue: oldObj,
+          newValue: newObj,
+          type: "update"
+        });
+      }
+      return;
+    }
+
+    // Handle arrays
+    if (Array.isArray(oldObj) && Array.isArray(newObj)) {
+      // For arrays, compare length and elements
+      if (oldObj.length !== newObj.length) {
+        changes.push({
+          field: `${path}.length`,
+          oldValue: oldObj.length,
+          newValue: newObj.length,
+          type: "update"
+        });
+      }
+      
+      const maxLength = Math.max(oldObj.length, newObj.length);
+      for (let i = 0; i < maxLength; i++) {
+        const itemPath = path ? `${path}[${i}]` : `[${i}]`;
+        compareFields(itemPath, oldObj[i], newObj[i], changes);
+      }
+      return;
+    }
+
+    // Handle objects - skip certain fields that shouldn't be tracked
+    const skipFields = new Set(['id', 'created', 'lastModified', 'version']);
+    const allKeys = new Set([...Object.keys(oldObj), ...Object.keys(newObj)]);
+    
+    for (const key of allKeys) {
+      if (skipFields.has(key)) continue;
+      
+      const fieldPath = path ? `${path}.${key}` : key;
+      compareFields(fieldPath, oldObj[key], newObj[key], changes);
+    }
   }
 
   function determineSignificance(changes: CharacterDiff['changes']): 'minor' | 'moderate' | 'major' {

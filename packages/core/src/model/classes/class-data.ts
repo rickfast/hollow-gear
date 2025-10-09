@@ -1320,3 +1320,51 @@ export function getClassPrimaryAbility(
 export function getClassHitDie(className: HollowGearClass): DieType {
   return CLASS_DATA[className].hitDie;
 }
+/**
+ * Get all available class names
+ */
+export function getAllClasses(): HollowGearClass[] {
+  return Object.keys(CLASS_DATA) as HollowGearClass[];
+}
+
+/**
+ * Check if a class name is valid
+ */
+export function isValidClass(className: string): className is HollowGearClass {
+  return className in CLASS_DATA;
+}
+
+/**
+ * Get classes by spellcasting type
+ */
+export function getClassesBySpellcasting(type: SpellcastingType): HollowGearClass[] {
+  return getAllClasses().filter(className => {
+    const classInfo = CLASS_DATA[className];
+    return classInfo.spellcasting?.type === type;
+  });
+}
+
+/**
+ * Get classes that have psionic abilities
+ */
+export function getClassesByPsionics(): HollowGearClass[] {
+  return getAllClasses().filter(className => hasPsionics(className));
+}
+
+/**
+ * Get classes by hit die type
+ */
+export function getClassesByHitDie(hitDie: DieType): HollowGearClass[] {
+  return getAllClasses().filter(className => {
+    return CLASS_DATA[className].hitDie === hitDie;
+  });
+}
+
+/**
+ * Get classes by primary ability
+ */
+export function getClassesByPrimaryAbility(ability: AbilityScore): HollowGearClass[] {
+  return getAllClasses().filter(className => {
+    return CLASS_DATA[className].primaryAbility === ability;
+  });
+}
