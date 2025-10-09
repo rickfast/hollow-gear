@@ -2,7 +2,11 @@
  * Combat statistics and hit point management for D&D 5e
  */
 
-import type { AbilityScore, ValidationResult, ValidationError } from '../types/common.js';
+import type {
+  AbilityScore,
+  ValidationResult,
+  ValidationError,
+} from '../types/common.js';
 
 /**
  * Hit point data for a character
@@ -117,32 +121,45 @@ export namespace CombatUtils {
   /**
    * Calculate total armor class from components
    */
-  export function calculateArmorClass(ac: Omit<ArmorClassData, 'total'>): ArmorClassData {
-    const total = ac.base + ac.armor + ac.shield + ac.natural + ac.deflection + ac.miscellaneous;
+  export function calculateArmorClass(
+    ac: Omit<ArmorClassData, 'total'>
+  ): ArmorClassData {
+    const total =
+      ac.base +
+      ac.armor +
+      ac.shield +
+      ac.natural +
+      ac.deflection +
+      ac.miscellaneous;
     return {
       ...ac,
-      total
+      total,
     };
   }
 
   /**
    * Calculate total initiative modifier
    */
-  export function calculateInitiative(init: Omit<InitiativeData, 'total'>): InitiativeData {
+  export function calculateInitiative(
+    init: Omit<InitiativeData, 'total'>
+  ): InitiativeData {
     return {
       ...init,
-      total: init.modifier + init.bonus
+      total: init.modifier + init.bonus,
     };
   }
 
   /**
    * Create default hit point data
    */
-  export function createHitPoints(maximum: number, current?: number): HitPointData {
+  export function createHitPoints(
+    maximum: number,
+    current?: number
+  ): HitPointData {
     return {
       current: current ?? maximum,
       maximum,
-      temporary: 0
+      temporary: 0,
     };
   }
 
@@ -157,7 +174,7 @@ export namespace CombatUtils {
       shield: 0,
       natural: 0,
       deflection: 0,
-      miscellaneous: 0
+      miscellaneous: 0,
     });
   }
 
@@ -167,7 +184,7 @@ export namespace CombatUtils {
   export function createInitiative(dexModifier: number): InitiativeData {
     return calculateInitiative({
       modifier: dexModifier,
-      bonus: 0
+      bonus: 0,
     });
   }
 
@@ -190,7 +207,7 @@ export namespace CombatUtils {
       restrained: false,
       stunned: false,
       unconscious: false,
-      exhaustion: 0
+      exhaustion: 0,
     };
   }
 
@@ -200,14 +217,17 @@ export namespace CombatUtils {
   export function createDefaultDeathSaves(): DeathSaves {
     return {
       successes: 0,
-      failures: 0
+      failures: 0,
     };
   }
 
   /**
    * Apply damage to hit points
    */
-  export function applyDamage(hitPoints: HitPointData, damage: number): HitPointData {
+  export function applyDamage(
+    hitPoints: HitPointData,
+    damage: number
+  ): HitPointData {
     let remainingDamage = damage;
     let newTemporary = hitPoints.temporary;
     let newCurrent = hitPoints.current;
@@ -227,44 +247,52 @@ export namespace CombatUtils {
     return {
       ...hitPoints,
       current: newCurrent,
-      temporary: newTemporary
+      temporary: newTemporary,
     };
   }
 
   /**
    * Apply healing to hit points
    */
-  export function applyHealing(hitPoints: HitPointData, healing: number): HitPointData {
+  export function applyHealing(
+    hitPoints: HitPointData,
+    healing: number
+  ): HitPointData {
     const newCurrent = Math.min(hitPoints.maximum, hitPoints.current + healing);
     return {
       ...hitPoints,
-      current: newCurrent
+      current: newCurrent,
     };
   }
 
   /**
    * Add temporary hit points
    */
-  export function addTemporaryHitPoints(hitPoints: HitPointData, tempHP: number): HitPointData {
+  export function addTemporaryHitPoints(
+    hitPoints: HitPointData,
+    tempHP: number
+  ): HitPointData {
     // Temporary hit points don't stack - take the higher value
     const newTemporary = Math.max(hitPoints.temporary, tempHP);
     return {
       ...hitPoints,
-      temporary: newTemporary
+      temporary: newTemporary,
     };
   }
 
   /**
    * Validate hit point data
    */
-  export function validateHitPoints(hitPoints: HitPointData): ValidationResult<HitPointData> {
+  export function validateHitPoints(
+    hitPoints: HitPointData
+  ): ValidationResult<HitPointData> {
     const errors: ValidationError[] = [];
 
     if (hitPoints.current < 0) {
       errors.push({
         field: 'hitPoints.current',
         message: 'Current hit points cannot be negative',
-        code: 'INVALID_CURRENT_HP'
+        code: 'INVALID_CURRENT_HP',
       });
     }
 
@@ -272,7 +300,7 @@ export namespace CombatUtils {
       errors.push({
         field: 'hitPoints.maximum',
         message: 'Maximum hit points must be at least 1',
-        code: 'INVALID_MAX_HP'
+        code: 'INVALID_MAX_HP',
       });
     }
 
@@ -280,7 +308,7 @@ export namespace CombatUtils {
       errors.push({
         field: 'hitPoints.temporary',
         message: 'Temporary hit points cannot be negative',
-        code: 'INVALID_TEMP_HP'
+        code: 'INVALID_TEMP_HP',
       });
     }
 
@@ -288,7 +316,7 @@ export namespace CombatUtils {
       errors.push({
         field: 'hitPoints.current',
         message: 'Current hit points cannot exceed maximum',
-        code: 'CURRENT_EXCEEDS_MAX'
+        code: 'CURRENT_EXCEEDS_MAX',
       });
     }
 
@@ -308,10 +336,13 @@ export namespace CombatUtils {
 
   /**
    * Check if character is dead from massive damage
-   * In D&D 5e, if damage reduces you to 0 HP and the remaining damage 
+   * In D&D 5e, if damage reduces you to 0 HP and the remaining damage
    * equals or exceeds your hit point maximum, you die instantly
    */
-  export function isDeadFromMassiveDamage(hitPoints: HitPointData, damage: number): boolean {
+  export function isDeadFromMassiveDamage(
+    hitPoints: HitPointData,
+    damage: number
+  ): boolean {
     if (hitPoints.current > 0) {
       // Calculate what HP would be after damage
       const hpAfterDamage = hitPoints.current - damage;
@@ -340,7 +371,7 @@ export namespace CombatUtils {
   export function addDeathSaveSuccess(deathSaves: DeathSaves): DeathSaves {
     return {
       ...deathSaves,
-      successes: Math.min(3, deathSaves.successes + 1)
+      successes: Math.min(3, deathSaves.successes + 1),
     };
   }
 
@@ -350,7 +381,7 @@ export namespace CombatUtils {
   export function addDeathSaveFailure(deathSaves: DeathSaves): DeathSaves {
     return {
       ...deathSaves,
-      failures: Math.min(3, deathSaves.failures + 1)
+      failures: Math.min(3, deathSaves.failures + 1),
     };
   }
 

@@ -1,16 +1,28 @@
 /**
  * Character advancement choice system for Hollow Gear
- * 
+ *
  * This module handles level-up decisions, ability score improvements,
  * feat selection, class feature acquisition, and archetype selection.
  */
 
 import type { ValidationResult, ValidationError } from '../types/common.js';
-import { validationSuccess, validationFailure, validationError } from '../types/common.js';
+import {
+  validationSuccess,
+  validationFailure,
+  validationError,
+} from '../types/common.js';
 import type { AbilityScore } from '../types/common.js';
 import type { AbilityScoreIncrease } from '../types/abilities.js';
-import type { HollowGearClass, ClassArchetype, ClassFeature } from '../classes/index.js';
-import type { LevelUpChoices, AbilityScoreImprovement, ClassFeatureChoice } from './experience.js';
+import type {
+  HollowGearClass,
+  ClassArchetype,
+  ClassFeature,
+} from '../classes/index.js';
+import type {
+  LevelUpChoices,
+  AbilityScoreImprovement,
+  ClassFeatureChoice,
+} from './experience.js';
 
 /**
  * Comprehensive advancement choices for a character level-up
@@ -141,7 +153,9 @@ export const ASI_LEVELS = [4, 8, 12, 16, 19] as const;
 /**
  * Class-specific ASI levels (some classes get additional ASIs)
  */
-export const CLASS_ASI_LEVELS: Partial<Record<HollowGearClass, readonly number[]>> = {
+export const CLASS_ASI_LEVELS: Partial<
+  Record<HollowGearClass, readonly number[]>
+> = {
   // Most classes use standard ASI levels
   // Fighters would get additional ASIs at 6, 14 if we had them
   // Rogues would get additional ASI at 10 if we had them
@@ -151,9 +165,10 @@ export const CLASS_ASI_LEVELS: Partial<Record<HollowGearClass, readonly number[]
  * Check if a level grants an Ability Score Improvement for a class
  */
 export function isASILevel(level: number, className: HollowGearClass): boolean {
-  const standardASI = ASI_LEVELS.includes(level as typeof ASI_LEVELS[number]);
-  const classSpecificASI = CLASS_ASI_LEVELS[className]?.includes(level) ?? false;
-  
+  const standardASI = ASI_LEVELS.includes(level as (typeof ASI_LEVELS)[number]);
+  const classSpecificASI =
+    CLASS_ASI_LEVELS[className]?.includes(level) ?? false;
+
   return standardASI || classSpecificASI;
 }
 
@@ -166,7 +181,7 @@ export function getAdvancementOptions(
   currentChoices?: Partial<AdvancementChoices>
 ): AdvancementOptions {
   const abilityScoreImprovementAvailable = isASILevel(level, advancingClass);
-  
+
   // Get class-specific hit die
   const hitDieMap: Record<HollowGearClass, number> = {
     arcanist: 6,
@@ -175,11 +190,11 @@ export function getAdvancementOptions(
     shadehand: 8,
     vanguard: 10,
     artifex: 8,
-    mindweaver: 8
+    mindweaver: 8,
   };
-  
+
   const hitDie = hitDieMap[advancingClass];
-  
+
   return {
     level,
     advancingClass,
@@ -191,7 +206,7 @@ export function getAdvancementOptions(
     availableSpells: getAvailableSpells(level, advancingClass),
     availableSkills: getAvailableSkills(level, advancingClass),
     availableProficiencies: getAvailableProficiencies(level, advancingClass),
-    hitDie
+    hitDie,
   };
 }
 
@@ -208,29 +223,32 @@ export function getAvailableFeats(
     {
       featId: 'aether_sensitive',
       name: 'Aether Sensitive',
-      description: 'Increase sensitivity to Aetheric energies, gain +1 to psionic saves',
-      prerequisitesMet: true
+      description:
+        'Increase sensitivity to Aetheric energies, gain +1 to psionic saves',
+      prerequisitesMet: true,
     },
     {
       featId: 'steam_engineer',
       name: 'Steam Engineer',
-      description: 'Expertise with steam-powered devices, reduce heat stress by 1',
-      prerequisitesMet: true
+      description:
+        'Expertise with steam-powered devices, reduce heat stress by 1',
+      prerequisitesMet: true,
     },
     {
       featId: 'gear_savant',
       name: 'Gear Savant',
-      description: 'Proficiency with all artisan tools, +1 to equipment modification rolls',
-      prerequisitesMet: true
+      description:
+        'Proficiency with all artisan tools, +1 to equipment modification rolls',
+      prerequisitesMet: true,
     },
     {
       featId: 'psionic_adept',
       name: 'Psionic Adept',
       description: 'Learn one 1st-tier psionic power from any discipline',
-      prerequisitesMet: true
-    }
+      prerequisitesMet: true,
+    },
   ];
-  
+
   return commonFeats;
 }
 
@@ -272,17 +290,17 @@ export function getArchetypeSelection(
     shadehand: 3,
     vanguard: 3,
     artifex: 3,
-    mindweaver: 2
+    mindweaver: 2,
   };
-  
+
   if (level === archetypeSelectionLevels[className]) {
     // This would be populated with actual archetype data from class-data.ts
     return {
       level,
-      availableArchetypes: [] // Would be populated from CLASS_DATA
+      availableArchetypes: [], // Would be populated from CLASS_DATA
     };
   }
-  
+
   return undefined;
 }
 
@@ -295,11 +313,11 @@ export function getAvailableSpells(
 ): SpellChoice[] {
   // Only spellcasting classes learn spells
   const spellcastingClasses: HollowGearClass[] = ['arcanist', 'templar'];
-  
+
   if (!spellcastingClasses.includes(className)) {
     return [];
   }
-  
+
   // This would be populated with actual spell data
   return [];
 }
@@ -334,7 +352,7 @@ export function createDefaultAdvancementChoices(
   advancingClass: HollowGearClass
 ): AdvancementChoices {
   const options = getAdvancementOptions(level, advancingClass);
-  
+
   return {
     level,
     advancingClass,
@@ -342,7 +360,7 @@ export function createDefaultAdvancementChoices(
     hitPointMethod: 'average',
     classFeatures: options.automaticClassFeatures,
     choicesMadeAt: new Date(),
-    applied: false
+    applied: false,
   };
 }
 
@@ -353,74 +371,86 @@ export function validateAdvancementChoices(
   choices: AdvancementChoices
 ): ValidationResult<AdvancementChoices> {
   const errors: ValidationError[] = [];
-  
+
   // Validate level
   if (choices.level < 1 || choices.level > 20) {
-    errors.push(validationError(
-      'level',
-      'Level must be between 1 and 20',
-      'INVALID_LEVEL_RANGE'
-    ));
+    errors.push(
+      validationError(
+        'level',
+        'Level must be between 1 and 20',
+        'INVALID_LEVEL_RANGE'
+      )
+    );
   }
-  
+
   // Validate hit points gained
   if (choices.hitPointsGained < 0) {
-    errors.push(validationError(
-      'hitPointsGained',
-      'Hit points gained cannot be negative',
-      'INVALID_HP_GAIN'
-    ));
+    errors.push(
+      validationError(
+        'hitPointsGained',
+        'Hit points gained cannot be negative',
+        'INVALID_HP_GAIN'
+      )
+    );
   }
-  
+
   // Validate ability score improvements
   if (choices.abilityScoreImprovements) {
     const totalImprovements = choices.abilityScoreImprovements.reduce(
       (total, improvement) => total + improvement.improvement,
       0
     );
-    
+
     if (totalImprovements > 2) {
-      errors.push(validationError(
-        'abilityScoreImprovements',
-        'Cannot improve ability scores by more than 2 points total',
-        'INVALID_ASI_TOTAL'
-      ));
+      errors.push(
+        validationError(
+          'abilityScoreImprovements',
+          'Cannot improve ability scores by more than 2 points total',
+          'INVALID_ASI_TOTAL'
+        )
+      );
     }
-    
+
     // Check for duplicate ability improvements
     const abilities = choices.abilityScoreImprovements.map(asi => asi.ability);
     const uniqueAbilities = new Set(abilities);
     if (abilities.length !== uniqueAbilities.size) {
-      errors.push(validationError(
-        'abilityScoreImprovements',
-        'Cannot improve the same ability score multiple times',
-        'DUPLICATE_ASI'
-      ));
+      errors.push(
+        validationError(
+          'abilityScoreImprovements',
+          'Cannot improve the same ability score multiple times',
+          'DUPLICATE_ASI'
+        )
+      );
     }
   }
-  
+
   // Validate ASI vs Feat selection
   if (choices.abilityScoreImprovements && choices.featSelected) {
-    errors.push(validationError(
-      'featSelected',
-      'Cannot select both ability score improvements and a feat',
-      'ASI_AND_FEAT_CONFLICT'
-    ));
+    errors.push(
+      validationError(
+        'featSelected',
+        'Cannot select both ability score improvements and a feat',
+        'ASI_AND_FEAT_CONFLICT'
+      )
+    );
   }
-  
+
   // Validate feat prerequisites
   if (choices.featSelected && !choices.featSelected.prerequisitesMet) {
-    errors.push(validationError(
-      'featSelected',
-      `Prerequisites not met for feat: ${choices.featSelected.name}`,
-      'FEAT_PREREQUISITES_NOT_MET'
-    ));
+    errors.push(
+      validationError(
+        'featSelected',
+        `Prerequisites not met for feat: ${choices.featSelected.name}`,
+        'FEAT_PREREQUISITES_NOT_MET'
+      )
+    );
   }
-  
+
   if (errors.length > 0) {
     return validationFailure(errors);
   }
-  
+
   return validationSuccess(choices);
 }
 
@@ -437,7 +467,7 @@ export function calculateHitPointsGained(
     const average = Math.ceil((hitDie + 1) / 2);
     return validationSuccess(average);
   }
-  
+
   if (method === 'rolled') {
     if (rolledValue === undefined) {
       return validationFailure([
@@ -445,29 +475,29 @@ export function calculateHitPointsGained(
           'rolledValue',
           'Rolled value required when using rolled method',
           'MISSING_ROLLED_VALUE'
-        )
+        ),
       ]);
     }
-    
+
     if (rolledValue < 1 || rolledValue > hitDie) {
       return validationFailure([
         validationError(
           'rolledValue',
           `Rolled value must be between 1 and ${hitDie}`,
           'INVALID_ROLLED_VALUE'
-        )
+        ),
       ]);
     }
-    
+
     return validationSuccess(rolledValue);
   }
-  
+
   return validationFailure([
     validationError(
       'method',
       'Invalid hit point calculation method',
       'INVALID_HP_METHOD'
-    )
+    ),
   ]);
 }
 
@@ -480,27 +510,29 @@ export function applyAbilityScoreImprovements(
 ): ValidationResult<Record<AbilityScore, number>> {
   const errors: ValidationError[] = [];
   const newScores = { ...currentAbilityScores };
-  
+
   for (const improvement of improvements) {
     const currentScore = newScores[improvement.ability];
     const newScore = currentScore + improvement.improvement;
-    
+
     // Check ability score maximum (20 for most cases, 30 absolute max)
     if (newScore > 20) {
-      errors.push(validationError(
-        'abilityScoreImprovements',
-        `${improvement.ability} cannot exceed 20 (would be ${newScore})`,
-        'ABILITY_SCORE_MAX_EXCEEDED'
-      ));
+      errors.push(
+        validationError(
+          'abilityScoreImprovements',
+          `${improvement.ability} cannot exceed 20 (would be ${newScore})`,
+          'ABILITY_SCORE_MAX_EXCEEDED'
+        )
+      );
     } else {
       newScores[improvement.ability] = newScore;
     }
   }
-  
+
   if (errors.length > 0) {
     return validationFailure(errors);
   }
-  
+
   return validationSuccess(newScores);
 }
 
@@ -512,52 +544,60 @@ export function areAdvancementChoicesComplete(
   options: AdvancementOptions
 ): ValidationResult<boolean> {
   const errors: ValidationError[] = [];
-  
+
   // Check if hit points have been determined
   if (choices.hitPointsGained === 0) {
-    errors.push(validationError(
-      'hitPointsGained',
-      'Hit points must be determined before applying advancement',
-      'MISSING_HIT_POINTS'
-    ));
+    errors.push(
+      validationError(
+        'hitPointsGained',
+        'Hit points must be determined before applying advancement',
+        'MISSING_HIT_POINTS'
+      )
+    );
   }
-  
+
   // Check if ASI or feat has been selected when available
   if (options.abilityScoreImprovementAvailable) {
     if (!choices.abilityScoreImprovements && !choices.featSelected) {
-      errors.push(validationError(
-        'advancement',
-        'Must select either ability score improvements or a feat',
-        'MISSING_ASI_OR_FEAT'
-      ));
+      errors.push(
+        validationError(
+          'advancement',
+          'Must select either ability score improvements or a feat',
+          'MISSING_ASI_OR_FEAT'
+        )
+      );
     }
   }
-  
+
   // Check if archetype has been selected when required
   if (options.archetypeSelection && !choices.archetypeSelected) {
-    errors.push(validationError(
-      'archetypeSelected',
-      'Must select an archetype at this level',
-      'MISSING_ARCHETYPE_SELECTION'
-    ));
+    errors.push(
+      validationError(
+        'archetypeSelected',
+        'Must select an archetype at this level',
+        'MISSING_ARCHETYPE_SELECTION'
+      )
+    );
   }
-  
+
   // Check if required class feature choices have been made
   for (const featureChoice of options.choiceClassFeatures) {
     const hasChoice = choices.classSpecificChoices?.[featureChoice.featureId];
     if (!hasChoice) {
-      errors.push(validationError(
-        'classSpecificChoices',
-        `Must make choice for class feature: ${featureChoice.featureId}`,
-        'MISSING_CLASS_FEATURE_CHOICE'
-      ));
+      errors.push(
+        validationError(
+          'classSpecificChoices',
+          `Must make choice for class feature: ${featureChoice.featureId}`,
+          'MISSING_CLASS_FEATURE_CHOICE'
+        )
+      );
     }
   }
-  
+
   if (errors.length > 0) {
     return validationFailure(errors);
   }
-  
+
   return validationSuccess(true);
 }
 
@@ -579,14 +619,14 @@ export function createAdvancementChoicesFromLevelUp(
       spellId,
       name: spellId, // Would be resolved from spell data
       level: 1, // Would be resolved from spell data
-      sourceClass: advancingClass
+      sourceClass: advancingClass,
     })),
     skillsGained: levelUpChoices.skillsGained?.map(skill => ({
       skill,
-      source: 'class'
+      source: 'class',
     })),
     choicesMadeAt: new Date(),
-    applied: false
+    applied: false,
   };
 }
 
@@ -604,10 +644,11 @@ export function getAdvancementChoicesSummary(choices: AdvancementChoices): {
   skillsGained: number;
   isComplete: boolean;
 } {
-  const abilityImprovements = choices.abilityScoreImprovements?.map(
-    asi => `${asi.ability} +${asi.improvement}`
-  ) || [];
-  
+  const abilityImprovements =
+    choices.abilityScoreImprovements?.map(
+      asi => `${asi.ability} +${asi.improvement}`
+    ) || [];
+
   return {
     level: choices.level,
     className: choices.advancingClass,
@@ -617,6 +658,6 @@ export function getAdvancementChoicesSummary(choices: AdvancementChoices): {
     archetypeSelected: choices.archetypeSelected?.name,
     spellsLearned: choices.spellsLearned?.length || 0,
     skillsGained: choices.skillsGained?.length || 0,
-    isComplete: choices.applied
+    isComplete: choices.applied,
   };
 }

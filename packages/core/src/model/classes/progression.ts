@@ -14,10 +14,10 @@ import type {
   ClassPsionics,
   ResourcePool,
   SpellcastingProgression,
-} from "./index.js";
-import type { ClassInfo, ClassResourceInfo } from "./class-data.js";
-import { getClassInfo } from "./class-data.js";
-import type { AbilityScore } from "../types/common.js";
+} from './index.js';
+import type { ClassInfo, ClassResourceInfo } from './class-data.js';
+import { getClassInfo } from './class-data.js';
+import type { AbilityScore } from '../types/common.js';
 
 /**
  * Represents the progression data for a character's classes
@@ -64,7 +64,7 @@ export interface KnownSpell {
   /** Class that granted this spell */
   sourceClass: HollowGearClass;
   /** Spellcasting type */
-  castingType: "arcanist" | "templar";
+  castingType: 'arcanist' | 'templar';
 }
 
 /**
@@ -133,30 +133,30 @@ export function getClassFeaturesForLevel(
 
   // Add level-based features based on class
   switch (className) {
-    case "arcanist":
+    case 'arcanist':
       features.push(...getArcanistFeatures(level));
       break;
-    case "templar":
+    case 'templar':
       features.push(...getTemplarFeatures(level));
       break;
-    case "tweaker":
+    case 'tweaker':
       features.push(...getTweakerFeatures(level));
       break;
-    case "shadehand":
+    case 'shadehand':
       features.push(...getShadehandFeatures(level));
       break;
-    case "vanguard":
+    case 'vanguard':
       features.push(...getVanguardFeatures(level));
       break;
-    case "artifex":
+    case 'artifex':
       features.push(...getArtifexFeatures(level));
       break;
-    case "mindweaver":
+    case 'mindweaver':
       features.push(...getMindweaverFeatures(level));
       break;
   }
 
-  return features.filter((feature) => feature.level <= level);
+  return features.filter(feature => feature.level <= level);
 }
 
 /**
@@ -166,7 +166,7 @@ export function getArchetypeFeaturesForLevel(
   archetype: ClassArchetype,
   level: number
 ): ClassFeature[] {
-  return archetype.features.filter((feature) => feature.level <= level);
+  return archetype.features.filter(feature => feature.level <= level);
 }
 
 /**
@@ -175,7 +175,7 @@ export function getArchetypeFeaturesForLevel(
 export function calculateCombinedSpellcasting(
   classes: CharacterClass[]
 ): CombinedSpellcasting | undefined {
-  const spellcastingClasses = classes.filter((cls) => cls.spellcasting);
+  const spellcastingClasses = classes.filter(cls => cls.spellcasting);
 
   if (spellcastingClasses.length === 0) {
     return undefined;
@@ -194,16 +194,16 @@ export function calculateCombinedSpellcasting(
     let casterLevel = 0;
 
     switch (progression) {
-      case "full":
+      case 'full':
         casterLevel = characterClass.level;
         break;
-      case "half":
+      case 'half':
         casterLevel = Math.floor(characterClass.level / 2);
         break;
-      case "third":
+      case 'third':
         casterLevel = Math.floor(characterClass.level / 3);
         break;
-      case "warlock":
+      case 'warlock':
         // Warlock-style doesn't contribute to multiclass spellcasting
         casterLevel = 0;
         break;
@@ -289,7 +289,7 @@ export function getMulticlassPrerequisites(
     },
     mindweaver: {
       abilities: { intelligence: 13, wisdom: 13 }, // Either one
-      other: ["Must have Intelligence 13 OR Wisdom 13"],
+      other: ['Must have Intelligence 13 OR Wisdom 13'],
     },
   };
 
@@ -306,7 +306,7 @@ export function meetsMulticlassPrerequisites(
   const prerequisites = getMulticlassPrerequisites(className);
 
   // Special case for Mindweaver (needs either INT or WIS 13)
-  if (className === "mindweaver") {
+  if (className === 'mindweaver') {
     return abilityScores.intelligence >= 13 || abilityScores.wisdom >= 13;
   }
 
@@ -362,19 +362,19 @@ export function calculateResourceMaximum(
   let maximum = resourceInfo.baseAmount;
 
   switch (resourceInfo.scaling.type) {
-    case "linear":
+    case 'linear':
       maximum += (level - 1) * (resourceInfo.scaling.value as number);
       break;
-    case "table":
+    case 'table':
       const table = resourceInfo.scaling.value as number[];
       maximum =
         table[Math.min(level - 1, table.length - 1)] || resourceInfo.baseAmount;
       break;
-    case "proficiency_bonus":
+    case 'proficiency_bonus':
       const profBonus = calculateProficiencyBonus(level);
       maximum += profBonus * (resourceInfo.scaling.value as number);
       break;
-    case "ability_modifier":
+    case 'ability_modifier':
       // This would need the actual ability score, so we'll use a placeholder
       // In practice, this would be calculated with the character's ability scores
       maximum += 3; // Placeholder for ability modifier
@@ -388,57 +388,57 @@ export function calculateResourceMaximum(
 function getArcanistFeatures(level: number): ClassFeature[] {
   const features: ClassFeature[] = [
     {
-      id: "arcanist_spellcasting",
-      name: "Spellcasting",
+      id: 'arcanist_spellcasting',
+      name: 'Spellcasting',
       level: 1,
-      description: "You can cast spells using Aether Formulae.",
+      description: 'You can cast spells using Aether Formulae.',
       mechanics: {
-        type: "passive",
+        type: 'passive',
         effects: [
           {
-            type: "special",
-            target: "self",
-            value: "Spellcasting ability",
+            type: 'special',
+            target: 'self',
+            value: 'Spellcasting ability',
           },
         ],
       },
     },
     {
-      id: "arcanist_tinker_savant",
-      name: "Tinker Savant",
+      id: 'arcanist_tinker_savant',
+      name: 'Tinker Savant',
       level: 1,
       description: "You gain proficiency in Tinker's Tools.",
       mechanics: {
-        type: "passive",
+        type: 'passive',
         effects: [
           {
-            type: "proficiency",
-            target: "self",
+            type: 'proficiency',
+            target: 'self',
             value: "Tinker's Tools",
           },
         ],
       },
     },
     {
-      id: "arcanist_spell_recharge",
-      name: "Spell Recharge",
+      id: 'arcanist_spell_recharge',
+      name: 'Spell Recharge',
       level: 2,
       description:
-        "Recover one spent slot after a short rest by burning 1 ⚙️ worth of materials.",
+        'Recover one spent slot after a short rest by burning 1 ⚙️ worth of materials.',
       mechanics: {
-        type: "action",
+        type: 'action',
         effects: [
           {
-            type: "special",
-            target: "self",
-            value: "Spell slot recovery",
+            type: 'special',
+            target: 'self',
+            value: 'Spell slot recovery',
           },
         ],
       },
       uses: {
         maximum: 1,
         current: 1,
-        restoreOn: "short",
+        restoreOn: 'short',
       },
     },
   ];
@@ -449,57 +449,57 @@ function getArcanistFeatures(level: number): ClassFeature[] {
 function getTemplarFeatures(level: number): ClassFeature[] {
   const features: ClassFeature[] = [
     {
-      id: "templar_resonant_smite",
-      name: "Resonant Smite",
+      id: 'templar_resonant_smite',
+      name: 'Resonant Smite',
       level: 1,
       description:
-        "Consume 1 Resonance Charge to deal +2d8 radiant or lightning damage.",
+        'Consume 1 Resonance Charge to deal +2d8 radiant or lightning damage.',
       mechanics: {
-        type: "free",
+        type: 'free',
         effects: [
           {
-            type: "damage_bonus",
-            target: "enemy",
-            value: "2d8 radiant or lightning",
+            type: 'damage_bonus',
+            target: 'enemy',
+            value: '2d8 radiant or lightning',
           },
         ],
         activation: {
-          actionType: "free",
+          actionType: 'free',
           cost: {
-            type: "resonance_charge",
+            type: 'resonance_charge',
             amount: 1,
           },
         },
       },
     },
     {
-      id: "templar_faith_engine",
-      name: "Faith Engine",
+      id: 'templar_faith_engine',
+      name: 'Faith Engine',
       level: 1,
-      description: "Your armor or weapon acts as a psionic focus.",
+      description: 'Your armor or weapon acts as a psionic focus.',
       mechanics: {
-        type: "passive",
+        type: 'passive',
         effects: [
           {
-            type: "special",
-            target: "equipment",
-            value: "Equipment as psionic focus",
+            type: 'special',
+            target: 'equipment',
+            value: 'Equipment as psionic focus',
           },
         ],
       },
     },
     {
-      id: "templar_spellcasting",
-      name: "Spellcasting",
+      id: 'templar_spellcasting',
+      name: 'Spellcasting',
       level: 2,
-      description: "You can cast spells using Resonance Charges.",
+      description: 'You can cast spells using Resonance Charges.',
       mechanics: {
-        type: "passive",
+        type: 'passive',
         effects: [
           {
-            type: "special",
-            target: "self",
-            value: "Spellcasting ability",
+            type: 'special',
+            target: 'self',
+            value: 'Spellcasting ability',
           },
         ],
       },
@@ -512,49 +512,49 @@ function getTemplarFeatures(level: number): ClassFeature[] {
 function getTweakerFeatures(level: number): ClassFeature[] {
   const features: ClassFeature[] = [
     {
-      id: "tweaker_adrenal_surge",
-      name: "Adrenal Surge",
+      id: 'tweaker_adrenal_surge',
+      name: 'Adrenal Surge',
       level: 1,
       description:
-        "Bonus action, gain +2 STR and +10 ft speed for 1 minute (1/short rest).",
+        'Bonus action, gain +2 STR and +10 ft speed for 1 minute (1/short rest).',
       mechanics: {
-        type: "bonus_action",
+        type: 'bonus_action',
         effects: [
           {
-            type: "ability_bonus",
-            target: "self",
-            value: "2 STR",
+            type: 'ability_bonus',
+            target: 'self',
+            value: '2 STR',
           },
           {
-            type: "speed_bonus",
-            target: "self",
-            value: "10",
+            type: 'speed_bonus',
+            target: 'self',
+            value: '10',
           },
         ],
         duration: {
-          type: "minutes",
+          type: 'minutes',
           value: 1,
         },
       },
       uses: {
         maximum: 1,
         current: 1,
-        restoreOn: "short",
+        restoreOn: 'short',
       },
     },
     {
-      id: "tweaker_enhanced_metabolism",
-      name: "Enhanced Metabolism",
+      id: 'tweaker_enhanced_metabolism',
+      name: 'Enhanced Metabolism',
       level: 1,
       description:
-        "You regain an extra 1d4 HP whenever you consume a healing effect.",
+        'You regain an extra 1d4 HP whenever you consume a healing effect.',
       mechanics: {
-        type: "passive",
+        type: 'passive',
         effects: [
           {
-            type: "hp_bonus",
-            target: "self",
-            value: "1d4",
+            type: 'hp_bonus',
+            target: 'self',
+            value: '1d4',
           },
         ],
       },
@@ -567,33 +567,33 @@ function getTweakerFeatures(level: number): ClassFeature[] {
 function getShadehandFeatures(level: number): ClassFeature[] {
   const features: ClassFeature[] = [
     {
-      id: "shadehand_sneak_attack",
-      name: "Sneak Attack",
+      id: 'shadehand_sneak_attack',
+      name: 'Sneak Attack',
       level: 1,
       description:
-        "Deal extra damage when you have advantage or an ally is adjacent to your target.",
+        'Deal extra damage when you have advantage or an ally is adjacent to your target.',
       mechanics: {
-        type: "passive",
+        type: 'passive',
         effects: [
           {
-            type: "damage_bonus",
-            target: "enemy",
+            type: 'damage_bonus',
+            target: 'enemy',
             value: `${Math.ceil(level / 2)}d6`,
           },
         ],
       },
     },
     {
-      id: "shadehand_silent_tools",
-      name: "Silent Tools",
+      id: 'shadehand_silent_tools',
+      name: 'Silent Tools',
       level: 1,
       description: "You have proficiency with Thieves' Tools and Disguise Kit.",
       mechanics: {
-        type: "passive",
+        type: 'passive',
         effects: [
           {
-            type: "proficiency",
-            target: "self",
+            type: 'proficiency',
+            target: 'self',
             value: "Thieves' Tools, Disguise Kit",
           },
         ],
@@ -607,34 +607,34 @@ function getShadehandFeatures(level: number): ClassFeature[] {
 function getVanguardFeatures(level: number): ClassFeature[] {
   const features: ClassFeature[] = [
     {
-      id: "vanguard_defensive_stance",
-      name: "Defensive Stance",
+      id: 'vanguard_defensive_stance',
+      name: 'Defensive Stance',
       level: 1,
-      description: "Add +2 AC when you take the Dodge action.",
+      description: 'Add +2 AC when you take the Dodge action.',
       mechanics: {
-        type: "passive",
+        type: 'passive',
         effects: [
           {
-            type: "ac_bonus",
-            target: "self",
-            value: "2",
+            type: 'ac_bonus',
+            target: 'self',
+            value: '2',
           },
         ],
       },
     },
     {
-      id: "vanguard_steam_charge",
-      name: "Steam Charge",
+      id: 'vanguard_steam_charge',
+      name: 'Steam Charge',
       level: 1,
       description:
-        "Dash as a bonus action; next melee attack deals +1d6 damage.",
+        'Dash as a bonus action; next melee attack deals +1d6 damage.',
       mechanics: {
-        type: "bonus_action",
+        type: 'bonus_action',
         effects: [
           {
-            type: "damage_bonus",
-            target: "enemy",
-            value: "1d6",
+            type: 'damage_bonus',
+            target: 'enemy',
+            value: '1d6',
           },
         ],
       },
@@ -647,34 +647,34 @@ function getVanguardFeatures(level: number): ClassFeature[] {
 function getArtifexFeatures(level: number): ClassFeature[] {
   const features: ClassFeature[] = [
     {
-      id: "artifex_tinkers_expertise",
+      id: 'artifex_tinkers_expertise',
       name: "Tinker's Expertise",
       level: 1,
       description: "Double proficiency in Tinker's Tools.",
       mechanics: {
-        type: "passive",
+        type: 'passive',
         effects: [
           {
-            type: "expertise",
-            target: "self",
+            type: 'expertise',
+            target: 'self',
             value: "Tinker's Tools",
           },
         ],
       },
     },
     {
-      id: "artifex_deploy_drone",
-      name: "Deploy Drone",
+      id: 'artifex_deploy_drone',
+      name: 'Deploy Drone',
       level: 1,
       description:
-        "Create a small construct familiar (AC 12, HP 10, range 60 ft).",
+        'Create a small construct familiar (AC 12, HP 10, range 60 ft).',
       mechanics: {
-        type: "action",
+        type: 'action',
         effects: [
           {
-            type: "special",
-            target: "area",
-            value: "Deploy construct drone",
+            type: 'special',
+            target: 'area',
+            value: 'Deploy construct drone',
           },
         ],
       },
@@ -687,57 +687,57 @@ function getArtifexFeatures(level: number): ClassFeature[] {
 function getMindweaverFeatures(level: number): ClassFeature[] {
   const features: ClassFeature[] = [
     {
-      id: "mindweaver_aether_flux_pool",
-      name: "Aether Flux Pool",
+      id: 'mindweaver_aether_flux_pool',
+      name: 'Aether Flux Pool',
       level: 1,
-      description: "Used to manifest psionic powers.",
+      description: 'Used to manifest psionic powers.',
       mechanics: {
-        type: "passive",
+        type: 'passive',
         effects: [
           {
-            type: "special",
-            target: "self",
-            value: "AFP resource pool",
+            type: 'special',
+            target: 'self',
+            value: 'AFP resource pool',
           },
         ],
       },
     },
     {
-      id: "mindweaver_telepathic_whispers",
-      name: "Telepathic Whispers",
+      id: 'mindweaver_telepathic_whispers',
+      name: 'Telepathic Whispers',
       level: 1,
-      description: "Communicate mentally within 30 ft.",
+      description: 'Communicate mentally within 30 ft.',
       mechanics: {
-        type: "passive",
+        type: 'passive',
         effects: [
           {
-            type: "special",
-            target: "ally",
-            value: "Telepathic communication",
+            type: 'special',
+            target: 'ally',
+            value: 'Telepathic communication',
           },
         ],
         range: {
-          type: "ranged",
+          type: 'ranged',
           value: 30,
         },
       },
     },
     {
-      id: "mindweaver_psionic_awareness",
-      name: "Psionic Awareness",
+      id: 'mindweaver_psionic_awareness',
+      name: 'Psionic Awareness',
       level: 1,
-      description: "Sense Aetheric signatures within 30 ft.",
+      description: 'Sense Aetheric signatures within 30 ft.',
       mechanics: {
-        type: "passive",
+        type: 'passive',
         effects: [
           {
-            type: "special",
-            target: "area",
-            value: "Detect psionic signatures",
+            type: 'special',
+            target: 'area',
+            value: 'Detect psionic signatures',
           },
         ],
         range: {
-          type: "ranged",
+          type: 'ranged',
           value: 30,
         },
       },

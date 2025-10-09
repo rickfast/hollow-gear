@@ -14,8 +14,8 @@ import type {
   SpellcastingProgression,
   PsionicDiscipline,
   ResourceType,
-} from "./index.js";
-import type { AbilityScore, DieType } from "../types/common.js";
+} from './index.js';
+import type { AbilityScore, DieType } from '../types/common.js';
 
 /**
  * Core class information for each Hollow Gear class
@@ -60,7 +60,7 @@ export interface ClassResourceInfo {
   /** How the resource scales with level */
   scaling: ResourceScaling;
   /** When the resource recovers */
-  recovery: "short" | "long" | "dawn" | "never";
+  recovery: 'short' | 'long' | 'dawn' | 'never';
 }
 
 /**
@@ -68,7 +68,7 @@ export interface ClassResourceInfo {
  */
 export interface ResourceScaling {
   /** Type of scaling */
-  type: "linear" | "table" | "ability_modifier" | "proficiency_bonus";
+  type: 'linear' | 'table' | 'ability_modifier' | 'proficiency_bonus';
   /** Scaling value (per level for linear, or table for table) */
   value: number | number[];
   /** Ability modifier to add (if applicable) */
@@ -80,117 +80,117 @@ export interface ResourceScaling {
  */
 export const CLASS_DATA: Record<HollowGearClass, ClassInfo> = {
   arcanist: {
-    className: "arcanist",
-    displayName: "Arcanist",
-    description: "Scholar, manipulator of Aether, experimental technomage.",
-    role: "Spellcaster and magical researcher",
-    hitDie: "d6",
-    primaryAbility: "intelligence",
-    savingThrowProficiencies: ["intelligence", "wisdom"],
+    className: 'arcanist',
+    displayName: 'Arcanist',
+    description: 'Scholar, manipulator of Aether, experimental technomage.',
+    role: 'Spellcaster and magical researcher',
+    hitDie: 'd6',
+    primaryAbility: 'intelligence',
+    savingThrowProficiencies: ['intelligence', 'wisdom'],
     archetypes: [
       {
-        id: "aethermancer",
-        name: "Aethermancer",
-        parentClass: "arcanist",
+        id: 'aethermancer',
+        name: 'Aethermancer',
+        parentClass: 'arcanist',
         selectionLevel: 2,
         description:
-          "Psionically fuses mind and magic. May trade one spell per level for a psionic power.",
+          'Psionically fuses mind and magic. May trade one spell per level for a psionic power.',
         features: [
           {
-            id: "aethermancer_psionic_conversion",
-            name: "Psionic Conversion",
+            id: 'aethermancer_psionic_conversion',
+            name: 'Psionic Conversion',
             level: 2,
             description:
-              "Convert spell slots into Aether Flux Points (AFP). Learn 1 psionic Discipline.",
+              'Convert spell slots into Aether Flux Points (AFP). Learn 1 psionic Discipline.',
             mechanics: {
-              type: "resource",
+              type: 'resource',
               effects: [
                 {
-                  type: "special",
-                  target: "self",
-                  value: "Convert spell slots to AFP",
+                  type: 'special',
+                  target: 'self',
+                  value: 'Convert spell slots to AFP',
                 },
               ],
             },
           },
           {
-            id: "aethermancer_resonant_pulse",
-            name: "Resonant Pulse",
+            id: 'aethermancer_resonant_pulse',
+            name: 'Resonant Pulse',
             level: 6,
             description:
-              "Gain Resonant Pulse as a bonus action once per short rest.",
+              'Gain Resonant Pulse as a bonus action once per short rest.',
             mechanics: {
-              type: "bonus_action",
+              type: 'bonus_action',
               effects: [
                 {
-                  type: "special",
-                  target: "area",
-                  value: "Resonant pulse effect",
+                  type: 'special',
+                  target: 'area',
+                  value: 'Resonant pulse effect',
                 },
               ],
             },
             uses: {
               maximum: 1,
               current: 1,
-              restoreOn: "short",
+              restoreOn: 'short',
             },
           },
         ],
       },
       {
-        id: "gearwright",
-        name: "Gearwright",
-        parentClass: "arcanist",
+        id: 'gearwright',
+        name: 'Gearwright',
+        parentClass: 'arcanist',
         selectionLevel: 2,
         description:
-          "A mechanical magician; crafts sentient constructs known as Aether Familiars.",
+          'A mechanical magician; crafts sentient constructs known as Aether Familiars.',
         features: [
           {
-            id: "gearwright_aether_familiar",
-            name: "Aether Familiar",
+            id: 'gearwright_aether_familiar',
+            name: 'Aether Familiar',
             level: 2,
             description:
-              "Build a mechanical companion (HP = 5 × your proficiency bonus).",
+              'Build a mechanical companion (HP = 5 × your proficiency bonus).',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "special",
-                  target: "self",
-                  value: "Mechanical companion",
+                  type: 'special',
+                  target: 'self',
+                  value: 'Mechanical companion',
                 },
               ],
             },
           },
           {
-            id: "gearwright_infuse_device",
-            name: "Infuse Device",
+            id: 'gearwright_infuse_device',
+            name: 'Infuse Device',
             level: 2,
-            description: "Infuse devices with low-level spell effects.",
+            description: 'Infuse devices with low-level spell effects.',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "equipment",
-                  value: "Spell infusion",
+                  type: 'special',
+                  target: 'equipment',
+                  value: 'Spell infusion',
                 },
               ],
             },
           },
           {
-            id: "gearwright_temporary_constructs",
-            name: "Temporary Constructs",
+            id: 'gearwright_temporary_constructs',
+            name: 'Temporary Constructs',
             level: 10,
             description:
-              "Create temporary constructs as action (CR ½ or lower).",
+              'Create temporary constructs as action (CR ½ or lower).',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "area",
-                  value: "Temporary construct creation",
+                  type: 'special',
+                  target: 'area',
+                  value: 'Temporary construct creation',
                 },
               ],
             },
@@ -199,9 +199,9 @@ export const CLASS_DATA: Record<HollowGearClass, ClassInfo> = {
       },
     ],
     spellcasting: {
-      type: "arcanist",
-      ability: "intelligence",
-      progression: "full",
+      type: 'arcanist',
+      ability: 'intelligence',
+      progression: 'full',
       spellsKnown: [
         2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15,
       ],
@@ -228,176 +228,176 @@ export const CLASS_DATA: Record<HollowGearClass, ClassInfo> = {
         [4, 3, 3, 3, 3, 2, 2, 1, 1], // Level 20
       ],
       ritualCasting: true,
-      focus: "arcane_focus",
+      focus: 'arcane_focus',
     },
     classResources: [
       {
-        type: "spell_slot",
-        name: "Spell Slots",
-        description: "Aether-powered magical energy",
+        type: 'spell_slot',
+        name: 'Spell Slots',
+        description: 'Aether-powered magical energy',
         baseAmount: 2,
         scaling: {
-          type: "table",
+          type: 'table',
           value: [2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
         },
-        recovery: "long",
+        recovery: 'long',
       },
     ],
   },
 
   templar: {
-    className: "templar",
-    displayName: "Templar",
-    description: "Psionic paladin, relic guardian, and holy engineer.",
-    role: "Divine warrior and support",
-    hitDie: "d10",
-    primaryAbility: "charisma",
-    savingThrowProficiencies: ["wisdom", "charisma"],
+    className: 'templar',
+    displayName: 'Templar',
+    description: 'Psionic paladin, relic guardian, and holy engineer.',
+    role: 'Divine warrior and support',
+    hitDie: 'd10',
+    primaryAbility: 'charisma',
+    savingThrowProficiencies: ['wisdom', 'charisma'],
     archetypes: [
       {
-        id: "relic_knight",
-        name: "Relic Knight",
-        parentClass: "templar",
+        id: 'relic_knight',
+        name: 'Relic Knight',
+        parentClass: 'templar',
         selectionLevel: 3,
-        description: "Defender of lost Aether temples.",
+        description: 'Defender of lost Aether temples.',
         features: [
           {
-            id: "relic_knight_aura_of_focus",
-            name: "Aura of Focus",
+            id: 'relic_knight_aura_of_focus',
+            name: 'Aura of Focus',
             level: 3,
             description:
-              "Allies in 10 ft gain +1 to saving throws vs psionic effects.",
+              'Allies in 10 ft gain +1 to saving throws vs psionic effects.',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "save_bonus",
-                  target: "ally",
-                  value: "1",
+                  type: 'save_bonus',
+                  target: 'ally',
+                  value: '1',
                 },
               ],
             },
           },
           {
-            id: "relic_knight_channel_healing",
-            name: "Channel Healing",
+            id: 'relic_knight_channel_healing',
+            name: 'Channel Healing',
             level: 3,
-            description: "Can channel healing energy through armor or shield.",
+            description: 'Can channel healing energy through armor or shield.',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "ally",
-                  value: "Healing through equipment",
+                  type: 'special',
+                  target: 'ally',
+                  value: 'Healing through equipment',
                 },
               ],
             },
           },
           {
-            id: "relic_knight_faith_barrier",
-            name: "Faith Barrier",
+            id: 'relic_knight_faith_barrier',
+            name: 'Faith Barrier',
             level: 7,
             description:
-              "Project a Faith Barrier once per long rest (temporary HP = 2 × level).",
+              'Project a Faith Barrier once per long rest (temporary HP = 2 × level).',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "hp_bonus",
-                  target: "ally",
-                  value: "level * 2",
+                  type: 'hp_bonus',
+                  target: 'ally',
+                  value: 'level * 2',
                 },
               ],
             },
             uses: {
               maximum: 1,
               current: 1,
-              restoreOn: "long",
+              restoreOn: 'long',
             },
           },
         ],
       },
       {
-        id: "iron_saint",
-        name: "Iron Saint",
-        parentClass: "templar",
+        id: 'iron_saint',
+        name: 'Iron Saint',
+        parentClass: 'templar',
         selectionLevel: 3,
-        description: "Crusader who sees perfection in steel.",
+        description: 'Crusader who sees perfection in steel.',
         features: [
           {
-            id: "iron_saint_runic_armor",
-            name: "Runic Armor",
+            id: 'iron_saint_runic_armor',
+            name: 'Runic Armor',
             level: 3,
             description:
-              "Your armor gains +1 AC and glows with runes of faith.",
+              'Your armor gains +1 AC and glows with runes of faith.',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "ac_bonus",
-                  target: "self",
-                  value: "1",
+                  type: 'ac_bonus',
+                  target: 'self',
+                  value: '1',
                 },
               ],
             },
           },
           {
-            id: "iron_saint_faithful_resolve",
-            name: "Faithful Resolve",
+            id: 'iron_saint_faithful_resolve',
+            name: 'Faithful Resolve',
             level: 3,
-            description: "Spend 1 Charge to gain advantage on a saving throw.",
+            description: 'Spend 1 Charge to gain advantage on a saving throw.',
             mechanics: {
-              type: "reaction",
+              type: 'reaction',
               effects: [
                 {
-                  type: "advantage",
-                  target: "self",
-                  value: "saving throws",
+                  type: 'advantage',
+                  target: 'self',
+                  value: 'saving throws',
                 },
               ],
               activation: {
-                actionType: "reaction",
+                actionType: 'reaction',
                 cost: {
-                  type: "resonance_charge",
+                  type: 'resonance_charge',
                   amount: 1,
                 },
               },
             },
           },
           {
-            id: "iron_saint_divine_immunity",
-            name: "Divine Immunity",
+            id: 'iron_saint_divine_immunity',
+            name: 'Divine Immunity',
             level: 10,
             description:
-              "Become immune to fear and psychic damage for 1 minute.",
+              'Become immune to fear and psychic damage for 1 minute.',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "immunity",
-                  target: "self",
-                  value: "fear, psychic",
+                  type: 'immunity',
+                  target: 'self',
+                  value: 'fear, psychic',
                 },
               ],
               duration: {
-                type: "minutes",
+                type: 'minutes',
                 value: 1,
               },
             },
             uses: {
               maximum: 1,
               current: 1,
-              restoreOn: "long",
+              restoreOn: 'long',
             },
           },
         ],
       },
     ],
     spellcasting: {
-      type: "templar",
-      ability: "charisma",
-      progression: "half",
+      type: 'templar',
+      ability: 'charisma',
+      progression: 'half',
       spellsKnown: [
         0, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11,
       ],
@@ -424,84 +424,84 @@ export const CLASS_DATA: Record<HollowGearClass, ClassInfo> = {
         [4, 3, 3, 3, 2], // Level 20
       ],
       ritualCasting: false,
-      focus: "holy_symbol",
+      focus: 'holy_symbol',
     },
     classResources: [
       {
-        type: "resonance_charge",
-        name: "Resonance Charges",
-        description: "Faith-fueled psionic energy",
+        type: 'resonance_charge',
+        name: 'Resonance Charges',
+        description: 'Faith-fueled psionic energy',
         baseAmount: 1,
         scaling: {
-          type: "ability_modifier",
+          type: 'ability_modifier',
           value: 1,
-          abilityModifier: "charisma",
+          abilityModifier: 'charisma',
         },
-        recovery: "long",
+        recovery: 'long',
       },
     ],
   },
 
   tweaker: {
-    className: "tweaker",
-    displayName: "Tweaker",
-    description: "Brawler, chemist, reckless modder of the flesh.",
-    role: "Melee combatant with chemical enhancement",
-    hitDie: "d12",
-    primaryAbility: "constitution",
-    savingThrowProficiencies: ["strength", "constitution"],
+    className: 'tweaker',
+    displayName: 'Tweaker',
+    description: 'Brawler, chemist, reckless modder of the flesh.',
+    role: 'Melee combatant with chemical enhancement',
+    hitDie: 'd12',
+    primaryAbility: 'constitution',
+    savingThrowProficiencies: ['strength', 'constitution'],
     archetypes: [
       {
-        id: "boilerheart",
-        name: "Boilerheart",
-        parentClass: "tweaker",
+        id: 'boilerheart',
+        name: 'Boilerheart',
+        parentClass: 'tweaker',
         selectionLevel: 3,
-        description: "Relies on controlled overpressure.",
+        description: 'Relies on controlled overpressure.',
         features: [
           {
-            id: "boilerheart_pressure_surge",
-            name: "Pressure Surge",
+            id: 'boilerheart_pressure_surge',
+            name: 'Pressure Surge',
             level: 3,
-            description: "When reduced to half HP, gain +1 attack each turn.",
+            description: 'When reduced to half HP, gain +1 attack each turn.',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "special",
-                  target: "self",
-                  value: "Extra attack when bloodied",
+                  type: 'special',
+                  target: 'self',
+                  value: 'Extra attack when bloodied',
                 },
               ],
             },
           },
           {
-            id: "boilerheart_explosion_death",
-            name: "Explosion Death Throes",
+            id: 'boilerheart_explosion_death',
+            name: 'Explosion Death Throes',
             level: 3,
-            description: "If reduced to 0 HP, emit 10-ft burst (2d6 fire).",
+            description: 'If reduced to 0 HP, emit 10-ft burst (2d6 fire).',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "special",
-                  target: "area",
-                  value: "2d6 fire damage in 10ft burst",
+                  type: 'special',
+                  target: 'area',
+                  value: '2d6 fire damage in 10ft burst',
                 },
               ],
             },
           },
           {
-            id: "boilerheart_heat_immunity",
-            name: "Heat Immunity",
+            id: 'boilerheart_heat_immunity',
+            name: 'Heat Immunity',
             level: 3,
-            description: "Immune to exhaustion effects caused by heat.",
+            description: 'Immune to exhaustion effects caused by heat.',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "immunity",
-                  target: "self",
-                  value: "heat exhaustion",
+                  type: 'immunity',
+                  target: 'self',
+                  value: 'heat exhaustion',
                 },
               ],
             },
@@ -509,68 +509,68 @@ export const CLASS_DATA: Record<HollowGearClass, ClassInfo> = {
         ],
       },
       {
-        id: "neurospike",
-        name: "Neurospike",
-        parentClass: "tweaker",
+        id: 'neurospike',
+        name: 'Neurospike',
+        parentClass: 'tweaker',
         selectionLevel: 3,
-        description: "Focuses on reflex and precision.",
+        description: 'Focuses on reflex and precision.',
         features: [
           {
-            id: "neurospike_enhanced_strikes",
-            name: "Enhanced Strikes",
+            id: 'neurospike_enhanced_strikes',
+            name: 'Enhanced Strikes',
             level: 3,
-            description: "Add CON to attack rolls for unarmed strikes.",
+            description: 'Add CON to attack rolls for unarmed strikes.',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "attack_bonus",
-                  target: "self",
-                  value: "constitution modifier",
+                  type: 'attack_bonus',
+                  target: 'self',
+                  value: 'constitution modifier',
                 },
               ],
             },
           },
           {
-            id: "neurospike_reactive_defense",
-            name: "Reactive Defense",
+            id: 'neurospike_reactive_defense',
+            name: 'Reactive Defense',
             level: 3,
-            description: "Reaction: Gain +2 AC when attacked once per round.",
+            description: 'Reaction: Gain +2 AC when attacked once per round.',
             mechanics: {
-              type: "reaction",
+              type: 'reaction',
               effects: [
                 {
-                  type: "ac_bonus",
-                  target: "self",
-                  value: "2",
+                  type: 'ac_bonus',
+                  target: 'self',
+                  value: '2',
                 },
               ],
             },
           },
           {
-            id: "neurospike_hyperfocus",
-            name: "Hyperfocus",
+            id: 'neurospike_hyperfocus',
+            name: 'Hyperfocus',
             level: 7,
             description:
-              "Enter Hyperfocus: take two bonus actions per turn for 3 rounds (1/long rest).",
+              'Enter Hyperfocus: take two bonus actions per turn for 3 rounds (1/long rest).',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "self",
-                  value: "Two bonus actions per turn",
+                  type: 'special',
+                  target: 'self',
+                  value: 'Two bonus actions per turn',
                 },
               ],
               duration: {
-                type: "rounds",
+                type: 'rounds',
                 value: 3,
               },
             },
             uses: {
               maximum: 1,
               current: 1,
-              restoreOn: "long",
+              restoreOn: 'long',
             },
           },
         ],
@@ -578,85 +578,85 @@ export const CLASS_DATA: Record<HollowGearClass, ClassInfo> = {
     ],
     classResources: [
       {
-        type: "custom",
-        name: "Adrenal Surges",
-        description: "Combat injectors for enhanced performance",
+        type: 'custom',
+        name: 'Adrenal Surges',
+        description: 'Combat injectors for enhanced performance',
         baseAmount: 1,
         scaling: {
-          type: "proficiency_bonus",
+          type: 'proficiency_bonus',
           value: 1,
         },
-        recovery: "short",
+        recovery: 'short',
       },
     ],
   },
 
   shadehand: {
-    className: "shadehand",
-    displayName: "Shadehand",
-    description: "Stealth, infiltration, sabotage, precision strikes.",
-    role: "Stealth specialist and precision striker",
-    hitDie: "d8",
-    primaryAbility: "dexterity",
-    savingThrowProficiencies: ["dexterity", "intelligence"],
+    className: 'shadehand',
+    displayName: 'Shadehand',
+    description: 'Stealth, infiltration, sabotage, precision strikes.',
+    role: 'Stealth specialist and precision striker',
+    hitDie: 'd8',
+    primaryAbility: 'dexterity',
+    savingThrowProficiencies: ['dexterity', 'intelligence'],
     archetypes: [
       {
-        id: "circuitbreaker",
-        name: "Circuitbreaker",
-        parentClass: "shadehand",
+        id: 'circuitbreaker',
+        name: 'Circuitbreaker',
+        parentClass: 'shadehand',
         selectionLevel: 3,
-        description: "Anti-tech infiltrator.",
+        description: 'Anti-tech infiltrator.',
         features: [
           {
-            id: "circuitbreaker_disable_tech",
-            name: "Disable Technology",
+            id: 'circuitbreaker_disable_tech',
+            name: 'Disable Technology',
             level: 3,
             description:
-              "Once per turn, disable a mod or device within 5 ft as a bonus action.",
+              'Once per turn, disable a mod or device within 5 ft as a bonus action.',
             mechanics: {
-              type: "bonus_action",
+              type: 'bonus_action',
               effects: [
                 {
-                  type: "special",
-                  target: "equipment",
-                  value: "Disable mod or device",
+                  type: 'special',
+                  target: 'equipment',
+                  value: 'Disable mod or device',
                 },
               ],
               range: {
-                type: "ranged",
+                type: 'ranged',
                 value: 5,
               },
             },
           },
           {
-            id: "circuitbreaker_construct_bane",
-            name: "Construct Bane",
+            id: 'circuitbreaker_construct_bane',
+            name: 'Construct Bane',
             level: 3,
-            description: "Critical hits against constructs deal double damage.",
+            description: 'Critical hits against constructs deal double damage.',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "damage_bonus",
-                  target: "enemy",
-                  value: "double on critical vs constructs",
+                  type: 'damage_bonus',
+                  target: 'enemy',
+                  value: 'double on critical vs constructs',
                 },
               ],
             },
           },
           {
-            id: "circuitbreaker_aether_resistance",
-            name: "Aether Resistance",
+            id: 'circuitbreaker_aether_resistance',
+            name: 'Aether Resistance',
             level: 9,
             description:
-              "Gain advantage on Dex saves vs traps and Aether pulses.",
+              'Gain advantage on Dex saves vs traps and Aether pulses.',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "advantage",
-                  target: "self",
-                  value: "Dex saves vs traps and Aether",
+                  type: 'advantage',
+                  target: 'self',
+                  value: 'Dex saves vs traps and Aether',
                 },
               ],
             },
@@ -664,66 +664,66 @@ export const CLASS_DATA: Record<HollowGearClass, ClassInfo> = {
         ],
       },
       {
-        id: "mirage_operative",
-        name: "Mirage Operative",
-        parentClass: "shadehand",
+        id: 'mirage_operative',
+        name: 'Mirage Operative',
+        parentClass: 'shadehand',
         selectionLevel: 3,
-        description: "Specialist in psionic deception.",
+        description: 'Specialist in psionic deception.',
         features: [
           {
-            id: "mirage_operative_blur",
-            name: "Blur",
+            id: 'mirage_operative_blur',
+            name: 'Blur',
             level: 3,
-            description: "Cast Blur once per long rest using goggles or focus.",
+            description: 'Cast Blur once per long rest using goggles or focus.',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "self",
-                  value: "Blur spell effect",
+                  type: 'special',
+                  target: 'self',
+                  value: 'Blur spell effect',
                 },
               ],
             },
             uses: {
               maximum: 1,
               current: 1,
-              restoreOn: "long",
+              restoreOn: 'long',
             },
           },
           {
-            id: "mirage_operative_deception_expert",
-            name: "Deception Expert",
+            id: 'mirage_operative_deception_expert',
+            name: 'Deception Expert',
             level: 3,
-            description: "Gain proficiency in Deception and Sleight of Hand.",
+            description: 'Gain proficiency in Deception and Sleight of Hand.',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "proficiency",
-                  target: "self",
-                  value: "Deception, Sleight of Hand",
+                  type: 'proficiency',
+                  target: 'self',
+                  value: 'Deception, Sleight of Hand',
                 },
               ],
             },
           },
           {
-            id: "mirage_operative_mirror_image",
-            name: "Mirror Image",
+            id: 'mirage_operative_mirror_image',
+            name: 'Mirror Image',
             level: 7,
             description:
-              "Create illusory duplicates for 1 minute (mirror image effect).",
+              'Create illusory duplicates for 1 minute (mirror image effect).',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "self",
-                  value: "Mirror image duplicates",
+                  type: 'special',
+                  target: 'self',
+                  value: 'Mirror image duplicates',
                 },
               ],
               duration: {
-                type: "minutes",
+                type: 'minutes',
                 value: 1,
               },
             },
@@ -735,67 +735,67 @@ export const CLASS_DATA: Record<HollowGearClass, ClassInfo> = {
   },
 
   vanguard: {
-    className: "vanguard",
-    displayName: "Vanguard",
+    className: 'vanguard',
+    displayName: 'Vanguard',
     description:
-      "Frontline fighter, tactical commander, and steam-powered bruiser.",
-    role: "Tank and battlefield controller",
-    hitDie: "d10",
-    primaryAbility: "strength",
-    savingThrowProficiencies: ["strength", "constitution"],
+      'Frontline fighter, tactical commander, and steam-powered bruiser.',
+    role: 'Tank and battlefield controller',
+    hitDie: 'd10',
+    primaryAbility: 'strength',
+    savingThrowProficiencies: ['strength', 'constitution'],
     archetypes: [
       {
-        id: "bulwark_sentinel",
-        name: "Bulwark Sentinel",
-        parentClass: "vanguard",
+        id: 'bulwark_sentinel',
+        name: 'Bulwark Sentinel',
+        parentClass: 'vanguard',
         selectionLevel: 3,
-        description: "Specializes in protection and counterattack.",
+        description: 'Specializes in protection and counterattack.',
         features: [
           {
-            id: "bulwark_sentinel_protective_aura",
-            name: "Protective Aura",
+            id: 'bulwark_sentinel_protective_aura',
+            name: 'Protective Aura',
             level: 3,
-            description: "Allies within 5 ft gain +1 AC.",
+            description: 'Allies within 5 ft gain +1 AC.',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "ac_bonus",
-                  target: "ally",
-                  value: "1",
+                  type: 'ac_bonus',
+                  target: 'ally',
+                  value: '1',
                 },
               ],
             },
           },
           {
-            id: "bulwark_sentinel_intercept",
-            name: "Intercept",
+            id: 'bulwark_sentinel_intercept',
+            name: 'Intercept',
             level: 3,
             description:
-              "Reaction: Impose disadvantage on attack against an ally (1/round).",
+              'Reaction: Impose disadvantage on attack against an ally (1/round).',
             mechanics: {
-              type: "reaction",
+              type: 'reaction',
               effects: [
                 {
-                  type: "disadvantage",
-                  target: "enemy",
-                  value: "attack rolls vs ally",
+                  type: 'disadvantage',
+                  target: 'enemy',
+                  value: 'attack rolls vs ally',
                 },
               ],
             },
           },
           {
-            id: "bulwark_sentinel_expanded_guard",
-            name: "Expanded Guard",
+            id: 'bulwark_sentinel_expanded_guard',
+            name: 'Expanded Guard',
             level: 10,
-            description: "Can guard 10-ft radius instead.",
+            description: 'Can guard 10-ft radius instead.',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "special",
-                  target: "area",
-                  value: "Expand protective aura to 10ft",
+                  type: 'special',
+                  target: 'area',
+                  value: 'Expand protective aura to 10ft',
                 },
               ],
             },
@@ -803,62 +803,62 @@ export const CLASS_DATA: Record<HollowGearClass, ClassInfo> = {
         ],
       },
       {
-        id: "shockbreaker",
-        name: "Shockbreaker",
-        parentClass: "vanguard",
+        id: 'shockbreaker',
+        name: 'Shockbreaker',
+        parentClass: 'vanguard',
         selectionLevel: 3,
-        description: "Steam warrior using volatile pressure systems.",
+        description: 'Steam warrior using volatile pressure systems.',
         features: [
           {
-            id: "shockbreaker_electrified_strikes",
-            name: "Electrified Strikes",
+            id: 'shockbreaker_electrified_strikes',
+            name: 'Electrified Strikes',
             level: 3,
-            description: "Melee attacks deal +1d4 lightning damage.",
+            description: 'Melee attacks deal +1d4 lightning damage.',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "damage_bonus",
-                  target: "enemy",
-                  value: "1d4 lightning",
+                  type: 'damage_bonus',
+                  target: 'enemy',
+                  value: '1d4 lightning',
                 },
               ],
             },
           },
           {
-            id: "shockbreaker_static_burst",
-            name: "Static Burst",
+            id: 'shockbreaker_static_burst',
+            name: 'Static Burst',
             level: 3,
             description:
-              "Once per long rest, unleash Static Burst (15-ft cone, 2d8 lightning).",
+              'Once per long rest, unleash Static Burst (15-ft cone, 2d8 lightning).',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "area",
-                  value: "2d8 lightning in 15ft cone",
+                  type: 'special',
+                  target: 'area',
+                  value: '2d8 lightning in 15ft cone',
                 },
               ],
             },
             uses: {
               maximum: 1,
               current: 1,
-              restoreOn: "long",
+              restoreOn: 'long',
             },
           },
           {
-            id: "shockbreaker_electrical_resistance",
-            name: "Electrical Resistance",
+            id: 'shockbreaker_electrical_resistance',
+            name: 'Electrical Resistance',
             level: 3,
-            description: "Resistant to lightning and thunder damage.",
+            description: 'Resistant to lightning and thunder damage.',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "resistance",
-                  target: "self",
-                  value: "lightning, thunder",
+                  type: 'resistance',
+                  target: 'self',
+                  value: 'lightning, thunder',
                 },
               ],
             },
@@ -868,81 +868,81 @@ export const CLASS_DATA: Record<HollowGearClass, ClassInfo> = {
     ],
     classResources: [
       {
-        type: "custom",
-        name: "Steam Charges",
-        description: "Steam-powered enhancement charges",
+        type: 'custom',
+        name: 'Steam Charges',
+        description: 'Steam-powered enhancement charges',
         baseAmount: 1,
         scaling: {
-          type: "proficiency_bonus",
+          type: 'proficiency_bonus',
           value: 1,
         },
-        recovery: "short",
+        recovery: 'short',
       },
     ],
   },
 
   artifex: {
-    className: "artifex",
-    displayName: "Artifex",
+    className: 'artifex',
+    displayName: 'Artifex',
     description:
-      "Inventor, field engineer, and battlefield support specialist.",
-    role: "Support specialist and inventor",
-    hitDie: "d8",
-    primaryAbility: "intelligence",
-    savingThrowProficiencies: ["constitution", "intelligence"],
+      'Inventor, field engineer, and battlefield support specialist.',
+    role: 'Support specialist and inventor',
+    hitDie: 'd8',
+    primaryAbility: 'intelligence',
+    savingThrowProficiencies: ['constitution', 'intelligence'],
     archetypes: [
       {
-        id: "fieldwright",
-        name: "Fieldwright",
-        parentClass: "artifex",
+        id: 'fieldwright',
+        name: 'Fieldwright',
+        parentClass: 'artifex',
         selectionLevel: 3,
-        description: "Support specialist.",
+        description: 'Support specialist.',
         features: [
           {
-            id: "fieldwright_repair_ally",
-            name: "Repair Ally",
+            id: 'fieldwright_repair_ally',
+            name: 'Repair Ally',
             level: 3,
             description: "Repair ally's mod as bonus action.",
             mechanics: {
-              type: "bonus_action",
+              type: 'bonus_action',
               effects: [
                 {
-                  type: "special",
-                  target: "ally",
-                  value: "Repair equipment mod",
+                  type: 'special',
+                  target: 'ally',
+                  value: 'Repair equipment mod',
                 },
               ],
             },
           },
           {
-            id: "fieldwright_assist_attack",
-            name: "Assist Attack",
+            id: 'fieldwright_assist_attack',
+            name: 'Assist Attack',
             level: 3,
             description: "Ally's next attack deals +1d6 damage if assisted.",
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "damage_bonus",
-                  target: "ally",
-                  value: "1d6",
+                  type: 'damage_bonus',
+                  target: 'ally',
+                  value: '1d6',
                 },
               ],
             },
           },
           {
-            id: "fieldwright_drone_turrets",
-            name: "Drone Turrets",
+            id: 'fieldwright_drone_turrets',
+            name: 'Drone Turrets',
             level: 10,
             description:
-              "Deploy temporary drone turrets (AC 15, HP 15, dmg 1d10).",
+              'Deploy temporary drone turrets (AC 15, HP 15, dmg 1d10).',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "area",
-                  value: "Deploy drone turrets",
+                  type: 'special',
+                  target: 'area',
+                  value: 'Deploy drone turrets',
                 },
               ],
             },
@@ -950,74 +950,74 @@ export const CLASS_DATA: Record<HollowGearClass, ClassInfo> = {
         ],
       },
       {
-        id: "aetherforger",
-        name: "Aetherforger",
-        parentClass: "artifex",
+        id: 'aetherforger',
+        name: 'Aetherforger',
+        parentClass: 'artifex',
         selectionLevel: 3,
-        description: "Infuses Aether Dust into machinery.",
+        description: 'Infuses Aether Dust into machinery.',
         features: [
           {
-            id: "aetherforger_imbue_weapon",
-            name: "Imbue Weapon",
+            id: 'aetherforger_imbue_weapon',
+            name: 'Imbue Weapon',
             level: 3,
             description:
-              "Spend 1 ⚙️ worth of Aether Dust to imbue weapon with energy (1 minute).",
+              'Spend 1 ⚙️ worth of Aether Dust to imbue weapon with energy (1 minute).',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "equipment",
-                  value: "Energy weapon imbue",
+                  type: 'special',
+                  target: 'equipment',
+                  value: 'Energy weapon imbue',
                 },
               ],
               duration: {
-                type: "minutes",
+                type: 'minutes',
                 value: 1,
               },
               activation: {
-                actionType: "action",
+                actionType: 'action',
                 cost: {
-                  type: "custom",
+                  type: 'custom',
                   amount: 1,
                 },
               },
             },
           },
           {
-            id: "aetherforger_create_cores",
-            name: "Create Aether Cores",
+            id: 'aetherforger_create_cores',
+            name: 'Create Aether Cores',
             level: 3,
             description:
-              "Create Aether Cores to power other devices (3 uses/day).",
+              'Create Aether Cores to power other devices (3 uses/day).',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "equipment",
-                  value: "Create Aether Core",
+                  type: 'special',
+                  target: 'equipment',
+                  value: 'Create Aether Core',
                 },
               ],
             },
             uses: {
               maximum: 3,
               current: 3,
-              restoreOn: "dawn",
+              restoreOn: 'dawn',
             },
           },
           {
-            id: "aetherforger_arcane_immunity",
-            name: "Arcane Immunity",
+            id: 'aetherforger_arcane_immunity',
+            name: 'Arcane Immunity',
             level: 3,
-            description: "Immune to arcane feedback.",
+            description: 'Immune to arcane feedback.',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "immunity",
-                  target: "self",
-                  value: "arcane feedback",
+                  type: 'immunity',
+                  target: 'self',
+                  value: 'arcane feedback',
                 },
               ],
             },
@@ -1027,81 +1027,81 @@ export const CLASS_DATA: Record<HollowGearClass, ClassInfo> = {
     ],
     classResources: [
       {
-        type: "custom",
-        name: "Invention Points",
-        description: "Points for creating and maintaining inventions",
+        type: 'custom',
+        name: 'Invention Points',
+        description: 'Points for creating and maintaining inventions',
         baseAmount: 2,
         scaling: {
-          type: "ability_modifier",
+          type: 'ability_modifier',
           value: 1,
-          abilityModifier: "intelligence",
+          abilityModifier: 'intelligence',
         },
-        recovery: "long",
+        recovery: 'long',
       },
     ],
   },
 
   mindweaver: {
-    className: "mindweaver",
-    displayName: "Mindweaver",
-    description: "Psionic specialist; manipulator of will, energy, and space.",
-    role: "Psionic specialist and reality manipulator",
-    hitDie: "d8",
-    primaryAbility: "intelligence", // Can also be wisdom, chosen at creation
-    savingThrowProficiencies: ["intelligence", "wisdom"],
+    className: 'mindweaver',
+    displayName: 'Mindweaver',
+    description: 'Psionic specialist; manipulator of will, energy, and space.',
+    role: 'Psionic specialist and reality manipulator',
+    hitDie: 'd8',
+    primaryAbility: 'intelligence', // Can also be wisdom, chosen at creation
+    savingThrowProficiencies: ['intelligence', 'wisdom'],
     archetypes: [
       {
-        id: "path_of_echo",
-        name: "Path of the Echo",
-        parentClass: "mindweaver",
+        id: 'path_of_echo',
+        name: 'Path of the Echo',
+        parentClass: 'mindweaver',
         selectionLevel: 2,
-        description: "Masters of resonance and vibration.",
+        description: 'Masters of resonance and vibration.',
         features: [
           {
-            id: "echo_resonant_pulse",
-            name: "Resonant Pulse",
+            id: 'echo_resonant_pulse',
+            name: 'Resonant Pulse',
             level: 2,
-            description: "Gain Resonant Pulse power.",
+            description: 'Gain Resonant Pulse power.',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "area",
-                  value: "Resonant pulse effect",
+                  type: 'special',
+                  target: 'area',
+                  value: 'Resonant pulse effect',
                 },
               ],
             },
           },
           {
-            id: "echo_step",
-            name: "Echo Step",
+            id: 'echo_step',
+            name: 'Echo Step',
             level: 2,
-            description: "Gain Echo Step power.",
+            description: 'Gain Echo Step power.',
             mechanics: {
-              type: "bonus_action",
+              type: 'bonus_action',
               effects: [
                 {
-                  type: "special",
-                  target: "self",
-                  value: "Teleportation via sound",
+                  type: 'special',
+                  target: 'self',
+                  value: 'Teleportation via sound',
                 },
               ],
             },
           },
           {
-            id: "echo_psychic_feedback",
-            name: "Psychic Feedback",
+            id: 'echo_psychic_feedback',
+            name: 'Psychic Feedback',
             level: 2,
             description:
-              "When you manifest a power, nearby enemies take psychic damage equal to your mod.",
+              'When you manifest a power, nearby enemies take psychic damage equal to your mod.',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "special",
-                  target: "enemy",
-                  value: "Psychic damage on power use",
+                  type: 'special',
+                  target: 'enemy',
+                  value: 'Psychic damage on power use',
                 },
               ],
             },
@@ -1109,56 +1109,56 @@ export const CLASS_DATA: Record<HollowGearClass, ClassInfo> = {
         ],
       },
       {
-        id: "path_of_flux",
-        name: "Path of Flux",
-        parentClass: "mindweaver",
+        id: 'path_of_flux',
+        name: 'Path of Flux',
+        parentClass: 'mindweaver',
         selectionLevel: 2,
-        description: "Harness entropy and raw energy.",
+        description: 'Harness entropy and raw energy.',
         features: [
           {
-            id: "flux_entropy_lash",
-            name: "Entropy Lash",
+            id: 'flux_entropy_lash',
+            name: 'Entropy Lash',
             level: 2,
-            description: "Learn Entropy Lash power.",
+            description: 'Learn Entropy Lash power.',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "enemy",
-                  value: "Entropy damage attack",
+                  type: 'special',
+                  target: 'enemy',
+                  value: 'Entropy damage attack',
                 },
               ],
             },
           },
           {
-            id: "flux_aether_drain",
-            name: "Aether Drain",
+            id: 'flux_aether_drain',
+            name: 'Aether Drain',
             level: 2,
-            description: "Learn Aether Drain power.",
+            description: 'Learn Aether Drain power.',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "enemy",
-                  value: "Drain enemy resources",
+                  type: 'special',
+                  target: 'enemy',
+                  value: 'Drain enemy resources',
                 },
               ],
             },
           },
           {
-            id: "flux_energy_recovery",
-            name: "Energy Recovery",
+            id: 'flux_energy_recovery',
+            name: 'Energy Recovery',
             level: 2,
-            description: "Recover 1 AFP when damaging psionic or magical foes.",
+            description: 'Recover 1 AFP when damaging psionic or magical foes.',
             mechanics: {
-              type: "passive",
+              type: 'passive',
               effects: [
                 {
-                  type: "special",
-                  target: "self",
-                  value: "AFP recovery on damage",
+                  type: 'special',
+                  target: 'self',
+                  value: 'AFP recovery on damage',
                 },
               ],
             },
@@ -1166,79 +1166,79 @@ export const CLASS_DATA: Record<HollowGearClass, ClassInfo> = {
         ],
       },
       {
-        id: "path_of_eidolon",
-        name: "Path of Eidolon",
-        parentClass: "mindweaver",
+        id: 'path_of_eidolon',
+        name: 'Path of Eidolon',
+        parentClass: 'mindweaver',
         selectionLevel: 2,
-        description: "Specializes in projection and soul constructs.",
+        description: 'Specializes in projection and soul constructs.',
         features: [
           {
-            id: "eidolon_spectral_hand",
-            name: "Spectral Hand",
+            id: 'eidolon_spectral_hand',
+            name: 'Spectral Hand',
             level: 2,
-            description: "Gain Spectral Hand power.",
+            description: 'Gain Spectral Hand power.',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "area",
-                  value: "Spectral hand projection",
+                  type: 'special',
+                  target: 'area',
+                  value: 'Spectral hand projection',
                 },
               ],
             },
           },
           {
-            id: "eidolon_soul_anchor",
-            name: "Soul Anchor",
+            id: 'eidolon_soul_anchor',
+            name: 'Soul Anchor',
             level: 2,
-            description: "Gain Soul Anchor power.",
+            description: 'Gain Soul Anchor power.',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "self",
-                  value: "Soul anchoring effect",
+                  type: 'special',
+                  target: 'self',
+                  value: 'Soul anchoring effect',
                 },
               ],
             },
           },
           {
-            id: "eidolon_astral_duplicate",
-            name: "Astral Duplicate",
+            id: 'eidolon_astral_duplicate',
+            name: 'Astral Duplicate',
             level: 2,
             description:
-              "Project an astral duplicate once per short rest for 1 minute.",
+              'Project an astral duplicate once per short rest for 1 minute.',
             mechanics: {
-              type: "action",
+              type: 'action',
               effects: [
                 {
-                  type: "special",
-                  target: "area",
-                  value: "Astral projection",
+                  type: 'special',
+                  target: 'area',
+                  value: 'Astral projection',
                 },
               ],
               duration: {
-                type: "minutes",
+                type: 'minutes',
                 value: 1,
               },
             },
             uses: {
               maximum: 1,
               current: 1,
-              restoreOn: "short",
+              restoreOn: 'short',
             },
           },
         ],
       },
     ],
     psionics: {
-      ability: "intelligence",
+      ability: 'intelligence',
       afpProgression: [
         2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
       ],
-      disciplines: ["flux", "echo", "eidolon", "empyric", "veil", "kinesis"],
+      disciplines: ['flux', 'echo', 'eidolon', 'empyric', 'veil', 'kinesis'],
       powersKnown: [
         2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
       ],
@@ -1246,15 +1246,15 @@ export const CLASS_DATA: Record<HollowGearClass, ClassInfo> = {
     },
     classResources: [
       {
-        type: "afp",
-        name: "Aether Flux Points",
-        description: "Psionic energy for manifesting powers",
+        type: 'afp',
+        name: 'Aether Flux Points',
+        description: 'Psionic energy for manifesting powers',
         baseAmount: 2,
         scaling: {
-          type: "linear",
+          type: 'linear',
           value: 1,
         },
-        recovery: "long",
+        recovery: 'long',
       },
     ],
   },
@@ -1282,7 +1282,7 @@ export function getClassArchetypes(
 export function getArchetype(archetypeId: string): ClassArchetype | undefined {
   for (const classData of Object.values(CLASS_DATA)) {
     const archetype = classData.archetypes.find(
-      (arch) => arch.id === archetypeId
+      arch => arch.id === archetypeId
     );
     if (archetype) {
       return archetype;
@@ -1337,7 +1337,9 @@ export function isValidClass(className: string): className is HollowGearClass {
 /**
  * Get classes by spellcasting type
  */
-export function getClassesBySpellcasting(type: SpellcastingType): HollowGearClass[] {
+export function getClassesBySpellcasting(
+  type: SpellcastingType
+): HollowGearClass[] {
   return getAllClasses().filter(className => {
     const classInfo = CLASS_DATA[className];
     return classInfo.spellcasting?.type === type;
@@ -1363,7 +1365,9 @@ export function getClassesByHitDie(hitDie: DieType): HollowGearClass[] {
 /**
  * Get classes by primary ability
  */
-export function getClassesByPrimaryAbility(ability: AbilityScore): HollowGearClass[] {
+export function getClassesByPrimaryAbility(
+  ability: AbilityScore
+): HollowGearClass[] {
   return getAllClasses().filter(className => {
     return CLASS_DATA[className].primaryAbility === ability;
   });

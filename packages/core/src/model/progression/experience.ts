@@ -1,12 +1,16 @@
 /**
  * Experience and leveling system for Hollow Gear characters
- * 
+ *
  * This module handles experience point tracking, level advancement calculations,
  * and validation for character progression in the Hollow Gear TTRPG system.
  */
 
 import type { ValidationResult, ValidationError } from '../types/common.js';
-import { validationSuccess, validationFailure, validationError } from '../types/common.js';
+import {
+  validationSuccess,
+  validationFailure,
+  validationError,
+} from '../types/common.js';
 
 /**
  * Experience data for a character
@@ -69,7 +73,13 @@ export interface LevelUpChoices {
  */
 export interface AbilityScoreImprovement {
   /** Ability score to improve */
-  ability: 'strength' | 'dexterity' | 'constitution' | 'intelligence' | 'wisdom' | 'charisma';
+  ability:
+    | 'strength'
+    | 'dexterity'
+    | 'constitution'
+    | 'intelligence'
+    | 'wisdom'
+    | 'charisma';
   /** Amount to improve (typically 1) */
   improvement: number;
 }
@@ -91,17 +101,17 @@ export interface ClassFeatureChoice {
  * Index 0 = Level 1, Index 19 = Level 20
  */
 export const EXPERIENCE_THRESHOLDS: readonly number[] = [
-  0,      // Level 1
-  300,    // Level 2
-  900,    // Level 3
-  2700,   // Level 4
-  6500,   // Level 5
-  14000,  // Level 6
-  23000,  // Level 7
-  34000,  // Level 8
-  48000,  // Level 9
-  64000,  // Level 10
-  85000,  // Level 11
+  0, // Level 1
+  300, // Level 2
+  900, // Level 3
+  2700, // Level 4
+  6500, // Level 5
+  14000, // Level 6
+  23000, // Level 7
+  34000, // Level 8
+  48000, // Level 9
+  64000, // Level 10
+  85000, // Level 11
   100000, // Level 12
   120000, // Level 13
   140000, // Level 14
@@ -110,7 +120,7 @@ export const EXPERIENCE_THRESHOLDS: readonly number[] = [
   225000, // Level 17
   265000, // Level 18
   305000, // Level 19
-  355000  // Level 20
+  355000, // Level 20
 ] as const;
 
 /**
@@ -128,13 +138,13 @@ export const MIN_LEVEL = 1;
  */
 export function calculateLevelFromXP(xp: number): number {
   if (xp < 0) return MIN_LEVEL;
-  
+
   for (let level = MAX_LEVEL; level >= MIN_LEVEL; level--) {
     if (xp >= EXPERIENCE_THRESHOLDS[level - 1]!) {
       return level;
     }
   }
-  
+
   return MIN_LEVEL;
 }
 
@@ -144,7 +154,7 @@ export function calculateLevelFromXP(xp: number): number {
 export function getXPForLevel(level: number): number {
   if (level < MIN_LEVEL) return EXPERIENCE_THRESHOLDS[0]!;
   if (level > MAX_LEVEL) return EXPERIENCE_THRESHOLDS[MAX_LEVEL - 1]!;
-  
+
   return EXPERIENCE_THRESHOLDS[level - 1]!;
 }
 
@@ -155,16 +165,19 @@ export function getXPForNextLevel(currentLevel: number): number {
   if (currentLevel >= MAX_LEVEL) {
     return EXPERIENCE_THRESHOLDS[MAX_LEVEL - 1]!;
   }
-  
+
   return getXPForLevel(currentLevel + 1);
 }
 
 /**
  * Calculate experience points needed to reach the next level
  */
-export function getXPToNextLevel(currentXP: number, currentLevel: number): number {
+export function getXPToNextLevel(
+  currentXP: number,
+  currentLevel: number
+): number {
   if (currentLevel >= MAX_LEVEL) return 0;
-  
+
   const nextLevelXP = getXPForNextLevel(currentLevel);
   return Math.max(0, nextLevelXP - currentXP);
 }
@@ -177,13 +190,13 @@ export function createExperienceData(currentXP: number): ExperienceData {
   const currentLevelXP = getXPForLevel(currentLevel);
   const nextLevelXP = getXPForNextLevel(currentLevel);
   const maxLevelXP = EXPERIENCE_THRESHOLDS[MAX_LEVEL - 1]!;
-  
+
   return {
     currentXP,
     currentLevel,
     nextLevelXP,
     currentLevelXP,
-    maxLevelXP
+    maxLevelXP,
   };
 }
 
@@ -192,36 +205,42 @@ export function createExperienceData(currentXP: number): ExperienceData {
  */
 export function validateExperiencePoints(xp: number): ValidationResult<number> {
   const errors: ValidationError[] = [];
-  
+
   if (xp < 0) {
-    errors.push(validationError(
-      'currentXP',
-      'Experience points cannot be negative',
-      'INVALID_XP_NEGATIVE'
-    ));
+    errors.push(
+      validationError(
+        'currentXP',
+        'Experience points cannot be negative',
+        'INVALID_XP_NEGATIVE'
+      )
+    );
   }
-  
+
   if (!Number.isInteger(xp)) {
-    errors.push(validationError(
-      'currentXP',
-      'Experience points must be a whole number',
-      'INVALID_XP_NOT_INTEGER'
-    ));
+    errors.push(
+      validationError(
+        'currentXP',
+        'Experience points must be a whole number',
+        'INVALID_XP_NOT_INTEGER'
+      )
+    );
   }
-  
+
   if (xp > EXPERIENCE_THRESHOLDS[MAX_LEVEL - 1]! * 2) {
-    errors.push(validationError(
-      'currentXP',
-      `Experience points are unusually high (${xp})`,
-      'WARNING_XP_VERY_HIGH',
-      { maxRecommended: EXPERIENCE_THRESHOLDS[MAX_LEVEL - 1]! * 2 }
-    ));
+    errors.push(
+      validationError(
+        'currentXP',
+        `Experience points are unusually high (${xp})`,
+        'WARNING_XP_VERY_HIGH',
+        { maxRecommended: EXPERIENCE_THRESHOLDS[MAX_LEVEL - 1]! * 2 }
+      )
+    );
   }
-  
+
   if (errors.length > 0) {
     return validationFailure(errors);
   }
-  
+
   return validationSuccess(xp);
 }
 
@@ -230,65 +249,76 @@ export function validateExperiencePoints(xp: number): ValidationResult<number> {
  */
 export function validateLevel(level: number): ValidationResult<number> {
   const errors: ValidationError[] = [];
-  
+
   if (!Number.isInteger(level)) {
-    errors.push(validationError(
-      'level',
-      'Level must be a whole number',
-      'INVALID_LEVEL_NOT_INTEGER'
-    ));
+    errors.push(
+      validationError(
+        'level',
+        'Level must be a whole number',
+        'INVALID_LEVEL_NOT_INTEGER'
+      )
+    );
   }
-  
+
   if (level < MIN_LEVEL) {
-    errors.push(validationError(
-      'level',
-      `Level cannot be less than ${MIN_LEVEL}`,
-      'INVALID_LEVEL_TOO_LOW',
-      { minLevel: MIN_LEVEL }
-    ));
+    errors.push(
+      validationError(
+        'level',
+        `Level cannot be less than ${MIN_LEVEL}`,
+        'INVALID_LEVEL_TOO_LOW',
+        { minLevel: MIN_LEVEL }
+      )
+    );
   }
-  
+
   if (level > MAX_LEVEL) {
-    errors.push(validationError(
-      'level',
-      `Level cannot be greater than ${MAX_LEVEL}`,
-      'INVALID_LEVEL_TOO_HIGH',
-      { maxLevel: MAX_LEVEL }
-    ));
+    errors.push(
+      validationError(
+        'level',
+        `Level cannot be greater than ${MAX_LEVEL}`,
+        'INVALID_LEVEL_TOO_HIGH',
+        { maxLevel: MAX_LEVEL }
+      )
+    );
   }
-  
+
   if (errors.length > 0) {
     return validationFailure(errors);
   }
-  
+
   return validationSuccess(level);
 }
 
 /**
  * Validate that experience points match the claimed level
  */
-export function validateXPLevelConsistency(xp: number, level: number): ValidationResult<{ xp: number; level: number }> {
+export function validateXPLevelConsistency(
+  xp: number,
+  level: number
+): ValidationResult<{ xp: number; level: number }> {
   const errors: ValidationError[] = [];
-  
+
   const calculatedLevel = calculateLevelFromXP(xp);
-  
+
   if (calculatedLevel !== level) {
-    errors.push(validationError(
-      'level',
-      `Level ${level} does not match experience points ${xp} (should be level ${calculatedLevel})`,
-      'INCONSISTENT_XP_LEVEL',
-      { 
-        providedLevel: level, 
-        calculatedLevel, 
-        xp 
-      }
-    ));
+    errors.push(
+      validationError(
+        'level',
+        `Level ${level} does not match experience points ${xp} (should be level ${calculatedLevel})`,
+        'INCONSISTENT_XP_LEVEL',
+        {
+          providedLevel: level,
+          calculatedLevel,
+          xp,
+        }
+      )
+    );
   }
-  
+
   if (errors.length > 0) {
     return validationFailure(errors);
   }
-  
+
   return validationSuccess({ xp, level });
 }
 
@@ -296,40 +326,44 @@ export function validateXPLevelConsistency(xp: number, level: number): Validatio
  * Calculate level advancement from XP gain
  */
 export function calculateLevelAdvancement(
-  currentXP: number, 
-  currentLevel: number, 
+  currentXP: number,
+  currentLevel: number,
   xpGained: number
 ): LevelAdvancement {
   const errors: ValidationError[] = [];
-  
+
   // Validate inputs
   if (xpGained < 0) {
-    errors.push(validationError(
-      'xpGained',
-      'Experience gained cannot be negative',
-      'INVALID_XP_GAIN_NEGATIVE'
-    ));
+    errors.push(
+      validationError(
+        'xpGained',
+        'Experience gained cannot be negative',
+        'INVALID_XP_GAIN_NEGATIVE'
+      )
+    );
   }
-  
+
   const newXP = currentXP + xpGained;
   const newLevel = calculateLevelFromXP(newXP);
-  
+
   // Check if the current level is consistent with current XP
   const expectedCurrentLevel = calculateLevelFromXP(currentXP);
   if (expectedCurrentLevel !== currentLevel) {
-    errors.push(validationError(
-      'currentLevel',
-      `Current level ${currentLevel} does not match current XP ${currentXP}`,
-      'INCONSISTENT_CURRENT_LEVEL'
-    ));
+    errors.push(
+      validationError(
+        'currentLevel',
+        `Current level ${currentLevel} does not match current XP ${currentXP}`,
+        'INCONSISTENT_CURRENT_LEVEL'
+      )
+    );
   }
-  
+
   return {
     fromLevel: currentLevel,
     toLevel: newLevel,
     xpGained,
     isValid: errors.length === 0,
-    errors: errors.length > 0 ? errors : undefined
+    errors: errors.length > 0 ? errors : undefined,
   };
 }
 
@@ -337,27 +371,27 @@ export function calculateLevelAdvancement(
  * Add experience points to a character
  */
 export function addExperience(
-  experienceData: ExperienceData, 
+  experienceData: ExperienceData,
   xpGained: number
 ): ValidationResult<ExperienceData> {
   const validation = validateExperiencePoints(xpGained);
   if (!validation.success) {
     return validation;
   }
-  
+
   if (xpGained < 0) {
     return validationFailure([
       validationError(
         'xpGained',
         'Cannot add negative experience points',
         'INVALID_XP_GAIN_NEGATIVE'
-      )
+      ),
     ]);
   }
-  
+
   const newXP = experienceData.currentXP + xpGained;
   const newExperienceData = createExperienceData(newXP);
-  
+
   return validationSuccess(newExperienceData);
 }
 
@@ -369,7 +403,7 @@ export function setExperience(xp: number): ValidationResult<ExperienceData> {
   if (!validation.success) {
     return validation;
   }
-  
+
   const experienceData = createExperienceData(xp);
   return validationSuccess(experienceData);
 }
@@ -378,8 +412,10 @@ export function setExperience(xp: number): ValidationResult<ExperienceData> {
  * Check if a character can level up
  */
 export function canLevelUp(experienceData: ExperienceData): boolean {
-  return experienceData.currentLevel < MAX_LEVEL && 
-         experienceData.currentXP >= experienceData.nextLevelXP;
+  return (
+    experienceData.currentLevel < MAX_LEVEL &&
+    experienceData.currentXP >= experienceData.nextLevelXP
+  );
 }
 
 /**
@@ -402,69 +438,79 @@ export function createDefaultLevelUpChoices(level: number): LevelUpChoices {
     classFeatureChoices: [],
     spellsLearned: [],
     skillsGained: [],
-    otherChoices: {}
+    otherChoices: {},
   };
 }
 
 /**
  * Validate level-up choices
  */
-export function validateLevelUpChoices(choices: LevelUpChoices): ValidationResult<LevelUpChoices> {
+export function validateLevelUpChoices(
+  choices: LevelUpChoices
+): ValidationResult<LevelUpChoices> {
   const errors: ValidationError[] = [];
-  
+
   // Validate level
   const levelValidation = validateLevel(choices.level);
   if (!levelValidation.success) {
     errors.push(...levelValidation.error);
   }
-  
+
   // Validate hit points gained
   if (choices.hitPointsGained < 0) {
-    errors.push(validationError(
-      'hitPointsGained',
-      'Hit points gained cannot be negative',
-      'INVALID_HP_GAIN_NEGATIVE'
-    ));
+    errors.push(
+      validationError(
+        'hitPointsGained',
+        'Hit points gained cannot be negative',
+        'INVALID_HP_GAIN_NEGATIVE'
+      )
+    );
   }
-  
+
   if (!Number.isInteger(choices.hitPointsGained)) {
-    errors.push(validationError(
-      'hitPointsGained',
-      'Hit points gained must be a whole number',
-      'INVALID_HP_GAIN_NOT_INTEGER'
-    ));
+    errors.push(
+      validationError(
+        'hitPointsGained',
+        'Hit points gained must be a whole number',
+        'INVALID_HP_GAIN_NOT_INTEGER'
+      )
+    );
   }
-  
+
   // Validate ability score improvements
   if (choices.abilityScoreImprovements) {
     let totalImprovements = 0;
     for (const improvement of choices.abilityScoreImprovements) {
       totalImprovements += improvement.improvement;
-      
+
       if (improvement.improvement < 0) {
-        errors.push(validationError(
-          'abilityScoreImprovements',
-          'Ability score improvements cannot be negative',
-          'INVALID_ASI_NEGATIVE'
-        ));
+        errors.push(
+          validationError(
+            'abilityScoreImprovements',
+            'Ability score improvements cannot be negative',
+            'INVALID_ASI_NEGATIVE'
+          )
+        );
       }
     }
-    
+
     // Standard D&D allows 2 points of improvement at ASI levels
     if (totalImprovements > 2) {
-      errors.push(validationError(
-        'abilityScoreImprovements',
-        'Cannot improve ability scores by more than 2 points total',
-        'INVALID_ASI_TOO_MANY',
-        { totalImprovements, maxAllowed: 2 }
-      ));
+      errors.push(
+        validationError(
+          'abilityScoreImprovements',
+          'Cannot improve ability scores by more than 2 points total',
+          'INVALID_ASI_TOO_MANY',
+          { totalImprovements, maxAllowed: 2 }
+        )
+      );
     }
   }
-  
+
   if (errors.length > 0) {
     return validationFailure(errors);
   }
-  
+
   return validationSuccess(choices);
 }
 
@@ -480,7 +526,7 @@ export function applyLevelUpChoices(
   if (!validation.success) {
     return validation;
   }
-  
+
   // Ensure the character has enough XP for the level
   const requiredXP = getXPForLevel(choices.level);
   if (currentExperience.currentXP < requiredXP) {
@@ -489,28 +535,31 @@ export function applyLevelUpChoices(
         'level',
         `Not enough experience points to reach level ${choices.level}`,
         'INSUFFICIENT_XP_FOR_LEVEL',
-        { 
-          currentXP: currentExperience.currentXP, 
-          requiredXP, 
-          targetLevel: choices.level 
+        {
+          currentXP: currentExperience.currentXP,
+          requiredXP,
+          targetLevel: choices.level,
         }
-      )
+      ),
     ]);
   }
-  
+
   // Create new experience data with the updated level
   const newExperienceData = createExperienceData(currentExperience.currentXP);
-  
+
   return validationSuccess(newExperienceData);
 }
 
 /**
  * Get experience point milestones for display purposes
  */
-export function getExperienceMilestones(): Array<{ level: number; xp: number }> {
+export function getExperienceMilestones(): Array<{
+  level: number;
+  xp: number;
+}> {
   return EXPERIENCE_THRESHOLDS.map((xp, index) => ({
     level: index + 1,
-    xp
+    xp,
   }));
 }
 
@@ -519,10 +568,10 @@ export function getExperienceMilestones(): Array<{ level: number; xp: number }> 
  */
 export function getXPBetweenLevels(fromLevel: number, toLevel: number): number {
   if (fromLevel >= toLevel) return 0;
-  
+
   const fromXP = getXPForLevel(fromLevel);
   const toXP = getXPForLevel(toLevel);
-  
+
   return toXP - fromXP;
 }
 
@@ -537,22 +586,26 @@ export function getExperienceProgressSummary(experienceData: ExperienceData): {
   canLevelUp: boolean;
   levelsAvailable: number;
 } {
-  const xpToNext = getXPToNextLevel(experienceData.currentXP, experienceData.currentLevel);
+  const xpToNext = getXPToNextLevel(
+    experienceData.currentXP,
+    experienceData.currentLevel
+  );
   const currentLevelXP = experienceData.currentLevelXP;
   const nextLevelXP = experienceData.nextLevelXP;
   const xpInCurrentLevel = experienceData.currentXP - currentLevelXP;
   const xpNeededForCurrentLevel = nextLevelXP - currentLevelXP;
-  
-  const progressPercent = xpNeededForCurrentLevel > 0 
-    ? Math.min(100, (xpInCurrentLevel / xpNeededForCurrentLevel) * 100)
-    : 100;
-  
+
+  const progressPercent =
+    xpNeededForCurrentLevel > 0
+      ? Math.min(100, (xpInCurrentLevel / xpNeededForCurrentLevel) * 100)
+      : 100;
+
   return {
     level: experienceData.currentLevel,
     xp: experienceData.currentXP,
     xpToNext,
     progressPercent: Math.round(progressPercent * 100) / 100, // Round to 2 decimal places
     canLevelUp: canLevelUp(experienceData),
-    levelsAvailable: getLevelsAvailable(experienceData)
+    levelsAvailable: getLevelsAvailable(experienceData),
   };
 }

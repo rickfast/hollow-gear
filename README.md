@@ -1,6 +1,8 @@
 # Hollow Gear TTRPG
 
-A steampunk tabletop role-playing game based on D&D 5e mechanics, featuring Etherborne species, unique classes, and steam-powered technology. This repository contains the core game rules, character models, and companion mobile app.
+A steampunk tabletop role-playing game based on D&D 5e mechanics, featuring Etherborne species,
+unique classes, and steam-powered technology. This repository contains the core game rules,
+character models, and companion mobile app.
 
 ## Project Structure
 
@@ -60,10 +62,12 @@ The core character models and game mechanics package. Provides TypeScript types 
 import { CharacterUtils, type HollowGearCharacter } from '@hollow-gear/core';
 
 const character = await CharacterUtils.createCharacter({
-  name: "Zara Cogwright",
-  species: "vulmir",
-  startingClass: "arcanist",
-  abilityScores: { /* ... */ }
+  name: 'Zara Cogwright',
+  species: 'vulmir',
+  startingClass: 'arcanist',
+  abilityScores: {
+    /* ... */
+  },
 });
 ```
 
@@ -92,7 +96,8 @@ const character = await CharacterUtils.createCharacter({
 
 ## Contributing
 
-This is a playtest version with frequent rule changes. The mobile app should work offline for game sessions, and generated assets should be print-friendly for physical play.
+This is a playtest version with frequent rule changes. The mobile app should work offline for game
+sessions, and generated assets should be print-friendly for physical play.
 
 ## License
 

@@ -3,16 +3,20 @@
  * Includes traditional D&D armor plus powered armor systems
  */
 
-import type { 
-  Equipment, 
+import type {
+  Equipment,
   ArmorType,
-  ShieldType, 
-  CraftsmanshipTier, 
+  ShieldType,
+  CraftsmanshipTier,
   EquipmentProperties,
   PowerRequirement,
-  SpecialMaterial
+  SpecialMaterial,
 } from './base.js';
-import type { ValidationResult, ValidationError, AbilityScore } from '../types/common.js';
+import type {
+  ValidationResult,
+  ValidationError,
+  AbilityScore,
+} from '../types/common.js';
 import type { DamageType } from './weapons.js';
 
 /**
@@ -90,7 +94,7 @@ export interface ShieldProperties {
 /**
  * Armor categories for proficiency requirements
  */
-export type ArmorCategory = 
+export type ArmorCategory =
   | 'light'
   | 'medium'
   | 'heavy'
@@ -100,25 +104,21 @@ export type ArmorCategory =
 /**
  * Shield categories for proficiency requirements
  */
-export type ShieldCategory = 
-  | 'light'
-  | 'heavy'
-  | 'tower'
-  | 'powered';
+export type ShieldCategory = 'light' | 'heavy' | 'tower' | 'powered';
 
 /**
  * Environmental protections provided by armor
  */
-export type EnvironmentalProtection = 
-  | 'vacuum'        // Space/airless environments
-  | 'underwater'    // Underwater breathing and pressure
-  | 'extreme-heat'  // High temperature environments
-  | 'extreme-cold'  // Low temperature environments
-  | 'radiation'     // Radioactive environments
-  | 'toxic-gas'     // Poisonous atmospheres
-  | 'acid-rain'     // Corrosive environments
-  | 'electrical'    // High electrical fields
-  | 'psionic'       // Psionic interference
+export type EnvironmentalProtection =
+  | 'vacuum' // Space/airless environments
+  | 'underwater' // Underwater breathing and pressure
+  | 'extreme-heat' // High temperature environments
+  | 'extreme-cold' // Low temperature environments
+  | 'radiation' // Radioactive environments
+  | 'toxic-gas' // Poisonous atmospheres
+  | 'acid-rain' // Corrosive environments
+  | 'electrical' // High electrical fields
+  | 'psionic' // Psionic interference
   | 'aether-storm'; // Aether energy storms
 
 /**
@@ -146,17 +146,17 @@ export interface MaintenanceRequirements {
 /**
  * Types of maintenance required
  */
-export type MaintenanceType = 
-  | 'cleaning'      // Basic cleaning and inspection
-  | 'lubrication'   // Oil and grease moving parts
-  | 'calibration'   // Adjust sensors and systems
-  | 'replacement'   // Replace worn components
-  | 'overhaul'      // Complete system rebuild
-  | 'power-cell'    // Replace power cells
-  | 'coolant'       // Refill coolant systems
-  | 'filter'        // Replace air/fluid filters
-  | 'seal'          // Replace seals and gaskets
-  | 'diagnostic';   // Run system diagnostics
+export type MaintenanceType =
+  | 'cleaning' // Basic cleaning and inspection
+  | 'lubrication' // Oil and grease moving parts
+  | 'calibration' // Adjust sensors and systems
+  | 'replacement' // Replace worn components
+  | 'overhaul' // Complete system rebuild
+  | 'power-cell' // Replace power cells
+  | 'coolant' // Refill coolant systems
+  | 'filter' // Replace air/fluid filters
+  | 'seal' // Replace seals and gaskets
+  | 'diagnostic'; // Run system diagnostics
 
 /**
  * Special abilities that shields can provide
@@ -177,19 +177,19 @@ export interface ShieldAbility {
 /**
  * Types of special shield abilities
  */
-export type ShieldAbilityType = 
-  | 'energy-absorption'  // Absorbs energy attacks
-  | 'reflection'         // Reflects attacks back
-  | 'force-field'        // Projects protective field
-  | 'reactive-armor'     // Explodes outward when hit
-  | 'adaptive-plating'   // Changes to resist damage types
-  | 'magnetic-field'     // Deflects metal projectiles
-  | 'phase-shift'        // Briefly becomes incorporeal
-  | 'healing-field'      // Provides regeneration
-  | 'concealment'        // Provides camouflage
-  | 'communication'      // Built-in communication system
-  | 'sensor-array'       // Enhanced perception
-  | 'weapon-mount';      // Integrated weapon system
+export type ShieldAbilityType =
+  | 'energy-absorption' // Absorbs energy attacks
+  | 'reflection' // Reflects attacks back
+  | 'force-field' // Projects protective field
+  | 'reactive-armor' // Explodes outward when hit
+  | 'adaptive-plating' // Changes to resist damage types
+  | 'magnetic-field' // Deflects metal projectiles
+  | 'phase-shift' // Briefly becomes incorporeal
+  | 'healing-field' // Provides regeneration
+  | 'concealment' // Provides camouflage
+  | 'communication' // Built-in communication system
+  | 'sensor-array' // Enhanced perception
+  | 'weapon-mount'; // Integrated weapon system
 
 /**
  * Usage limitations for abilities
@@ -211,11 +211,11 @@ export interface AbilityUsage {
 /**
  * Shield coverage areas
  */
-export type ShieldCoverage = 
-  | 'quarter'    // Covers 1/4 of body
-  | 'half'       // Covers 1/2 of body  
+export type ShieldCoverage =
+  | 'quarter' // Covers 1/4 of body
+  | 'half' // Covers 1/2 of body
   | 'three-quarter' // Covers 3/4 of body
-  | 'full'       // Covers entire body
+  | 'full' // Covers entire body
   | 'directional'; // Only covers one direction
 
 /**
@@ -239,14 +239,14 @@ export interface PoweredArmorState {
 /**
  * Operating modes for powered armor
  */
-export type PoweredArmorMode = 
-  | 'standby'     // Minimal power, basic functions
-  | 'normal'      // Standard operation
-  | 'combat'      // Enhanced performance, higher power draw
-  | 'stealth'     // Reduced signatures, limited functions
-  | 'emergency'   // Emergency power only
+export type PoweredArmorMode =
+  | 'standby' // Minimal power, basic functions
+  | 'normal' // Standard operation
+  | 'combat' // Enhanced performance, higher power draw
+  | 'stealth' // Reduced signatures, limited functions
+  | 'emergency' // Emergency power only
   | 'maintenance' // Systems accessible for repair
-  | 'lockdown';   // All systems disabled
+  | 'lockdown'; // All systems disabled
 
 /**
  * System status indicators
@@ -270,30 +270,33 @@ export namespace ArmorUtils {
    * Calculate effective AC including Dex modifier
    */
   export function calculateAC(
-    armor: Armor, 
-    dexModifier: number, 
+    armor: Armor,
+    dexModifier: number,
     shieldBonus: number = 0,
     otherBonuses: number = 0
   ): number {
     let ac = armor.armorProperties.baseAC;
-    
+
     // Add Dex modifier up to maximum allowed
     if (armor.armorProperties.maxDexBonus !== undefined) {
       ac += Math.min(dexModifier, armor.armorProperties.maxDexBonus);
     } else {
       ac += dexModifier;
     }
-    
+
     // Add shield and other bonuses
     ac += shieldBonus + otherBonuses;
-    
+
     return ac;
   }
 
   /**
    * Check if character meets strength requirement
    */
-  export function meetsStrengthRequirement(armor: Armor, strength: number): boolean {
+  export function meetsStrengthRequirement(
+    armor: Armor,
+    strength: number
+  ): boolean {
     if (!armor.armorProperties.strengthRequirement) {
       return true;
     }
@@ -317,7 +320,7 @@ export namespace ArmorUtils {
     if (!armor.armorProperties.maintenance) {
       return false;
     }
-    
+
     const maint = armor.armorProperties.maintenance;
     return maint.currentHours >= maint.operatingHours;
   }
@@ -325,14 +328,16 @@ export namespace ArmorUtils {
   /**
    * Get maintenance urgency level
    */
-  export function getMaintenanceUrgency(armor: Armor): 'none' | 'due' | 'overdue' | 'critical' {
+  export function getMaintenanceUrgency(
+    armor: Armor
+  ): 'none' | 'due' | 'overdue' | 'critical' {
     if (!armor.armorProperties.maintenance) {
       return 'none';
     }
-    
+
     const maint = armor.armorProperties.maintenance;
     const ratio = maint.currentHours / maint.operatingHours;
-    
+
     if (ratio < 1) return 'none';
     if (ratio < 1.2) return 'due';
     if (ratio < 1.5) return 'overdue';
@@ -349,15 +354,15 @@ export namespace ArmorUtils {
 
     const newMaintenance = {
       ...armor.armorProperties.maintenance,
-      currentHours: 0
+      currentHours: 0,
     };
 
     return {
       ...armor,
       armorProperties: {
         ...armor.armorProperties,
-        maintenance: newMaintenance
-      }
+        maintenance: newMaintenance,
+      },
     };
   }
 
@@ -368,30 +373,39 @@ export namespace ArmorUtils {
     const errors: ValidationError[] = [];
 
     // Validate AC
-    if (armor.armorProperties.baseAC < 10 || armor.armorProperties.baseAC > 25) {
+    if (
+      armor.armorProperties.baseAC < 10 ||
+      armor.armorProperties.baseAC > 25
+    ) {
       errors.push({
         field: 'armorProperties.baseAC',
         message: 'Base AC must be between 10 and 25',
-        code: 'INVALID_BASE_AC'
+        code: 'INVALID_BASE_AC',
       });
     }
 
     // Validate max dex bonus
-    if (armor.armorProperties.maxDexBonus !== undefined && armor.armorProperties.maxDexBonus < 0) {
+    if (
+      armor.armorProperties.maxDexBonus !== undefined &&
+      armor.armorProperties.maxDexBonus < 0
+    ) {
       errors.push({
         field: 'armorProperties.maxDexBonus',
         message: 'Max Dex bonus cannot be negative',
-        code: 'INVALID_MAX_DEX'
+        code: 'INVALID_MAX_DEX',
       });
     }
 
     // Validate strength requirement
     if (armor.armorProperties.strengthRequirement !== undefined) {
-      if (armor.armorProperties.strengthRequirement < 8 || armor.armorProperties.strengthRequirement > 20) {
+      if (
+        armor.armorProperties.strengthRequirement < 8 ||
+        armor.armorProperties.strengthRequirement > 20
+      ) {
         errors.push({
           field: 'armorProperties.strengthRequirement',
           message: 'Strength requirement must be between 8 and 20',
-          code: 'INVALID_STR_REQ'
+          code: 'INVALID_STR_REQ',
         });
       }
     }
@@ -399,12 +413,12 @@ export namespace ArmorUtils {
     // Validate maintenance if present
     if (armor.armorProperties.maintenance) {
       const maint = armor.armorProperties.maintenance;
-      
+
       if (maint.operatingHours <= 0) {
         errors.push({
           field: 'armorProperties.maintenance.operatingHours',
           message: 'Operating hours must be positive',
-          code: 'INVALID_OPERATING_HOURS'
+          code: 'INVALID_OPERATING_HOURS',
         });
       }
 
@@ -412,7 +426,7 @@ export namespace ArmorUtils {
         errors.push({
           field: 'armorProperties.maintenance.currentHours',
           message: 'Current hours cannot be negative',
-          code: 'INVALID_CURRENT_HOURS'
+          code: 'INVALID_CURRENT_HOURS',
         });
       }
     }
@@ -433,7 +447,10 @@ export namespace ShieldUtils {
    * Check if shield can be used for bashing
    */
   export function canBash(shield: Shield): boolean {
-    return shield.shieldProperties.canBash && shield.shieldProperties.bashDamage !== undefined;
+    return (
+      shield.shieldProperties.canBash &&
+      shield.shieldProperties.bashDamage !== undefined
+    );
   }
 
   /**
@@ -460,7 +477,7 @@ export namespace ShieldUtils {
     const abilityIndex = shield.shieldProperties.specialAbilities.findIndex(
       ability => ability.name === abilityName
     );
-    
+
     if (abilityIndex === -1) {
       return shield; // Ability not found
     }
@@ -475,42 +492,47 @@ export namespace ShieldUtils {
       ...ability,
       usage: {
         ...ability.usage,
-        remainingUses: ability.usage.remainingUses - 1
-      }
+        remainingUses: ability.usage.remainingUses - 1,
+      },
     };
 
     return {
       ...shield,
       shieldProperties: {
         ...shield.shieldProperties,
-        specialAbilities: newAbilities
-      }
+        specialAbilities: newAbilities,
+      },
     };
   }
 
   /**
    * Restore shield ability uses
    */
-  export function restoreAbilityUses(shield: Shield, frequency: 'per-encounter' | 'per-day' | 'per-week'): Shield {
-    const newAbilities = shield.shieldProperties.specialAbilities.map(ability => {
-      if (ability.usage && ability.usage.frequency === frequency) {
-        return {
-          ...ability,
-          usage: {
-            ...ability.usage,
-            remainingUses: ability.usage.uses
-          }
-        };
+  export function restoreAbilityUses(
+    shield: Shield,
+    frequency: 'per-encounter' | 'per-day' | 'per-week'
+  ): Shield {
+    const newAbilities = shield.shieldProperties.specialAbilities.map(
+      ability => {
+        if (ability.usage && ability.usage.frequency === frequency) {
+          return {
+            ...ability,
+            usage: {
+              ...ability.usage,
+              remainingUses: ability.usage.uses,
+            },
+          };
+        }
+        return ability;
       }
-      return ability;
-    });
+    );
 
     return {
       ...shield,
       shieldProperties: {
         ...shield.shieldProperties,
-        specialAbilities: newAbilities
-      }
+        specialAbilities: newAbilities,
+      },
     };
   }
 
@@ -521,20 +543,26 @@ export namespace ShieldUtils {
     const errors: ValidationError[] = [];
 
     // Validate AC bonus
-    if (shield.shieldProperties.acBonus < 1 || shield.shieldProperties.acBonus > 5) {
+    if (
+      shield.shieldProperties.acBonus < 1 ||
+      shield.shieldProperties.acBonus > 5
+    ) {
       errors.push({
         field: 'shieldProperties.acBonus',
         message: 'Shield AC bonus must be between 1 and 5',
-        code: 'INVALID_AC_BONUS'
+        code: 'INVALID_AC_BONUS',
       });
     }
 
     // Validate bash damage if present
-    if (shield.shieldProperties.canBash && !shield.shieldProperties.bashDamage) {
+    if (
+      shield.shieldProperties.canBash &&
+      !shield.shieldProperties.bashDamage
+    ) {
       errors.push({
         field: 'shieldProperties.bashDamage',
         message: 'Shield that can bash must have bash damage defined',
-        code: 'MISSING_BASH_DAMAGE'
+        code: 'MISSING_BASH_DAMAGE',
       });
     }
 
@@ -545,15 +573,18 @@ export namespace ShieldUtils {
           errors.push({
             field: 'shieldProperties.specialAbilities',
             message: `Ability ${ability.name} must have positive uses`,
-            code: 'INVALID_ABILITY_USES'
+            code: 'INVALID_ABILITY_USES',
           });
         }
 
-        if (ability.usage.remainingUses < 0 || ability.usage.remainingUses > ability.usage.uses) {
+        if (
+          ability.usage.remainingUses < 0 ||
+          ability.usage.remainingUses > ability.usage.uses
+        ) {
           errors.push({
             field: 'shieldProperties.specialAbilities',
             message: `Ability ${ability.name} has invalid remaining uses`,
-            code: 'INVALID_REMAINING_USES'
+            code: 'INVALID_REMAINING_USES',
           });
         }
       }

@@ -1,6 +1,6 @@
 /**
  * Main HollowGearCharacter interface and character composition
- * 
+ *
  * This module defines the complete character interface that composes all
  * subsystems into a unified character representation for the Hollow Gear TTRPG.
  */
@@ -8,19 +8,33 @@
 import type { CharacterId, Result, ValidationError } from './types/common.js';
 import type { BaseCharacterData } from './base/character.js';
 import type { AbilityScores } from './base/abilities.js';
-import type { HitPointData, ArmorClassData, InitiativeData } from './base/combat.js';
-import type { SkillProficiencies, SavingThrowProficiencies } from './base/skills.js';
+import type {
+  HitPointData,
+  ArmorClassData,
+  InitiativeData,
+} from './base/combat.js';
+import type {
+  SkillProficiencies,
+  SavingThrowProficiencies,
+} from './base/skills.js';
 import type { EtherborneSpecies, SpeciesTraits } from './species/index.js';
 import type { CharacterClass } from './classes/index.js';
 import type { EquippedItems, InventoryData } from './equipment/index.js';
 import type { PsionicData } from './psionics/index.js';
 import type { SpellcastingData } from './spellcasting/index.js';
-import type { HeatStressData, CurrencyData, MaintenanceData } from './mechanics/index.js';
-import type { ExperienceData, AdvancementChoices } from './progression/index.js';
+import type {
+  HeatStressData,
+  CurrencyData,
+  MaintenanceData,
+} from './mechanics/index.js';
+import type {
+  ExperienceData,
+  AdvancementChoices,
+} from './progression/index.js';
 
 /**
  * Complete Hollow Gear character representation
- * 
+ *
  * This interface composes all character subsystems into a unified character
  * that supports both D&D 5e mechanics and Hollow Gear-specific systems.
  */
@@ -134,12 +148,18 @@ export interface CharacterCreationParams {
 /**
  * Character validation result
  */
-export type CharacterValidationResult = Result<HollowGearCharacter, ValidationError[]>;
+export type CharacterValidationResult = Result<
+  HollowGearCharacter,
+  ValidationError[]
+>;
 
 /**
  * Character creation result
  */
-export type CharacterCreationResult = Result<HollowGearCharacter, ValidationError[]>;
+export type CharacterCreationResult = Result<
+  HollowGearCharacter,
+  ValidationError[]
+>;
 
 /**
  * Character utility functions and operations
@@ -148,7 +168,9 @@ export namespace CharacterUtils {
   /**
    * Create a new Hollow Gear character with the specified parameters
    */
-  export async function createCharacter(params: CharacterCreationParams): Promise<CharacterCreationResult> {
+  export async function createCharacter(
+    params: CharacterCreationParams
+  ): Promise<CharacterCreationResult> {
     try {
       // Validate creation parameters
       const validationResult = validateCreationParams(params);
@@ -157,56 +179,72 @@ export namespace CharacterUtils {
       }
 
       // Create base character data
-      const { CharacterUtils: BaseCharacterUtils } = await import('./base/character.js');
+      const { CharacterUtils: BaseCharacterUtils } = await import(
+        './base/character.js'
+      );
       const { MODEL_VERSION } = await import('./index.js');
-      const baseData = BaseCharacterUtils.createBaseCharacterData(params.name, MODEL_VERSION);
+      const baseData = BaseCharacterUtils.createBaseCharacterData(
+        params.name,
+        MODEL_VERSION
+      );
 
       // Initialize character with default values
       const character: HollowGearCharacter = {
         ...baseData,
         species: params.species,
         speciesTraits: getSpeciesTraits(params.species),
-        classes: [createStartingClass(params.startingClass, params.abilityScores)],
+        classes: [
+          createStartingClass(params.startingClass, params.abilityScores),
+        ],
         level: 1,
         background: params.background,
-        
+
         // Initialize abilities
         abilities: createAbilityScores(params.abilityScores, params.species),
-        
+
         // Initialize combat stats
-        hitPoints: createInitialHitPoints(params.startingClass, params.abilityScores.constitution),
+        hitPoints: createInitialHitPoints(
+          params.startingClass,
+          params.abilityScores.constitution
+        ),
         armorClass: createInitialArmorClass(),
         initiative: createInitialInitiative(params.abilityScores.dexterity),
         proficiencyBonus: 2, // Level 1 proficiency bonus
-        
+
         // Initialize skills and saves
         skills: createInitialSkills(params.startingClass),
         savingThrows: createInitialSavingThrows(params.startingClass),
-        
+
         // Initialize Hollow Gear systems
         heatStress: createInitialHeatStress(),
         currency: createInitialCurrency(),
         maintenance: createInitialMaintenance(),
-        
+
         // Initialize equipment and inventory
         equipment: { ...createDefaultEquipment(), ...params.equipment },
         inventory: createInitialInventory(),
-        
+
         // Initialize progression
         experience: createInitialExperience(),
         advancement: createInitialAdvancement(),
-        
+
         // Optional fields
-        notes: params.notes
+        notes: params.notes,
       };
 
       // Add optional systems based on class
       if (classHasSpellcasting(params.startingClass)) {
-        character.spellcasting = createInitialSpellcasting(params.startingClass, character.abilities);
+        character.spellcasting = createInitialSpellcasting(
+          params.startingClass,
+          character.abilities
+        );
       }
 
       if (classHasPsionics(params.startingClass)) {
-        character.psionics = createInitialPsionics(params.startingClass, character.abilities);
+        character.psionics = createInitialPsionics(
+          params.startingClass,
+          character.abilities
+        );
       }
 
       // Final validation
@@ -219,11 +257,13 @@ export namespace CharacterUtils {
     } catch (error) {
       return {
         success: false,
-        error: [{
-          field: 'character',
-          message: `Character creation failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-          code: 'CREATION_FAILED'
-        }]
+        error: [
+          {
+            field: 'character',
+            message: `Character creation failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+            code: 'CREATION_FAILED',
+          },
+        ],
       };
     }
   }
@@ -231,7 +271,9 @@ export namespace CharacterUtils {
   /**
    * Validate a complete character for consistency and correctness
    */
-  export function validateCharacter(character: HollowGearCharacter): CharacterValidationResult {
+  export function validateCharacter(
+    character: HollowGearCharacter
+  ): CharacterValidationResult {
     const errors: ValidationError[] = [];
 
     // Validate basic character data
@@ -239,7 +281,7 @@ export namespace CharacterUtils {
       errors.push({
         field: 'name',
         message: 'Character name is required',
-        code: 'REQUIRED_FIELD'
+        code: 'REQUIRED_FIELD',
       });
     }
 
@@ -247,17 +289,20 @@ export namespace CharacterUtils {
       errors.push({
         field: 'level',
         message: 'Character level must be between 1 and 20',
-        code: 'INVALID_RANGE'
+        code: 'INVALID_RANGE',
       });
     }
 
     // Validate class levels sum to total level
-    const classLevelSum = character.classes.reduce((sum, cls) => sum + cls.level, 0);
+    const classLevelSum = character.classes.reduce(
+      (sum, cls) => sum + cls.level,
+      0
+    );
     if (classLevelSum !== character.level) {
       errors.push({
         field: 'classes',
         message: `Class levels (${classLevelSum}) do not match total level (${character.level})`,
-        code: 'LEVEL_MISMATCH'
+        code: 'LEVEL_MISMATCH',
       });
     }
 
@@ -270,7 +315,7 @@ export namespace CharacterUtils {
       errors.push({
         field: 'hitPoints.current',
         message: 'Current hit points cannot be negative',
-        code: 'INVALID_VALUE'
+        code: 'INVALID_VALUE',
       });
     }
 
@@ -278,7 +323,7 @@ export namespace CharacterUtils {
       errors.push({
         field: 'hitPoints.maximum',
         message: 'Maximum hit points must be at least 1',
-        code: 'INVALID_VALUE'
+        code: 'INVALID_VALUE',
       });
     }
 
@@ -288,7 +333,7 @@ export namespace CharacterUtils {
       errors.push({
         field: 'proficiencyBonus',
         message: `Proficiency bonus (${character.proficiencyBonus}) does not match level ${character.level} (expected ${expectedProficiencyBonus})`,
-        code: 'INVALID_VALUE'
+        code: 'INVALID_VALUE',
       });
     }
 
@@ -303,10 +348,12 @@ export namespace CharacterUtils {
   /**
    * Update a character's last modified timestamp
    */
-  export function updateLastModified(character: HollowGearCharacter): HollowGearCharacter {
+  export function updateLastModified(
+    character: HollowGearCharacter
+  ): HollowGearCharacter {
     return {
       ...character,
-      lastModified: new Date()
+      lastModified: new Date(),
     };
   }
 
@@ -320,22 +367,32 @@ export namespace CharacterUtils {
   /**
    * Check if character has a specific class
    */
-  export function hasClass(character: HollowGearCharacter, className: import('./classes/index.js').HollowGearClass): boolean {
+  export function hasClass(
+    character: HollowGearCharacter,
+    className: import('./classes/index.js').HollowGearClass
+  ): boolean {
     return character.classes.some(cls => cls.className === className);
   }
 
   /**
    * Get character's level in a specific class
    */
-  export function getClassLevel(character: HollowGearCharacter, className: import('./classes/index.js').HollowGearClass): number {
-    const characterClass = character.classes.find(cls => cls.className === className);
+  export function getClassLevel(
+    character: HollowGearCharacter,
+    className: import('./classes/index.js').HollowGearClass
+  ): number {
+    const characterClass = character.classes.find(
+      cls => cls.className === className
+    );
     return characterClass?.level || 0;
   }
 
   /**
    * Check if character has spellcasting abilities
    */
-  export function hasSpellcastingAbilities(character: HollowGearCharacter): boolean {
+  export function hasSpellcastingAbilities(
+    character: HollowGearCharacter
+  ): boolean {
     return character.spellcasting !== undefined;
   }
 
@@ -347,14 +404,16 @@ export namespace CharacterUtils {
   }
 
   // Helper functions for character creation (implementations would be added)
-  function validateCreationParams(params: CharacterCreationParams): Result<CharacterCreationParams, ValidationError[]> {
+  function validateCreationParams(
+    params: CharacterCreationParams
+  ): Result<CharacterCreationParams, ValidationError[]> {
     const errors: ValidationError[] = [];
-    
+
     if (!params.name || params.name.trim().length === 0) {
       errors.push({
         field: 'name',
         message: 'Character name is required',
-        code: 'REQUIRED_FIELD'
+        code: 'REQUIRED_FIELD',
       });
     }
 
@@ -365,7 +424,7 @@ export namespace CharacterUtils {
         errors.push({
           field: `abilityScores.${ability}`,
           message: `${ability} score must be between 3 and 18`,
-          code: 'INVALID_RANGE'
+          code: 'INVALID_RANGE',
         });
       }
     }
@@ -383,17 +442,26 @@ export namespace CharacterUtils {
     return {} as SpeciesTraits;
   }
 
-  function createStartingClass(className: import('./classes/index.js').HollowGearClass, abilities: CharacterCreationParams['abilityScores']): CharacterClass {
+  function createStartingClass(
+    className: import('./classes/index.js').HollowGearClass,
+    abilities: CharacterCreationParams['abilityScores']
+  ): CharacterClass {
     // This would create the initial class with level 1 features
     return {} as CharacterClass;
   }
 
-  function createAbilityScores(scores: CharacterCreationParams['abilityScores'], species: EtherborneSpecies): AbilityScores {
+  function createAbilityScores(
+    scores: CharacterCreationParams['abilityScores'],
+    species: EtherborneSpecies
+  ): AbilityScores {
     // This would apply racial bonuses to the base scores
     return {} as AbilityScores;
   }
 
-  function createInitialHitPoints(className: import('./classes/index.js').HollowGearClass, constitution: number): HitPointData {
+  function createInitialHitPoints(
+    className: import('./classes/index.js').HollowGearClass,
+    constitution: number
+  ): HitPointData {
     return {} as HitPointData;
   }
 
@@ -405,11 +473,15 @@ export namespace CharacterUtils {
     return {} as InitiativeData;
   }
 
-  function createInitialSkills(className: import('./classes/index.js').HollowGearClass): SkillProficiencies {
+  function createInitialSkills(
+    className: import('./classes/index.js').HollowGearClass
+  ): SkillProficiencies {
     return {} as SkillProficiencies;
   }
 
-  function createInitialSavingThrows(className: import('./classes/index.js').HollowGearClass): SavingThrowProficiencies {
+  function createInitialSavingThrows(
+    className: import('./classes/index.js').HollowGearClass
+  ): SavingThrowProficiencies {
     return {} as SavingThrowProficiencies;
   }
 
@@ -441,33 +513,47 @@ export namespace CharacterUtils {
     return {} as AdvancementChoices;
   }
 
-  function classHasSpellcasting(className: import('./classes/index.js').HollowGearClass): boolean {
+  function classHasSpellcasting(
+    className: import('./classes/index.js').HollowGearClass
+  ): boolean {
     return className === 'arcanist' || className === 'templar';
   }
 
-  function classHasPsionics(className: import('./classes/index.js').HollowGearClass): boolean {
+  function classHasPsionics(
+    className: import('./classes/index.js').HollowGearClass
+  ): boolean {
     return className === 'mindweaver';
   }
 
-  function createInitialSpellcasting(className: import('./classes/index.js').HollowGearClass, abilities: AbilityScores): SpellcastingData {
+  function createInitialSpellcasting(
+    className: import('./classes/index.js').HollowGearClass,
+    abilities: AbilityScores
+  ): SpellcastingData {
     return {} as SpellcastingData;
   }
 
-  function createInitialPsionics(className: import('./classes/index.js').HollowGearClass, abilities: AbilityScores): PsionicData {
+  function createInitialPsionics(
+    className: import('./classes/index.js').HollowGearClass,
+    abilities: AbilityScores
+  ): PsionicData {
     return {} as PsionicData;
   }
 
   function validateAbilityScores(abilities: AbilityScores): ValidationError[] {
     const errors: ValidationError[] = [];
-    
+
     // Validate each ability score
     for (const [ability, scoreData] of Object.entries(abilities)) {
-      const total = scoreData.base + scoreData.racial + scoreData.enhancement + scoreData.temporary;
+      const total =
+        scoreData.base +
+        scoreData.racial +
+        scoreData.enhancement +
+        scoreData.temporary;
       if (total < 1 || total > 30) {
         errors.push({
           field: `abilities.${ability}`,
           message: `Total ${ability} score must be between 1 and 30`,
-          code: 'INVALID_RANGE'
+          code: 'INVALID_RANGE',
         });
       }
     }

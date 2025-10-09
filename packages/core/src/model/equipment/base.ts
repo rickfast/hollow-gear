@@ -2,7 +2,11 @@
  * Base equipment types and craftsmanship tiers for the Hollow Gear equipment system
  */
 
-import type { EquipmentId, ValidationResult, ValidationError } from '../types/common.js';
+import type {
+  EquipmentId,
+  ValidationResult,
+  ValidationError,
+} from '../types/common.js';
 
 /**
  * The four craftsmanship tiers in Hollow Gear
@@ -18,9 +22,9 @@ export type EquipmentType = WeaponType | ArmorType | ShieldType | ItemType;
 /**
  * Weapon categories and specific types
  */
-export type WeaponType = 
+export type WeaponType =
   | 'simple-melee'
-  | 'martial-melee' 
+  | 'martial-melee'
   | 'simple-ranged'
   | 'martial-ranged'
   | 'powered-melee'
@@ -30,7 +34,7 @@ export type WeaponType =
 /**
  * Armor categories
  */
-export type ArmorType = 
+export type ArmorType =
   | 'light-armor'
   | 'medium-armor'
   | 'heavy-armor'
@@ -39,7 +43,7 @@ export type ArmorType =
 /**
  * Shield types
  */
-export type ShieldType = 
+export type ShieldType =
   | 'light-shield'
   | 'heavy-shield'
   | 'tower-shield'
@@ -48,7 +52,7 @@ export type ShieldType =
 /**
  * General item categories
  */
-export type ItemType = 
+export type ItemType =
   | 'tool'
   | 'consumable'
   | 'container'
@@ -62,12 +66,12 @@ export type ItemType =
 /**
  * Equipment condition states
  */
-export type EquipmentCondition = 
-  | 'pristine'    // Perfect condition, no penalties
-  | 'good'        // Minor wear, no mechanical effects
-  | 'worn'        // Noticeable wear, minor penalties possible
-  | 'damaged'     // Significant damage, clear penalties
-  | 'broken';     // Non-functional, requires repair
+export type EquipmentCondition =
+  | 'pristine' // Perfect condition, no penalties
+  | 'good' // Minor wear, no mechanical effects
+  | 'worn' // Noticeable wear, minor penalties possible
+  | 'damaged' // Significant damage, clear penalties
+  | 'broken'; // Non-functional, requires repair
 
 /**
  * Currency value representation
@@ -114,17 +118,17 @@ export interface EquipmentProperties {
 /**
  * Special materials used in Hollow Gear equipment
  */
-export type SpecialMaterial = 
-  | 'aetherglass'      // Translucent, conducts aether energy
-  | 'black-brass'      // Dark metal, resists corrosion
-  | 'living-steel'     // Self-repairing metal
-  | 'voidstone'        // Absorbs magical energy
+export type SpecialMaterial =
+  | 'aetherglass' // Translucent, conducts aether energy
+  | 'black-brass' // Dark metal, resists corrosion
+  | 'living-steel' // Self-repairing metal
+  | 'voidstone' // Absorbs magical energy
   | 'resonant-crystal' // Amplifies psionic energy
-  | 'steamwood'        // Heat-resistant organic material
-  | 'etherbone'        // Lightweight, strong organic material
-  | 'coldsteel'        // Always cool to touch, heat resistant
-  | 'brightsilver'     // Naturally luminous metal
-  | 'shadowiron';      // Absorbs light, very dense
+  | 'steamwood' // Heat-resistant organic material
+  | 'etherbone' // Lightweight, strong organic material
+  | 'coldsteel' // Always cool to touch, heat resistant
+  | 'brightsilver' // Naturally luminous metal
+  | 'shadowiron'; // Absorbs light, very dense
 
 /**
  * Core equipment interface that all equipment implements
@@ -173,14 +177,14 @@ export interface ModSlot {
 /**
  * Types of modification slots
  */
-export type ModSlotType = 
-  | 'power'      // Power systems and energy sources
-  | 'utility'    // General utility modifications
-  | 'reactive'   // Defensive and reactive systems
-  | 'psionic'    // Psionic enhancement systems
-  | 'elemental'  // Elemental damage or resistance
-  | 'defensive'  // Armor and protection systems
-  | 'offensive'  // Weapon enhancement systems
+export type ModSlotType =
+  | 'power' // Power systems and energy sources
+  | 'utility' // General utility modifications
+  | 'reactive' // Defensive and reactive systems
+  | 'psionic' // Psionic enhancement systems
+  | 'elemental' // Elemental damage or resistance
+  | 'defensive' // Armor and protection systems
+  | 'offensive' // Weapon enhancement systems
   | 'universal'; // Can accept any type of mod
 
 /**
@@ -222,7 +226,7 @@ export interface ModEffect {
 /**
  * Types of effects modifications can provide
  */
-export type ModEffectType = 
+export type ModEffectType =
   | 'damage-bonus'
   | 'ac-bonus'
   | 'attack-bonus'
@@ -252,13 +256,13 @@ export interface PowerRequirement {
 /**
  * Types of power sources in Hollow Gear
  */
-export type PowerSource = 
-  | 'aether-cell'    // Standard power cells
-  | 'steam-engine'   // Steam-powered systems
-  | 'muscle-power'   // Manual operation
+export type PowerSource =
+  | 'aether-cell' // Standard power cells
+  | 'steam-engine' // Steam-powered systems
+  | 'muscle-power' // Manual operation
   | 'ambient-aether' // Draws from environmental aether
   | 'psionic-energy' // Powered by user's AFP
-  | 'solar-collector'// Solar power systems
+  | 'solar-collector' // Solar power systems
   | 'kinetic-dynamo'; // Motion-powered systems
 
 /**
@@ -280,13 +284,13 @@ export interface MalfunctionState {
 /**
  * Types of equipment malfunctions
  */
-export type MalfunctionType = 
-  | 'power-drain'     // Consumes extra power
-  | 'jamming'         // Weapon jams or sticks
-  | 'overheating'     // Generates excess heat
-  | 'short-circuit'   // Electrical problems
+export type MalfunctionType =
+  | 'power-drain' // Consumes extra power
+  | 'jamming' // Weapon jams or sticks
+  | 'overheating' // Generates excess heat
+  | 'short-circuit' // Electrical problems
   | 'mechanical-wear' // Moving parts wearing out
-  | 'aether-leak'     // Aether energy escaping
+  | 'aether-leak' // Aether energy escaping
   | 'resonance-drift' // Psionic tuning problems
   | 'structural-damage'; // Physical damage to equipment
 
@@ -323,10 +327,14 @@ export namespace EquipmentUtils {
    */
   export function getTierMultiplier(tier: CraftsmanshipTier): number {
     switch (tier) {
-      case 'workshop': return 1;
-      case 'guild': return 5;
-      case 'relic': return 25;
-      case 'mythic': return 125;
+      case 'workshop':
+        return 1;
+      case 'guild':
+        return 5;
+      case 'relic':
+        return 25;
+      case 'mythic':
+        return 125;
     }
   }
 
@@ -334,7 +342,7 @@ export namespace EquipmentUtils {
    * Calculate total currency value in cogs
    */
   export function getTotalValueInCogs(value: CurrencyValue): number {
-    return value.cogs + (value.gears * 10) + (value.cores * 100);
+    return value.cogs + value.gears * 10 + value.cores * 100;
   }
 
   /**
@@ -345,7 +353,7 @@ export namespace EquipmentUtils {
     const remaining = totalCogs % 100;
     const gears = Math.floor(remaining / 10);
     const cogs = remaining % 10;
-    
+
     return { cores, gears, cogs };
   }
 
@@ -357,26 +365,32 @@ export namespace EquipmentUtils {
       return false;
     }
 
-    return !equipment.modSlots.some(slot => 
-      slot.malfunctionState?.disabling === true
+    return !equipment.modSlots.some(
+      slot => slot.malfunctionState?.disabling === true
     );
   }
 
   /**
    * Get available mod slots of a specific type
    */
-  export function getAvailableModSlots(equipment: Equipment, type?: ModSlotType): ModSlot[] {
-    return equipment.modSlots.filter(slot => 
-      slot.accessible && 
-      !slot.installedMod && 
-      (!type || slot.type === type || slot.type === 'universal')
+  export function getAvailableModSlots(
+    equipment: Equipment,
+    type?: ModSlotType
+  ): ModSlot[] {
+    return equipment.modSlots.filter(
+      slot =>
+        slot.accessible &&
+        !slot.installedMod &&
+        (!type || slot.type === type || slot.type === 'universal')
     );
   }
 
   /**
    * Validate equipment data
    */
-  export function validateEquipment(equipment: Equipment): ValidationResult<Equipment> {
+  export function validateEquipment(
+    equipment: Equipment
+  ): ValidationResult<Equipment> {
     const errors: ValidationError[] = [];
 
     // Validate basic properties
@@ -384,7 +398,7 @@ export namespace EquipmentUtils {
       errors.push({
         field: 'id',
         message: 'Equipment ID is required',
-        code: 'MISSING_ID'
+        code: 'MISSING_ID',
       });
     }
 
@@ -392,7 +406,7 @@ export namespace EquipmentUtils {
       errors.push({
         field: 'name',
         message: 'Equipment name is required',
-        code: 'MISSING_NAME'
+        code: 'MISSING_NAME',
       });
     }
 
@@ -401,24 +415,31 @@ export namespace EquipmentUtils {
       errors.push({
         field: 'properties.physical.weight',
         message: 'Weight cannot be negative',
-        code: 'INVALID_WEIGHT'
+        code: 'INVALID_WEIGHT',
       });
     }
 
-    if (equipment.properties.physical.bulk < 0 || equipment.properties.physical.bulk > 4) {
+    if (
+      equipment.properties.physical.bulk < 0 ||
+      equipment.properties.physical.bulk > 4
+    ) {
       errors.push({
         field: 'properties.physical.bulk',
         message: 'Bulk must be between 0 and 4',
-        code: 'INVALID_BULK'
+        code: 'INVALID_BULK',
       });
     }
 
     // Validate currency values
-    if (equipment.value.cogs < 0 || equipment.value.gears < 0 || equipment.value.cores < 0) {
+    if (
+      equipment.value.cogs < 0 ||
+      equipment.value.gears < 0 ||
+      equipment.value.cores < 0
+    ) {
       errors.push({
         field: 'value',
         message: 'Currency values cannot be negative',
-        code: 'INVALID_CURRENCY'
+        code: 'INVALID_CURRENCY',
       });
     }
 
@@ -429,7 +450,7 @@ export namespace EquipmentUtils {
         errors.push({
           field: 'modSlots',
           message: `Duplicate mod slot ID: ${slot.id}`,
-          code: 'DUPLICATE_SLOT_ID'
+          code: 'DUPLICATE_SLOT_ID',
         });
       }
       slotIds.add(slot.id);

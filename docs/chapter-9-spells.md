@@ -1,17 +1,20 @@
 ## Chapter 11: Spellcraft & Resonance
 
-> _"The gods did not grant us power. They left it lying in the gears, waiting for someone bold enough to touch it."_  
+> _"The gods did not grant us power. They left it lying in the gears, waiting for someone bold
+> enough to touch it."_  
 > — High Mechanist Serane
 
 ---
 
 ### ⚗️ Spellcraft in the Hollowgear
 
-Spells in Hollowgear are neither divine nor arcane — they are **Aetheric harmonics**, patterns that shape reality through resonance.  
+Spells in Hollowgear are neither divine nor arcane — they are **Aetheric harmonics**, patterns that
+shape reality through resonance.  
 An **Arcanist** manipulates these harmonics through _formulae_ and _machines_.  
 A **Templar** conducts them through _faith_ and _emotion_.
 
-Both paths draw from the same current — **Aether** — but interpret it through radically different circuitry.
+Both paths draw from the same current — **Aether** — but interpret it through radically different
+circuitry.
 
 ---
 
@@ -25,7 +28,8 @@ Both paths draw from the same current — **Aether** — but interpret it throug
 ### 🔹 Aether Equilibrium
 
 Arcanists don’t prepare spells. Instead, they learn **Formulae** — equations encoded in Aether.  
-When casting, they balance output and heat using **Aether Flux Points (AFP)** instead of spell slots.
+When casting, they balance output and heat using **Aether Flux Points (AFP)** instead of spell
+slots.
 
 | Spell Level | AFP Cost |
 | ----------- | -------- |
@@ -45,17 +49,19 @@ Your **maximum castable spell level** (Equilibrium Tier) equals **Level ÷ 2 (ro
 
 Arcanists can push their equations past stability.
 
--   **Spend +1 AFP** to gain +2 to spell attack rolls or save DCs for that casting.
--   After casting, gain **1d2 Heat Points** (see Chapter 7).
--   On a natural 1, roll on the **Overheat Table**.
+- **Spend +1 AFP** to gain +2 to spell attack rolls or save DCs for that casting.
+- After casting, gain **1d2 Heat Points** (see Chapter 7).
+- On a natural 1, roll on the **Overheat Table**.
 
-**At Level 5+,** you may Overclock twice per long rest without risk, representing improved reactor tuning.
+**At Level 5+,** you may Overclock twice per long rest without risk, representing improved reactor
+tuning.
 
 ---
 
 ### 🔹 Spell Reflavoring
 
-Arcanists still use the **Wizard and Warlock spell lists**, but their presentation is mechanical or psionic.
+Arcanists still use the **Wizard and Warlock spell lists**, but their presentation is mechanical or
+psionic.
 
 | Classic Spell   | Arcanist Name                | Description                                             |
 | --------------- | ---------------------------- | ------------------------------------------------------- |
@@ -83,9 +89,9 @@ Each Formula emits a distinctive **tone and color signature** unique to the Arca
 
 Arcanists channel spells through custom foci:
 
--   **Steamstaff** – Stable control, grants +1 to spell attack rolls.
--   **Aether Lens** – Increases range of Formulae by 10 ft.
--   **Voltaic Gauntlet** – Adds +1d4 lightning to spell damage when Overclocked.
+- **Steamstaff** – Stable control, grants +1 to spell attack rolls.
+- **Aether Lens** – Increases range of Formulae by 10 ft.
+- **Voltaic Gauntlet** – Adds +1d4 lightning to spell damage when Overclocked.
 
 ---
 
@@ -110,7 +116,8 @@ Each spell consumes **Resonance Charges (RC)** rather than spell slots.
 | 5           | 5       |
 
 Your total RC = **Templar Level + Wisdom modifier**.  
-You regain all RC after a **long rest**, and **half RC** after a **short rest** through meditation or recalibration of your core.
+You regain all RC after a **long rest**, and **half RC** after a **short rest** through meditation
+or recalibration of your core.
 
 ---
 
@@ -118,10 +125,11 @@ You regain all RC after a **long rest**, and **half RC** after a **short rest** 
 
 When out of RC, you may still cast by burning vitality.
 
--   Spend HP = 2 × spell level to cast.
--   Roll a **Faith Feedback check (DC 10 + spell level)**.
-    -   **Success:** The spell stabilizes.
-    -   **Failure:** You gain one level of **Heat Stress** and disadvantage on concentration checks until rest.
+- Spend HP = 2 × spell level to cast.
+- Roll a **Faith Feedback check (DC 10 + spell level)**.
+  - **Success:** The spell stabilizes.
+  - **Failure:** You gain one level of **Heat Stress** and disadvantage on concentration checks
+    until rest.
 
 Templars may safely Overchannel once per day without consequence.
 
@@ -139,7 +147,8 @@ Templars use the **Cleric spell list**, reflavored through psionic resonance.
 | _Detect Magic_     | **Sense Resonance**      | Reveals active Aetheric signatures.        |
 | _Sanctuary_        | **Echo Barrier**         | Creates reflective psionic field.          |
 
-Each Order of Resonance (Templar archetype) colors its spells differently — glowing blue for order, gold for zeal, violet for penitence, etc.
+Each Order of Resonance (Templar archetype) colors its spells differently — glowing blue for order,
+gold for zeal, violet for penitence, etc.
 
 ---
 
@@ -157,8 +166,8 @@ Each Order of Resonance (Templar archetype) colors its spells differently — gl
 
 ### 🔸 Concentration
 
--   Breaking focus releases built-up Aether: take 1d4 psychic damage.
--   Each Heat Point above 5 imposes −1 to concentration saves.
+- Breaking focus releases built-up Aether: take 1d4 psychic damage.
+- Each Heat Point above 5 imposes −1 to concentration saves.
 
 ### 🔸 Spell Mods
 
@@ -192,9 +201,9 @@ Cooling occurs during short rest or through Steam Vents (see Chapter 7).
 
 When an **Arcanist** and **Templar** cast the same spell together:
 
--   Split the total AFP + RC cost evenly (rounded up).
--   The spell doubles its **duration or area**, chosen by the casters.
--   On a natural 1 by either caster, roll on **Overheat Table** and halve both resources.
+- Split the total AFP + RC cost evenly (rounded up).
+- The spell doubles its **duration or area**, chosen by the casters.
+- On a natural 1 by either caster, roll on **Overheat Table** and halve both resources.
 
 Such moments are rare — and awe-inspiring.
 
@@ -204,16 +213,19 @@ Such moments are rare — and awe-inspiring.
 
 When a creature attempts to interrupt your spell:
 
--   Make an **Arcana (Arcanist)** or **Religion (Templar)** check against DC 10 + the opposing caster’s level.
--   Success disrupts their formula or miracle before resolution.
--   On a failure by 5+, take 1d6 psychic backlash as the resonance snaps.
+- Make an **Arcana (Arcanist)** or **Religion (Templar)** check against DC 10 + the opposing
+  caster’s level.
+- Success disrupts their formula or miracle before resolution.
+- On a failure by 5+, take 1d6 psychic backlash as the resonance snaps.
 
 ---
 
 ### 🔸 Psionic Signatures
 
-Every spell leaves a **resonant echo** in the Aether — a color, tone, or vibration unique to the caster.  
-Mindweavers, Avenar, and trained Templars can detect these traces with a DC 12 Insight or Arcana check.  
+Every spell leaves a **resonant echo** in the Aether — a color, tone, or vibration unique to the
+caster.  
+Mindweavers, Avenar, and trained Templars can detect these traces with a DC 12 Insight or Arcana
+check.  
 Powerful echoes may linger for days, attracting Aether Wisps or Flux Aberrants.
 
 ---

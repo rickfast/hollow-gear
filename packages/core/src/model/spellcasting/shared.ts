@@ -15,7 +15,7 @@ export type SpellcastingType = 'arcanist' | 'templar';
 /**
  * Standard D&D 5e spell schools with Hollow Gear naming
  */
-export type SpellSchool = 
+export type SpellSchool =
   | 'abjuration'
   | 'conjuration'
   | 'divination'
@@ -121,7 +121,11 @@ export namespace HeatPointUtils {
   /**
    * Apply heat point gain with maximum cap
    */
-  export function addHeatPoints(current: number, gain: number, max: number): number {
+  export function addHeatPoints(
+    current: number,
+    gain: number,
+    max: number
+  ): number {
     return Math.min(max, current + gain);
   }
 
@@ -161,8 +165,13 @@ export namespace SpellComponentUtils {
     if (spell.components.material) {
       if (spell.components.materialCost && spell.components.materialCost > 0) {
         // Costly components cannot be replaced by a focus
-        if (!hasMaterialComponents || availableFunds < spell.components.materialCost) {
-          missing.push(`Material component: ${spell.components.materialComponent || 'costly component'}`);
+        if (
+          !hasMaterialComponents ||
+          availableFunds < spell.components.materialCost
+        ) {
+          missing.push(
+            `Material component: ${spell.components.materialComponent || 'costly component'}`
+          );
         }
       } else if (!hasSpellcastingFocus && !hasMaterialComponents) {
         // Non-costly components can be replaced by a focus
@@ -172,7 +181,7 @@ export namespace SpellComponentUtils {
 
     return {
       canCast: missing.length === 0,
-      missingComponents: missing
+      missingComponents: missing,
     };
   }
 
@@ -181,7 +190,7 @@ export namespace SpellComponentUtils {
    */
   export function getComponentDescription(components: SpellComponents): string {
     const parts: string[] = [];
-    
+
     if (components.verbal) parts.push('V');
     if (components.somatic) parts.push('S');
     if (components.material) {

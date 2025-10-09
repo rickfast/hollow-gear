@@ -35,24 +35,29 @@ export namespace CharacterUtils {
   /**
    * Update the last modified timestamp
    */
-  export function updateLastModified<T extends BaseCharacterData>(character: T): T {
+  export function updateLastModified<T extends BaseCharacterData>(
+    character: T
+  ): T {
     return {
       ...character,
-      lastModified: new Date()
+      lastModified: new Date(),
     };
   }
 
   /**
    * Create base character data
    */
-  export function createBaseCharacterData(name: string, version: string = '1.0.0'): BaseCharacterData {
+  export function createBaseCharacterData(
+    name: string,
+    version: string = '1.0.0'
+  ): BaseCharacterData {
     const now = new Date();
     return {
       id: createCharacterId(),
       name,
       version,
       created: now,
-      lastModified: now
+      lastModified: now,
     };
   }
 }

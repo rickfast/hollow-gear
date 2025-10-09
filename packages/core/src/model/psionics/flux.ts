@@ -18,13 +18,13 @@ export interface ResourcePool {
 /**
  * Psionic feedback effects that can occur during overload
  */
-export type PsionicFeedbackType = 
-  | 'minor_headache'      // Disadvantage on next roll
-  | 'static_echo'         // Random nearby device malfunctions  
-  | 'neural_spark'        // Take 1d6 psychic damage
-  | 'aether_flare'        // Emit 10-ft light, all in area take 1d4 fire
-  | 'mindfracture'        // Lose concentration, drop active powers
-  | 'collapse';           // Stunned until end of next turn
+export type PsionicFeedbackType =
+  | 'minor_headache' // Disadvantage on next roll
+  | 'static_echo' // Random nearby device malfunctions
+  | 'neural_spark' // Take 1d6 psychic damage
+  | 'aether_flare' // Emit 10-ft light, all in area take 1d4 fire
+  | 'mindfracture' // Lose concentration, drop active powers
+  | 'collapse'; // Stunned until end of next turn
 
 /**
  * Individual feedback effect with its mechanical impact
@@ -62,42 +62,45 @@ export const PSIONIC_FEEDBACK_EFFECTS: Record<number, PsionicFeedbackEffect> = {
   1: {
     type: 'minor_headache',
     description: 'Minor headache – disadvantage on next roll',
-    conditions: ['disadvantage_next_roll']
+    conditions: ['disadvantage_next_roll'],
   },
   2: {
     type: 'static_echo',
     description: 'Static echo – random nearby device malfunctions',
-    conditions: ['device_malfunction']
+    conditions: ['device_malfunction'],
   },
   3: {
     type: 'neural_spark',
     description: 'Neural spark – take 1d6 psychic damage',
-    damage: { dice: '1d6', type: 'psychic' }
+    damage: { dice: '1d6', type: 'psychic' },
   },
   4: {
     type: 'aether_flare',
     description: 'Aether flare – emit 10-ft light, all in area take 1d4 fire',
     damage: { dice: '1d4', type: 'fire' },
-    areaEffect: { radius: 10, effect: 'bright light and fire damage' }
+    areaEffect: { radius: 10, effect: 'bright light and fire damage' },
   },
   5: {
     type: 'mindfracture',
     description: 'Mindfracture – lose concentration, drop active powers',
-    conditions: ['lose_concentration', 'drop_active_powers']
+    conditions: ['lose_concentration', 'drop_active_powers'],
   },
   6: {
     type: 'collapse',
     description: 'Collapse – stunned until end of next turn',
     conditions: ['stunned'],
-    duration: 'end of next turn'
-  }
+    duration: 'end of next turn',
+  },
 };
 
 /**
  * Calculate maximum AFP based on class level and ability modifier
  * Formula: Class Level + Ability Modifier (minimum 2)
  */
-export function calculateMaximumAfp(classLevel: number, abilityModifier: number): number {
+export function calculateMaximumAfp(
+  classLevel: number,
+  abilityModifier: number
+): number {
   return Math.max(2, classLevel + abilityModifier);
 }
 
@@ -109,22 +112,25 @@ export function calculateMulticlassAfp(
   psionicClasses: Array<{ level: number; abilityModifier: number }>
 ): number {
   let totalAfp = 0;
-  
+
   for (const psionicClass of psionicClasses) {
     totalAfp += Math.max(2, psionicClass.level + psionicClass.abilityModifier);
   }
-  
+
   return totalAfp;
 }
 
 /**
  * Create a new resource pool with specified maximum
  */
-export function createResourcePool(maximum: number, current?: number): ResourcePool {
+export function createResourcePool(
+  maximum: number,
+  current?: number
+): ResourcePool {
   return {
     current: current ?? maximum,
     maximum,
-    temporary: 0
+    temporary: 0,
   };
 }
 
@@ -133,39 +139,39 @@ export function createResourcePool(maximum: number, current?: number): ResourceP
  * Returns updated pool and whether the expenditure was successful
  */
 export function spendAfp(
-  pool: ResourcePool, 
+  pool: ResourcePool,
   amount: number
 ): { pool: ResourcePool; success: boolean; remaining: number } {
   const totalAvailable = pool.current + pool.temporary;
-  
+
   if (amount > totalAvailable) {
     return { pool, success: false, remaining: totalAvailable };
   }
-  
+
   let remaining = amount;
   let newTemporary = pool.temporary;
   let newCurrent = pool.current;
-  
+
   // Spend temporary AFP first
   if (remaining > 0 && newTemporary > 0) {
     const tempSpent = Math.min(remaining, newTemporary);
     newTemporary -= tempSpent;
     remaining -= tempSpent;
   }
-  
+
   // Then spend current AFP
   if (remaining > 0) {
     newCurrent -= remaining;
   }
-  
+
   return {
     pool: {
       ...pool,
       current: newCurrent,
-      temporary: newTemporary
+      temporary: newTemporary,
     },
     success: true,
-    remaining: newCurrent + newTemporary
+    remaining: newCurrent + newTemporary,
   };
 }
 
@@ -175,25 +181,28 @@ export function spendAfp(
  * Long rest: restore all AFP and clear temporary penalties
  */
 export function restoreAfp(
-  pool: ResourcePool, 
+  pool: ResourcePool,
   restType: 'short' | 'long'
 ): ResourcePool {
   const restored: ResourcePool = {
     current: pool.maximum,
     maximum: pool.maximum,
-    temporary: restType === 'long' ? 0 : pool.temporary
+    temporary: restType === 'long' ? 0 : pool.temporary,
   };
-  
+
   return restored;
 }
 
 /**
  * Add temporary AFP (from items, abilities, etc.)
  */
-export function addTemporaryAfp(pool: ResourcePool, amount: number): ResourcePool {
+export function addTemporaryAfp(
+  pool: ResourcePool,
+  amount: number
+): ResourcePool {
   return {
     ...pool,
-    temporary: pool.temporary + amount
+    temporary: pool.temporary + amount,
   };
 }
 
@@ -202,20 +211,20 @@ export function addTemporaryAfp(pool: ResourcePool, amount: number): ResourcePoo
  * Overload occurs when spending more AFP than character level allows
  */
 export function checkOverloadRisk(
-  afpToSpend: number, 
-  characterLevel: number, 
+  afpToSpend: number,
+  characterLevel: number,
   currentAfp: number
 ): OverloadState {
   const isOverloaded = afpToSpend > characterLevel;
   const excessAfp = Math.max(0, afpToSpend - characterLevel);
   const saveDc = 12 + excessAfp;
-  
+
   return {
     isOverloaded,
     excessAfp,
     saveDc,
     feedbackRisk: isOverloaded,
-    lastOverloadTime: isOverloaded ? new Date() : undefined
+    lastOverloadTime: isOverloaded ? new Date() : undefined,
   };
 }
 
@@ -238,14 +247,14 @@ export function getSafeAfpLimit(characterLevel: number): number {
  * Check if a character has sufficient AFP for a power
  */
 export function canAffordPower(pool: ResourcePool, afpCost: number): boolean {
-  return (pool.current + pool.temporary) >= afpCost;
+  return pool.current + pool.temporary >= afpCost;
 }
 
 /**
  * Calculate AFP recovery rate for different rest types
  */
 export function getAfpRecoveryAmount(
-  pool: ResourcePool, 
+  pool: ResourcePool,
   restType: 'short' | 'long'
 ): number {
   switch (restType) {
@@ -280,6 +289,6 @@ export function createSafeOverloadState(): OverloadState {
     isOverloaded: false,
     excessAfp: 0,
     saveDc: 0,
-    feedbackRisk: false
+    feedbackRisk: false,
   };
 }

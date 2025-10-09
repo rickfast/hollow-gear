@@ -3,20 +3,24 @@
  * Core interfaces and types for the seven Etherborne species
  */
 
-import type { AbilityScore, DieType, ValidationResult } from '../types/common.js';
+import type {
+  AbilityScore,
+  DieType,
+  ValidationResult,
+} from '../types/common.js';
 import type { AbilityScoreIncrease } from '../types/abilities.js';
 
 /**
  * Union type representing all seven Etherborne species
  */
-export type EtherborneSpecies = 
-  | 'aqualoth'   // Axolotl - Amphibious scholars and bio-mechanical engineers
-  | 'vulmir'     // Fox - Cunning illusionists and saboteurs
-  | 'rendai'     // Red Panda - Inventors, mechanics, and cheerful scavengers
-  | 'karnathi'   // Ibex - Stalwart defenders and psionic knights
-  | 'tharn'      // Elk - Nomadic guardians of the wild gears
-  | 'skellin'    // Gecko - Wall-crawling scouts and infiltrators
-  | 'avenar';    // Avian - Scholars of the skies, calm and calculating
+export type EtherborneSpecies =
+  | 'aqualoth' // Axolotl - Amphibious scholars and bio-mechanical engineers
+  | 'vulmir' // Fox - Cunning illusionists and saboteurs
+  | 'rendai' // Red Panda - Inventors, mechanics, and cheerful scavengers
+  | 'karnathi' // Ibex - Stalwart defenders and psionic knights
+  | 'tharn' // Elk - Nomadic guardians of the wild gears
+  | 'skellin' // Gecko - Wall-crawling scouts and infiltrators
+  | 'avenar'; // Avian - Scholars of the skies, calm and calculating
 
 /**
  * Movement speeds for different types of locomotion
@@ -89,7 +93,7 @@ export interface AbilityMechanics {
 /**
  * Language proficiencies for a species
  */
-export type Language = 
+export type Language =
   | 'common'
   | 'aquan'
   | 'avenari'
@@ -176,13 +180,20 @@ export namespace SpeciesTraitsUtils {
    */
   export function getSpeciesBrief(species: EtherborneSpecies): string {
     const briefs: Record<EtherborneSpecies, string> = {
-      aqualoth: 'Amphibious scholars and bio-mechanical engineers of the flooded ruins',
-      vulmir: 'Cunning illusionists and saboteurs, weaving psionics and trickery alike',
-      rendai: 'Inventors, mechanics, and cheerful scavengers who view machines as art',
-      karnathi: 'Stalwart defenders and psionic knights who blend faith and machinery',
-      tharn: 'Nomadic guardians of the wild gears — defenders of nature\'s mechanical heart',
-      skellin: 'Wall-crawling scouts and infiltrators with reflexes tuned to survival',
-      avenar: 'Scholars of the skies — calm, calculating, and eternally curious',
+      aqualoth:
+        'Amphibious scholars and bio-mechanical engineers of the flooded ruins',
+      vulmir:
+        'Cunning illusionists and saboteurs, weaving psionics and trickery alike',
+      rendai:
+        'Inventors, mechanics, and cheerful scavengers who view machines as art',
+      karnathi:
+        'Stalwart defenders and psionic knights who blend faith and machinery',
+      tharn:
+        "Nomadic guardians of the wild gears — defenders of nature's mechanical heart",
+      skellin:
+        'Wall-crawling scouts and infiltrators with reflexes tuned to survival',
+      avenar:
+        'Scholars of the skies — calm, calculating, and eternally curious',
     };
     return briefs[species];
   }
@@ -190,11 +201,16 @@ export namespace SpeciesTraitsUtils {
   /**
    * Validate a species traits object
    */
-  export function validateSpeciesTraits(traits: SpeciesTraits): ValidationResult<SpeciesTraits> {
+  export function validateSpeciesTraits(
+    traits: SpeciesTraits
+  ): ValidationResult<SpeciesTraits> {
     const errors = [];
 
     // Validate ability score increases
-    if (!traits.abilityScoreIncrease || traits.abilityScoreIncrease.length === 0) {
+    if (
+      !traits.abilityScoreIncrease ||
+      traits.abilityScoreIncrease.length === 0
+    ) {
       errors.push({
         field: 'abilityScoreIncrease',
         message: 'Species must have at least one ability score increase',
@@ -230,9 +246,11 @@ export namespace SpeciesTraitsUtils {
     }
 
     // Validate Etherborne traits are present
-    if (!traits.etherborneTraits.aetherSensitivity || 
-        !traits.etherborneTraits.machineEmpathy || 
-        !traits.etherborneTraits.instinctiveHarmony) {
+    if (
+      !traits.etherborneTraits.aetherSensitivity ||
+      !traits.etherborneTraits.machineEmpathy ||
+      !traits.etherborneTraits.instinctiveHarmony
+    ) {
       errors.push({
         field: 'etherborneTraits',
         message: 'All Etherborne traits must be present and true',
@@ -261,14 +279,20 @@ export namespace SpeciesTraitsUtils {
   /**
    * Check if a species has a specific special ability
    */
-  export function hasSpecialAbility(traits: SpeciesTraits, abilityId: string): boolean {
+  export function hasSpecialAbility(
+    traits: SpeciesTraits,
+    abilityId: string
+  ): boolean {
     return traits.specialAbilities.some(ability => ability.id === abilityId);
   }
 
   /**
    * Get a specific special ability by ID
    */
-  export function getSpecialAbility(traits: SpeciesTraits, abilityId: string): SpecialAbility | undefined {
+  export function getSpecialAbility(
+    traits: SpeciesTraits,
+    abilityId: string
+  ): SpecialAbility | undefined {
     return traits.specialAbilities.find(ability => ability.id === abilityId);
   }
 
@@ -276,6 +300,9 @@ export namespace SpeciesTraitsUtils {
    * Calculate total ability score increases for a species
    */
   export function getTotalAbilityIncreases(traits: SpeciesTraits): number {
-    return traits.abilityScoreIncrease.reduce((total, increase) => total + increase.increase, 0);
+    return traits.abilityScoreIncrease.reduce(
+      (total, increase) => total + increase.increase,
+      0
+    );
   }
 }

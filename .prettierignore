@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+bun.lock
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Generated files
+*.generated.*
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Git
+.git/
+
+# Documentation that should preserve formatting
+docs/app

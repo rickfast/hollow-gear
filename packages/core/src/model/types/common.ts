@@ -10,13 +10,19 @@ export type DieType = 'd4' | 'd6' | 'd8' | 'd10' | 'd12' | 'd20' | 'd100';
 /**
  * The six core ability scores in D&D 5e
  */
-export type AbilityScore = 'strength' | 'dexterity' | 'constitution' | 'intelligence' | 'wisdom' | 'charisma';
+export type AbilityScore =
+  | 'strength'
+  | 'dexterity'
+  | 'constitution'
+  | 'intelligence'
+  | 'wisdom'
+  | 'charisma';
 
 /**
  * Result type for operations that can succeed or fail
  * Used throughout the system for error handling and validation
  */
-export type Result<T, E = Error> = 
+export type Result<T, E = Error> =
   | { success: true; data: T }
   | { success: false; error: E };
 
@@ -97,9 +103,9 @@ export function failure<E>(error: E): Result<never, E> {
  * Helper function to create a ValidationError
  */
 export function validationError(
-  field: string, 
-  message: string, 
-  code: string, 
+  field: string,
+  message: string,
+  code: string,
   context?: Record<string, unknown>
 ): ValidationError {
   return { field, message, code, context };
@@ -115,6 +121,8 @@ export function validationSuccess<T>(data: T): ValidationResult<T> {
 /**
  * Helper function to create a failed ValidationResult
  */
-export function validationFailure<T>(errors: ValidationError[]): ValidationResult<T> {
+export function validationFailure<T>(
+  errors: ValidationError[]
+): ValidationResult<T> {
   return failure(errors);
 }

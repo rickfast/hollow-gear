@@ -1,6 +1,6 @@
 /**
  * Character utility functions for derived calculations and operations
- * 
+ *
  * This module provides comprehensive utility functions for calculating derived values,
  * creating character summaries, and performing character comparisons and diffs.
  */
@@ -48,7 +48,11 @@ export interface DerivedStats {
 /**
  * Encumbrance levels
  */
-export type EncumbranceLevel = 'unencumbered' | 'encumbered' | 'heavily_encumbered' | 'overloaded';
+export type EncumbranceLevel =
+  | 'unencumbered'
+  | 'encumbered'
+  | 'heavily_encumbered'
+  | 'overloaded';
 
 /**
  * Heat stress effects on character performance
@@ -85,7 +89,12 @@ export interface CharacterSummary {
   /** Ability scores with modifiers */
   abilities: Record<AbilityScore, { score: number; modifier: number }>;
   /** Key skills */
-  keySkills: Array<{ name: string; bonus: number; proficient: boolean; expertise: boolean }>;
+  keySkills: Array<{
+    name: string;
+    bonus: number;
+    proficient: boolean;
+    expertise: boolean;
+  }>;
   /** Resources */
   resources: {
     currency: string; // e.g., "150 Cogs, 12 Gears, 2 Cores"
@@ -169,17 +178,25 @@ export namespace CharacterUtilities {
   /**
    * Calculate all derived statistics for a character
    */
-  export function calculateDerivedStats(character: HollowGearCharacter): DerivedStats {
+  export function calculateDerivedStats(
+    character: HollowGearCharacter
+  ): DerivedStats {
     const abilityModifiers = calculateAbilityModifiers(character);
     const skillBonuses = calculateSkillBonuses(character, abilityModifiers);
-    const savingThrowBonuses = calculateSavingThrowBonuses(character, abilityModifiers);
-    
+    const savingThrowBonuses = calculateSavingThrowBonuses(
+      character,
+      abilityModifiers
+    );
+
     return {
       abilityModifiers,
       skillBonuses,
       savingThrowBonuses,
       effectiveArmorClass: calculateEffectiveArmorClass(character),
-      effectiveInitiative: calculateEffectiveInitiative(character, abilityModifiers),
+      effectiveInitiative: calculateEffectiveInitiative(
+        character,
+        abilityModifiers
+      ),
       effectiveSpeed: calculateEffectiveSpeed(character),
       passivePerception: 10 + skillBonuses.perception,
       passiveInvestigation: 10 + skillBonuses.investigation,
@@ -189,62 +206,77 @@ export namespace CharacterUtilities {
       spellSaveDC: calculateSpellSaveDC(character, abilityModifiers),
       spellAttackBonus: calculateSpellAttackBonus(character, abilityModifiers),
       psionicSaveDC: calculatePsionicSaveDC(character, abilityModifiers),
-      heatStressEffects: calculateHeatStressEffects(character)
+      heatStressEffects: calculateHeatStressEffects(character),
     };
   }
 
   /**
    * Create a character summary for display
    */
-  export function createCharacterSummary(character: HollowGearCharacter): CharacterSummary {
+  export function createCharacterSummary(
+    character: HollowGearCharacter
+  ): CharacterSummary {
     const derivedStats = calculateDerivedStats(character);
-    
+
     return {
       basic: {
         name: character.name,
         species: character.species,
         classes: formatClassString(character.classes),
         level: character.level,
-        background: character.background
+        background: character.background,
       },
       stats: {
         hitPoints: `${character.hitPoints.current}/${character.hitPoints.maximum}`,
         armorClass: derivedStats.effectiveArmorClass,
         initiative: derivedStats.effectiveInitiative,
         speed: derivedStats.effectiveSpeed,
-        proficiencyBonus: character.proficiencyBonus
+        proficiencyBonus: character.proficiencyBonus,
       },
       abilities: Object.fromEntries(
-        Object.entries(derivedStats.abilityModifiers).map(([ability, modifier]) => [
-          ability,
-          {
-            score: getTotalAbilityScore(character.abilities[ability as AbilityScore]),
-            modifier
-          }
-        ])
+        Object.entries(derivedStats.abilityModifiers).map(
+          ([ability, modifier]) => [
+            ability,
+            {
+              score: getTotalAbilityScore(
+                character.abilities[ability as AbilityScore]
+              ),
+              modifier,
+            },
+          ]
+        )
       ) as Record<AbilityScore, { score: number; modifier: number }>,
       keySkills: getKeySkills(character, derivedStats.skillBonuses),
       resources: {
         currency: formatCurrency(character.currency),
         heatStress: character.heatStress.currentLevel,
-        spellSlots: character.spellcasting ? formatSpellSlots(character.spellcasting) : undefined,
-        aetherFluxPoints: character.spellcasting?.resources.arcanist ? 
-          formatResourcePool(character.spellcasting.resources.arcanist.aetherFluxPoints) : 
-          character.psionics ? formatResourcePool(character.psionics.aetherFluxPoints) : undefined,
-        resonanceCharges: character.spellcasting?.resources.templar ? 
-          formatResourcePool(character.spellcasting.resources.templar.resonanceCharges) : undefined
+        spellSlots: character.spellcasting
+          ? formatSpellSlots(character.spellcasting)
+          : undefined,
+        aetherFluxPoints: character.spellcasting?.resources.arcanist
+          ? formatResourcePool(
+              character.spellcasting.resources.arcanist.aetherFluxPoints
+            )
+          : character.psionics
+            ? formatResourcePool(character.psionics.aetherFluxPoints)
+            : undefined,
+        resonanceCharges: character.spellcasting?.resources.templar
+          ? formatResourcePool(
+              character.spellcasting.resources.templar.resonanceCharges
+            )
+          : undefined,
       },
       equipment: {
         weapons: getEquippedWeapons(character),
         armor: getEquippedArmor(character),
         shield: getEquippedShield(character),
-        accessories: getEquippedAccessories(character)
+        accessories: getEquippedAccessories(character),
       },
       status: {
         conditions: getCurrentConditions(character),
         heatStressLevel: character.heatStress.currentLevel,
-        maintainedEffects: getMaintainedEffects(character)
-      }
+        maintainedEffects: getMaintainedEffects(character),
+      },
     };
   }
 
@@ -261,14 +293,29 @@ export namespace CharacterUtilities {
     return {
       characters: {
         left: { name: leftCharacter.name, id: leftCharacter.id },
-        right: { name: rightCharacter.name, id: rightCharacter.id }
+        right: { name: rightCharacter.name, id: rightCharacter.id },
       },
-      abilityDifferences: calculateAbilityDifferences(leftStats.abilityModifiers, rightStats.abilityModifiers),
-      skillDifferences: calculateSkillDifferences(leftStats.skillBonuses, rightStats.skillBonuses),
+      abilityDifferences: calculateAbilityDifferences(
+        leftStats.abilityModifiers,
+        rightStats.abilityModifiers
+      ),
+      skillDifferences: calculateSkillDifferences(
+        leftStats.skillBonuses,
+        rightStats.skillBonuses
+      ),
       levelDifference: rightCharacter.level - leftCharacter.level,
-      classDifferences: calculateClassDifferences(leftCharacter.classes, rightCharacter.classes),
-      equipmentDifferences: calculateEquipmentDifferences(leftCharacter, rightCharacter),
-      resourceDifferences: calculateResourceDifferences(leftCharacter, rightCharacter)
+      classDifferences: calculateClassDifferences(
+        leftCharacter.classes,
+        rightCharacter.classes
+      ),
+      equipmentDifferences: calculateEquipmentDifferences(
+        leftCharacter,
+        rightCharacter
+      ),
+      resourceDifferences: calculateResourceDifferences(
+        leftCharacter,
+        rightCharacter
+      ),
     };
   }
 
@@ -280,10 +327,10 @@ export namespace CharacterUtilities {
     newCharacter: HollowGearCharacter
   ): CharacterDiff {
     const changes: CharacterDiff['changes'] = [];
-    
+
     // Compare all fields recursively
     compareFields('', oldCharacter, newCharacter, changes);
-    
+
     // Calculate summary
     const categoryCounts: Record<string, number> = {};
     changes.forEach(change => {
@@ -302,24 +349,34 @@ export namespace CharacterUtilities {
       summary: {
         totalChanges: changes.length,
         categoryCounts,
-        significance
-      }
+        significance,
+      },
     };
   }
 
   /**
    * Get character's total modifier for a specific ability
    */
-  export function getTotalAbilityModifier(character: HollowGearCharacter, ability: AbilityScore): number {
+  export function getTotalAbilityModifier(
+    character: HollowGearCharacter,
+    ability: AbilityScore
+  ): number {
     const abilityData = character.abilities[ability];
-    const totalScore = abilityData.base + abilityData.racial + abilityData.enhancement + abilityData.temporary;
+    const totalScore =
+      abilityData.base +
+      abilityData.racial +
+      abilityData.enhancement +
+      abilityData.temporary;
     return Math.floor((totalScore - 10) / 2);
   }
 
   /**
    * Get character's skill bonus for a specific skill
    */
-  export function getSkillBonus(character: HollowGearCharacter, skill: Skill): number {
+  export function getSkillBonus(
+    character: HollowGearCharacter,
+    skill: Skill
+  ): number {
     const derivedStats = calculateDerivedStats(character);
     return derivedStats.skillBonuses[skill];
   }
@@ -327,14 +384,23 @@ export namespace CharacterUtilities {
   /**
    * Check if character is proficient in a skill
    */
-  export function isSkillProficient(character: HollowGearCharacter, skill: Skill): boolean {
-    return character.skills[skill].level === 'proficient' || character.skills[skill].level === 'expertise';
+  export function isSkillProficient(
+    character: HollowGearCharacter,
+    skill: Skill
+  ): boolean {
+    return (
+      character.skills[skill].level === 'proficient' ||
+      character.skills[skill].level === 'expertise'
+    );
   }
 
   /**
    * Check if character has expertise in a skill
    */
-  export function hasSkillExpertise(character: HollowGearCharacter, skill: Skill): boolean {
+  export function hasSkillExpertise(
+    character: HollowGearCharacter,
+    skill: Skill
+  ): boolean {
     return character.skills[skill].level === 'expertise';
   }
 
@@ -349,52 +415,63 @@ export namespace CharacterUtilities {
   } {
     const derivedStats = calculateDerivedStats(character);
     const currentWeight = calculateCurrentWeight(character);
-    
+
     return {
       level: derivedStats.encumbranceLevel,
       current: currentWeight,
       capacity: derivedStats.carryingCapacity,
-      percentage: (currentWeight / derivedStats.carryingCapacity) * 100
+      percentage: (currentWeight / derivedStats.carryingCapacity) * 100,
     };
   }
 
   // Private helper functions
 
-  function calculateAbilityModifiers(character: HollowGearCharacter): Record<AbilityScore, number> {
+  function calculateAbilityModifiers(
+    character: HollowGearCharacter
+  ): Record<AbilityScore, number> {
     const modifiers: Record<AbilityScore, number> = {} as any;
-    
-    for (const ability of ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'] as AbilityScore[]) {
+
+    for (const ability of [
+      'strength',
+      'dexterity',
+      'constitution',
+      'intelligence',
+      'wisdom',
+      'charisma',
+    ] as AbilityScore[]) {
       modifiers[ability] = getTotalAbilityModifier(character, ability);
     }
-    
+
     return modifiers;
   }
 
   function calculateSkillBonuses(
-    character: HollowGearCharacter, 
+    character: HollowGearCharacter,
     abilityModifiers: Record<AbilityScore, number>
   ): Record<Skill, number> {
     const bonuses: Record<Skill, number> = {} as any;
-    
+
     // Import skill abilities from the skills module
     const { SkillUtils } = require('./base/skills.js');
-    
-    for (const [skill, ability] of Object.entries(SkillUtils.SKILL_ABILITIES) as [Skill, AbilityScore][]) {
+
+    for (const [skill, ability] of Object.entries(
+      SkillUtils.SKILL_ABILITIES
+    ) as [Skill, AbilityScore][]) {
       const skillData = character.skills[skill];
       let bonus = abilityModifiers[ability];
-      
+
       if (skillData.level === 'proficient') {
         bonus += character.proficiencyBonus;
       } else if (skillData.level === 'expertise') {
         bonus += character.proficiencyBonus * 2; // Double proficiency for expertise
       }
-      
+
       // Add any miscellaneous bonus
       bonus += skillData.bonus;
-      
+
       bonuses[skill] = bonus;
     }
-    
+
     return bonuses;
   }
 
@@ -403,21 +480,30 @@ export namespace CharacterUtilities {
     abilityModifiers: Record<AbilityScore, number>
   ): Record<AbilityScore, number> {
     const bonuses: Record<AbilityScore, number> = {} as any;
-    
-    for (const ability of ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'] as AbilityScore[]) {
+
+    for (const ability of [
+      'strength',
+      'dexterity',
+      'constitution',
+      'intelligence',
+      'wisdom',
+      'charisma',
+    ] as AbilityScore[]) {
       let bonus = abilityModifiers[ability];
-      
+
       if (character.savingThrows[ability].proficient) {
         bonus += character.proficiencyBonus;
       }
-      
+
       bonuses[ability] = bonus;
     }
-    
+
     return bonuses;
   }
 
-  function calculateEffectiveArmorClass(character: HollowGearCharacter): number {
+  function calculateEffectiveArmorClass(
+    character: HollowGearCharacter
+  ): number {
     // This would calculate AC based on equipped armor, dex modifier, shields, etc.
     // For now, return the base AC from character data
     return character.armorClass.total;
@@ -444,10 +530,15 @@ export namespace CharacterUtilities {
     return strengthScore * 15; // Standard D&D 5e carrying capacity
   }
 
-  function calculateEncumbranceLevel(character: HollowGearCharacter): EncumbranceLevel {
+  function calculateEncumbranceLevel(
+    character: HollowGearCharacter
+  ): EncumbranceLevel {
     const currentWeight = calculateCurrentWeight(character);
-    const capacity = calculateCarryingCapacity(character, calculateAbilityModifiers(character));
-    
+    const capacity = calculateCarryingCapacity(
+      character,
+      calculateAbilityModifiers(character)
+    );
+
     if (currentWeight <= capacity) return 'unencumbered';
     if (currentWeight <= capacity * 2) return 'encumbered';
     if (currentWeight <= capacity * 3) return 'heavily_encumbered';
@@ -465,10 +556,12 @@ export namespace CharacterUtilities {
     abilityModifiers: Record<AbilityScore, number>
   ): number | undefined {
     if (!character.spellcasting) return undefined;
-    
+
     const spellcastingAbility = character.spellcasting.spellcastingAbility;
     const modifier = abilityModifiers[spellcastingAbility];
-    return modifier !== undefined ? 8 + character.proficiencyBonus + modifier : undefined;
+    return modifier !== undefined
+      ? 8 + character.proficiencyBonus + modifier
+      : undefined;
   }
 
   function calculateSpellAttackBonus(
@@ -476,10 +569,12 @@ export namespace CharacterUtilities {
     abilityModifiers: Record<AbilityScore, number>
   ): number | undefined {
     if (!character.spellcasting) return undefined;
-    
+
     const spellcastingAbility = character.spellcasting.spellcastingAbility;
     const modifier = abilityModifiers[spellcastingAbility];
-    return modifier !== undefined ? character.proficiencyBonus + modifier : undefined;
+    return modifier !== undefined
+      ? character.proficiencyBonus + modifier
+      : undefined;
   }
 
   function calculatePsionicSaveDC(
@@ -487,56 +582,68 @@ export namespace CharacterUtilities {
     abilityModifiers: Record<AbilityScore, number>
   ): number | undefined {
     if (!character.psionics) return undefined;
-    
+
     const psionicAbility = character.psionics.primaryAbility;
     return 8 + character.proficiencyBonus + abilityModifiers[psionicAbility];
   }
 
-  function calculateHeatStressEffects(character: HollowGearCharacter): HeatStressEffect[] {
+  function calculateHeatStressEffects(
+    character: HollowGearCharacter
+  ): HeatStressEffect[] {
     const effects: HeatStressEffect[] = [];
     const level = character.heatStress.currentLevel;
-    
+
     if (level >= 1) {
       effects.push({
         type: 'dexterity_penalty',
         severity: 1,
-        description: 'Dexterity checks and saves have disadvantage'
+        description: 'Dexterity checks and saves have disadvantage',
       });
     }
-    
+
     if (level >= 2) {
       effects.push({
         type: 'speed_reduction',
         severity: 10,
-        description: 'Speed reduced by 10 feet'
+        description: 'Speed reduced by 10 feet',
       });
     }
-    
+
     if (level >= 3) {
       effects.push({
         type: 'exhaustion',
         severity: 1,
-        description: 'Gain one level of exhaustion'
+        description: 'Gain one level of exhaustion',
       });
     }
-    
+
     return effects;
   }
 
   function getTotalAbilityScore(abilityData: any): number {
-    return abilityData.base + abilityData.racial + abilityData.enhancement + abilityData.temporary;
+    return (
+      abilityData.base +
+      abilityData.racial +
+      abilityData.enhancement +
+      abilityData.temporary
+    );
   }
 
   function formatClassString(classes: any[]): string {
     return classes.map(cls => `${cls.className} ${cls.level}`).join('/');
   }
 
-  function getKeySkills(character: HollowGearCharacter, skillBonuses: Record<Skill, number>): any[] {
+  function getKeySkills(
+    character: HollowGearCharacter,
+    skillBonuses: Record<Skill, number>
+  ): any[] {
     // Return top skills or proficient skills
     return Object.entries(skillBonuses)
       .filter(([skill]) => {
         const skillData = character.skills[skill as Skill];
-        return skillData.level === 'proficient' || skillData.level === 'expertise';
+        return (
+          skillData.level === 'proficient' || skillData.level === 'expertise'
+        );
       })
       .map(([skill, bonus]) => {
         const skillData = character.skills[skill as Skill];
@@ -544,7 +651,7 @@ export namespace CharacterUtilities {
           name: skill,
           bonus,
           proficient: skillData.level !== 'none',
-          expertise: skillData.level === 'expertise'
+          expertise: skillData.level === 'expertise',
         };
       })
       .slice(0, 6); // Top 6 skills
@@ -572,11 +679,16 @@ export namespace CharacterUtilities {
     return []; // Placeholder
   }
 
-  function getEquippedArmor(character: HollowGearCharacter): string | undefined {
-    return character.equipment.armor?.name;
+  function getEquippedArmor(
+    character: HollowGearCharacter
+  ): string | undefined {
+    // Return the armor ID as string, or undefined if no armor equipped
+    return character.equipment.armor;
   }
 
-  function getEquippedShield(character: HollowGearCharacter): string | undefined {
+  function getEquippedShield(
+    character: HollowGearCharacter
+  ): string | undefined {
     // Return equipped shield name
     return undefined; // Placeholder
   }
@@ -601,11 +713,18 @@ export namespace CharacterUtilities {
     right: Record<AbilityScore, number>
   ): Record<AbilityScore, number> {
     const differences: Record<AbilityScore, number> = {} as any;
-    
-    for (const ability of ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'] as AbilityScore[]) {
+
+    for (const ability of [
+      'strength',
+      'dexterity',
+      'constitution',
+      'intelligence',
+      'wisdom',
+      'charisma',
+    ] as AbilityScore[]) {
       differences[ability] = right[ability] - left[ability];
     }
-    
+
     return differences;
   }
 
@@ -614,57 +733,72 @@ export namespace CharacterUtilities {
     right: Record<Skill, number>
   ): Record<Skill, number> {
     const differences: Record<Skill, number> = {} as any;
-    
+
     for (const skill in left) {
-      differences[skill as Skill] = right[skill as Skill] - left[skill as Skill];
+      differences[skill as Skill] =
+        right[skill as Skill] - left[skill as Skill];
     }
-    
+
     return differences;
   }
 
-  function calculateClassDifferences(leftClasses: any[], rightClasses: any[]): string[] {
+  function calculateClassDifferences(
+    leftClasses: any[],
+    rightClasses: any[]
+  ): string[] {
     const differences: string[] = [];
-    
+
     // Get all unique class names from both characters
     const leftClassNames = new Set(leftClasses.map(cls => cls.className));
     const rightClassNames = new Set(rightClasses.map(cls => cls.className));
-    
+
     // Find classes that are in left but not in right
     for (const className of leftClassNames) {
       if (!rightClassNames.has(className)) {
         differences.push(className);
       }
     }
-    
+
     // Find classes that are in right but not in left
     for (const className of rightClassNames) {
       if (!leftClassNames.has(className)) {
         differences.push(className);
       }
     }
-    
+
     return differences;
   }
 
-  function calculateEquipmentDifferences(left: HollowGearCharacter, right: HollowGearCharacter): any {
+  function calculateEquipmentDifferences(
+    left: HollowGearCharacter,
+    right: HollowGearCharacter
+  ): any {
     // Calculate equipment differences
     return {
       leftOnly: [],
       rightOnly: [],
-      different: []
+      different: [],
     }; // Placeholder
   }
 
-  function calculateResourceDifferences(left: HollowGearCharacter, right: HollowGearCharacter): any {
+  function calculateResourceDifferences(
+    left: HollowGearCharacter,
+    right: HollowGearCharacter
+  ): any {
     // Calculate resource differences
     return {
       currency: {},
       hitPoints: right.hitPoints.current - left.hitPoints.current,
-      other: {}
+      other: {},
     }; // Placeholder
   }
 
-  function compareFields(path: string, oldObj: any, newObj: any, changes: CharacterDiff['changes']): void {
+  function compareFields(
+    path: string,
+    oldObj: any,
+    newObj: any,
+    changes: CharacterDiff['changes']
+  ): void {
     // Handle null/undefined cases
     if (oldObj === null || oldObj === undefined) {
       if (newObj !== null && newObj !== undefined) {
@@ -672,7 +806,7 @@ export namespace CharacterUtilities {
           field: path,
           oldValue: oldObj,
           newValue: newObj,
-          type: "create"
+          type: 'added',
         });
       }
       return;
@@ -683,19 +817,19 @@ export namespace CharacterUtilities {
         field: path,
         oldValue: oldObj,
         newValue: newObj,
-        type: "delete"
+        type: 'removed',
       });
       return;
     }
 
     // Handle primitive values
-    if (typeof oldObj !== "object" || typeof newObj !== "object") {
+    if (typeof oldObj !== 'object' || typeof newObj !== 'object') {
       if (oldObj !== newObj) {
         changes.push({
           field: path,
           oldValue: oldObj,
           newValue: newObj,
-          type: "update"
+          type: 'modified',
         });
       }
       return;
@@ -709,10 +843,10 @@ export namespace CharacterUtilities {
           field: `${path}.length`,
           oldValue: oldObj.length,
           newValue: newObj.length,
-          type: "update"
+          type: 'modified',
         });
       }
-      
+
       const maxLength = Math.max(oldObj.length, newObj.length);
       for (let i = 0; i < maxLength; i++) {
         const itemPath = path ? `${path}[${i}]` : `[${i}]`;
@@ -724,16 +858,18 @@ export namespace CharacterUtilities {
     // Handle objects - skip certain fields that shouldn't be tracked
     const skipFields = new Set(['id', 'created', 'lastModified', 'version']);
     const allKeys = new Set([...Object.keys(oldObj), ...Object.keys(newObj)]);
-    
+
     for (const key of allKeys) {
       if (skipFields.has(key)) continue;
-      
+
       const fieldPath = path ? `${path}.${key}` : key;
       compareFields(fieldPath, oldObj[key], newObj[key], changes);
     }
   }
 
-  function determineSignificance(changes: CharacterDiff['changes']): 'minor' | 'moderate' | 'major' {
+  function determineSignificance(
+    changes: CharacterDiff['changes']
+  ): 'minor' | 'moderate' | 'major' {
     if (changes.length === 0) return 'minor';
     if (changes.length < 5) return 'minor';
     if (changes.length < 15) return 'moderate';

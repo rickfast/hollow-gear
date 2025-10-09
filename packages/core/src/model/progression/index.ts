@@ -1,6 +1,6 @@
 /**
  * Character progression and advancement exports
- * 
+ *
  * This module provides comprehensive character progression functionality including
  * experience tracking, level advancement, and character development systems.
  */

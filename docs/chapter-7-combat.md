@@ -1,13 +1,15 @@
 ## Chapter 7: Combat & Overheat Rules
 
-> _"Battle in the Hollowgear is not a clash of steel — it’s a dialogue between minds and machines."_  
+> _"Battle in the Hollowgear is not a clash of steel — it’s a dialogue between minds and
+> machines."_  
 > — Rhul Greypike, Tharn Vanguard
 
 ---
 
 ### ⚔️ Combat Overview
 
-Combat in Hollowgear uses the **round-and-turn** structure of the 5E SRD, but adds new layers of resource and environmental interaction.  
+Combat in Hollowgear uses the **round-and-turn** structure of the 5E SRD, but adds new layers of
+resource and environmental interaction.  
 Every battle is a dance of heat, pressure, and psionic resonance.
 
 ---
@@ -47,9 +49,9 @@ Most mechanical gear and powered armor generate **Heat** when pushed too far.
 
 #### Heat Basics
 
--   You track **Heat Points (HPt)** separately from hit points.
--   You can normally accumulate up to **10 Heat Points** safely.
--   At **11+**, you enter **Overheat** and risk damage or malfunction.
+- You track **Heat Points (HPt)** separately from hit points.
+- You can normally accumulate up to **10 Heat Points** safely.
+- At **11+**, you enter **Overheat** and risk damage or malfunction.
 
 | Source                                      | Heat Gain              |
 | ------------------------------------------- | ---------------------- |
@@ -61,9 +63,9 @@ Most mechanical gear and powered armor generate **Heat** when pushed too far.
 
 **Cooling Down:**
 
--   End of combat: lose 1d4 Heat naturally.
--   **Vent Steam action:** lose 2 Heat (risk blindness).
--   **Overheat Regulator mod:** ignore 1 Heat per short rest.
+- End of combat: lose 1d4 Heat naturally.
+- **Vent Steam action:** lose 2 Heat (risk blindness).
+- **Overheat Regulator mod:** ignore 1 Heat per short rest.
 
 ---
 
@@ -93,7 +95,8 @@ Extended exposure to high Heat can impose **Heat Stress levels**:
 | 3     | Exhaustion level 1 and random malfunction each combat.   |
 | 4     | System collapse — armor shuts down, must be repaired.    |
 
-Heat Stress resets after a **long rest** in a safe, cool environment or use of a **Steam Vent Harness**.
+Heat Stress resets after a **long rest** in a safe, cool environment or use of a **Steam Vent
+Harness**.
 
 ---
 
@@ -114,7 +117,8 @@ On a roll of **natural 1** during Overclocked action → immediate **Overheat Ta
 
 ### ⚡ Steam, Psionics & Machinery
 
-Psionic power and mechanical tech interact in volatile ways. When **both systems overlap**, the battlefield becomes unpredictable.
+Psionic power and mechanical tech interact in volatile ways. When **both systems overlap**, the
+battlefield becomes unpredictable.
 
 | Condition                  | Effect                                                                                                       |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------ |
@@ -136,7 +140,8 @@ DMs are encouraged to treat **terrain as active hazards**.
 | Heavy      | +5          | Boiler tanks, collapsed machines             |
 | Dynamic    | Variable    | Moving gears, retracting panels, lift shafts |
 
-Creatures can use **Environment Actions** (lever pulls, vent valves, gear locks) as a bonus or free action depending on complexity.
+Creatures can use **Environment Actions** (lever pulls, vent valves, gear locks) as a bonus or free
+action depending on complexity.
 
 ---
 
@@ -144,16 +149,16 @@ Creatures can use **Environment Actions** (lever pulls, vent valves, gear locks)
 
 Psionic powers interact seamlessly with normal actions. Unless stated otherwise:
 
--   Manifesting a power = an **Action**
--   Sustained powers require **Focus** (see Chapter 6)
--   You can use **Psionic Surge** as a **Bonus Action**
+- Manifesting a power = an **Action**
+- Sustained powers require **Focus** (see Chapter 6)
+- You can use **Psionic Surge** as a **Bonus Action**
 
 #### Counter-Psionics
 
 If two psionic users target the same effect or creature:
 
--   Both roll opposed **Psionics checks (INT + proficiency)**.
--   The higher roll wins; loser loses AFP equal to the difference.
+- Both roll opposed **Psionics checks (INT + proficiency)**.
+- The higher roll wins; loser loses AFP equal to the difference.
 
 ---
 

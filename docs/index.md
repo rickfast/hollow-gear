@@ -14,5 +14,5 @@
 
 Appendix
 
--   a. [Formulae & Miracles](appendix-a-formulae-miracles.md)
--   b. [Bestiary](appendix-b-bestiary.md)
+- a. [Formulae & Miracles](appendix-a-formulae-miracles.md)
+- b. [Bestiary](appendix-b-bestiary.md)

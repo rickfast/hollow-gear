@@ -5,8 +5,8 @@
  * support for Hollow Gear characters, optimized for offline-first mobile usage.
  */
 
-import type { HollowGearCharacter } from "./character.js";
-import type { Result, ValidationError } from "./types/common.js";
+import type { HollowGearCharacter } from './character.js';
+import type { Result, ValidationError } from './types/common.js';
 
 /**
  * Serializable character data format
@@ -87,11 +87,11 @@ export interface CharacterChange {
  * Types of changes that can occur
  */
 export type ChangeType =
-  | "create"
-  | "update"
-  | "delete"
-  | "add" // For array additions
-  | "remove"; // For array removals
+  | 'create'
+  | 'update'
+  | 'delete'
+  | 'add' // For array additions
+  | 'remove'; // For array removals
 
 /**
  * Change tracking result
@@ -130,7 +130,7 @@ export namespace SerializationUtils {
   /**
    * Current model version for new characters
    */
-  export const CURRENT_VERSION = "1.0.0";
+  export const CURRENT_VERSION = '1.0.0';
 
   /**
    * Migration registry for version upgrades
@@ -164,11 +164,11 @@ export namespace SerializationUtils {
         success: false,
         error: [
           {
-            field: "serialization",
+            field: 'serialization',
             message: `Serialization failed: ${
-              error instanceof Error ? error.message : "Unknown error"
+              error instanceof Error ? error.message : 'Unknown error'
             }`,
-            code: "SERIALIZATION_FAILED",
+            code: 'SERIALIZATION_FAILED',
           },
         ],
       };
@@ -198,9 +198,9 @@ export namespace SerializationUtils {
             success: false,
             error: [
               {
-                field: "migration",
-                message: "Migration failed during deserialization",
-                code: "MIGRATION_FAILED",
+                field: 'migration',
+                message: 'Migration failed during deserialization',
+                code: 'MIGRATION_FAILED',
               },
             ],
           };
@@ -213,7 +213,7 @@ export namespace SerializationUtils {
 
       // Validate if requested
       if (options.validate !== false) {
-        const { CharacterUtils } = await import("./character.js");
+        const { CharacterUtils } = await import('./character.js');
         const validationResult = CharacterUtils.validateCharacter(character);
         if (!validationResult.success) {
           return validationResult;
@@ -226,11 +226,11 @@ export namespace SerializationUtils {
         success: false,
         error: [
           {
-            field: "deserialization",
+            field: 'deserialization',
             message: `Deserialization failed: ${
-              error instanceof Error ? error.message : "Unknown error"
+              error instanceof Error ? error.message : 'Unknown error'
             }`,
-            code: "DESERIALIZATION_FAILED",
+            code: 'DESERIALIZATION_FAILED',
           },
         ],
       };
@@ -255,9 +255,9 @@ export namespace SerializationUtils {
             success: false,
             error: [
               {
-                field: "version",
+                field: 'version',
                 message: `No migration path found from version ${currentVersion} to ${CURRENT_VERSION}`,
-                code: "NO_MIGRATION_PATH",
+                code: 'NO_MIGRATION_PATH',
               },
             ],
           };
@@ -275,11 +275,11 @@ export namespace SerializationUtils {
         success: false,
         error: [
           {
-            field: "migration",
+            field: 'migration',
             message: `Migration failed: ${
-              error instanceof Error ? error.message : "Unknown error"
+              error instanceof Error ? error.message : 'Unknown error'
             }`,
-            code: "MIGRATION_FAILED",
+            code: 'MIGRATION_FAILED',
           },
         ],
       };
@@ -297,7 +297,7 @@ export namespace SerializationUtils {
     const timestamp = new Date();
 
     // Compare the two character objects recursively
-    compareObjects("", oldCharacter, newCharacter, changes, timestamp);
+    compareObjects('', oldCharacter, newCharacter, changes, timestamp);
 
     // Calculate summary
     const summary: Record<ChangeType, number> = {
@@ -308,7 +308,7 @@ export namespace SerializationUtils {
       remove: 0,
     };
 
-    changes.forEach((change) => {
+    changes.forEach(change => {
       summary[change.type]++;
     });
 
@@ -364,9 +364,9 @@ export namespace SerializationUtils {
             success: false,
             error: [
               {
-                field: "checksum",
-                message: "Patch checksum mismatch - data may be corrupted",
-                code: "CHECKSUM_MISMATCH",
+                field: 'checksum',
+                message: 'Patch checksum mismatch - data may be corrupted',
+                code: 'CHECKSUM_MISMATCH',
               },
             ],
           };
@@ -379,11 +379,11 @@ export namespace SerializationUtils {
         success: false,
         error: [
           {
-            field: "patch",
+            field: 'patch',
             message: `Patch application failed: ${
-              error instanceof Error ? error.message : "Unknown error"
+              error instanceof Error ? error.message : 'Unknown error'
             }`,
-            code: "PATCH_FAILED",
+            code: 'PATCH_FAILED',
           },
         ],
       };
@@ -432,7 +432,7 @@ export namespace SerializationUtils {
     const character: any = {};
 
     for (const [key, value] of Object.entries(data)) {
-      if (key === "created" || key === "lastModified") {
+      if (key === 'created' || key === 'lastModified') {
         character[key] = new Date(value as string);
       } else if (options.transforms && options.transforms[key]) {
         character[key] = options.transforms[key](value);
@@ -459,7 +459,7 @@ export namespace SerializationUtils {
           oldValue: oldObj,
           newValue: newObj,
           timestamp,
-          type: "create",
+          type: 'create',
         });
       }
       return;
@@ -471,20 +471,20 @@ export namespace SerializationUtils {
         oldValue: oldObj,
         newValue: newObj,
         timestamp,
-        type: "delete",
+        type: 'delete',
       });
       return;
     }
 
     // Handle primitive values
-    if (typeof oldObj !== "object" || typeof newObj !== "object") {
+    if (typeof oldObj !== 'object' || typeof newObj !== 'object') {
       if (oldObj !== newObj) {
         changes.push({
           path,
           oldValue: oldObj,
           newValue: newObj,
           timestamp,
-          type: "update",
+          type: 'update',
         });
       }
       return;
@@ -523,7 +523,7 @@ export namespace SerializationUtils {
           oldValue: undefined,
           newValue: newArray[i],
           timestamp,
-          type: "add",
+          type: 'add',
         });
       } else if (i >= newArray.length) {
         // Item removed
@@ -532,7 +532,7 @@ export namespace SerializationUtils {
           oldValue: oldArray[i],
           newValue: undefined,
           timestamp,
-          type: "remove",
+          type: 'remove',
         });
       } else {
         // Item potentially changed
@@ -545,20 +545,20 @@ export namespace SerializationUtils {
     character: HollowGearCharacter,
     change: CharacterChange
   ): HollowGearCharacter {
-    const pathParts = change.path.split(".");
+    const pathParts = change.path.split('.');
     const updatedCharacter = JSON.parse(JSON.stringify(character)); // Deep clone
 
     let current = updatedCharacter;
     for (let i = 0; i < pathParts.length - 1; i++) {
       const part = pathParts[i];
-      if (part && part.includes("[") && part.includes("]")) {
+      if (part && part.includes('[') && part.includes(']')) {
         // Handle array access
-        const splitResult = part.split("[");
+        const splitResult = part.split('[');
         if (splitResult.length >= 2) {
           const key = splitResult[0];
           const indexStr = splitResult[1];
           if (indexStr && key) {
-            const index = parseInt(indexStr.replace("]", ""));
+            const index = parseInt(indexStr.replace(']', ''));
             if (!isNaN(index) && current[key] && Array.isArray(current[key])) {
               current = current[key][index];
             }
@@ -570,7 +570,7 @@ export namespace SerializationUtils {
     }
 
     const finalKey = pathParts[pathParts.length - 1];
-    if (finalKey && (change.type === "delete" || change.type === "remove")) {
+    if (finalKey && (change.type === 'delete' || change.type === 'remove')) {
       delete current[finalKey];
     } else if (finalKey) {
       current[finalKey] = change.newValue;

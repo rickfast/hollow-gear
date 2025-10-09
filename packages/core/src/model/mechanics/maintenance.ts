@@ -8,20 +8,20 @@
 /**
  * Equipment malfunction severity levels
  */
-export type MalfunctionSeverity = "minor" | "moderate" | "major" | "critical";
+export type MalfunctionSeverity = 'minor' | 'moderate' | 'major' | 'critical';
 
 /**
  * Types of equipment malfunctions
  */
 export type MalfunctionType =
-  | "power_failure"
-  | "mechanical_jam"
-  | "overheating"
-  | "calibration_drift"
-  | "component_failure"
-  | "mod_interference"
-  | "aether_leak"
-  | "structural_damage";
+  | 'power_failure'
+  | 'mechanical_jam'
+  | 'overheating'
+  | 'calibration_drift'
+  | 'component_failure'
+  | 'mod_interference'
+  | 'aether_leak'
+  | 'structural_damage';
 
 /**
  * Equipment malfunction state
@@ -50,11 +50,11 @@ export interface MalfunctionState {
  */
 export interface MalfunctionEffect {
   type:
-    | "damage_penalty"
-    | "accuracy_penalty"
-    | "ac_penalty"
-    | "disabled"
-    | "unreliable";
+    | 'damage_penalty'
+    | 'accuracy_penalty'
+    | 'ac_penalty'
+    | 'disabled'
+    | 'unreliable';
   value: number;
   description: string;
 }
@@ -63,7 +63,7 @@ export interface MalfunctionEffect {
  * Requirements to repair a malfunction
  */
 export interface RepairRequirement {
-  type: "skill_check" | "resource" | "time" | "tool";
+  type: 'skill_check' | 'resource' | 'time' | 'tool';
   requirement: string;
   value: number;
   description: string;
@@ -100,40 +100,40 @@ export interface MaintenanceData {
  */
 export interface MaintenanceRecord {
   date: Date;
-  type: "routine" | "repair" | "overhaul" | "emergency";
+  type: 'routine' | 'repair' | 'overhaul' | 'emergency';
   description: string;
   resourcesUsed: MaintenanceResource[];
   performedBy?: string;
-  result: "success" | "partial" | "failure";
+  result: 'success' | 'partial' | 'failure';
 }
 
 /**
  * Resources used in maintenance
  */
 export interface MaintenanceResource {
-  type: "coolant" | "lubricant" | "spare_parts" | "repair_kit" | "aether_dust";
+  type: 'coolant' | 'lubricant' | 'spare_parts' | 'repair_kit' | 'aether_dust';
   quantity: number;
-  quality?: "standard" | "superior" | "masterwork";
+  quality?: 'standard' | 'superior' | 'masterwork';
 }
 
 /**
  * Special maintenance requirements for certain equipment
  */
 export interface MaintenanceRequirement {
-  type: "environmental" | "skill" | "tool" | "resource";
+  type: 'environmental' | 'skill' | 'tool' | 'resource';
   description: string;
-  frequency: "daily" | "weekly" | "monthly" | "per_use";
+  frequency: 'daily' | 'weekly' | 'monthly' | 'per_use';
 }
 
 /**
  * Maintenance difficulty levels
  */
 export type MaintenanceDifficulty =
-  | "trivial"
-  | "easy"
-  | "moderate"
-  | "hard"
-  | "very_hard";
+  | 'trivial'
+  | 'easy'
+  | 'moderate'
+  | 'hard'
+  | 'very_hard';
 
 /**
  * Maintenance check result
@@ -173,22 +173,22 @@ export const MALFUNCTION_SEVERITY_EFFECTS: Record<
   }
 > = {
   minor: {
-    repairDifficulty: "easy",
+    repairDifficulty: 'easy',
     performancePenalty: 0.1,
     riskOfSpread: 5,
   },
   moderate: {
-    repairDifficulty: "moderate",
+    repairDifficulty: 'moderate',
     performancePenalty: 0.25,
     riskOfSpread: 15,
   },
   major: {
-    repairDifficulty: "hard",
+    repairDifficulty: 'hard',
     performancePenalty: 0.5,
     riskOfSpread: 30,
   },
   critical: {
-    repairDifficulty: "very_hard",
+    repairDifficulty: 'very_hard',
     performancePenalty: 0.75,
     riskOfSpread: 50,
   },
@@ -212,21 +212,21 @@ export const MAINTENANCE_DIFFICULTY_DC: Record<MaintenanceDifficulty, number> =
 export const STANDARD_MAINTENANCE_COSTS: Record<string, MaintenanceResource[]> =
   {
     routine_weapon: [
-      { type: "lubricant", quantity: 1 },
-      { type: "spare_parts", quantity: 1 },
+      { type: 'lubricant', quantity: 1 },
+      { type: 'spare_parts', quantity: 1 },
     ],
     routine_armor: [
-      { type: "lubricant", quantity: 2 },
-      { type: "spare_parts", quantity: 1 },
+      { type: 'lubricant', quantity: 2 },
+      { type: 'spare_parts', quantity: 1 },
     ],
     routine_powered: [
-      { type: "coolant", quantity: 1 },
-      { type: "lubricant", quantity: 1 },
-      { type: "spare_parts", quantity: 2 },
+      { type: 'coolant', quantity: 1 },
+      { type: 'lubricant', quantity: 1 },
+      { type: 'spare_parts', quantity: 2 },
     ],
     emergency_repair: [
-      { type: "repair_kit", quantity: 1 },
-      { type: "spare_parts", quantity: 3 },
+      { type: 'repair_kit', quantity: 1 },
+      { type: 'spare_parts', quantity: 3 },
     ],
   }; /**
  
@@ -310,42 +310,42 @@ function generateMalfunctionType(
   riskFactors: MalfunctionRiskFactors
 ): MalfunctionType {
   const types: MalfunctionType[] = [
-    "power_failure",
-    "mechanical_jam",
-    "overheating",
-    "calibration_drift",
-    "component_failure",
-    "mod_interference",
-    "aether_leak",
-    "structural_damage",
+    'power_failure',
+    'mechanical_jam',
+    'overheating',
+    'calibration_drift',
+    'component_failure',
+    'mod_interference',
+    'aether_leak',
+    'structural_damage',
   ];
 
   // Weight types based on risk factors
   if (riskFactors.heatStressModifier > 5) {
-    return "overheating";
+    return 'overheating';
   }
 
   if (riskFactors.modificationModifier > 3) {
-    return Math.random() < 0.5 ? "mod_interference" : "aether_leak";
+    return Math.random() < 0.5 ? 'mod_interference' : 'aether_leak';
   }
 
   if (riskFactors.usageHoursModifier > 10) {
-    return Math.random() < 0.5 ? "mechanical_jam" : "component_failure";
+    return Math.random() < 0.5 ? 'mechanical_jam' : 'component_failure';
   }
 
   // Random selection for other cases
   const randomIndex = Math.floor(Math.random() * types.length);
-  return types[randomIndex] || "component_failure";
+  return types[randomIndex] || 'component_failure';
 }
 
 /**
  * Generate malfunction severity based on total risk
  */
 function generateMalfunctionSeverity(totalRisk: number): MalfunctionSeverity {
-  if (totalRisk < 10) return "minor";
-  if (totalRisk < 25) return Math.random() < 0.7 ? "minor" : "moderate";
-  if (totalRisk < 50) return Math.random() < 0.5 ? "moderate" : "major";
-  return Math.random() < 0.3 ? "major" : "critical";
+  if (totalRisk < 10) return 'minor';
+  if (totalRisk < 25) return Math.random() < 0.7 ? 'minor' : 'moderate';
+  if (totalRisk < 50) return Math.random() < 0.5 ? 'moderate' : 'major';
+  return Math.random() < 0.3 ? 'major' : 'critical';
 }
 
 /**
@@ -382,17 +382,17 @@ function generateMalfunctionEffects(
   const effects: MalfunctionEffect[] = [];
 
   switch (type) {
-    case "power_failure":
+    case 'power_failure':
       effects.push({
-        type: "disabled",
+        type: 'disabled',
         value: 1,
-        description: "Equipment is non-functional until repaired",
+        description: 'Equipment is non-functional until repaired',
       });
       break;
 
-    case "mechanical_jam":
+    case 'mechanical_jam':
       effects.push({
-        type: "unreliable",
+        type: 'unreliable',
         value: Math.floor(severityMultiplier * 20),
         description: `${Math.floor(
           severityMultiplier * 20
@@ -400,17 +400,17 @@ function generateMalfunctionEffects(
       });
       break;
 
-    case "overheating":
+    case 'overheating':
       effects.push({
-        type: "damage_penalty",
+        type: 'damage_penalty',
         value: Math.floor(severityMultiplier * 4),
         description: `Damage reduced by ${Math.floor(severityMultiplier * 4)}`,
       });
       break;
 
-    case "calibration_drift":
+    case 'calibration_drift':
       effects.push({
-        type: "accuracy_penalty",
+        type: 'accuracy_penalty',
         value: Math.floor(severityMultiplier * 4),
         description: `Attack rolls reduced by ${Math.floor(
           severityMultiplier * 4
@@ -418,33 +418,33 @@ function generateMalfunctionEffects(
       });
       break;
 
-    case "component_failure":
+    case 'component_failure':
       effects.push({
-        type: "damage_penalty",
+        type: 'damage_penalty',
         value: Math.floor(severityMultiplier * 2),
         description: `Reduced effectiveness due to component failure`,
       });
       break;
 
-    case "mod_interference":
+    case 'mod_interference':
       effects.push({
-        type: "unreliable",
+        type: 'unreliable',
         value: Math.floor(severityMultiplier * 15),
-        description: "Modifications interfere with normal operation",
+        description: 'Modifications interfere with normal operation',
       });
       break;
 
-    case "aether_leak":
+    case 'aether_leak':
       effects.push({
-        type: "unreliable",
+        type: 'unreliable',
         value: Math.floor(severityMultiplier * 10),
-        description: "Aether leakage causes unpredictable behavior",
+        description: 'Aether leakage causes unpredictable behavior',
       });
       break;
 
-    case "structural_damage":
+    case 'structural_damage':
       effects.push({
-        type: "ac_penalty",
+        type: 'ac_penalty',
         value: Math.floor(severityMultiplier * 3),
         description: `AC reduced by ${Math.floor(
           severityMultiplier * 3
@@ -468,70 +468,70 @@ function generateRepairRequirements(
 
   const requirements: RepairRequirement[] = [
     {
-      type: "skill_check",
-      requirement: "Tinker Tools",
+      type: 'skill_check',
+      requirement: 'Tinker Tools',
       value: dc,
       description: `DC ${dc} Tinker Tools check to repair`,
     },
     {
-      type: "time",
-      requirement: "hours",
+      type: 'time',
+      requirement: 'hours',
       value:
-        severity === "minor"
+        severity === 'minor'
           ? 1
-          : severity === "moderate"
-          ? 2
-          : severity === "major"
-          ? 4
-          : 8,
-      description: "Time required for repair",
+          : severity === 'moderate'
+            ? 2
+            : severity === 'major'
+              ? 4
+              : 8,
+      description: 'Time required for repair',
     },
   ];
 
   // Add resource requirements based on type and severity
   switch (type) {
-    case "power_failure":
+    case 'power_failure':
       requirements.push({
-        type: "resource",
-        requirement: "spare_parts",
-        value: severity === "critical" ? 3 : 2,
-        description: "Spare parts needed for power system repair",
+        type: 'resource',
+        requirement: 'spare_parts',
+        value: severity === 'critical' ? 3 : 2,
+        description: 'Spare parts needed for power system repair',
       });
       break;
 
-    case "mechanical_jam":
+    case 'mechanical_jam':
       requirements.push({
-        type: "resource",
-        requirement: "lubricant",
+        type: 'resource',
+        requirement: 'lubricant',
         value: 1,
-        description: "Lubricant needed to free jammed components",
+        description: 'Lubricant needed to free jammed components',
       });
       break;
 
-    case "overheating":
+    case 'overheating':
       requirements.push({
-        type: "resource",
-        requirement: "coolant",
-        value: severity === "critical" ? 3 : 2,
-        description: "Coolant needed to address overheating",
+        type: 'resource',
+        requirement: 'coolant',
+        value: severity === 'critical' ? 3 : 2,
+        description: 'Coolant needed to address overheating',
       });
       break;
 
-    case "component_failure":
+    case 'component_failure':
       requirements.push({
-        type: "resource",
-        requirement: "spare_parts",
-        value: severity === "minor" ? 1 : severity === "moderate" ? 2 : 3,
-        description: "Replacement components needed",
+        type: 'resource',
+        requirement: 'spare_parts',
+        value: severity === 'minor' ? 1 : severity === 'moderate' ? 2 : 3,
+        description: 'Replacement components needed',
       });
       break;
 
-    case "aether_leak":
+    case 'aether_leak':
       requirements.push({
-        type: "resource",
-        requirement: "aether_dust",
+        type: 'resource',
+        requirement: 'aether_dust',
         value: 1,
-        description: "Aether dust needed to seal leak",
+        description: 'Aether dust needed to seal leak',
       });
       break;
   }
@@ -547,30 +547,30 @@ function generateMalfunctionDescription(
   severity: MalfunctionSeverity
 ): string {
   const severityDesc =
-    severity === "minor"
-      ? "slight"
-      : severity === "moderate"
-      ? "noticeable"
-      : severity === "major"
-      ? "significant"
-      : "critical";
+    severity === 'minor'
+      ? 'slight'
+      : severity === 'moderate'
+        ? 'noticeable'
+        : severity === 'major'
+          ? 'significant'
+          : 'critical';
 
   switch (type) {
-    case "power_failure":
+    case 'power_failure':
       return `${severityDesc} power system failure affecting equipment operation`;
-    case "mechanical_jam":
+    case 'mechanical_jam':
       return `${severityDesc} mechanical jamming in moving components`;
-    case "overheating":
+    case 'overheating':
       return `${severityDesc} overheating causing performance degradation`;
-    case "calibration_drift":
+    case 'calibration_drift':
       return `${severityDesc} calibration drift affecting accuracy`;
-    case "component_failure":
+    case 'component_failure':
       return `${severityDesc} component failure reducing effectiveness`;
-    case "mod_interference":
+    case 'mod_interference':
       return `${severityDesc} interference between installed modifications`;
-    case "aether_leak":
+    case 'aether_leak':
       return `${severityDesc} aether leakage causing instability`;
-    case "structural_damage":
+    case 'structural_damage':
       return `${severityDesc} structural damage compromising integrity`;
     default:
       return `${severityDesc} equipment malfunction`;
@@ -618,12 +618,12 @@ export function performMaintenance(
 
     // Attempt to fix malfunctions
     const activeMalfunctions = maintenanceData.malfunctions.filter(
-      (m) => m.active
+      m => m.active
     );
     for (const malfunction of activeMalfunctions) {
       const repairCheck = Math.floor(Math.random() * 20) + 1 + skillBonus;
       const repairDC =
-        malfunction.repairRequirements.find((r) => r.type === "skill_check")
+        malfunction.repairRequirements.find(r => r.type === 'skill_check')
           ?.value || 15;
 
       if (repairCheck >= repairDC) {
@@ -636,7 +636,7 @@ export function performMaintenance(
       `Maintenance level improved to ${result.newMaintenanceLevel}`
     );
   } else {
-    result.notes.push("Maintenance attempt failed");
+    result.notes.push('Maintenance attempt failed');
 
     // Risk of causing new malfunction on critical failure
     if (skillCheck <= 5) {
@@ -644,7 +644,7 @@ export function performMaintenance(
       const newMalfunction = checkForMalfunction(maintenanceData, riskFactors);
       if (newMalfunction) {
         result.malfunctionsOccurred.push(newMalfunction);
-        result.notes.push("Maintenance error caused new malfunction!");
+        result.notes.push('Maintenance error caused new malfunction!');
       }
     }
   }
@@ -663,10 +663,10 @@ function calculateResourceQuality(resources: MaintenanceResource[]): number {
 
   for (const resource of resources) {
     switch (resource.quality) {
-      case "superior":
+      case 'superior':
         qualityBonus += 2;
         break;
-      case "masterwork":
+      case 'masterwork':
         qualityBonus += 4;
         break;
       default:

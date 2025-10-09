@@ -3,11 +3,7 @@
  * Handles carrying capacity, item locations, and containers
  */
 
-import type { 
-  Equipment,
-  CurrencyValue,
-  PhysicalProperties
-} from './base.js';
+import type { Equipment, CurrencyValue, PhysicalProperties } from './base.js';
 import type { EquipmentId } from '../types/common.js';
 import type { ValidationResult, ValidationError } from '../types/common.js';
 
@@ -68,17 +64,17 @@ export interface CarriedItem {
 /**
  * Where an item is located
  */
-export type ItemLocation = 
-  | 'belt'        // On character's belt, easily accessible
-  | 'backpack'    // In main backpack
-  | 'pockets'     // In clothing pockets
-  | 'bandolier'   // On ammunition bandolier
-  | 'holster'     // In weapon holster
-  | 'sheath'      // In weapon sheath
-  | 'pouch'       // In belt pouch
-  | 'saddlebags'  // On mount's saddlebags
-  | 'cart'        // In cart or wagon
-  | 'container';  // In a specific container
+export type ItemLocation =
+  | 'belt' // On character's belt, easily accessible
+  | 'backpack' // In main backpack
+  | 'pockets' // In clothing pockets
+  | 'bandolier' // On ammunition bandolier
+  | 'holster' // In weapon holster
+  | 'sheath' // In weapon sheath
+  | 'pouch' // In belt pouch
+  | 'saddlebags' // On mount's saddlebags
+  | 'cart' // In cart or wagon
+  | 'container'; // In a specific container
 
 /**
  * Container for storing items
@@ -103,7 +99,7 @@ export interface Container {
 /**
  * Types of containers
  */
-export type ContainerType = 
+export type ContainerType =
   | 'backpack'
   | 'chest'
   | 'barrel'
@@ -146,17 +142,17 @@ export interface ContainerProperties {
 /**
  * Special properties containers can have
  */
-export type ContainerSpecialProperty = 
-  | 'dimensional'     // Holds more than physically possible
-  | 'weightless'      // Contents don't add to carrying weight
-  | 'preserving'      // Prevents decay of organic items
-  | 'cooling'         // Keeps contents cool
-  | 'heating'         // Keeps contents warm
-  | 'airtight'        // Completely sealed from air
-  | 'lead-lined'      // Blocks radiation and scrying
-  | 'reinforced'      // Extra protection for contents
-  | 'organized'       // Items are easier to find
-  | 'quick-access';   // Items can be drawn as free action
+export type ContainerSpecialProperty =
+  | 'dimensional' // Holds more than physically possible
+  | 'weightless' // Contents don't add to carrying weight
+  | 'preserving' // Prevents decay of organic items
+  | 'cooling' // Keeps contents cool
+  | 'heating' // Keeps contents warm
+  | 'airtight' // Completely sealed from air
+  | 'lead-lined' // Blocks radiation and scrying
+  | 'reinforced' // Extra protection for contents
+  | 'organized' // Items are easier to find
+  | 'quick-access'; // Items can be drawn as free action
 
 /**
  * Character's carrying capacity information
@@ -179,12 +175,12 @@ export interface CarryingCapacity {
 /**
  * Encumbrance levels affecting movement and actions
  */
-export type EncumbranceLevel = 
-  | 'unencumbered'  // No penalties
-  | 'light'         // Minor penalties
-  | 'moderate'      // Moderate penalties
-  | 'heavy'         // Significant penalties
-  | 'overloaded';   // Severe penalties, can't move normally
+export type EncumbranceLevel =
+  | 'unencumbered' // No penalties
+  | 'light' // Minor penalties
+  | 'moderate' // Moderate penalties
+  | 'heavy' // Significant penalties
+  | 'overloaded'; // Severe penalties, can't move normally
 
 /**
  * Item bundle for similar items
@@ -223,9 +219,12 @@ export namespace InventoryUtils {
   /**
    * Calculate total weight of inventory
    */
-  export function calculateTotalWeight(inventory: InventoryData, allEquipment: Map<EquipmentId, Equipment>): number {
+  export function calculateTotalWeight(
+    inventory: InventoryData,
+    allEquipment: Map<EquipmentId, Equipment>
+  ): number {
     let totalWeight = 0;
-    
+
     // Add equipped items
     const equipped = inventory.equipped;
     if (equipped.mainHand) {
@@ -240,7 +239,7 @@ export namespace InventoryUtils {
       const item = allEquipment.get(equipped.armor);
       if (item) totalWeight += item.properties.physical.weight;
     }
-    
+
     // Add accessories and tools
     for (const accessoryId of equipped.accessories) {
       const item = allEquipment.get(accessoryId);
@@ -250,60 +249,68 @@ export namespace InventoryUtils {
       const item = allEquipment.get(toolId);
       if (item) totalWeight += item.properties.physical.weight;
     }
-    
+
     // Add carried items
     for (const carriedItem of inventory.carried) {
-      totalWeight += carriedItem.equipment.properties.physical.weight * carriedItem.quantity;
+      totalWeight +=
+        carriedItem.equipment.properties.physical.weight * carriedItem.quantity;
     }
-    
+
     // Add container contents
     for (const container of inventory.containers) {
       totalWeight += container.properties.emptyWeight;
-      
+
       // Check if container has weightless property
       if (!container.properties.specialProperties.includes('weightless')) {
         for (const item of container.contents) {
-          totalWeight += item.equipment.properties.physical.weight * item.quantity;
+          totalWeight +=
+            item.equipment.properties.physical.weight * item.quantity;
         }
       }
     }
-    
+
     return totalWeight;
   }
 
   /**
    * Calculate total bulk of inventory
    */
-  export function calculateTotalBulk(inventory: InventoryData, allEquipment: Map<EquipmentId, Equipment>): number {
+  export function calculateTotalBulk(
+    inventory: InventoryData,
+    allEquipment: Map<EquipmentId, Equipment>
+  ): number {
     let totalBulk = 0;
-    
+
     // Equipped items don't count toward bulk (being worn)
-    
+
     // Add carried items
     for (const carriedItem of inventory.carried) {
-      totalBulk += carriedItem.equipment.properties.physical.bulk * carriedItem.quantity;
+      totalBulk +=
+        carriedItem.equipment.properties.physical.bulk * carriedItem.quantity;
     }
-    
+
     // Add containers and their contents
     for (const container of inventory.containers) {
       totalBulk += container.properties.bulk;
-      
+
       for (const item of container.contents) {
         totalBulk += item.equipment.properties.physical.bulk * item.quantity;
       }
     }
-    
+
     return totalBulk;
   }
 
   /**
    * Determine encumbrance level based on current load
    */
-  export function calculateEncumbrance(capacity: CarryingCapacity): EncumbranceLevel {
+  export function calculateEncumbrance(
+    capacity: CarryingCapacity
+  ): EncumbranceLevel {
     const weightRatio = capacity.currentWeight / capacity.maxWeight;
     const bulkRatio = capacity.currentBulk / capacity.maxBulk;
     const maxRatio = Math.max(weightRatio, bulkRatio);
-    
+
     if (maxRatio > 1.0) return 'overloaded';
     if (maxRatio > 0.8) return 'heavy';
     if (maxRatio > 0.6) return 'moderate';
@@ -316,18 +323,25 @@ export namespace InventoryUtils {
    */
   export function getSpeedModifier(encumbrance: EncumbranceLevel): number {
     switch (encumbrance) {
-      case 'unencumbered': return 0;
-      case 'light': return -5;
-      case 'moderate': return -10;
-      case 'heavy': return -15;
-      case 'overloaded': return -20;
+      case 'unencumbered':
+        return 0;
+      case 'light':
+        return -5;
+      case 'moderate':
+        return -10;
+      case 'heavy':
+        return -15;
+      case 'overloaded':
+        return -20;
     }
   }
 
   /**
    * Check if character has disadvantage on ability checks due to encumbrance
    */
-  export function hasEncumbranceDisadvantage(encumbrance: EncumbranceLevel): boolean {
+  export function hasEncumbranceDisadvantage(
+    encumbrance: EncumbranceLevel
+  ): boolean {
     return encumbrance === 'heavy' || encumbrance === 'overloaded';
   }
 
@@ -341,36 +355,39 @@ export namespace InventoryUtils {
     location: ItemLocation = 'backpack'
   ): ValidationResult<InventoryData> {
     const errors: ValidationError[] = [];
-    
+
     // Check if adding this item would exceed capacity
     const newWeight = equipment.properties.physical.weight * quantity;
     const newBulk = equipment.properties.physical.bulk * quantity;
-    
-    if (inventory.capacity.currentWeight + newWeight > inventory.capacity.maxWeight) {
+
+    if (
+      inventory.capacity.currentWeight + newWeight >
+      inventory.capacity.maxWeight
+    ) {
       errors.push({
         field: 'capacity.weight',
         message: 'Adding item would exceed weight capacity',
-        code: 'WEIGHT_EXCEEDED'
+        code: 'WEIGHT_EXCEEDED',
       });
     }
-    
+
     if (inventory.capacity.currentBulk + newBulk > inventory.capacity.maxBulk) {
       errors.push({
         field: 'capacity.bulk',
         message: 'Adding item would exceed bulk capacity',
-        code: 'BULK_EXCEEDED'
+        code: 'BULK_EXCEEDED',
       });
     }
-    
+
     if (errors.length > 0) {
       return { success: false, error: errors };
     }
-    
+
     // Find existing item to stack with
     const existingItemIndex = inventory.carried.findIndex(
       item => item.equipment.id === equipment.id && item.location === location
     );
-    
+
     let newCarried: CarriedItem[];
     if (existingItemIndex >= 0) {
       // Stack with existing item
@@ -379,7 +396,7 @@ export namespace InventoryUtils {
       if (existingItem) {
         newCarried[existingItemIndex] = {
           ...existingItem,
-          quantity: existingItem.quantity + quantity
+          quantity: existingItem.quantity + quantity,
         };
       }
     } else {
@@ -388,25 +405,25 @@ export namespace InventoryUtils {
         equipment,
         quantity,
         location,
-        accessible: isLocationAccessible(location)
+        accessible: isLocationAccessible(location),
       };
       newCarried = [...inventory.carried, newItem];
     }
-    
+
     // Update capacity
     const newCapacity: CarryingCapacity = {
       ...inventory.capacity,
       currentWeight: inventory.capacity.currentWeight + newWeight,
-      currentBulk: inventory.capacity.currentBulk + newBulk
+      currentBulk: inventory.capacity.currentBulk + newBulk,
     };
-    
+
     const updatedInventory: InventoryData = {
       ...inventory,
       carried: newCarried,
       capacity: newCapacity,
-      encumbrance: calculateEncumbrance(newCapacity)
+      encumbrance: calculateEncumbrance(newCapacity),
     };
-    
+
     return { success: true, data: updatedInventory };
   }
 
@@ -420,41 +437,42 @@ export namespace InventoryUtils {
     location?: ItemLocation
   ): ValidationResult<InventoryData> {
     const errors: ValidationError[] = [];
-    
+
     // Find the item
     const itemIndex = inventory.carried.findIndex(
-      item => item.equipment.id === equipmentId && 
-               (!location || item.location === location)
+      item =>
+        item.equipment.id === equipmentId &&
+        (!location || item.location === location)
     );
-    
+
     if (itemIndex === -1) {
       errors.push({
         field: 'equipmentId',
         message: 'Item not found in inventory',
-        code: 'ITEM_NOT_FOUND'
+        code: 'ITEM_NOT_FOUND',
       });
       return { success: false, error: errors };
     }
-    
+
     const item = inventory.carried[itemIndex];
     if (!item) {
       errors.push({
         field: 'equipmentId',
         message: 'Item not found in inventory',
-        code: 'ITEM_NOT_FOUND'
+        code: 'ITEM_NOT_FOUND',
       });
       return { success: false, error: errors };
     }
-    
+
     if (item.quantity < quantity) {
       errors.push({
         field: 'quantity',
         message: 'Not enough items to remove',
-        code: 'INSUFFICIENT_QUANTITY'
+        code: 'INSUFFICIENT_QUANTITY',
       });
       return { success: false, error: errors };
     }
-    
+
     let newCarried: CarriedItem[];
     if (item.quantity === quantity) {
       // Remove item entirely
@@ -467,27 +485,27 @@ export namespace InventoryUtils {
         quantity: item.quantity - quantity,
         location: item.location,
         accessible: item.accessible,
-        notes: item.notes
+        notes: item.notes,
       };
     }
-    
+
     // Update capacity
     const removedWeight = item.equipment.properties.physical.weight * quantity;
     const removedBulk = item.equipment.properties.physical.bulk * quantity;
-    
+
     const newCapacity: CarryingCapacity = {
       ...inventory.capacity,
       currentWeight: inventory.capacity.currentWeight - removedWeight,
-      currentBulk: inventory.capacity.currentBulk - removedBulk
+      currentBulk: inventory.capacity.currentBulk - removedBulk,
     };
-    
+
     const updatedInventory: InventoryData = {
       ...inventory,
       carried: newCarried,
       capacity: newCapacity,
-      encumbrance: calculateEncumbrance(newCapacity)
+      encumbrance: calculateEncumbrance(newCapacity),
     };
-    
+
     return { success: true, data: updatedInventory };
   }
 
@@ -502,29 +520,42 @@ export namespace InventoryUtils {
     quantity?: number
   ): ValidationResult<InventoryData> {
     // Remove from old location
-    const removeResult = removeItem(inventory, equipmentId, quantity, fromLocation);
+    const removeResult = removeItem(
+      inventory,
+      equipmentId,
+      quantity,
+      fromLocation
+    );
     if (!removeResult.success) {
       return removeResult;
     }
-    
+
     // Find the item to get equipment reference
     const item = inventory.carried.find(
-      item => item.equipment.id === equipmentId && item.location === fromLocation
+      item =>
+        item.equipment.id === equipmentId && item.location === fromLocation
     );
-    
+
     if (!item) {
       return {
         success: false,
-        error: [{
-          field: 'equipmentId',
-          message: 'Item not found',
-          code: 'ITEM_NOT_FOUND'
-        }]
+        error: [
+          {
+            field: 'equipmentId',
+            message: 'Item not found',
+            code: 'ITEM_NOT_FOUND',
+          },
+        ],
       };
     }
-    
+
     // Add to new location
-    return addItem(removeResult.data, item.equipment, quantity || item.quantity, toLocation);
+    return addItem(
+      removeResult.data,
+      item.equipment,
+      quantity || item.quantity,
+      toLocation
+    );
   }
 
   /**
@@ -536,32 +567,36 @@ export namespace InventoryUtils {
     slot: keyof EquippedItems
   ): ValidationResult<InventoryData> {
     const errors: ValidationError[] = [];
-    
+
     // Find item in carried items
-    const itemIndex = inventory.carried.findIndex(item => item.equipment.id === equipmentId);
+    const itemIndex = inventory.carried.findIndex(
+      item => item.equipment.id === equipmentId
+    );
     if (itemIndex === -1) {
       errors.push({
         field: 'equipmentId',
         message: 'Item not found in inventory',
-        code: 'ITEM_NOT_FOUND'
+        code: 'ITEM_NOT_FOUND',
       });
       return { success: false, error: errors };
     }
-    
+
     const item = inventory.carried[itemIndex];
-    
+
     // Remove from carried items
-    const newCarried = inventory.carried.filter((_, index) => index !== itemIndex);
-    
+    const newCarried = inventory.carried.filter(
+      (_, index) => index !== itemIndex
+    );
+
     // Add to equipped items
     const newEquipped = { ...inventory.equipped };
-    
+
     if (slot === 'accessories') {
       if (newEquipped.accessories.length >= newEquipped.maxAccessories) {
         errors.push({
           field: 'accessories',
           message: 'No available accessory slots',
-          code: 'NO_ACCESSORY_SLOTS'
+          code: 'NO_ACCESSORY_SLOTS',
         });
         return { success: false, error: errors };
       }
@@ -571,7 +606,7 @@ export namespace InventoryUtils {
         errors.push({
           field: 'tools',
           message: 'No available tool slots',
-          code: 'NO_TOOL_SLOTS'
+          code: 'NO_TOOL_SLOTS',
         });
         return { success: false, error: errors };
       }
@@ -580,13 +615,13 @@ export namespace InventoryUtils {
       // Single item slots
       (newEquipped as any)[slot] = equipmentId;
     }
-    
+
     const updatedInventory: InventoryData = {
       ...inventory,
       carried: newCarried,
-      equipped: newEquipped
+      equipped: newEquipped,
     };
-    
+
     return { success: true, data: updatedInventory };
   }
 
@@ -619,7 +654,7 @@ export namespace InventoryUtils {
     searchType: 'name' | 'type' | 'description' = 'name'
   ): CarriedItem[] {
     const searchLower = searchTerm.toLowerCase();
-    
+
     return inventory.carried.filter(item => {
       switch (searchType) {
         case 'name':
@@ -627,7 +662,10 @@ export namespace InventoryUtils {
         case 'type':
           return item.equipment.type.toLowerCase().includes(searchLower);
         case 'description':
-          return item.equipment.description?.toLowerCase().includes(searchLower) || false;
+          return (
+            item.equipment.description?.toLowerCase().includes(searchLower) ||
+            false
+          );
         default:
           return false;
       }
@@ -647,50 +685,56 @@ export namespace InventoryUtils {
   /**
    * Validate inventory data
    */
-  export function validateInventory(inventory: InventoryData): ValidationResult<InventoryData> {
+  export function validateInventory(
+    inventory: InventoryData
+  ): ValidationResult<InventoryData> {
     const errors: ValidationError[] = [];
-    
+
     // Validate capacity
     if (inventory.capacity.currentWeight > inventory.capacity.maxWeight) {
       errors.push({
         field: 'capacity.currentWeight',
         message: 'Current weight exceeds maximum capacity',
-        code: 'WEIGHT_EXCEEDED'
+        code: 'WEIGHT_EXCEEDED',
       });
     }
-    
+
     if (inventory.capacity.currentBulk > inventory.capacity.maxBulk) {
       errors.push({
         field: 'capacity.currentBulk',
         message: 'Current bulk exceeds maximum capacity',
-        code: 'BULK_EXCEEDED'
+        code: 'BULK_EXCEEDED',
       });
     }
-    
+
     // Validate currency
-    if (inventory.currency.cogs < 0 || inventory.currency.gears < 0 || inventory.currency.cores < 0) {
+    if (
+      inventory.currency.cogs < 0 ||
+      inventory.currency.gears < 0 ||
+      inventory.currency.cores < 0
+    ) {
       errors.push({
         field: 'currency',
         message: 'Currency values cannot be negative',
-        code: 'NEGATIVE_CURRENCY'
+        code: 'NEGATIVE_CURRENCY',
       });
     }
-    
+
     // Validate carried items
     for (const item of inventory.carried) {
       if (item.quantity <= 0) {
         errors.push({
           field: 'carried',
           message: `Item ${item.equipment.name} has invalid quantity`,
-          code: 'INVALID_QUANTITY'
+          code: 'INVALID_QUANTITY',
         });
       }
     }
-    
+
     if (errors.length > 0) {
       return { success: false, error: errors };
     }
-    
+
     return { success: true, data: inventory };
   }
 }

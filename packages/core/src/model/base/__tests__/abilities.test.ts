@@ -13,9 +13,9 @@ describe('AbilityScoreUtils', () => {
         base: 15,
         racial: 2,
         enhancement: 1,
-        temporary: -1
+        temporary: -1,
       };
-      
+
       expect(AbilityScoreUtils.calculateTotal(score)).toBe(17);
     });
 
@@ -24,9 +24,9 @@ describe('AbilityScoreUtils', () => {
         base: 10,
         racial: 0,
         enhancement: 0,
-        temporary: 0
+        temporary: 0,
       };
-      
+
       expect(AbilityScoreUtils.calculateTotal(score)).toBe(10);
     });
 
@@ -35,9 +35,9 @@ describe('AbilityScoreUtils', () => {
         base: 8,
         racial: 0,
         enhancement: 0,
-        temporary: -2
+        temporary: -2,
       };
-      
+
       expect(AbilityScoreUtils.calculateTotal(score)).toBe(6);
     });
   });
@@ -81,7 +81,7 @@ describe('AbilityScoreUtils', () => {
   describe('createAbilityScore', () => {
     it('should create ability score with all components', () => {
       const score = AbilityScoreUtils.createAbilityScore(15, 2, 1, -1);
-      
+
       expect(score.base).toBe(15);
       expect(score.racial).toBe(2);
       expect(score.enhancement).toBe(1);
@@ -91,7 +91,7 @@ describe('AbilityScoreUtils', () => {
 
     it('should create ability score with defaults', () => {
       const score = AbilityScoreUtils.createAbilityScore(14);
-      
+
       expect(score.base).toBe(14);
       expect(score.racial).toBe(0);
       expect(score.enhancement).toBe(0);
@@ -101,7 +101,7 @@ describe('AbilityScoreUtils', () => {
 
     it('should create ability score with partial values', () => {
       const score = AbilityScoreUtils.createAbilityScore(12, 1);
-      
+
       expect(score.base).toBe(12);
       expect(score.racial).toBe(1);
       expect(score.enhancement).toBe(0);
@@ -181,8 +181,12 @@ describe('AbilityScoreUtils', () => {
     it('should return formatted ability names', () => {
       expect(AbilityScoreUtils.getAbilityName('strength')).toBe('Strength');
       expect(AbilityScoreUtils.getAbilityName('dexterity')).toBe('Dexterity');
-      expect(AbilityScoreUtils.getAbilityName('constitution')).toBe('Constitution');
-      expect(AbilityScoreUtils.getAbilityName('intelligence')).toBe('Intelligence');
+      expect(AbilityScoreUtils.getAbilityName('constitution')).toBe(
+        'Constitution'
+      );
+      expect(AbilityScoreUtils.getAbilityName('intelligence')).toBe(
+        'Intelligence'
+      );
       expect(AbilityScoreUtils.getAbilityName('wisdom')).toBe('Wisdom');
       expect(AbilityScoreUtils.getAbilityName('charisma')).toBe('Charisma');
     });
@@ -192,8 +196,12 @@ describe('AbilityScoreUtils', () => {
     it('should return three-letter abbreviations', () => {
       expect(AbilityScoreUtils.getAbilityAbbreviation('strength')).toBe('STR');
       expect(AbilityScoreUtils.getAbilityAbbreviation('dexterity')).toBe('DEX');
-      expect(AbilityScoreUtils.getAbilityAbbreviation('constitution')).toBe('CON');
-      expect(AbilityScoreUtils.getAbilityAbbreviation('intelligence')).toBe('INT');
+      expect(AbilityScoreUtils.getAbilityAbbreviation('constitution')).toBe(
+        'CON'
+      );
+      expect(AbilityScoreUtils.getAbilityAbbreviation('intelligence')).toBe(
+        'INT'
+      );
       expect(AbilityScoreUtils.getAbilityAbbreviation('wisdom')).toBe('WIS');
       expect(AbilityScoreUtils.getAbilityAbbreviation('charisma')).toBe('CHA');
     });

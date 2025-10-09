@@ -7,11 +7,14 @@
 
 ### ⚙️ Overview
 
-Languages in **Hollowgear** are more than words — they are **interfaces** between thought and reality.  
-Each tongue evolved from a fusion of **biological memory**, **psionic resonance**, and **mechanical necessity**.  
+Languages in **Hollowgear** are more than words — they are **interfaces** between thought and
+reality.  
+Each tongue evolved from a fusion of **biological memory**, **psionic resonance**, and **mechanical
+necessity**.  
 Spoken language carries vibration and emotion; written language encodes logic and geometry.
 
-Adventurers will encounter many dialects across the world, some half-living, others purely conceptual.
+Adventurers will encounter many dialects across the world, some half-living, others purely
+conceptual.
 
 ---
 
@@ -32,13 +35,16 @@ Adventurers will encounter many dialects across the world, some half-living, oth
 ### 🔮 Psionic Communication
 
 **Aetheric** is the only language that exists _entirely within thought_.  
-Two creatures that share a psionic bond or Aetheric training can communicate complex ideas, emotions, and sensory data without sound.
+Two creatures that share a psionic bond or Aetheric training can communicate complex ideas,
+emotions, and sensory data without sound.
 
--   Aetheric communication ignores barriers and language limitations.
--   It can transmit only truth as the speaker perceives it — lies appear as distortions.
--   A creature without Aetheric training that receives such thoughts experiences fragmented images and static.
+- Aetheric communication ignores barriers and language limitations.
+- It can transmit only truth as the speaker perceives it — lies appear as distortions.
+- A creature without Aetheric training that receives such thoughts experiences fragmented images and
+  static.
 
-**Mindweavers** and certain races (Avenar, Karnathi) can innately sense Aetheric resonance in nearby communication.
+**Mindweavers** and certain races (Avenar, Karnathi) can innately sense Aetheric resonance in nearby
+communication.
 
 ---
 
@@ -82,7 +88,8 @@ Characters can learn a new language through downtime or training.
 | **Psionic Imprint**       | 1 hour  | 1 Aether Dust | Learn a language instantly from a willing psionic creature (temporary: 7 days). |
 | **Aether Crystal Memory** | 1 day   | 100 Cogs      | Absorb linguistic data from an artifact (permanent).                            |
 
-Failure to maintain usage for a month may result in linguistic decay; roll DC 10 Int save to retain fluency.
+Failure to maintain usage for a month may result in linguistic decay; roll DC 10 Int save to retain
+fluency.
 
 ---
 
@@ -101,11 +108,12 @@ Failure to maintain usage for a month may result in linguistic decay; roll DC 10
 
 Encourage players to reflect their character’s origins and beliefs through language.
 
--   An **Avenar** might whistle short melodic notes between sentences.
--   A **Karnathi Templar** recites High Brass phrases during combat.
--   A **Rendai** engineer names every tool affectionately — and argues with it when it breaks.
+- An **Avenar** might whistle short melodic notes between sentences.
+- A **Karnathi Templar** recites High Brass phrases during combat.
+- A **Rendai** engineer names every tool affectionately — and argues with it when it breaks.
 
-A character fluent in **multiple languages** can combine them creatively for coded speech, academic debate, or psionic resonance tests.
+A character fluent in **multiple languages** can combine them creatively for coded speech, academic
+debate, or psionic resonance tests.
 
 ---
 

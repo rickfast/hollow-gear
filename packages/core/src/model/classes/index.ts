@@ -1,6 +1,6 @@
 /**
  * Hollow Gear class system
- * 
+ *
  * This module defines the seven Hollow Gear classes and their mechanics,
  * including archetypes, features, and progression systems.
  */
@@ -10,13 +10,13 @@ import type { AbilityScore, DieType } from '../types/common.js';
 /**
  * The seven Hollow Gear classes available to players
  */
-export type HollowGearClass = 
-  | 'arcanist'    // Spellcaster using Aether Formulae
-  | 'templar'     // Divine spellcaster using Resonance Charges
-  | 'tweaker'     // Equipment specialist and inventor
-  | 'shadehand'   // Stealth and infiltration expert
-  | 'vanguard'    // Front-line fighter and protector
-  | 'artifex'     // Crafter and equipment master
+export type HollowGearClass =
+  | 'arcanist' // Spellcaster using Aether Formulae
+  | 'templar' // Divine spellcaster using Resonance Charges
+  | 'tweaker' // Equipment specialist and inventor
+  | 'shadehand' // Stealth and infiltration expert
+  | 'vanguard' // Front-line fighter and protector
+  | 'artifex' // Crafter and equipment master
   | 'mindweaver'; // Psionic specialist
 
 /**
@@ -83,13 +83,13 @@ export interface FeatureMechanics {
  * Types of mechanical effects a feature can have
  */
 export type FeatureMechanicType =
-  | 'passive'           // Always active
-  | 'action'           // Requires an action to use
-  | 'bonus_action'     // Requires a bonus action
-  | 'reaction'         // Triggered reaction
-  | 'free'             // No action required
-  | 'ritual'           // Special ritual activation
-  | 'resource';        // Consumes a resource
+  | 'passive' // Always active
+  | 'action' // Requires an action to use
+  | 'bonus_action' // Requires a bonus action
+  | 'reaction' // Triggered reaction
+  | 'free' // No action required
+  | 'ritual' // Special ritual activation
+  | 'resource'; // Consumes a resource
 
 /**
  * Specific effect of a feature
@@ -109,32 +109,32 @@ export interface FeatureEffect {
  * Types of effects a feature can produce
  */
 export type FeatureEffectType =
-  | 'ability_bonus'     // Bonus to ability scores
-  | 'skill_bonus'       // Bonus to skill checks
-  | 'save_bonus'        // Bonus to saving throws
-  | 'ac_bonus'          // Bonus to armor class
-  | 'hp_bonus'          // Bonus to hit points
-  | 'damage_bonus'      // Bonus to damage rolls
-  | 'attack_bonus'      // Bonus to attack rolls
-  | 'speed_bonus'       // Bonus to movement speed
-  | 'resistance'        // Damage resistance
-  | 'immunity'          // Damage immunity
-  | 'advantage'         // Advantage on rolls
-  | 'disadvantage'      // Disadvantage on rolls
-  | 'proficiency'       // Gain proficiency
-  | 'expertise'         // Gain expertise
-  | 'special';          // Special unique effect
+  | 'ability_bonus' // Bonus to ability scores
+  | 'skill_bonus' // Bonus to skill checks
+  | 'save_bonus' // Bonus to saving throws
+  | 'ac_bonus' // Bonus to armor class
+  | 'hp_bonus' // Bonus to hit points
+  | 'damage_bonus' // Bonus to damage rolls
+  | 'attack_bonus' // Bonus to attack rolls
+  | 'speed_bonus' // Bonus to movement speed
+  | 'resistance' // Damage resistance
+  | 'immunity' // Damage immunity
+  | 'advantage' // Advantage on rolls
+  | 'disadvantage' // Disadvantage on rolls
+  | 'proficiency' // Gain proficiency
+  | 'expertise' // Gain expertise
+  | 'special'; // Special unique effect
 
 /**
  * Target of a feature effect
  */
 export type FeatureTarget =
-  | 'self'              // Affects the character
-  | 'ally'              // Affects an ally
-  | 'enemy'             // Affects an enemy
-  | 'area'              // Affects an area
-  | 'equipment'         // Affects equipment
-  | 'environment';      // Affects environment
+  | 'self' // Affects the character
+  | 'ally' // Affects an ally
+  | 'enemy' // Affects an enemy
+  | 'area' // Affects an area
+  | 'equipment' // Affects equipment
+  | 'environment'; // Affects environment
 
 /**
  * Usage limitations for a feature
@@ -225,12 +225,7 @@ export interface FeatureRange {
 /**
  * Types of range
  */
-export type RangeType =
-  | 'self'
-  | 'touch'
-  | 'ranged'
-  | 'sight'
-  | 'unlimited';
+export type RangeType = 'self' | 'touch' | 'ranged' | 'sight' | 'unlimited';
 
 /**
  * Resource cost for using a feature
@@ -247,7 +242,7 @@ export interface ResourceCost {
  */
 export type ResourceType =
   | 'spell_slot'
-  | 'afp'              // Aether Flux Points
+  | 'afp' // Aether Flux Points
   | 'resonance_charge'
   | 'heat_point'
   | 'steam_charge'
@@ -271,12 +266,7 @@ export interface TargetingRequirements {
 /**
  * Valid target types
  */
-export type TargetType =
-  | 'creature'
-  | 'object'
-  | 'point'
-  | 'area'
-  | 'self_only';
+export type TargetType = 'creature' | 'object' | 'point' | 'area' | 'self_only';
 
 /**
  * Creature size categories
@@ -331,17 +321,17 @@ export interface ClassSpellcasting {
  * Types of spellcasting systems
  */
 export type SpellcastingType =
-  | 'arcanist'    // Aether Formulae
-  | 'templar';    // Resonance Charges
+  | 'arcanist' // Aether Formulae
+  | 'templar'; // Resonance Charges
 
 /**
  * Spellcasting progression types
  */
 export type SpellcastingProgression =
-  | 'full'        // Full caster (Arcanist, Templar)
-  | 'half'        // Half caster
-  | 'third'       // Third caster
-  | 'warlock';    // Warlock-style (short rest recovery)
+  | 'full' // Full caster (Arcanist, Templar)
+  | 'half' // Half caster
+  | 'third' // Third caster
+  | 'warlock'; // Warlock-style (short rest recovery)
 
 /**
  * Spellcasting focus types
@@ -373,12 +363,12 @@ export interface ClassPsionics {
  * Psionic disciplines
  */
 export type PsionicDiscipline =
-  | 'flux'      // Energy manipulation
-  | 'echo'      // Sound and vibration
-  | 'eidolon'   // Illusion and phantasm
-  | 'empyric'   // Mind and emotion
-  | 'veil'      // Concealment and stealth
-  | 'kinesis';  // Movement and force
+  | 'flux' // Energy manipulation
+  | 'echo' // Sound and vibration
+  | 'eidolon' // Illusion and phantasm
+  | 'empyric' // Mind and emotion
+  | 'veil' // Concealment and stealth
+  | 'kinesis'; // Movement and force
 
 /**
  * Class-specific resources

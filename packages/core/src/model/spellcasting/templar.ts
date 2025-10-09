@@ -51,12 +51,12 @@ export interface TemplarMiracle extends KnownSpell {
 /**
  * Types of resonance for Templar spells
  */
-export type ResonanceType = 
-  | 'divine'      // Traditional divine magic
-  | 'harmonic'    // Sound and vibration based
-  | 'protective'  // Defensive and warding
+export type ResonanceType =
+  | 'divine' // Traditional divine magic
+  | 'harmonic' // Sound and vibration based
+  | 'protective' // Defensive and warding
   | 'restorative' // Healing and restoration
-  | 'righteous'   // Combat and justice
+  | 'righteous' // Combat and justice
   | 'revelatory'; // Knowledge and truth
 
 /**
@@ -110,7 +110,7 @@ export namespace TemplarUtils {
     castingLevel: number
   ): number {
     const levelDifference = Math.max(0, castingLevel - miracle.level);
-    return miracle.rcCost + (levelDifference * miracle.rcScaling);
+    return miracle.rcCost + levelDifference * miracle.rcScaling;
   }
 
   /**
@@ -122,7 +122,7 @@ export namespace TemplarUtils {
     overchanneled: boolean
   ): number {
     let baseFeedback = miracle.baseFaithFeedback;
-    
+
     // Higher level casting generates more feedback
     const levelDifference = Math.max(0, castingLevel - miracle.level);
     baseFeedback += levelDifference;
@@ -144,14 +144,16 @@ export namespace TemplarUtils {
     recentCastings: ResonanceType[]
   ): number {
     // Count recent castings of the same resonance type
-    const sameTypeCount = recentCastings.filter(type => type === spellResonance).length;
-    
+    const sameTypeCount = recentCastings.filter(
+      type => type === spellResonance
+    ).length;
+
     // Harmony bonus increases with consecutive castings of the same type
     let harmonyBonus = Math.min(3, sameTypeCount);
-    
+
     // Current harmony level provides additional bonus
     harmonyBonus += Math.floor(currentHarmony / 5);
-    
+
     return Math.max(0, harmonyBonus);
   }
 
@@ -172,7 +174,7 @@ export namespace TemplarUtils {
     // Successful castings of varied types increase harmony
     const uniqueTypes = new Set([...recentCastings, spellResonance]).size;
     const harmonyIncrease = Math.min(2, uniqueTypes - 1);
-    
+
     return Math.min(20, currentHarmony + harmonyIncrease);
   }
 
@@ -190,7 +192,9 @@ export namespace TemplarUtils {
     // Check RC availability
     const rcCost = calculateRcCost(miracle, castingLevel);
     if (data.resonanceCharges.current < rcCost) {
-      reasons.push(`Insufficient RC: need ${rcCost}, have ${data.resonanceCharges.current}`);
+      reasons.push(
+        `Insufficient RC: need ${rcCost}, have ${data.resonanceCharges.current}`
+      );
     }
 
     // Check Overchannel availability
@@ -203,15 +207,21 @@ export namespace TemplarUtils {
     }
 
     // Check faith feedback capacity
-    const faithFeedbackGenerated = calculateFaithFeedback(miracle, castingLevel, useOverchannel);
+    const faithFeedbackGenerated = calculateFaithFeedback(
+      miracle,
+      castingLevel,
+      useOverchannel
+    );
     const newFeedbackTotal = data.faithFeedback + faithFeedbackGenerated;
     if (newFeedbackTotal > data.maxFaithFeedback) {
-      reasons.push(`Would exceed maximum faith feedback (${newFeedbackTotal}/${data.maxFaithFeedback})`);
+      reasons.push(
+        `Would exceed maximum faith feedback (${newFeedbackTotal}/${data.maxFaithFeedback})`
+      );
     }
 
     return {
       canCast: reasons.length === 0,
-      reasons
+      reasons,
     };
   }
 
@@ -225,8 +235,13 @@ export namespace TemplarUtils {
     useOverchannel: boolean = false,
     recentCastings: ResonanceType[] = []
   ): TemplarCastingResult {
-    const canCastCheck = canCastMiracle(data, miracle, castingLevel, useOverchannel);
-    
+    const canCastCheck = canCastMiracle(
+      data,
+      miracle,
+      castingLevel,
+      useOverchannel
+    );
+
     if (!canCastCheck.canCast) {
       return {
         success: false,
@@ -235,14 +250,22 @@ export namespace TemplarUtils {
         heatGenerated: 0,
         overchanneled: false,
         harmonyBonus: 0,
-        errors: canCastCheck.reasons
+        errors: canCastCheck.reasons,
       };
     }
 
     const rcCost = calculateRcCost(miracle, castingLevel);
-    const faithFeedbackGenerated = calculateFaithFeedback(miracle, castingLevel, useOverchannel);
-    const harmonyBonus = calculateHarmonyBonus(data.resonanceHarmony, miracle.resonanceType, recentCastings);
-    
+    const faithFeedbackGenerated = calculateFaithFeedback(
+      miracle,
+      castingLevel,
+      useOverchannel
+    );
+    const harmonyBonus = calculateHarmonyBonus(
+      data.resonanceHarmony,
+      miracle.resonanceType,
+      recentCastings
+    );
+
     // Heat generation is lower for Templars but increases with faith feedback
     const heatGenerated = Math.max(1, Math.floor(faithFeedbackGenerated / 2));
 
@@ -251,17 +274,26 @@ export namespace TemplarUtils {
       ...data,
       resonanceCharges: {
         ...data.resonanceCharges,
-        current: data.resonanceCharges.current - rcCost
+        current: data.resonanceCharges.current - rcCost,
       },
-      faithFeedback: Math.min(data.maxFaithFeedback, data.faithFeedback + faithFeedbackGenerated),
-      heatPoints: HeatPointUtils.addHeatPoints(data.heatPoints, heatGenerated, data.maxHeatPoints),
-      overchannelUses: useOverchannel ? data.overchannelUses - 1 : data.overchannelUses,
+      faithFeedback: Math.min(
+        data.maxFaithFeedback,
+        data.faithFeedback + faithFeedbackGenerated
+      ),
+      heatPoints: HeatPointUtils.addHeatPoints(
+        data.heatPoints,
+        heatGenerated,
+        data.maxHeatPoints
+      ),
+      overchannelUses: useOverchannel
+        ? data.overchannelUses - 1
+        : data.overchannelUses,
       resonanceHarmony: updateResonanceHarmony(
         data.resonanceHarmony,
         miracle.resonanceType,
         recentCastings,
         true
-      )
+      ),
     };
 
     return {
@@ -271,17 +303,19 @@ export namespace TemplarUtils {
       heatGenerated,
       overchanneled: useOverchannel,
       harmonyBonus,
-      updatedData
+      updatedData,
     };
   }
 
   /**
    * Restore Overchannel uses (typically on long rest)
    */
-  export function restoreOverchannelUses(data: TemplarSpellcastingData): TemplarSpellcastingData {
+  export function restoreOverchannelUses(
+    data: TemplarSpellcastingData
+  ): TemplarSpellcastingData {
     return {
       ...data,
-      overchannelUses: data.maxOverchannelUses
+      overchannelUses: data.maxOverchannelUses,
     };
   }
 
@@ -294,7 +328,7 @@ export namespace TemplarUtils {
   ): TemplarSpellcastingData {
     return {
       ...data,
-      faithFeedback: Math.max(0, data.faithFeedback - reduction)
+      faithFeedback: Math.max(0, data.faithFeedback - reduction),
     };
   }
 
@@ -304,40 +338,47 @@ export namespace TemplarUtils {
   export function getFaithFeedbackPenalties(
     currentFeedback: number,
     maxFeedback: number
-  ): { spellAttackPenalty: number; spellDcPenalty: number; description: string } {
+  ): {
+    spellAttackPenalty: number;
+    spellDcPenalty: number;
+    description: string;
+  } {
     const feedbackRatio = currentFeedback / maxFeedback;
-    
+
     if (feedbackRatio >= 1.0) {
       return {
         spellAttackPenalty: -4,
         spellDcPenalty: -4,
-        description: 'Severe faith feedback: major penalties to all spellcasting'
+        description:
+          'Severe faith feedback: major penalties to all spellcasting',
       };
     } else if (feedbackRatio >= 0.75) {
       return {
         spellAttackPenalty: -2,
         spellDcPenalty: -2,
-        description: 'High faith feedback: penalties to spellcasting'
+        description: 'High faith feedback: penalties to spellcasting',
       };
     } else if (feedbackRatio >= 0.5) {
       return {
         spellAttackPenalty: -1,
         spellDcPenalty: -1,
-        description: 'Moderate faith feedback: minor penalties to spellcasting'
+        description: 'Moderate faith feedback: minor penalties to spellcasting',
       };
     }
-    
+
     return {
       spellAttackPenalty: 0,
       spellDcPenalty: 0,
-      description: 'Faith feedback within acceptable limits'
+      description: 'Faith feedback within acceptable limits',
     };
   }
 
   /**
    * Validate Templar spellcasting data
    */
-  export function validateTemplarData(data: TemplarSpellcastingData): ValidationResult<TemplarSpellcastingData> {
+  export function validateTemplarData(
+    data: TemplarSpellcastingData
+  ): ValidationResult<TemplarSpellcastingData> {
     const errors: ValidationError[] = [];
 
     // Validate overchannel uses
@@ -345,15 +386,18 @@ export namespace TemplarUtils {
       errors.push({
         field: 'overchannelUses',
         message: 'Overchannel uses must be a non-negative integer',
-        code: 'INVALID_OVERCHANNEL_USES'
+        code: 'INVALID_OVERCHANNEL_USES',
       });
     }
 
-    if (!Number.isInteger(data.maxOverchannelUses) || data.maxOverchannelUses < 0) {
+    if (
+      !Number.isInteger(data.maxOverchannelUses) ||
+      data.maxOverchannelUses < 0
+    ) {
       errors.push({
         field: 'maxOverchannelUses',
         message: 'Max overchannel uses must be a non-negative integer',
-        code: 'INVALID_MAX_OVERCHANNEL_USES'
+        code: 'INVALID_MAX_OVERCHANNEL_USES',
       });
     }
 
@@ -361,7 +405,7 @@ export namespace TemplarUtils {
       errors.push({
         field: 'overchannelUses',
         message: 'Current overchannel uses cannot exceed maximum',
-        code: 'OVERCHANNEL_USES_EXCEEDS_MAX'
+        code: 'OVERCHANNEL_USES_EXCEEDS_MAX',
       });
     }
 
@@ -370,7 +414,7 @@ export namespace TemplarUtils {
       errors.push({
         field: 'faithFeedback',
         message: 'Faith feedback must be a non-negative integer',
-        code: 'INVALID_FAITH_FEEDBACK'
+        code: 'INVALID_FAITH_FEEDBACK',
       });
     }
 
@@ -378,16 +422,20 @@ export namespace TemplarUtils {
       errors.push({
         field: 'maxFaithFeedback',
         message: 'Max faith feedback must be a non-negative integer',
-        code: 'INVALID_MAX_FAITH_FEEDBACK'
+        code: 'INVALID_MAX_FAITH_FEEDBACK',
       });
     }
 
     // Validate resonance harmony
-    if (!Number.isInteger(data.resonanceHarmony) || data.resonanceHarmony < 0 || data.resonanceHarmony > 20) {
+    if (
+      !Number.isInteger(data.resonanceHarmony) ||
+      data.resonanceHarmony < 0 ||
+      data.resonanceHarmony > 20
+    ) {
       errors.push({
         field: 'resonanceHarmony',
         message: 'Resonance harmony must be an integer between 0 and 20',
-        code: 'INVALID_RESONANCE_HARMONY'
+        code: 'INVALID_RESONANCE_HARMONY',
       });
     }
 
@@ -397,7 +445,7 @@ export namespace TemplarUtils {
         errors.push({
           field: `knownMiracles[${index}].rcCost`,
           message: 'RC cost must be a non-negative integer',
-          code: 'INVALID_RC_COST'
+          code: 'INVALID_RC_COST',
         });
       }
 
@@ -405,26 +453,34 @@ export namespace TemplarUtils {
         errors.push({
           field: `knownMiracles[${index}].rcScaling`,
           message: 'RC scaling must be a non-negative integer',
-          code: 'INVALID_RC_SCALING'
+          code: 'INVALID_RC_SCALING',
         });
       }
 
-      if (!Number.isInteger(miracle.baseFaithFeedback) || miracle.baseFaithFeedback < 0) {
+      if (
+        !Number.isInteger(miracle.baseFaithFeedback) ||
+        miracle.baseFaithFeedback < 0
+      ) {
         errors.push({
           field: `knownMiracles[${index}].baseFaithFeedback`,
           message: 'Base faith feedback must be a non-negative integer',
-          code: 'INVALID_FAITH_FEEDBACK_GENERATION'
+          code: 'INVALID_FAITH_FEEDBACK_GENERATION',
         });
       }
 
       const validResonanceTypes: ResonanceType[] = [
-        'divine', 'harmonic', 'protective', 'restorative', 'righteous', 'revelatory'
+        'divine',
+        'harmonic',
+        'protective',
+        'restorative',
+        'righteous',
+        'revelatory',
       ];
       if (!validResonanceTypes.includes(miracle.resonanceType)) {
         errors.push({
           field: `knownMiracles[${index}].resonanceType`,
           message: 'Invalid resonance type',
-          code: 'INVALID_RESONANCE_TYPE'
+          code: 'INVALID_RESONANCE_TYPE',
         });
       }
     });
@@ -455,7 +511,7 @@ export namespace TemplarUtils {
       baseFaithFeedback,
       resonanceType,
       canOverchannel,
-      overchannelEffects
+      overchannelEffects,
     };
   }
 }

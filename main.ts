@@ -6,7 +6,9 @@ console.log('Hollow Gear TTRPG - Workspace Setup Complete!');
 console.log('');
 console.log('Project Structure:');
 console.log('├── packages/');
-console.log('│   └── core/           # @hollow-gear/core - Character models and game mechanics');
+console.log(
+  '│   └── core/           # @hollow-gear/core - Character models and game mechanics'
+);
 console.log('├── docs/              # Rulebook and documentation');
 console.log('├── table-top/         # Physical game assets');
 console.log('└── package.json       # Workspace configuration');

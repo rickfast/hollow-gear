@@ -4,7 +4,9 @@ Core character models and game mechanics for the Hollow Gear TTRPG system.
 
 ## Overview
 
-This package provides comprehensive TypeScript types and interfaces for representing D&D 5e characters enhanced with Hollow Gear mechanics. It serves as the foundation for character creation, management, and gameplay functionality in the Hollow Gear TTRPG mobile application.
+This package provides comprehensive TypeScript types and interfaces for representing D&D 5e
+characters enhanced with Hollow Gear mechanics. It serves as the foundation for character creation,
+management, and gameplay functionality in the Hollow Gear TTRPG mobile application.
 
 ## Features
 
@@ -26,17 +28,17 @@ bun add @hollow-gear/core
 import { CharacterUtils, type CharacterCreationParams } from '@hollow-gear/core';
 
 const params: CharacterCreationParams = {
-  name: "Zara Cogwright",
-  species: "vulmir",
-  startingClass: "arcanist",
+  name: 'Zara Cogwright',
+  species: 'vulmir',
+  startingClass: 'arcanist',
   abilityScores: {
     strength: 10,
     dexterity: 16,
     constitution: 14,
     intelligence: 15,
     wisdom: 12,
-    charisma: 13
-  }
+    charisma: 13,
+  },
 };
 
 const result = await CharacterUtils.createCharacter(params);

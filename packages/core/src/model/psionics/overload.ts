@@ -8,7 +8,7 @@ import type { PsionicFeedbackEffect, PsionicFeedbackType } from './flux';
 /**
  * Emotional states that influence psionic signatures
  */
-export type EmotionalState = 
+export type EmotionalState =
   | 'rage'
   | 'calm'
   | 'curiosity'
@@ -43,55 +43,58 @@ export interface PsionicSignature {
 /**
  * Predefined signature manifestations based on emotional states
  */
-export const SIGNATURE_MANIFESTATIONS: Record<EmotionalState, PsionicSignatureManifestation> = {
+export const SIGNATURE_MANIFESTATIONS: Record<
+  EmotionalState,
+  PsionicSignatureManifestation
+> = {
   rage: {
     visual: 'Red flickers of heat and vibration',
     auditory: 'Low rumbling and crackling sounds',
     emotional: 'Waves of anger and aggression',
-    intensity: 'strong'
+    intensity: 'strong',
   },
   calm: {
     visual: 'Cool, blue-hued resonance',
     auditory: 'Gentle humming and soft chimes',
     emotional: 'Peaceful, centering presence',
-    intensity: 'moderate'
+    intensity: 'moderate',
   },
   curiosity: {
     visual: 'Rapid, flickering pulses of yellow-white light',
     auditory: 'Metallic chimes and quick tonal shifts',
     emotional: 'Inquisitive, probing sensation',
-    intensity: 'moderate'
+    intensity: 'moderate',
   },
   despair: {
     visual: 'Distorted shadows and faint afterimages',
     auditory: 'Hollow echoes and mournful tones',
     emotional: 'Heavy sadness and hopelessness',
-    intensity: 'strong'
+    intensity: 'strong',
   },
   joy: {
     visual: 'Bright golden sparkles and warm glows',
     auditory: 'Musical harmonies and uplifting tones',
     emotional: 'Infectious happiness and energy',
-    intensity: 'moderate'
+    intensity: 'moderate',
   },
   fear: {
     visual: 'Erratic purple flashes and trembling edges',
     auditory: 'Sharp discordant notes and whispers',
     emotional: 'Anxiety and unease',
-    intensity: 'strong'
+    intensity: 'strong',
   },
   determination: {
     visual: 'Steady silver-white radiance',
     auditory: 'Rhythmic pulses and resolute tones',
     emotional: 'Unwavering resolve and focus',
-    intensity: 'strong'
+    intensity: 'strong',
   },
   confusion: {
     visual: 'Swirling multicolored patterns',
     auditory: 'Overlapping tones and static',
     emotional: 'Disorientation and uncertainty',
-    intensity: 'faint'
-  }
+    intensity: 'faint',
+  },
 };
 
 /**
@@ -143,7 +146,7 @@ export function createPsionicSignature(
     baseEmotion,
     manifestation: SIGNATURE_MANIFESTATIONS[baseEmotion],
     detectabilityRange: 30, // Base range from rulebook
-    powerLevel
+    powerLevel,
   };
 }
 
@@ -156,23 +159,23 @@ export function updateSignatureAfterPowerUse(
   currentEmotion?: EmotionalState
 ): PsionicSignature {
   const updatedSignature = { ...signature };
-  
+
   // Update last used time
   updatedSignature.lastUsed = new Date();
-  
+
   // Temporarily shift manifestation if emotion changed
   if (currentEmotion && currentEmotion !== signature.baseEmotion) {
     updatedSignature.manifestation = {
       ...SIGNATURE_MANIFESTATIONS[currentEmotion],
-      intensity: calculateSignatureIntensity(powerTier, signature.powerLevel)
+      intensity: calculateSignatureIntensity(powerTier, signature.powerLevel),
     };
   } else {
     updatedSignature.manifestation = {
       ...updatedSignature.manifestation,
-      intensity: calculateSignatureIntensity(powerTier, signature.powerLevel)
+      intensity: calculateSignatureIntensity(powerTier, signature.powerLevel),
     };
   }
-  
+
   return updatedSignature;
 }
 
@@ -196,33 +199,37 @@ export function isSignatureDetectable(
   currentTime: Date = new Date()
 ): boolean {
   if (!signature.lastUsed) return false;
-  
-  const lingerDuration = calculateSignatureLingerDuration(powerTier, signature.powerLevel);
+
+  const lingerDuration = calculateSignatureLingerDuration(
+    powerTier,
+    signature.powerLevel
+  );
   const timeSinceUse = currentTime.getTime() - signature.lastUsed.getTime();
   const lingerDurationMs = lingerDuration * 60 * 1000; // Convert to milliseconds
-  
+
   return timeSinceUse < lingerDurationMs;
 }
 
 /**
  * Handle psionic surge activation
  */
-export function activatePsionicSurge(
-  surgeState: PsionicSurgeState
-): { newState: PsionicSurgeState; success: boolean } {
+export function activatePsionicSurge(surgeState: PsionicSurgeState): {
+  newState: PsionicSurgeState;
+  success: boolean;
+} {
   if (!surgeState.available) {
     return { newState: surgeState, success: false };
   }
-  
+
   const newState: PsionicSurgeState = {
     available: false,
     lastUsed: new Date(),
     bonusActive: true,
     freeAfpUsed: false,
     backlashPending: true,
-    afpRecoveryBlocked: true
+    afpRecoveryBlocked: true,
   };
-  
+
   return { newState, success: true };
 }
 
@@ -235,7 +242,7 @@ export function endPsionicSurgeTurn(
   return {
     ...surgeState,
     bonusActive: false,
-    backlashPending: false // Damage should be applied when this is called
+    backlashPending: false, // Damage should be applied when this is called
   };
 }
 
@@ -252,25 +259,27 @@ export function restorePsionicSurge(
       bonusActive: false,
       freeAfpUsed: false,
       backlashPending: false,
-      afpRecoveryBlocked: false
+      afpRecoveryBlocked: false,
     };
   }
-  
+
   return surgeState;
 }
 
 /**
  * Calculate overload recovery time based on excess AFP
  */
-export function calculateOverloadRecovery(excessAfp: number): OverloadRecoveryState {
+export function calculateOverloadRecovery(
+  excessAfp: number
+): OverloadRecoveryState {
   const recoveryDuration = excessAfp * 10; // 10 minutes per excess AFP
-  
+
   return {
     isRecovering: true,
     recoveryStartTime: new Date(),
     recoveryDuration,
     penaltiesActive: true,
-    nextAfpRecoveryTime: new Date(Date.now() + recoveryDuration * 60 * 1000)
+    nextAfpRecoveryTime: new Date(Date.now() + recoveryDuration * 60 * 1000),
   };
 }
 
@@ -281,20 +290,21 @@ export function checkOverloadRecovery(
   recovery: OverloadRecoveryState,
   currentTime: Date = new Date()
 ): { isComplete: boolean; updatedRecovery?: OverloadRecoveryState } {
-  const elapsedMs = currentTime.getTime() - recovery.recoveryStartTime.getTime();
+  const elapsedMs =
+    currentTime.getTime() - recovery.recoveryStartTime.getTime();
   const recoveryMs = recovery.recoveryDuration * 60 * 1000;
-  
+
   if (elapsedMs >= recoveryMs) {
     return {
       isComplete: true,
       updatedRecovery: {
         ...recovery,
         isRecovering: false,
-        penaltiesActive: false
-      }
+        penaltiesActive: false,
+      },
     };
   }
-  
+
   return { isComplete: false };
 }
 
@@ -306,13 +316,18 @@ export function accumulateFeedbackEffects(
   newEffect: PsionicFeedbackEffect
 ): PsionicFeedbackEffect[] {
   // Some effects stack, others replace
-  const stackableTypes: PsionicFeedbackType[] = ['neural_spark', 'aether_flare'];
-  
+  const stackableTypes: PsionicFeedbackType[] = [
+    'neural_spark',
+    'aether_flare',
+  ];
+
   if (stackableTypes.includes(newEffect.type)) {
     return [...currentEffects, newEffect];
   } else {
     // Replace existing effect of same type
-    const filtered = currentEffects.filter(effect => effect.type !== newEffect.type);
+    const filtered = currentEffects.filter(
+      effect => effect.type !== newEffect.type
+    );
     return [...filtered, newEffect];
   }
 }
@@ -326,9 +341,9 @@ export function clearExpiredFeedbackEffects(
 ): PsionicFeedbackEffect[] {
   // Most feedback effects are temporary and clear after a few minutes
   const persistentTypes: PsionicFeedbackType[] = ['mindfracture']; // Lasts until rest
-  
-  return effects.filter(effect => 
-    persistentTypes.includes(effect.type) || timeElapsed < 10 // 10 minute default
+
+  return effects.filter(
+    effect => persistentTypes.includes(effect.type) || timeElapsed < 10 // 10 minute default
   );
 }
 
@@ -336,11 +351,11 @@ export function clearExpiredFeedbackEffects(
  * Calculate signature intensity based on power tier and character power level
  */
 function calculateSignatureIntensity(
-  powerTier: number, 
+  powerTier: number,
   characterPowerLevel: number
 ): 'faint' | 'moderate' | 'strong' | 'overwhelming' {
   const intensity = powerTier + Math.floor(characterPowerLevel / 3);
-  
+
   if (intensity >= 7) return 'overwhelming';
   if (intensity >= 5) return 'strong';
   if (intensity >= 3) return 'moderate';
@@ -356,7 +371,7 @@ export function createInitialOverloadState(): ExtendedOverloadState {
     excessAfp: 0,
     saveDc: 0,
     feedbackRisk: false,
-    accumulatedFeedback: []
+    accumulatedFeedback: [],
   };
 }
 
@@ -369,6 +384,6 @@ export function createInitialSurgeState(): PsionicSurgeState {
     bonusActive: false,
     freeAfpUsed: false,
     backlashPending: false,
-    afpRecoveryBlocked: false
+    afpRecoveryBlocked: false,
   };
 }

@@ -1,6 +1,6 @@
 /**
  * Unit tests for class system
- * Tests class feature progression, level-based acquisition, archetype selection, 
+ * Tests class feature progression, level-based acquisition, archetype selection,
  * class-specific mechanics, and multiclassing calculations and interactions
  */
 
@@ -72,7 +72,7 @@ describe('Class System', () => {
             features: [],
           },
         ];
-        
+
         expect(calculateTotalLevel(classes)).toBe(5);
       });
 
@@ -93,7 +93,7 @@ describe('Class System', () => {
             features: [],
           },
         ];
-        
+
         expect(calculateTotalLevel(classes)).toBe(5);
       });
 
@@ -105,27 +105,35 @@ describe('Class System', () => {
     describe('getClassFeaturesForLevel', () => {
       it('should get correct features for Arcanist at level 1', () => {
         const features = getClassFeaturesForLevel('arcanist', 1);
-        
+
         expect(features.length).toBeGreaterThan(0);
         expect(features.every(f => f.level <= 1)).toBe(true);
-        
-        const spellcasting = features.find(f => f.id === 'arcanist_spellcasting');
-        const tinkerSavant = features.find(f => f.id === 'arcanist_tinker_savant');
-        
+
+        const spellcasting = features.find(
+          f => f.id === 'arcanist_spellcasting'
+        );
+        const tinkerSavant = features.find(
+          f => f.id === 'arcanist_tinker_savant'
+        );
+
         expect(spellcasting).toBeDefined();
         expect(tinkerSavant).toBeDefined();
       });
 
       it('should get correct features for Templar at level 2', () => {
         const features = getClassFeaturesForLevel('templar', 2);
-        
+
         expect(features.length).toBeGreaterThan(0);
         expect(features.every(f => f.level <= 2)).toBe(true);
-        
-        const resonantSmite = features.find(f => f.id === 'templar_resonant_smite');
+
+        const resonantSmite = features.find(
+          f => f.id === 'templar_resonant_smite'
+        );
         const faithEngine = features.find(f => f.id === 'templar_faith_engine');
-        const spellcasting = features.find(f => f.id === 'templar_spellcasting');
-        
+        const spellcasting = features.find(
+          f => f.id === 'templar_spellcasting'
+        );
+
         expect(resonantSmite).toBeDefined();
         expect(faithEngine).toBeDefined();
         expect(spellcasting).toBeDefined();
@@ -133,10 +141,14 @@ describe('Class System', () => {
 
       it('should get correct features for Tweaker at level 1', () => {
         const features = getClassFeaturesForLevel('tweaker', 1);
-        
-        const adrenalSurge = features.find(f => f.id === 'tweaker_adrenal_surge');
-        const metabolism = features.find(f => f.id === 'tweaker_enhanced_metabolism');
-        
+
+        const adrenalSurge = features.find(
+          f => f.id === 'tweaker_adrenal_surge'
+        );
+        const metabolism = features.find(
+          f => f.id === 'tweaker_enhanced_metabolism'
+        );
+
         expect(adrenalSurge).toBeDefined();
         expect(metabolism).toBeDefined();
         expect(adrenalSurge?.uses?.maximum).toBe(1);
@@ -146,13 +158,17 @@ describe('Class System', () => {
       it('should get correct features for Shadehand with sneak attack scaling', () => {
         const level1Features = getClassFeaturesForLevel('shadehand', 1);
         const level3Features = getClassFeaturesForLevel('shadehand', 3);
-        
-        const sneakAttack1 = level1Features.find(f => f.id === 'shadehand_sneak_attack');
-        const sneakAttack3 = level3Features.find(f => f.id === 'shadehand_sneak_attack');
-        
+
+        const sneakAttack1 = level1Features.find(
+          f => f.id === 'shadehand_sneak_attack'
+        );
+        const sneakAttack3 = level3Features.find(
+          f => f.id === 'shadehand_sneak_attack'
+        );
+
         expect(sneakAttack1).toBeDefined();
         expect(sneakAttack3).toBeDefined();
-        
+
         // Sneak attack should scale with level
         expect(sneakAttack1?.mechanics?.effects[0].value).toBe('1d6');
         expect(sneakAttack3?.mechanics?.effects[0].value).toBe('2d6');
@@ -160,9 +176,11 @@ describe('Class System', () => {
 
       it('should not include features above character level', () => {
         const features = getClassFeaturesForLevel('arcanist', 1);
-        
+
         // Should not include level 2 features
-        const spellRecharge = features.find(f => f.id === 'arcanist_spell_recharge');
+        const spellRecharge = features.find(
+          f => f.id === 'arcanist_spell_recharge'
+        );
         expect(spellRecharge).toBeUndefined();
       });
     });
@@ -178,15 +196,19 @@ describe('Class System', () => {
             features: [],
           },
         ];
-        
+
         const features = getAllFeatures(classes);
-        
+
         expect(features.length).toBeGreaterThan(0);
         expect(features.every(f => f.level <= 1)).toBe(true);
-        
-        const defensiveStance = features.find(f => f.id === 'vanguard_defensive_stance');
-        const steamCharge = features.find(f => f.id === 'vanguard_steam_charge');
-        
+
+        const defensiveStance = features.find(
+          f => f.id === 'vanguard_defensive_stance'
+        );
+        const steamCharge = features.find(
+          f => f.id === 'vanguard_steam_charge'
+        );
+
         expect(defensiveStance).toBeDefined();
         expect(steamCharge).toBeDefined();
       });
@@ -208,13 +230,17 @@ describe('Class System', () => {
             features: [],
           },
         ];
-        
+
         const features = getAllFeatures(classes);
-        
+
         // Should have features from both classes
-        const artifexFeatures = features.filter(f => f.id.startsWith('artifex_'));
-        const mindweaverFeatures = features.filter(f => f.id.startsWith('mindweaver_'));
-        
+        const artifexFeatures = features.filter(f =>
+          f.id.startsWith('artifex_')
+        );
+        const mindweaverFeatures = features.filter(f =>
+          f.id.startsWith('mindweaver_')
+        );
+
         expect(artifexFeatures.length).toBeGreaterThan(0);
         expect(mindweaverFeatures.length).toBeGreaterThan(0);
       });
@@ -256,10 +282,12 @@ describe('Class System', () => {
             features: [],
           },
         ];
-        
+
         const features = getAllFeatures(classes);
-        
-        const archetypeFeature = features.find(f => f.id === 'aethermancer_psionic_conversion');
+
+        const archetypeFeature = features.find(
+          f => f.id === 'aethermancer_psionic_conversion'
+        );
         expect(archetypeFeature).toBeDefined();
       });
     });
@@ -269,16 +297,20 @@ describe('Class System', () => {
     describe('getArchetypeFeaturesForLevel', () => {
       it('should get archetype features at appropriate level', () => {
         const archetype: ClassArchetype = CLASS_DATA.templar.archetypes[0]; // Relic Knight
-        
+
         const level3Features = getArchetypeFeaturesForLevel(archetype, 3);
         const level7Features = getArchetypeFeaturesForLevel(archetype, 7);
-        
+
         expect(level3Features.length).toBe(2); // Aura of Focus and Channel Healing
         expect(level7Features.length).toBe(3); // Previous + Faith Barrier
-        
-        const auraOfFocus = level3Features.find(f => f.id === 'relic_knight_aura_of_focus');
-        const faithBarrier = level7Features.find(f => f.id === 'relic_knight_faith_barrier');
-        
+
+        const auraOfFocus = level3Features.find(
+          f => f.id === 'relic_knight_aura_of_focus'
+        );
+        const faithBarrier = level7Features.find(
+          f => f.id === 'relic_knight_faith_barrier'
+        );
+
         expect(auraOfFocus).toBeDefined();
         expect(faithBarrier).toBeDefined();
         expect(faithBarrier?.uses?.maximum).toBe(1);
@@ -287,11 +319,13 @@ describe('Class System', () => {
 
       it('should not include features above character level', () => {
         const archetype: ClassArchetype = CLASS_DATA.tweaker.archetypes[1]; // Neurospike
-        
+
         const level3Features = getArchetypeFeaturesForLevel(archetype, 3);
-        
+
         // Should not include Hyperfocus (level 7)
-        const hyperfocus = level3Features.find(f => f.id === 'neurospike_hyperfocus');
+        const hyperfocus = level3Features.find(
+          f => f.id === 'neurospike_hyperfocus'
+        );
         expect(hyperfocus).toBeUndefined();
       });
     });
@@ -299,7 +333,7 @@ describe('Class System', () => {
     describe('Class-specific Resource Mechanics', () => {
       it('should handle Arcanist spellcasting resources', () => {
         const arcanistInfo = getClassInfo('arcanist');
-        
+
         expect(arcanistInfo.spellcasting).toBeDefined();
         expect(arcanistInfo.spellcasting?.type).toBe('arcanist');
         expect(arcanistInfo.spellcasting?.ability).toBe('intelligence');
@@ -309,14 +343,16 @@ describe('Class System', () => {
 
       it('should handle Templar spellcasting resources', () => {
         const templarInfo = getClassInfo('templar');
-        
+
         expect(templarInfo.spellcasting).toBeDefined();
         expect(templarInfo.spellcasting?.type).toBe('templar');
         expect(templarInfo.spellcasting?.ability).toBe('charisma');
         expect(templarInfo.spellcasting?.progression).toBe('half');
         expect(templarInfo.spellcasting?.ritualCasting).toBe(false);
-        
-        const resonanceCharges = templarInfo.classResources.find(r => r.type === 'resonance_charge');
+
+        const resonanceCharges = templarInfo.classResources.find(
+          r => r.type === 'resonance_charge'
+        );
         expect(resonanceCharges).toBeDefined();
         expect(resonanceCharges?.scaling.type).toBe('ability_modifier');
         expect(resonanceCharges?.scaling.abilityModifier).toBe('charisma');
@@ -324,7 +360,7 @@ describe('Class System', () => {
 
       it('should handle Mindweaver psionic resources', () => {
         const mindweaverInfo = getClassInfo('mindweaver');
-        
+
         expect(mindweaverInfo.psionics).toBeDefined();
         expect(mindweaverInfo.psionics?.ability).toBe('intelligence');
         expect(mindweaverInfo.psionics?.disciplines).toContain('flux');
@@ -336,11 +372,11 @@ describe('Class System', () => {
         const tweakerInfo = getClassInfo('tweaker');
         const vanguardInfo = getClassInfo('vanguard');
         const artifexInfo = getClassInfo('artifex');
-        
+
         expect(tweakerInfo.spellcasting).toBeUndefined();
         expect(vanguardInfo.spellcasting).toBeUndefined();
         expect(artifexInfo.spellcasting).toBeUndefined();
-        
+
         // Should have class-specific resources
         expect(tweakerInfo.classResources.length).toBeGreaterThan(0);
         expect(vanguardInfo.classResources.length).toBeGreaterThan(0);
@@ -351,8 +387,10 @@ describe('Class System', () => {
     describe('Feature Usage and Mechanics', () => {
       it('should handle features with usage limitations', () => {
         const features = getClassFeaturesForLevel('tweaker', 1);
-        const adrenalSurge = features.find(f => f.id === 'tweaker_adrenal_surge');
-        
+        const adrenalSurge = features.find(
+          f => f.id === 'tweaker_adrenal_surge'
+        );
+
         expect(adrenalSurge?.uses).toBeDefined();
         expect(adrenalSurge?.uses?.maximum).toBe(1);
         expect(adrenalSurge?.uses?.restoreOn).toBe('short');
@@ -361,18 +399,24 @@ describe('Class System', () => {
 
       it('should handle passive features', () => {
         const features = getClassFeaturesForLevel('shadehand', 1);
-        const silentTools = features.find(f => f.id === 'shadehand_silent_tools');
-        
+        const silentTools = features.find(
+          f => f.id === 'shadehand_silent_tools'
+        );
+
         expect(silentTools?.mechanics?.type).toBe('passive');
         expect(silentTools?.uses).toBeUndefined();
       });
 
       it('should handle features with resource costs', () => {
         const features = getClassFeaturesForLevel('templar', 1);
-        const resonantSmite = features.find(f => f.id === 'templar_resonant_smite');
-        
+        const resonantSmite = features.find(
+          f => f.id === 'templar_resonant_smite'
+        );
+
         expect(resonantSmite?.mechanics?.activation?.cost).toBeDefined();
-        expect(resonantSmite?.mechanics?.activation?.cost?.type).toBe('resonance_charge');
+        expect(resonantSmite?.mechanics?.activation?.cost?.type).toBe(
+          'resonance_charge'
+        );
         expect(resonantSmite?.mechanics?.activation?.cost?.amount).toBe(1);
       });
     });
@@ -383,22 +427,22 @@ describe('Class System', () => {
       it('should return correct prerequisites for all classes', () => {
         const arcanistPrereqs = getMulticlassPrerequisites('arcanist');
         expect(arcanistPrereqs.abilities.intelligence).toBe(13);
-        
+
         const templarPrereqs = getMulticlassPrerequisites('templar');
         expect(templarPrereqs.abilities.charisma).toBe(13);
-        
+
         const tweakerPrereqs = getMulticlassPrerequisites('tweaker');
         expect(tweakerPrereqs.abilities.constitution).toBe(13);
-        
+
         const shadehandPrereqs = getMulticlassPrerequisites('shadehand');
         expect(shadehandPrereqs.abilities.dexterity).toBe(13);
-        
+
         const vanguardPrereqs = getMulticlassPrerequisites('vanguard');
         expect(vanguardPrereqs.abilities.strength).toBe(13);
-        
+
         const artifexPrereqs = getMulticlassPrerequisites('artifex');
         expect(artifexPrereqs.abilities.intelligence).toBe(13);
-        
+
         const mindweaverPrereqs = getMulticlassPrerequisites('mindweaver');
         expect(mindweaverPrereqs.abilities.intelligence).toBe(13);
         expect(mindweaverPrereqs.abilities.wisdom).toBe(13);
@@ -417,20 +461,42 @@ describe('Class System', () => {
       };
 
       it('should correctly validate prerequisites', () => {
-        expect(meetsMulticlassPrerequisites('arcanist', abilityScores)).toBe(true);
-        expect(meetsMulticlassPrerequisites('templar', abilityScores)).toBe(false); // CHA 10 < 13
-        expect(meetsMulticlassPrerequisites('tweaker', abilityScores)).toBe(true);
-        expect(meetsMulticlassPrerequisites('vanguard', abilityScores)).toBe(true);
-        expect(meetsMulticlassPrerequisites('artifex', abilityScores)).toBe(true);
+        expect(meetsMulticlassPrerequisites('arcanist', abilityScores)).toBe(
+          true
+        );
+        expect(meetsMulticlassPrerequisites('templar', abilityScores)).toBe(
+          false
+        ); // CHA 10 < 13
+        expect(meetsMulticlassPrerequisites('tweaker', abilityScores)).toBe(
+          true
+        );
+        expect(meetsMulticlassPrerequisites('vanguard', abilityScores)).toBe(
+          true
+        );
+        expect(meetsMulticlassPrerequisites('artifex', abilityScores)).toBe(
+          true
+        );
       });
 
       it('should handle Mindweaver special case (INT OR WIS)', () => {
-        const highIntLowWis = { ...abilityScores, intelligence: 15, wisdom: 10 };
-        const lowIntHighWis = { ...abilityScores, intelligence: 10, wisdom: 15 };
+        const highIntLowWis = {
+          ...abilityScores,
+          intelligence: 15,
+          wisdom: 10,
+        };
+        const lowIntHighWis = {
+          ...abilityScores,
+          intelligence: 10,
+          wisdom: 15,
+        };
         const bothLow = { ...abilityScores, intelligence: 10, wisdom: 10 };
-        
-        expect(meetsMulticlassPrerequisites('mindweaver', highIntLowWis)).toBe(true);
-        expect(meetsMulticlassPrerequisites('mindweaver', lowIntHighWis)).toBe(true);
+
+        expect(meetsMulticlassPrerequisites('mindweaver', highIntLowWis)).toBe(
+          true
+        );
+        expect(meetsMulticlassPrerequisites('mindweaver', lowIntHighWis)).toBe(
+          true
+        );
         expect(meetsMulticlassPrerequisites('mindweaver', bothLow)).toBe(false);
       });
     });
@@ -447,9 +513,9 @@ describe('Class System', () => {
             spellcasting: CLASS_DATA.arcanist.spellcasting,
           },
         ];
-        
+
         const combined = calculateCombinedSpellcasting(classes);
-        
+
         expect(combined).toBeDefined();
         expect(combined?.casterLevel).toBe(5);
         expect(combined?.spellcastingAbilities.arcanist).toBe('intelligence');
@@ -466,9 +532,9 @@ describe('Class System', () => {
             spellcasting: CLASS_DATA.templar.spellcasting,
           },
         ];
-        
+
         const combined = calculateCombinedSpellcasting(classes);
-        
+
         expect(combined).toBeDefined();
         expect(combined?.casterLevel).toBe(3); // Half of 6
         expect(combined?.spellcastingAbilities.templar).toBe('charisma');
@@ -493,9 +559,9 @@ describe('Class System', () => {
             spellcasting: CLASS_DATA.templar.spellcasting,
           },
         ];
-        
+
         const combined = calculateCombinedSpellcasting(classes);
-        
+
         expect(combined).toBeDefined();
         expect(combined?.casterLevel).toBe(5); // 3 (full) + 2 (half of 4)
         expect(combined?.spellcastingAbilities.arcanist).toBe('intelligence');
@@ -512,7 +578,7 @@ describe('Class System', () => {
             features: [],
           },
         ];
-        
+
         const combined = calculateCombinedSpellcasting(classes);
         expect(combined).toBeUndefined();
       });
@@ -522,10 +588,10 @@ describe('Class System', () => {
       it('should calculate correct spell slots for various caster levels', () => {
         const level1Slots = calculateSpellSlots(1);
         expect(level1Slots).toEqual([2, 0, 0, 0, 0, 0, 0, 0, 0]);
-        
+
         const level5Slots = calculateSpellSlots(5);
         expect(level5Slots).toEqual([4, 3, 2, 0, 0, 0, 0, 0, 0]);
-        
+
         const level20Slots = calculateSpellSlots(20);
         expect(level20Slots).toEqual([4, 3, 3, 3, 3, 2, 2, 1, 1]);
       });
@@ -551,7 +617,7 @@ describe('Class System', () => {
           },
           recovery: 'short' as const,
         };
-        
+
         expect(calculateResourceMaximum(resourceInfo, 1)).toBe(2);
         expect(calculateResourceMaximum(resourceInfo, 5)).toBe(6); // 2 + (5-1)*1
         expect(calculateResourceMaximum(resourceInfo, 10)).toBe(11); // 2 + (10-1)*1
@@ -569,7 +635,7 @@ describe('Class System', () => {
           },
           recovery: 'long' as const,
         };
-        
+
         expect(calculateResourceMaximum(resourceInfo, 1)).toBe(2);
         expect(calculateResourceMaximum(resourceInfo, 2)).toBe(3);
         expect(calculateResourceMaximum(resourceInfo, 5)).toBe(4);
@@ -588,7 +654,7 @@ describe('Class System', () => {
           },
           recovery: 'short' as const,
         };
-        
+
         expect(calculateResourceMaximum(resourceInfo, 1)).toBe(3); // 1 + 2 (prof bonus)
         expect(calculateResourceMaximum(resourceInfo, 5)).toBe(4); // 1 + 3 (prof bonus)
         expect(calculateResourceMaximum(resourceInfo, 9)).toBe(5); // 1 + 4 (prof bonus)
@@ -607,7 +673,7 @@ describe('Class System', () => {
           },
           recovery: 'long' as const,
         };
-        
+
         // Uses placeholder value of 3 for ability modifier
         expect(calculateResourceMaximum(resourceInfo, 1)).toBe(4); // 1 + 3
       });
@@ -624,11 +690,11 @@ describe('Class System', () => {
             features: [],
           },
         ];
-        
+
         const pools = calculateResourcePools(classes);
-        
+
         expect(pools.length).toBeGreaterThan(0);
-        
+
         const resonancePool = pools.find(p => p.type === 'resonance_charge');
         expect(resonancePool).toBeDefined();
         expect(resonancePool?.recovery).toBe('long');
@@ -651,15 +717,19 @@ describe('Class System', () => {
             features: [],
           },
         ];
-        
+
         const pools = calculateResourcePools(classes);
-        
+
         // Should have pools from both classes
         expect(pools.length).toBeGreaterThanOrEqual(2);
-        
-        const adrenalPool = pools.find(p => p.type === 'custom' && p.recovery === 'short');
-        const steamPool = pools.find(p => p.type === 'custom' && p.recovery === 'short');
-        
+
+        const adrenalPool = pools.find(
+          p => p.type === 'custom' && p.recovery === 'short'
+        );
+        const steamPool = pools.find(
+          p => p.type === 'custom' && p.recovery === 'short'
+        );
+
         expect(adrenalPool).toBeDefined();
         expect(steamPool).toBeDefined();
       });
@@ -679,9 +749,9 @@ describe('Class System', () => {
             spellcasting: CLASS_DATA.arcanist.spellcasting,
           },
         ];
-        
+
         const progression = createCharacterProgression(classes);
-        
+
         expect(progression.totalLevel).toBe(5);
         expect(progression.proficiencyBonus).toBe(3);
         expect(progression.allFeatures.length).toBeGreaterThan(0);
@@ -706,25 +776,29 @@ describe('Class System', () => {
             features: [],
           },
         ];
-        
+
         const progression = createCharacterProgression(classes);
-        
+
         expect(progression.totalLevel).toBe(5);
         expect(progression.proficiencyBonus).toBe(3);
         expect(progression.classes).toHaveLength(2);
         expect(progression.combinedSpellcasting).toBeUndefined(); // No spellcasters
-        
+
         // Should have features from both classes
-        const shadehandFeatures = progression.allFeatures.filter(f => f.id.startsWith('shadehand_'));
-        const artifexFeatures = progression.allFeatures.filter(f => f.id.startsWith('artifex_'));
-        
+        const shadehandFeatures = progression.allFeatures.filter(f =>
+          f.id.startsWith('shadehand_')
+        );
+        const artifexFeatures = progression.allFeatures.filter(f =>
+          f.id.startsWith('artifex_')
+        );
+
         expect(shadehandFeatures.length).toBeGreaterThan(0);
         expect(artifexFeatures.length).toBeGreaterThan(0);
       });
 
       it('should handle character with archetypes', () => {
         const archetype: ClassArchetype = CLASS_DATA.arcanist.archetypes[0]; // Aethermancer
-        
+
         const classes: CharacterClass[] = [
           {
             className: 'arcanist',
@@ -736,14 +810,14 @@ describe('Class System', () => {
             spellcasting: CLASS_DATA.arcanist.spellcasting,
           },
         ];
-        
+
         const progression = createCharacterProgression(classes);
-        
+
         // Should include archetype features
-        const archetypeFeatures = progression.allFeatures.filter(f => 
+        const archetypeFeatures = progression.allFeatures.filter(f =>
           f.id.startsWith('aethermancer_')
         );
-        
+
         expect(archetypeFeatures.length).toBeGreaterThan(0);
       });
     });
@@ -754,12 +828,17 @@ describe('Class System', () => {
       it('should contain all seven Hollow Gear classes', () => {
         const classes = Object.keys(CLASS_DATA);
         expect(classes).toHaveLength(7);
-        
+
         const expectedClasses: HollowGearClass[] = [
-          'arcanist', 'templar', 'tweaker', 'shadehand',
-          'vanguard', 'artifex', 'mindweaver'
+          'arcanist',
+          'templar',
+          'tweaker',
+          'shadehand',
+          'vanguard',
+          'artifex',
+          'mindweaver',
         ];
-        
+
         expectedClasses.forEach(className => {
           expect(CLASS_DATA).toHaveProperty(className);
         });
@@ -781,7 +860,7 @@ describe('Class System', () => {
 
       it('should have valid hit dice for all classes', () => {
         const validHitDice = ['d6', 'd8', 'd10', 'd12'];
-        
+
         Object.values(CLASS_DATA).forEach(classInfo => {
           expect(validHitDice).toContain(classInfo.hitDie);
         });
@@ -789,10 +868,14 @@ describe('Class System', () => {
 
       it('should have valid primary abilities', () => {
         const validAbilities: AbilityScore[] = [
-          'strength', 'dexterity', 'constitution',
-          'intelligence', 'wisdom', 'charisma'
+          'strength',
+          'dexterity',
+          'constitution',
+          'intelligence',
+          'wisdom',
+          'charisma',
         ];
-        
+
         Object.values(CLASS_DATA).forEach(classInfo => {
           expect(validAbilities).toContain(classInfo.primaryAbility);
         });
@@ -800,7 +883,7 @@ describe('Class System', () => {
 
       it('should have spellcasting data for spellcasting classes', () => {
         const spellcastingClasses: HollowGearClass[] = ['arcanist', 'templar'];
-        
+
         spellcastingClasses.forEach(className => {
           const classInfo = CLASS_DATA[className];
           expect(classInfo.spellcasting).toBeDefined();
@@ -812,7 +895,7 @@ describe('Class System', () => {
 
       it('should have psionic data for psionic classes', () => {
         const psionicClasses: HollowGearClass[] = ['mindweaver'];
-        
+
         psionicClasses.forEach(className => {
           const classInfo = CLASS_DATA[className];
           expect(classInfo.psionics).toBeDefined();
@@ -848,7 +931,7 @@ describe('Class System', () => {
         const arcanistClasses = getClassesBySpellcasting('arcanist');
         expect(arcanistClasses).toContain('arcanist');
         expect(arcanistClasses).toHaveLength(1);
-        
+
         const templarClasses = getClassesBySpellcasting('templar');
         expect(templarClasses).toContain('templar');
         expect(templarClasses).toHaveLength(1);
@@ -864,12 +947,12 @@ describe('Class System', () => {
         const d6Classes = getClassesByHitDie('d6');
         expect(d6Classes).toContain('arcanist');
         // Mindweaver actually has d8, not d6
-        
+
         const d8Classes = getClassesByHitDie('d8');
         expect(d8Classes).toContain('mindweaver');
         expect(d8Classes).toContain('shadehand');
         expect(d8Classes).toContain('artifex');
-        
+
         const d12Classes = getClassesByHitDie('d12');
         expect(d12Classes).toContain('tweaker');
       });
@@ -879,7 +962,7 @@ describe('Class System', () => {
         expect(intClasses).toContain('arcanist');
         expect(intClasses).toContain('artifex');
         expect(intClasses).toContain('mindweaver');
-        
+
         const strClasses = getClassesByPrimaryAbility('strength');
         expect(strClasses).toContain('vanguard');
       });
@@ -896,18 +979,18 @@ describe('Class System', () => {
 
     it('should handle classes without archetypes', () => {
       const classes: CharacterClass[] = [
-          {
-            className: 'tweaker',
-            level: 1,
-            hitDie: 'd12',
-            primaryAbility: 'constitution',
-            features: [],
-            // No archetype
-          },
-        ];
-        
-        const features = getAllFeatures(classes);
-        expect(features.length).toBeGreaterThan(0);
+        {
+          className: 'tweaker',
+          level: 1,
+          hitDie: 'd12',
+          primaryAbility: 'constitution',
+          features: [],
+          // No archetype
+        },
+      ];
+
+      const features = getAllFeatures(classes);
+      expect(features.length).toBeGreaterThan(0);
     });
 
     it('should handle invalid levels gracefully', () => {
@@ -936,10 +1019,10 @@ describe('Class System', () => {
           features: [],
         },
       ];
-      
+
       const totalLevel = calculateTotalLevel(classes);
       expect(totalLevel).toBe(5);
-      
+
       const features = getAllFeatures(classes);
       expect(features.length).toBeGreaterThan(0);
     });

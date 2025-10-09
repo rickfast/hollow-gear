@@ -39,42 +39,51 @@ export namespace ResourcePoolUtils {
     return {
       current: current ?? maximum,
       maximum,
-      temporary
+      temporary,
     };
   }
 
   /**
    * Spend resources from a pool, returning the new pool state
    */
-  export function spendResources(pool: ResourcePool, amount: number): ResourcePool {
+  export function spendResources(
+    pool: ResourcePool,
+    amount: number
+  ): ResourcePool {
     const newCurrent = Math.max(0, pool.current - amount);
     return {
       ...pool,
-      current: newCurrent
+      current: newCurrent,
     };
   }
 
   /**
    * Restore resources to a pool, capped at effective maximum
    */
-  export function restoreResources(pool: ResourcePool, amount: number): ResourcePool {
+  export function restoreResources(
+    pool: ResourcePool,
+    amount: number
+  ): ResourcePool {
     const effectiveMax = getEffectiveMaximum(pool);
     const newCurrent = Math.min(effectiveMax, pool.current + amount);
     return {
       ...pool,
-      current: newCurrent
+      current: newCurrent,
     };
   }
 
   /**
    * Set the current value directly, capped at effective maximum
    */
-  export function setCurrentResources(pool: ResourcePool, amount: number): ResourcePool {
+  export function setCurrentResources(
+    pool: ResourcePool,
+    amount: number
+  ): ResourcePool {
     const effectiveMax = getEffectiveMaximum(pool);
     const newCurrent = Math.max(0, Math.min(effectiveMax, amount));
     return {
       ...pool,
-      current: newCurrent
+      current: newCurrent,
     };
   }
 
@@ -96,14 +105,17 @@ export namespace ResourcePoolUtils {
   /**
    * Validate a resource pool
    */
-  export function validateResourcePool(pool: ResourcePool, context: string): ValidationResult<ResourcePool> {
+  export function validateResourcePool(
+    pool: ResourcePool,
+    context: string
+  ): ValidationResult<ResourcePool> {
     const errors: ValidationError[] = [];
 
     if (!Number.isInteger(pool.current) || pool.current < 0) {
       errors.push({
         field: `${context}.current`,
         message: 'Current resources must be a non-negative integer',
-        code: 'INVALID_CURRENT'
+        code: 'INVALID_CURRENT',
       });
     }
 
@@ -111,7 +123,7 @@ export namespace ResourcePoolUtils {
       errors.push({
         field: `${context}.maximum`,
         message: 'Maximum resources must be a non-negative integer',
-        code: 'INVALID_MAXIMUM'
+        code: 'INVALID_MAXIMUM',
       });
     }
 
@@ -119,7 +131,7 @@ export namespace ResourcePoolUtils {
       errors.push({
         field: `${context}.temporary`,
         message: 'Temporary resources must be an integer',
-        code: 'INVALID_TEMPORARY'
+        code: 'INVALID_TEMPORARY',
       });
     }
 
@@ -129,7 +141,7 @@ export namespace ResourcePoolUtils {
         field: `${context}.current`,
         message: 'Current resources cannot exceed effective maximum',
         code: 'CURRENT_EXCEEDS_MAXIMUM',
-        context: { current: pool.current, effectiveMaximum: effectiveMax }
+        context: { current: pool.current, effectiveMaximum: effectiveMax },
       });
     }
 

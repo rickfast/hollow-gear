@@ -2,12 +2,16 @@
  * Skills and proficiency system for D&D 5e
  */
 
-import type { AbilityScore, ValidationResult, ValidationError } from '../types/common.js';
+import type {
+  AbilityScore,
+  ValidationResult,
+  ValidationError,
+} from '../types/common.js';
 
 /**
  * All D&D 5e skills with their associated ability scores
  */
-export type Skill = 
+export type Skill =
   | 'acrobatics'
   | 'animalHandling'
   | 'arcana'
@@ -129,7 +133,7 @@ export namespace SkillUtils {
     religion: 'intelligence',
     sleightOfHand: 'dexterity',
     stealth: 'dexterity',
-    survival: 'wisdom'
+    survival: 'wisdom',
   };
 
   /**
@@ -156,7 +160,7 @@ export namespace SkillUtils {
     miscBonus: number = 0
   ): number {
     let profBonus = 0;
-    
+
     switch (proficiencyLevel) {
       case 'proficient':
         profBonus = proficiencyBonus;
@@ -169,7 +173,7 @@ export namespace SkillUtils {
         profBonus = 0;
         break;
     }
-    
+
     return abilityModifier + profBonus + miscBonus;
   }
 
@@ -195,11 +199,16 @@ export namespace SkillUtils {
     proficiencyBonus: number,
     bonus: number = 0
   ): SkillProficiency {
-    const total = calculateSkillModifier(abilityModifier, level, proficiencyBonus, bonus);
+    const total = calculateSkillModifier(
+      abilityModifier,
+      level,
+      proficiencyBonus,
+      bonus
+    );
     return {
       level,
       bonus,
-      total
+      total,
     };
   }
 
@@ -212,11 +221,16 @@ export namespace SkillUtils {
     proficiencyBonus: number,
     bonus: number = 0
   ): SavingThrowProficiency {
-    const total = calculateSaveModifier(abilityModifier, proficient, proficiencyBonus, bonus);
+    const total = calculateSaveModifier(
+      abilityModifier,
+      proficient,
+      proficiencyBonus,
+      bonus
+    );
     return {
       proficient,
       bonus,
-      total
+      total,
     };
   }
 
@@ -228,13 +242,17 @@ export namespace SkillUtils {
     proficiencyBonus: number
   ): SkillProficiencies {
     const skills: Partial<SkillProficiencies> = {};
-    
+
     for (const skill of Object.keys(SKILL_ABILITIES) as Skill[]) {
       const ability = SKILL_ABILITIES[skill];
       const abilityMod = abilityModifiers[ability];
-      skills[skill] = createSkillProficiency('none', abilityMod, proficiencyBonus);
+      skills[skill] = createSkillProficiency(
+        'none',
+        abilityMod,
+        proficiencyBonus
+      );
     }
-    
+
     return skills as SkillProficiencies;
   }
 
@@ -246,12 +264,36 @@ export namespace SkillUtils {
     proficiencyBonus: number
   ): SavingThrowProficiencies {
     return {
-      strength: createSavingThrowProficiency(false, abilityModifiers.strength, proficiencyBonus),
-      dexterity: createSavingThrowProficiency(false, abilityModifiers.dexterity, proficiencyBonus),
-      constitution: createSavingThrowProficiency(false, abilityModifiers.constitution, proficiencyBonus),
-      intelligence: createSavingThrowProficiency(false, abilityModifiers.intelligence, proficiencyBonus),
-      wisdom: createSavingThrowProficiency(false, abilityModifiers.wisdom, proficiencyBonus),
-      charisma: createSavingThrowProficiency(false, abilityModifiers.charisma, proficiencyBonus)
+      strength: createSavingThrowProficiency(
+        false,
+        abilityModifiers.strength,
+        proficiencyBonus
+      ),
+      dexterity: createSavingThrowProficiency(
+        false,
+        abilityModifiers.dexterity,
+        proficiencyBonus
+      ),
+      constitution: createSavingThrowProficiency(
+        false,
+        abilityModifiers.constitution,
+        proficiencyBonus
+      ),
+      intelligence: createSavingThrowProficiency(
+        false,
+        abilityModifiers.intelligence,
+        proficiencyBonus
+      ),
+      wisdom: createSavingThrowProficiency(
+        false,
+        abilityModifiers.wisdom,
+        proficiencyBonus
+      ),
+      charisma: createSavingThrowProficiency(
+        false,
+        abilityModifiers.charisma,
+        proficiencyBonus
+      ),
     };
   }
 
@@ -264,14 +306,19 @@ export namespace SkillUtils {
     proficiencyBonus: number
   ): SkillProficiencies {
     const updated: Partial<SkillProficiencies> = {};
-    
+
     for (const skill of Object.keys(skills) as Skill[]) {
       const current = skills[skill];
       const ability = SKILL_ABILITIES[skill];
       const abilityMod = abilityModifiers[ability];
-      updated[skill] = createSkillProficiency(current.level, abilityMod, proficiencyBonus, current.bonus);
+      updated[skill] = createSkillProficiency(
+        current.level,
+        abilityMod,
+        proficiencyBonus,
+        current.bonus
+      );
     }
-    
+
     return updated as SkillProficiencies;
   }
 
@@ -284,12 +331,42 @@ export namespace SkillUtils {
     proficiencyBonus: number
   ): SavingThrowProficiencies {
     return {
-      strength: createSavingThrowProficiency(saves.strength.proficient, abilityModifiers.strength, proficiencyBonus, saves.strength.bonus),
-      dexterity: createSavingThrowProficiency(saves.dexterity.proficient, abilityModifiers.dexterity, proficiencyBonus, saves.dexterity.bonus),
-      constitution: createSavingThrowProficiency(saves.constitution.proficient, abilityModifiers.constitution, proficiencyBonus, saves.constitution.bonus),
-      intelligence: createSavingThrowProficiency(saves.intelligence.proficient, abilityModifiers.intelligence, proficiencyBonus, saves.intelligence.bonus),
-      wisdom: createSavingThrowProficiency(saves.wisdom.proficient, abilityModifiers.wisdom, proficiencyBonus, saves.wisdom.bonus),
-      charisma: createSavingThrowProficiency(saves.charisma.proficient, abilityModifiers.charisma, proficiencyBonus, saves.charisma.bonus)
+      strength: createSavingThrowProficiency(
+        saves.strength.proficient,
+        abilityModifiers.strength,
+        proficiencyBonus,
+        saves.strength.bonus
+      ),
+      dexterity: createSavingThrowProficiency(
+        saves.dexterity.proficient,
+        abilityModifiers.dexterity,
+        proficiencyBonus,
+        saves.dexterity.bonus
+      ),
+      constitution: createSavingThrowProficiency(
+        saves.constitution.proficient,
+        abilityModifiers.constitution,
+        proficiencyBonus,
+        saves.constitution.bonus
+      ),
+      intelligence: createSavingThrowProficiency(
+        saves.intelligence.proficient,
+        abilityModifiers.intelligence,
+        proficiencyBonus,
+        saves.intelligence.bonus
+      ),
+      wisdom: createSavingThrowProficiency(
+        saves.wisdom.proficient,
+        abilityModifiers.wisdom,
+        proficiencyBonus,
+        saves.wisdom.bonus
+      ),
+      charisma: createSavingThrowProficiency(
+        saves.charisma.proficient,
+        abilityModifiers.charisma,
+        proficiencyBonus,
+        saves.charisma.bonus
+      ),
     };
   }
 
@@ -315,7 +392,7 @@ export namespace SkillUtils {
       religion: 'Religion',
       sleightOfHand: 'Sleight of Hand',
       stealth: 'Stealth',
-      survival: 'Survival'
+      survival: 'Survival',
     };
     return names[skill];
   }
@@ -333,10 +410,15 @@ export namespace SkillUtils {
     const ability = SKILL_ABILITIES[skill];
     const abilityMod = abilityModifiers[ability];
     const current = skills[skill];
-    
+
     return {
       ...skills,
-      [skill]: createSkillProficiency(level, abilityMod, proficiencyBonus, current.bonus)
+      [skill]: createSkillProficiency(
+        level,
+        abilityMod,
+        proficiencyBonus,
+        current.bonus
+      ),
     };
   }
 
@@ -352,24 +434,31 @@ export namespace SkillUtils {
   ): SavingThrowProficiencies {
     const abilityMod = abilityModifiers[ability];
     const current = saves[ability];
-    
+
     return {
       ...saves,
-      [ability]: createSavingThrowProficiency(proficient, abilityMod, proficiencyBonus, current.bonus)
+      [ability]: createSavingThrowProficiency(
+        proficient,
+        abilityMod,
+        proficiencyBonus,
+        current.bonus
+      ),
     };
   }
 
   /**
    * Validate proficiency data
    */
-  export function validateProficiencyData(data: ProficiencyData): ValidationResult<ProficiencyData> {
+  export function validateProficiencyData(
+    data: ProficiencyData
+  ): ValidationResult<ProficiencyData> {
     const errors: ValidationError[] = [];
 
     if (data.bonus < 2 || data.bonus > 6) {
       errors.push({
         field: 'proficiencyBonus',
         message: 'Proficiency bonus must be between 2 and 6',
-        code: 'INVALID_PROFICIENCY_BONUS'
+        code: 'INVALID_PROFICIENCY_BONUS',
       });
     }
 
@@ -380,7 +469,7 @@ export namespace SkillUtils {
         errors.push({
           field: `skills.${skill}.total`,
           message: 'Skill total must be a number',
-          code: 'INVALID_SKILL_TOTAL'
+          code: 'INVALID_SKILL_TOTAL',
         });
       }
     }
@@ -392,7 +481,7 @@ export namespace SkillUtils {
         errors.push({
           field: `savingThrows.${ability}.total`,
           message: 'Saving throw total must be a number',
-          code: 'INVALID_SAVE_TOTAL'
+          code: 'INVALID_SAVE_TOTAL',
         });
       }
     }

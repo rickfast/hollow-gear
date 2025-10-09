@@ -30,7 +30,9 @@ They strip metal from armor and weapons with hungry precision.
 
 ---
 
-**Rustbite.** _Melee Weapon Attack:_ +4 to hit, reach 5 ft, one target. _Hit:_ 5 (1d6 + 2) piercing damage, and the target must succeed on a DC 11 Dexterity saving throw or one nonmagical metal weapon or piece of armor becomes corroded, taking a permanent −1 penalty to AC or attack rolls.
+**Rustbite.** _Melee Weapon Attack:_ +4 to hit, reach 5 ft, one target. _Hit:_ 5 (1d6 + 2) piercing
+damage, and the target must succeed on a DC 11 Dexterity saving throw or one nonmagical metal weapon
+or piece of armor becomes corroded, taking a permanent −1 penalty to AC or attack rolls.
 
 **Scrap Instinct.** The Rust Crawler can sense uncorroded metal within 30 ft.
 
@@ -60,9 +62,11 @@ It flickers between dimensions, drawn to strong thoughts and emotions.
 
 ---
 
-**Psionic Bolt (Recharge 5–6).** _Ranged Spell Attack:_ +4 to hit, range 30 ft, one target. _Hit:_ 7 (2d4 + 2) psychic damage.
+**Psionic Bolt (Recharge 5–6).** _Ranged Spell Attack:_ +4 to hit, range 30 ft, one target. _Hit:_ 7
+(2d4 + 2) psychic damage.
 
-**Thought Drain.** When a creature within 10 ft uses a psionic ability, the Wisp may absorb fragments of it, regaining 1d4 hit points.
+**Thought Drain.** When a creature within 10 ft uses a psionic ability, the Wisp may absorb
+fragments of it, regaining 1d4 hit points.
 
 **Flicker.** The Wisp can pass through solid objects as if they were difficult terrain.
 
@@ -92,11 +96,14 @@ Its flesh is threaded with copper wire, and its voice is the hiss of escaping st
 
 ---
 
-**Steam Slam.** _Melee Weapon Attack:_ +3 to hit, reach 5 ft, one target. _Hit:_ 7 (2d6 + 1) bludgeoning damage.
+**Steam Slam.** _Melee Weapon Attack:_ +3 to hit, reach 5 ft, one target. _Hit:_ 7 (2d6 + 1)
+bludgeoning damage.
 
-**Overpressure (Recharge 6).** The Iron Husk releases built-up steam in a 10-ft radius. Each creature must make a DC 12 Constitution saving throw or take 5 (2d4) fire damage and be pushed 5 ft.
+**Overpressure (Recharge 6).** The Iron Husk releases built-up steam in a 10-ft radius. Each
+creature must make a DC 12 Constitution saving throw or take 5 (2d4) fire damage and be pushed 5 ft.
 
-**Unstable Core.** When reduced to 0 HP, the Husk explodes. Creatures within 10 ft take 6 (2d6) fire damage (DEX save DC 12 for half).
+**Unstable Core.** When reduced to 0 HP, the Husk explodes. Creatures within 10 ft take 6 (2d6) fire
+damage (DEX save DC 12 for half).
 
 ---
 
@@ -121,11 +128,14 @@ Their survival instinct is matched only by their appetite for insulation and wir
 
 ---
 
-**Bite.** _Melee Weapon Attack:_ +4 to hit, reach 5 ft, one target. _Hit:_ 4 (1d4 + 2) piercing damage.
+**Bite.** _Melee Weapon Attack:_ +4 to hit, reach 5 ft, one target. _Hit:_ 4 (1d4 + 2) piercing
+damage.
 
-**Conductive Tail.** When struck by lightning damage, the Gear Rat arcs the current to another creature within 5 ft (DC 10 Dex save or take 2 lightning damage).
+**Conductive Tail.** When struck by lightning damage, the Gear Rat arcs the current to another
+creature within 5 ft (DC 10 Dex save or take 2 lightning damage).
 
-**Swarm Instinct.** If at least one other Gear Rat is within 5 ft, the Gear Rat gains advantage on attack rolls.
+**Swarm Instinct.** If at least one other Gear Rat is within 5 ft, the Gear Rat gains advantage on
+attack rolls.
 
 ---
 

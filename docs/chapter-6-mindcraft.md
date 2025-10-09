@@ -8,9 +8,11 @@
 ### 🧠 What is Mindcraft?
 
 Mindcraft is the art of shaping the Aether — the invisible medium that bridges will and world.  
-Where spellcasters manipulate external forces through ritual and formula, psionics draw from **within**, channeling thought, emotion, and intent directly into action.
+Where spellcasters manipulate external forces through ritual and formula, psionics draw from
+**within**, channeling thought, emotion, and intent directly into action.
 
-Mindcraft users (called **Weavers**) reshape space, time, and perception not with words or tools, but by **tuning their consciousness** to the resonant frequency of reality itself.
+Mindcraft users (called **Weavers**) reshape space, time, and perception not with words or tools,
+but by **tuning their consciousness** to the resonant frequency of reality itself.
 
 ---
 
@@ -140,15 +142,16 @@ Pure manipulation of motion — the physical extension of will.
 You can **amplify** a psionic power by spending additional AFP up to double its base cost.  
 Each additional AFP increases:
 
--   **Damage:** +1 die per AFP.
--   **Range/Duration:** +50%.
--   **Save DC:** +1 per 2 AFP (rounded down).
+- **Damage:** +1 die per AFP.
+- **Range/Duration:** +50%.
+- **Save DC:** +1 per 2 AFP (rounded down).
 
 ---
 
 ### ⚠️ Overload & Feedback
 
-When you use more AFP than your level allows (e.g. expending 6 AFP at Level 3), make a **DC 12 + excess AFP** **Constitution save**.  
+When you use more AFP than your level allows (e.g. expending 6 AFP at Level 3), make a **DC 12 +
+excess AFP** **Constitution save**.  
 On failure, roll **Psionic Feedback (d6):**
 
 | d6  | Feedback Effect                                             |
@@ -167,8 +170,8 @@ On failure, roll **Psionic Feedback (d6):**
 You may **maintain a psionic focus** on one power with a sustained duration (like concentration).  
 Your **Focus Limit** begins at 1 and increases at:
 
--   Level 6 → 2
--   Level 10 → 3
+- Level 6 → 2
+- Level 10 → 3
 
 While maintaining focus, you cannot manifest another sustained power without releasing one.  
 If your Focus is broken, make a **DC 10 Constitution save** or take 1d4 psychic backlash.
@@ -193,15 +196,16 @@ Mindweavers and Aethermancers automatically gain 1 new power per level.
 Once per short rest, you may overexert your mind to temporarily boost output.  
 For one turn:
 
--   Add +2 to attack rolls and save DCs for psionic powers.
--   You may ignore AFP cost for one Tier 1–2 power.  
-    Afterward, take 1d4 psychic damage and cannot regain AFP until end of next short rest.
+- Add +2 to attack rolls and save DCs for psionic powers.
+- You may ignore AFP cost for one Tier 1–2 power.  
+  Afterward, take 1d4 psychic damage and cannot regain AFP until end of next short rest.
 
 ---
 
 ### 🕳️ Optional Rule: Psionic Signatures
 
-Every Mindcrafter’s energy leaves a unique **psychic fingerprint** — visible as rippling light, faint sound, or emotional aura.
+Every Mindcrafter’s energy leaves a unique **psychic fingerprint** — visible as rippling light,
+faint sound, or emotional aura.
 
 | Emotion   | Manifestation                                |
 | --------- | -------------------------------------------- |
@@ -227,12 +231,13 @@ Creatures with the _Aether Sensitivity_ trait can detect these signatures within
 
 ### 🧩 Psionic Crafting (Optional)
 
-A psionic user may inscribe their powers into **Aether Relics** — mental imprints within crystals or armor.  
+A psionic user may inscribe their powers into **Aether Relics** — mental imprints within crystals or
+armor.  
 Each relic can store **1 Tier 1–3 power** and requires:
 
--   1 Aether Crystal (worth 100 ⚙️)
--   1 hour of meditation
--   DC 15 Arcana or Insight check
+- 1 Aether Crystal (worth 100 ⚙️)
+- 1 hour of meditation
+- DC 15 Arcana or Insight check
 
 Stored powers may be triggered by others with half the normal save DC and AFP cost.
 

@@ -3,13 +3,13 @@
  * Includes traditional D&D weapons plus powered and siege weapons
  */
 
-import type { 
-  Equipment, 
-  WeaponType, 
-  CraftsmanshipTier, 
+import type {
+  Equipment,
+  WeaponType,
+  CraftsmanshipTier,
   EquipmentProperties,
   PowerRequirement,
-  SpecialMaterial
+  SpecialMaterial,
 } from './base.js';
 import type { ValidationResult, ValidationError } from '../types/common.js';
 import type { DieType, AbilityScore } from '../types/common.js';
@@ -68,7 +68,7 @@ export interface WeaponDamage {
 /**
  * Types of damage in Hollow Gear
  */
-export type DamageType = 
+export type DamageType =
   | 'bludgeoning'
   | 'piercing'
   | 'slashing'
@@ -82,33 +82,33 @@ export type DamageType =
   | 'psychic'
   | 'radiant'
   | 'thunder'
-  | 'aether'      // Hollow Gear specific
-  | 'steam'       // Hollow Gear specific
-  | 'kinetic';    // Hollow Gear specific
+  | 'aether' // Hollow Gear specific
+  | 'steam' // Hollow Gear specific
+  | 'kinetic'; // Hollow Gear specific
 
 /**
  * Weapon properties that affect usage
  */
-export type WeaponProperty = 
-  | 'ammunition'    // Requires ammunition
-  | 'finesse'       // Can use Dex instead of Str
-  | 'heavy'         // Small creatures have disadvantage
-  | 'light'         // Can be used for two-weapon fighting
-  | 'loading'       // Can only fire once per action
-  | 'range'         // Ranged weapon
-  | 'reach'         // 10-foot reach instead of 5
-  | 'thrown'        // Can be thrown
-  | 'two-handed'    // Requires two hands
-  | 'versatile'     // Can be used one or two-handed
-  | 'powered'       // Requires power to function
-  | 'overcharge'    // Can be overcharged for extra damage
-  | 'steam-vented'  // Vents steam when fired
-  | 'aether-charged'// Uses aether energy
-  | 'recoil'        // Has significant recoil
-  | 'siege'         // Deals double damage to objects
-  | 'reload'        // Requires reloading action
-  | 'burst-fire'    // Can fire in burst mode
-  | 'automatic';    // Can fire in automatic mode
+export type WeaponProperty =
+  | 'ammunition' // Requires ammunition
+  | 'finesse' // Can use Dex instead of Str
+  | 'heavy' // Small creatures have disadvantage
+  | 'light' // Can be used for two-weapon fighting
+  | 'loading' // Can only fire once per action
+  | 'range' // Ranged weapon
+  | 'reach' // 10-foot reach instead of 5
+  | 'thrown' // Can be thrown
+  | 'two-handed' // Requires two hands
+  | 'versatile' // Can be used one or two-handed
+  | 'powered' // Requires power to function
+  | 'overcharge' // Can be overcharged for extra damage
+  | 'steam-vented' // Vents steam when fired
+  | 'aether-charged' // Uses aether energy
+  | 'recoil' // Has significant recoil
+  | 'siege' // Deals double damage to objects
+  | 'reload' // Requires reloading action
+  | 'burst-fire' // Can fire in burst mode
+  | 'automatic'; // Can fire in automatic mode
 
 /**
  * Weapon range information
@@ -141,7 +141,7 @@ export interface AmmunitionData {
 /**
  * Types of ammunition
  */
-export type AmmunitionType = 
+export type AmmunitionType =
   | 'arrow'
   | 'bolt'
   | 'bullet'
@@ -157,27 +157,27 @@ export type AmmunitionType =
 /**
  * Special ammunition properties
  */
-export type AmmunitionProperty = 
-  | 'explosive'     // Deals area damage
-  | 'incendiary'    // Sets targets on fire
-  | 'armor-piercing'// Ignores some armor
-  | 'tracking'      // Seeks targets
-  | 'non-lethal'    // Deals subdual damage
-  | 'silver'        // Effective against certain creatures
-  | 'cold-iron'     // Effective against fey
-  | 'blessed'       // Effective against undead/fiends
+export type AmmunitionProperty =
+  | 'explosive' // Deals area damage
+  | 'incendiary' // Sets targets on fire
+  | 'armor-piercing' // Ignores some armor
+  | 'tracking' // Seeks targets
+  | 'non-lethal' // Deals subdual damage
+  | 'silver' // Effective against certain creatures
+  | 'cold-iron' // Effective against fey
+  | 'blessed' // Effective against undead/fiends
   | 'aether-tipped' // Enhanced with aether energy
-  | 'psionic'       // Guided by psionic energy
-  | 'fragmenting'   // Breaks apart on impact
-  | 'emp'           // Disrupts electronics
-  | 'smoke'         // Creates concealment
-  | 'flash'         // Blinds targets
-  | 'sonic';        // Deals thunder damage
+  | 'psionic' // Guided by psionic energy
+  | 'fragmenting' // Breaks apart on impact
+  | 'emp' // Disrupts electronics
+  | 'smoke' // Creates concealment
+  | 'flash' // Blinds targets
+  | 'sonic'; // Deals thunder damage
 
 /**
  * Weapon proficiency categories
  */
-export type WeaponProficiency = 
+export type WeaponProficiency =
   | 'simple-melee'
   | 'martial-melee'
   | 'simple-ranged'
@@ -244,35 +244,41 @@ export namespace WeaponUtils {
    * Calculate total weapon damage including bonuses
    */
   export function calculateDamage(
-    weapon: Weapon, 
+    weapon: Weapon,
     twoHanded: boolean = false,
     overcharged: boolean = false
   ): WeaponDamage {
     let damage = weapon.weaponProperties.damage;
-    
+
     // Use versatile damage if two-handed and available
     if (twoHanded && damage.versatileDamage) {
       damage = {
         ...damage,
         diceCount: damage.versatileDamage.diceCount,
-        diceType: damage.versatileDamage.diceType
+        diceType: damage.versatileDamage.diceType,
       };
     }
-    
+
     return damage;
   }
 
   /**
    * Check if weapon has a specific property
    */
-  export function hasProperty(weapon: Weapon, property: WeaponProperty): boolean {
+  export function hasProperty(
+    weapon: Weapon,
+    property: WeaponProperty
+  ): boolean {
     return weapon.weaponProperties.properties.includes(property);
   }
 
   /**
    * Get effective range for attack calculations
    */
-  export function getEffectiveRange(weapon: Weapon, thrown: boolean = false): WeaponRange {
+  export function getEffectiveRange(
+    weapon: Weapon,
+    thrown: boolean = false
+  ): WeaponRange {
     if (thrown && weapon.weaponProperties.thrownRange) {
       return weapon.weaponProperties.thrownRange;
     }
@@ -283,13 +289,19 @@ export namespace WeaponUtils {
    * Check if weapon requires ammunition
    */
   export function requiresAmmunition(weapon: Weapon): boolean {
-    return hasProperty(weapon, 'ammunition') && weapon.weaponProperties.ammunition !== undefined;
+    return (
+      hasProperty(weapon, 'ammunition') &&
+      weapon.weaponProperties.ammunition !== undefined
+    );
   }
 
   /**
    * Check if weapon has sufficient ammunition
    */
-  export function hasAmmunition(weapon: Weapon, shotsNeeded: number = 1): boolean {
+  export function hasAmmunition(
+    weapon: Weapon,
+    shotsNeeded: number = 1
+  ): boolean {
     if (!requiresAmmunition(weapon) || !weapon.weaponProperties.ammunition) {
       return true;
     }
@@ -306,22 +318,25 @@ export namespace WeaponUtils {
 
     const newAmmunition = {
       ...weapon.weaponProperties.ammunition,
-      current: Math.max(0, weapon.weaponProperties.ammunition.current - shots)
+      current: Math.max(0, weapon.weaponProperties.ammunition.current - shots),
     };
 
     return {
       ...weapon,
       weaponProperties: {
         ...weapon.weaponProperties,
-        ammunition: newAmmunition
-      }
+        ammunition: newAmmunition,
+      },
     };
   }
 
   /**
    * Reload weapon ammunition
    */
-  export function reloadWeapon(weapon: Weapon, ammunitionAdded: number): Weapon {
+  export function reloadWeapon(
+    weapon: Weapon,
+    ammunitionAdded: number
+  ): Weapon {
     if (!weapon.weaponProperties.ammunition) {
       return weapon;
     }
@@ -333,15 +348,15 @@ export namespace WeaponUtils {
 
     const newAmmunition = {
       ...weapon.weaponProperties.ammunition,
-      current: newCurrent
+      current: newCurrent,
     };
 
     return {
       ...weapon,
       weaponProperties: {
         ...weapon.weaponProperties,
-        ammunition: newAmmunition
-      }
+        ammunition: newAmmunition,
+      },
     };
   }
 
@@ -360,8 +375,8 @@ export namespace WeaponUtils {
     }
 
     // Check for disabling malfunctions
-    const hasDisablingMalfunction = weapon.modSlots.some(slot => 
-      slot.malfunctionState?.disabling === true
+    const hasDisablingMalfunction = weapon.modSlots.some(
+      slot => slot.malfunctionState?.disabling === true
     );
 
     return !hasDisablingMalfunction;
@@ -370,7 +385,10 @@ export namespace WeaponUtils {
   /**
    * Get weapon attack ability score
    */
-  export function getAttackAbility(weapon: Weapon, useFinesse: boolean = false): AbilityScore {
+  export function getAttackAbility(
+    weapon: Weapon,
+    useFinesse: boolean = false
+  ): AbilityScore {
     if (useFinesse && hasProperty(weapon, 'finesse')) {
       return 'dexterity';
     }
@@ -388,7 +406,7 @@ export namespace WeaponUtils {
       errors.push({
         field: 'weaponProperties.damage.diceCount',
         message: 'Damage dice count must be positive',
-        code: 'INVALID_DAMAGE_DICE'
+        code: 'INVALID_DAMAGE_DICE',
       });
     }
 
@@ -397,27 +415,29 @@ export namespace WeaponUtils {
       errors.push({
         field: 'weaponProperties.range.normal',
         message: 'Normal range must be positive',
-        code: 'INVALID_RANGE'
+        code: 'INVALID_RANGE',
       });
     }
 
-    if (weapon.weaponProperties.range.long < weapon.weaponProperties.range.normal) {
+    if (
+      weapon.weaponProperties.range.long < weapon.weaponProperties.range.normal
+    ) {
       errors.push({
         field: 'weaponProperties.range.long',
         message: 'Long range must be greater than or equal to normal range',
-        code: 'INVALID_LONG_RANGE'
+        code: 'INVALID_LONG_RANGE',
       });
     }
 
     // Validate ammunition if present
     if (weapon.weaponProperties.ammunition) {
       const ammo = weapon.weaponProperties.ammunition;
-      
+
       if (ammo.capacity <= 0) {
         errors.push({
           field: 'weaponProperties.ammunition.capacity',
           message: 'Ammunition capacity must be positive',
-          code: 'INVALID_AMMO_CAPACITY'
+          code: 'INVALID_AMMO_CAPACITY',
         });
       }
 
@@ -425,19 +445,19 @@ export namespace WeaponUtils {
         errors.push({
           field: 'weaponProperties.ammunition.current',
           message: 'Current ammunition must be between 0 and capacity',
-          code: 'INVALID_AMMO_CURRENT'
+          code: 'INVALID_AMMO_CURRENT',
         });
       }
     }
 
     // Validate property consistency
     const props = weapon.weaponProperties.properties;
-    
+
     if (props.includes('ammunition') && !weapon.weaponProperties.ammunition) {
       errors.push({
         field: 'weaponProperties.ammunition',
         message: 'Weapon with ammunition property must have ammunition data',
-        code: 'MISSING_AMMUNITION_DATA'
+        code: 'MISSING_AMMUNITION_DATA',
       });
     }
 
@@ -445,15 +465,18 @@ export namespace WeaponUtils {
       errors.push({
         field: 'weaponProperties.thrownRange',
         message: 'Thrown weapon must have thrown range data',
-        code: 'MISSING_THROWN_RANGE'
+        code: 'MISSING_THROWN_RANGE',
       });
     }
 
-    if (props.includes('powered') && !weapon.weaponProperties.powerRequirement) {
+    if (
+      props.includes('powered') &&
+      !weapon.weaponProperties.powerRequirement
+    ) {
       errors.push({
         field: 'weaponProperties.powerRequirement',
         message: 'Powered weapon must have power requirement data',
-        code: 'MISSING_POWER_REQUIREMENT'
+        code: 'MISSING_POWER_REQUIREMENT',
       });
     }
 
@@ -481,12 +504,12 @@ export namespace WeaponUtils {
       physical: {
         weight: 1,
         bulk: 1,
-        size: 'medium'
+        size: 'medium',
       },
       requiresPower: properties.includes('powered'),
       canMalfunction: properties.includes('powered'),
       magical: false,
-      psionic: false
+      psionic: false,
     };
 
     const weaponProperties: WeaponProperties = {
@@ -496,7 +519,7 @@ export namespace WeaponUtils {
       powered: properties.includes('powered'),
       proficiency,
       attackAbility: properties.includes('finesse') ? 'dexterity' : 'strength',
-      throwable: properties.includes('thrown')
+      throwable: properties.includes('thrown'),
     };
 
     return {
@@ -509,7 +532,7 @@ export namespace WeaponUtils {
       value: { cogs: 0, gears: 1, cores: 0 },
       modSlots: [],
       isUnique: false,
-      weaponProperties
+      weaponProperties,
     };
   }
 }

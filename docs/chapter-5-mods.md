@@ -7,14 +7,17 @@
 
 ### ⚙️ The Modding Philosophy
 
-Every weapon and piece of armor in Hollowgear can be **modified** — enhanced, customized, and overclocked with gears, crystals, runes, and a little courage.  
-Modding is more than engineering — it’s expression. Each mod carries a fragment of its maker’s intent, a whisper of will made mechanical.
+Every weapon and piece of armor in Hollowgear can be **modified** — enhanced, customized, and
+overclocked with gears, crystals, runes, and a little courage.  
+Modding is more than engineering — it’s expression. Each mod carries a fragment of its maker’s
+intent, a whisper of will made mechanical.
 
 ---
 
 ### 🔩 Mod Slots & Limitations
 
-Each item (weapon, armor, or shield) can hold a limited number of **Mod Slots** depending on its craftsmanship tier.
+Each item (weapon, armor, or shield) can hold a limited number of **Mod Slots** depending on its
+craftsmanship tier.
 
 | Craft Tier   | Mod Slots | Notes                                                |
 | ------------ | --------- | ---------------------------------------------------- |
@@ -25,9 +28,9 @@ Each item (weapon, armor, or shield) can hold a limited number of **Mod Slots** 
 
 **Installing a Mod:**
 
--   Requires **Tinker’s Tools**, 1 hour, and a DC 12 + Mod Tier **Intelligence (Tinkering)** check.
--   Failing by 5+ causes **Malfunction** (see below).
--   Removing a mod safely requires half the installation time.
+- Requires **Tinker’s Tools**, 1 hour, and a DC 12 + Mod Tier **Intelligence (Tinkering)** check.
+- Failing by 5+ causes **Malfunction** (see below).
+- Removing a mod safely requires half the installation time.
 
 ---
 
@@ -41,7 +44,8 @@ Each item (weapon, armor, or shield) can hold a limited number of **Mod Slots** 
 | IV – Prototype | 18       | 16 hrs | 400+        | Sentient or unstable         |
 
 To craft a Mod, you must know its **blueprint** or disassemble an existing one.  
-Artifex characters can attempt to improvise a blueprint using a **DC 15 Arcana or Investigation** check after examining similar mods.
+Artifex characters can attempt to improvise a blueprint using a **DC 15 Arcana or Investigation**
+check after examining similar mods.
 
 ---
 
@@ -92,7 +96,8 @@ Artifex characters can attempt to improvise a blueprint using a **DC 15 Arcana o
 ### ⚠️ Malfunction & Overclock
 
 When a mod overloads or fails, roll on the **Malfunction Table**.  
-Overclocking (pushing a mod beyond its tier limit) increases the failure chance by **+10% per tier exceeded**.
+Overclocking (pushing a mod beyond its tier limit) increases the failure chance by **+10% per tier
+exceeded**.
 
 | d8  | Malfunction Effect                                                                 |
 | --- | ---------------------------------------------------------------------------------- |

@@ -23,14 +23,14 @@ export interface HeatPointData {
 /**
  * Spell feedback effect types
  */
-export type FeedbackEffectType = 
-  | 'spell_attack_penalty'    // Penalty to spell attack rolls
-  | 'spell_dc_penalty'        // Penalty to spell save DCs
-  | 'concentration_penalty'   // Penalty to concentration saves
+export type FeedbackEffectType =
+  | 'spell_attack_penalty' // Penalty to spell attack rolls
+  | 'spell_dc_penalty' // Penalty to spell save DCs
+  | 'concentration_penalty' // Penalty to concentration saves
   | 'heat_generation_increase' // Increased heat from spells
-  | 'resource_cost_increase'  // Increased AFP/RC costs
-  | 'casting_time_increase'   // Longer casting times
-  | 'spell_failure_chance';   // Chance for spells to fail
+  | 'resource_cost_increase' // Increased AFP/RC costs
+  | 'casting_time_increase' // Longer casting times
+  | 'spell_failure_chance'; // Chance for spells to fail
 
 /**
  * A specific feedback effect with its parameters
@@ -148,14 +148,14 @@ export namespace HeatFeedbackUtils {
       ...state,
       heatPoints: {
         ...state.heatPoints,
-        current: newHeatCurrent
+        current: newHeatCurrent,
       },
       feedback: {
         ...state.feedback,
         level: newFeedbackLevel,
         effects: newEffects,
-        sourceType: spellcastingType
-      }
+        sourceType: spellcastingType,
+      },
     };
   }
 
@@ -173,7 +173,7 @@ export namespace HeatFeedbackUtils {
 
     const excessHeat = currentHeat - feedbackThreshold;
     const maxExcess = maxHeat - feedbackThreshold;
-    
+
     // Feedback level scales from 0 to 100 based on excess heat
     return Math.min(100, Math.floor((excessHeat / maxExcess) * 100));
   }
@@ -193,14 +193,14 @@ export namespace HeatFeedbackUtils {
         type: 'spell_attack_penalty',
         severity: -1,
         description: 'Minor penalty to spell attacks from heat feedback',
-        active: true
+        active: true,
       });
 
       effects.push({
         type: 'concentration_penalty',
         severity: -1,
         description: 'Minor penalty to concentration saves from heat feedback',
-        active: true
+        active: true,
       });
     }
 
@@ -209,26 +209,30 @@ export namespace HeatFeedbackUtils {
         type: 'spell_dc_penalty',
         severity: -1,
         description: 'Minor penalty to spell save DCs from heat feedback',
-        active: true
+        active: true,
       });
 
       effects.push({
         type: 'heat_generation_increase',
         severity: 1,
         description: 'Spells generate additional heat due to feedback',
-        active: true
+        active: true,
       });
     }
 
     if (feedbackLevel >= 75) {
       // Increase existing penalties
-      const attackPenalty = effects.find(e => e.type === 'spell_attack_penalty');
+      const attackPenalty = effects.find(
+        e => e.type === 'spell_attack_penalty'
+      );
       if (attackPenalty) attackPenalty.severity = -2;
 
       const dcPenalty = effects.find(e => e.type === 'spell_dc_penalty');
       if (dcPenalty) dcPenalty.severity = -2;
 
-      const concentrationPenalty = effects.find(e => e.type === 'concentration_penalty');
+      const concentrationPenalty = effects.find(
+        e => e.type === 'concentration_penalty'
+      );
       if (concentrationPenalty) concentrationPenalty.severity = -2;
 
       // Add resource cost increase
@@ -236,7 +240,7 @@ export namespace HeatFeedbackUtils {
         type: 'resource_cost_increase',
         severity: 1,
         description: `Increased ${spellcastingType === 'arcanist' ? 'AFP' : 'RC'} costs from severe feedback`,
-        active: true
+        active: true,
       });
     }
 
@@ -245,14 +249,14 @@ export namespace HeatFeedbackUtils {
         type: 'spell_failure_chance',
         severity: 10, // 10% failure chance
         description: 'Chance for spells to fail due to extreme heat feedback',
-        active: true
+        active: true,
       });
 
       effects.push({
         type: 'casting_time_increase',
         severity: 1,
         description: 'Casting times increased due to extreme feedback',
-        active: true
+        active: true,
       });
     }
 
@@ -289,18 +293,21 @@ export namespace HeatFeedbackUtils {
       ...state,
       heatPoints: {
         ...state.heatPoints,
-        current: newHeatCurrent
+        current: newHeatCurrent,
       },
       feedback: {
         ...state.feedback,
         level: newFeedbackLevel,
         effects: newEffects,
-        recoveryTime: restType === 'long' ? 0 : Math.max(0, state.feedback.recoveryTime - 1)
+        recoveryTime:
+          restType === 'long'
+            ? 0
+            : Math.max(0, state.feedback.recoveryTime - 1),
       },
       concentration: {
         ...state.concentration,
-        concentrationSavesThisTurn: 0 // Reset concentration saves on rest
-      }
+        concentrationSavesThisTurn: 0, // Reset concentration saves on rest
+      },
     };
   }
 
@@ -312,26 +319,32 @@ export namespace HeatFeedbackUtils {
     damage: number,
     spellcastingAbilityModifier: number,
     proficiencyBonus: number
-  ): { success: boolean; rollResult: number; dc: number; updatedState: HeatFeedbackState } {
+  ): {
+    success: boolean;
+    rollResult: number;
+    dc: number;
+    updatedState: HeatFeedbackState;
+  } {
     if (!state.concentration.isConcentrating) {
       return {
         success: true,
         rollResult: 0,
         dc: 0,
-        updatedState: state
+        updatedState: state,
       };
     }
 
     // Calculate DC: 10 or half damage, whichever is higher
     const dc = Math.max(10, Math.floor(damage / 2));
-    
+
     // Calculate modifier with feedback penalties
     const concentrationPenalty = state.feedback.effects
       .filter(e => e.type === 'concentration_penalty' && e.active)
       .reduce((total, effect) => total + effect.severity, 0);
 
-    const totalModifier = spellcastingAbilityModifier + proficiencyBonus + concentrationPenalty;
-    
+    const totalModifier =
+      spellcastingAbilityModifier + proficiencyBonus + concentrationPenalty;
+
     // Simulate d20 roll (in actual implementation, this would be provided)
     const rollResult = Math.floor(Math.random() * 20) + 1 + totalModifier;
     const success = rollResult >= dc;
@@ -340,17 +353,20 @@ export namespace HeatFeedbackUtils {
       ...state,
       concentration: {
         ...state.concentration,
-        concentrationSavesThisTurn: state.concentration.concentrationSavesThisTurn + 1,
+        concentrationSavesThisTurn:
+          state.concentration.concentrationSavesThisTurn + 1,
         isConcentrating: success ? state.concentration.isConcentrating : false,
-        concentratedSpell: success ? state.concentration.concentratedSpell : undefined
-      }
+        concentratedSpell: success
+          ? state.concentration.concentratedSpell
+          : undefined,
+      },
     };
 
     return {
       success,
       rollResult,
       dc,
-      updatedState
+      updatedState,
     };
   }
 
@@ -367,23 +383,25 @@ export namespace HeatFeedbackUtils {
         ...state.concentration,
         isConcentrating: true,
         concentratedSpell: spell,
-        concentrationSavesThisTurn: 0
-      }
+        concentrationSavesThisTurn: 0,
+      },
     };
   }
 
   /**
    * End concentration
    */
-  export function endConcentration(state: HeatFeedbackState): HeatFeedbackState {
+  export function endConcentration(
+    state: HeatFeedbackState
+  ): HeatFeedbackState {
     return {
       ...state,
       concentration: {
         ...state.concentration,
         isConcentrating: false,
         concentratedSpell: undefined,
-        concentrationSavesThisTurn: 0
-      }
+        concentrationSavesThisTurn: 0,
+      },
     };
   }
 
@@ -426,23 +444,31 @@ export namespace HeatFeedbackUtils {
   /**
    * Validate heat feedback state
    */
-  export function validateHeatFeedbackState(state: HeatFeedbackState): ValidationResult<HeatFeedbackState> {
+  export function validateHeatFeedbackState(
+    state: HeatFeedbackState
+  ): ValidationResult<HeatFeedbackState> {
     const errors: ValidationError[] = [];
 
     // Validate heat points
-    if (!Number.isInteger(state.heatPoints.current) || state.heatPoints.current < 0) {
+    if (
+      !Number.isInteger(state.heatPoints.current) ||
+      state.heatPoints.current < 0
+    ) {
       errors.push({
         field: 'heatPoints.current',
         message: 'Current heat points must be a non-negative integer',
-        code: 'INVALID_CURRENT_HEAT'
+        code: 'INVALID_CURRENT_HEAT',
       });
     }
 
-    if (!Number.isInteger(state.heatPoints.maximum) || state.heatPoints.maximum < 0) {
+    if (
+      !Number.isInteger(state.heatPoints.maximum) ||
+      state.heatPoints.maximum < 0
+    ) {
       errors.push({
         field: 'heatPoints.maximum',
         message: 'Maximum heat points must be a non-negative integer',
-        code: 'INVALID_MAX_HEAT'
+        code: 'INVALID_MAX_HEAT',
       });
     }
 
@@ -450,16 +476,20 @@ export namespace HeatFeedbackUtils {
       errors.push({
         field: 'heatPoints.current',
         message: 'Current heat points cannot exceed maximum',
-        code: 'HEAT_EXCEEDS_MAX'
+        code: 'HEAT_EXCEEDS_MAX',
       });
     }
 
     // Validate feedback level
-    if (!Number.isInteger(state.feedback.level) || state.feedback.level < 0 || state.feedback.level > 100) {
+    if (
+      !Number.isInteger(state.feedback.level) ||
+      state.feedback.level < 0 ||
+      state.feedback.level > 100
+    ) {
       errors.push({
         field: 'feedback.level',
         message: 'Feedback level must be an integer between 0 and 100',
-        code: 'INVALID_FEEDBACK_LEVEL'
+        code: 'INVALID_FEEDBACK_LEVEL',
       });
     }
 
@@ -468,7 +498,7 @@ export namespace HeatFeedbackUtils {
       errors.push({
         field: 'feedback.sourceType',
         message: 'Invalid spellcasting type',
-        code: 'INVALID_SPELLCASTING_TYPE'
+        code: 'INVALID_SPELLCASTING_TYPE',
       });
     }
 
@@ -494,19 +524,19 @@ export namespace HeatFeedbackUtils {
         current: 0,
         maximum: maxHeatPoints,
         dissipationRate,
-        feedbackThreshold
+        feedbackThreshold,
       },
       feedback: {
         level: 0,
         effects: [],
         sourceType: spellcastingType,
-        recoveryTime: 0
+        recoveryTime: 0,
       },
       concentration: {
         isConcentrating: false,
         concentrationPenalty: 0,
-        concentrationSavesThisTurn: 0
-      }
+        concentrationSavesThisTurn: 0,
+      },
     };
   }
 }

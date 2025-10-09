@@ -26,7 +26,7 @@ export type {
   MalfunctionState,
   MalfunctionType,
   AttunementRequirement,
-  AttunementCondition
+  AttunementCondition,
 } from './base.js';
 
 // Equipment utilities
@@ -46,7 +46,7 @@ export type {
   AmmunitionProperty,
   ReloadMechanics,
   OverchargeMechanics,
-  WeaponMaterialProperties
+  WeaponMaterialProperties,
 } from './weapons.js';
 
 export { WeaponUtils } from './weapons.js';
@@ -68,7 +68,7 @@ export type {
   ShieldCoverage,
   PoweredArmorState,
   PoweredArmorMode,
-  SystemStatus
+  SystemStatus,
 } from './armor.js';
 
 export { ArmorUtils, ShieldUtils } from './armor.js';
@@ -87,7 +87,7 @@ export type {
   ModSynergy,
   InstallationResult,
   InstallationComplication,
-  ComplicationType
+  ComplicationType,
 } from './modifications.js';
 
 export { ModUtils } from './modifications.js';
@@ -105,7 +105,7 @@ export type {
   CarryingCapacity,
   EncumbranceLevel,
   ItemBundle,
-  QuickAccessSlots
+  QuickAccessSlots,
 } from './inventory.js';
 
 export { InventoryUtils } from './inventory.js';

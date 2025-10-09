@@ -97,7 +97,7 @@ export namespace ArcanistUtils {
     castingLevel: number
   ): number {
     const levelDifference = Math.max(0, castingLevel - formula.level);
-    return formula.afpCost + (levelDifference * formula.afpScaling);
+    return formula.afpCost + levelDifference * formula.afpScaling;
   }
 
   /**
@@ -110,7 +110,7 @@ export namespace ArcanistUtils {
     overclockMultiplier: number
   ): number {
     let baseHeat = formula.baseHeatGeneration;
-    
+
     // Higher level casting generates more heat
     const levelDifference = Math.max(0, castingLevel - formula.level);
     baseHeat += levelDifference;
@@ -136,13 +136,17 @@ export namespace ArcanistUtils {
 
     // Check if spell level is within Equilibrium Tier
     if (castingLevel > data.equilibriumTier) {
-      reasons.push(`Spell level ${castingLevel} exceeds Equilibrium Tier ${data.equilibriumTier}`);
+      reasons.push(
+        `Spell level ${castingLevel} exceeds Equilibrium Tier ${data.equilibriumTier}`
+      );
     }
 
     // Check AFP availability
     const afpCost = calculateAfpCost(formula, castingLevel);
     if (data.aetherFluxPoints.current < afpCost) {
-      reasons.push(`Insufficient AFP: need ${afpCost}, have ${data.aetherFluxPoints.current}`);
+      reasons.push(
+        `Insufficient AFP: need ${afpCost}, have ${data.aetherFluxPoints.current}`
+      );
     }
 
     // Check Overclocking availability
@@ -163,12 +167,14 @@ export namespace ArcanistUtils {
     );
     const newHeatTotal = data.heatPoints + heatGenerated;
     if (newHeatTotal > data.maxHeatPoints) {
-      reasons.push(`Would exceed maximum heat points (${newHeatTotal}/${data.maxHeatPoints})`);
+      reasons.push(
+        `Would exceed maximum heat points (${newHeatTotal}/${data.maxHeatPoints})`
+      );
     }
 
     return {
       canCast: reasons.length === 0,
-      reasons
+      reasons,
     };
   }
 
@@ -181,15 +187,20 @@ export namespace ArcanistUtils {
     castingLevel: number,
     useOverclock: boolean = false
   ): ArcanistCastingResult {
-    const canCastCheck = canCastFormula(data, formula, castingLevel, useOverclock);
-    
+    const canCastCheck = canCastFormula(
+      data,
+      formula,
+      castingLevel,
+      useOverclock
+    );
+
     if (!canCastCheck.canCast) {
       return {
         success: false,
         afpCost: 0,
         heatGenerated: 0,
         overclocked: false,
-        errors: canCastCheck.reasons
+        errors: canCastCheck.reasons,
       };
     }
 
@@ -206,10 +217,14 @@ export namespace ArcanistUtils {
       ...data,
       aetherFluxPoints: {
         ...data.aetherFluxPoints,
-        current: data.aetherFluxPoints.current - afpCost
+        current: data.aetherFluxPoints.current - afpCost,
       },
-      heatPoints: HeatPointUtils.addHeatPoints(data.heatPoints, heatGenerated, data.maxHeatPoints),
-      overclockUses: useOverclock ? data.overclockUses - 1 : data.overclockUses
+      heatPoints: HeatPointUtils.addHeatPoints(
+        data.heatPoints,
+        heatGenerated,
+        data.maxHeatPoints
+      ),
+      overclockUses: useOverclock ? data.overclockUses - 1 : data.overclockUses,
     };
 
     return {
@@ -217,17 +232,19 @@ export namespace ArcanistUtils {
       afpCost,
       heatGenerated,
       overclocked: useOverclock,
-      updatedData
+      updatedData,
     };
   }
 
   /**
    * Restore Overclocking uses (typically on long rest)
    */
-  export function restoreOverclockUses(data: ArcanistSpellcastingData): ArcanistSpellcastingData {
+  export function restoreOverclockUses(
+    data: ArcanistSpellcastingData
+  ): ArcanistSpellcastingData {
     return {
       ...data,
-      overclockUses: data.maxOverclockUses
+      overclockUses: data.maxOverclockUses,
     };
   }
 
@@ -240,13 +257,13 @@ export namespace ArcanistUtils {
   ): number {
     // Base multiplier starts at 2.0 and decreases with level and intelligence
     let multiplier = 2.0;
-    
+
     // Reduce by 0.1 per 2 levels
     multiplier -= Math.floor(arcanistLevel / 2) * 0.1;
-    
+
     // Reduce by intelligence modifier * 0.05
     multiplier -= intelligenceModifier * 0.05;
-    
+
     // Minimum multiplier of 1.2
     return Math.max(1.2, multiplier);
   }
@@ -254,15 +271,21 @@ export namespace ArcanistUtils {
   /**
    * Validate Arcanist spellcasting data
    */
-  export function validateArcanistData(data: ArcanistSpellcastingData): ValidationResult<ArcanistSpellcastingData> {
+  export function validateArcanistData(
+    data: ArcanistSpellcastingData
+  ): ValidationResult<ArcanistSpellcastingData> {
     const errors: ValidationError[] = [];
 
     // Validate equilibrium tier
-    if (!Number.isInteger(data.equilibriumTier) || data.equilibriumTier < 0 || data.equilibriumTier > 9) {
+    if (
+      !Number.isInteger(data.equilibriumTier) ||
+      data.equilibriumTier < 0 ||
+      data.equilibriumTier > 9
+    ) {
       errors.push({
         field: 'equilibriumTier',
         message: 'Equilibrium Tier must be an integer between 0 and 9',
-        code: 'INVALID_EQUILIBRIUM_TIER'
+        code: 'INVALID_EQUILIBRIUM_TIER',
       });
     }
 
@@ -271,7 +294,7 @@ export namespace ArcanistUtils {
       errors.push({
         field: 'overclockUses',
         message: 'Overclock uses must be a non-negative integer',
-        code: 'INVALID_OVERCLOCK_USES'
+        code: 'INVALID_OVERCLOCK_USES',
       });
     }
 
@@ -279,7 +302,7 @@ export namespace ArcanistUtils {
       errors.push({
         field: 'maxOverclockUses',
         message: 'Max overclock uses must be a non-negative integer',
-        code: 'INVALID_MAX_OVERCLOCK_USES'
+        code: 'INVALID_MAX_OVERCLOCK_USES',
       });
     }
 
@@ -287,16 +310,19 @@ export namespace ArcanistUtils {
       errors.push({
         field: 'overclockUses',
         message: 'Current overclock uses cannot exceed maximum',
-        code: 'OVERCLOCK_USES_EXCEEDS_MAX'
+        code: 'OVERCLOCK_USES_EXCEEDS_MAX',
       });
     }
 
     // Validate overclock multiplier
-    if (typeof data.overclockMultiplier !== 'number' || data.overclockMultiplier < 1.0) {
+    if (
+      typeof data.overclockMultiplier !== 'number' ||
+      data.overclockMultiplier < 1.0
+    ) {
       errors.push({
         field: 'overclockMultiplier',
         message: 'Overclock multiplier must be a number >= 1.0',
-        code: 'INVALID_OVERCLOCK_MULTIPLIER'
+        code: 'INVALID_OVERCLOCK_MULTIPLIER',
       });
     }
 
@@ -306,7 +332,7 @@ export namespace ArcanistUtils {
         errors.push({
           field: `knownFormulae[${index}].afpCost`,
           message: 'AFP cost must be a non-negative integer',
-          code: 'INVALID_AFP_COST'
+          code: 'INVALID_AFP_COST',
         });
       }
 
@@ -314,15 +340,18 @@ export namespace ArcanistUtils {
         errors.push({
           field: `knownFormulae[${index}].afpScaling`,
           message: 'AFP scaling must be a non-negative integer',
-          code: 'INVALID_AFP_SCALING'
+          code: 'INVALID_AFP_SCALING',
         });
       }
 
-      if (!Number.isInteger(formula.baseHeatGeneration) || formula.baseHeatGeneration < 0) {
+      if (
+        !Number.isInteger(formula.baseHeatGeneration) ||
+        formula.baseHeatGeneration < 0
+      ) {
         errors.push({
           field: `knownFormulae[${index}].baseHeatGeneration`,
           message: 'Base heat generation must be a non-negative integer',
-          code: 'INVALID_HEAT_GENERATION'
+          code: 'INVALID_HEAT_GENERATION',
         });
       }
     });
@@ -351,7 +380,7 @@ export namespace ArcanistUtils {
       afpScaling,
       baseHeatGeneration,
       canOverclock,
-      overclockEffects
+      overclockEffects,
     };
   }
 }

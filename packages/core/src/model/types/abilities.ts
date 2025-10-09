@@ -2,7 +2,7 @@
  * Ability score types and related enums for D&D 5e mechanics
  */
 
-import type { AbilityScore, ValidationResult } from "./common.js";
+import type { AbilityScore, ValidationResult } from './common.js';
 
 /**
  * Represents a complete ability score with all modifiers
@@ -50,7 +50,7 @@ export namespace AbilityScoreUtils {
    * Calculate the total ability score from all components
    */
   export function calculateTotal(
-    score: Omit<AbilityScoreData, "modifier">
+    score: Omit<AbilityScoreData, 'modifier'>
   ): number {
     return score.base + score.racial + score.enhancement + score.temporary;
   }
@@ -94,24 +94,24 @@ export namespace AbilityScoreUtils {
     if (!Number.isInteger(score)) {
       errors.push({
         field: context,
-        message: "Ability score must be an integer",
-        code: "INVALID_TYPE",
+        message: 'Ability score must be an integer',
+        code: 'INVALID_TYPE',
       });
     }
 
     if (score < 1) {
       errors.push({
         field: context,
-        message: "Ability score cannot be less than 1",
-        code: "SCORE_TOO_LOW",
+        message: 'Ability score cannot be less than 1',
+        code: 'SCORE_TOO_LOW',
       });
     }
 
     if (score > 30) {
       errors.push({
         field: context,
-        message: "Ability score cannot exceed 30",
-        code: "SCORE_TOO_HIGH",
+        message: 'Ability score cannot exceed 30',
+        code: 'SCORE_TOO_HIGH',
       });
     }
 
@@ -127,12 +127,12 @@ export namespace AbilityScoreUtils {
    */
   export function getAbilityName(ability: AbilityScore): string {
     const names: Record<AbilityScore, string> = {
-      strength: "Strength",
-      dexterity: "Dexterity",
-      constitution: "Constitution",
-      intelligence: "Intelligence",
-      wisdom: "Wisdom",
-      charisma: "Charisma",
+      strength: 'Strength',
+      dexterity: 'Dexterity',
+      constitution: 'Constitution',
+      intelligence: 'Intelligence',
+      wisdom: 'Wisdom',
+      charisma: 'Charisma',
     };
     return names[ability];
   }
@@ -142,12 +142,12 @@ export namespace AbilityScoreUtils {
    */
   export function getAbilityAbbreviation(ability: AbilityScore): string {
     const abbreviations: Record<AbilityScore, string> = {
-      strength: "STR",
-      dexterity: "DEX",
-      constitution: "CON",
-      intelligence: "INT",
-      wisdom: "WIS",
-      charisma: "CHA",
+      strength: 'STR',
+      dexterity: 'DEX',
+      constitution: 'CON',
+      intelligence: 'INT',
+      wisdom: 'WIS',
+      charisma: 'CHA',
     };
     return abbreviations[ability];
   }

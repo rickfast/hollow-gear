@@ -31,9 +31,16 @@
   ],
   "author": "Hollow Gear Development Team",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
   "devDependencies": {
     "@types/bun": "latest",
-    "typescript": "^5"
+    "typescript": "^5",
+    "prettier": "^3.0.0"
   },
   "peerDependencies": {
     "typescript": "^5"

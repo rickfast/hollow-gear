@@ -27,7 +27,7 @@ export interface MaintainedPower {
 /**
  * Focus breaking conditions and their effects
  */
-export type FocusBreakCause = 
+export type FocusBreakCause =
   | 'damage_taken'
   | 'failed_save'
   | 'voluntary'
@@ -79,22 +79,24 @@ export function canMaintainAdditionalPower(
   newPower: PsionicPower
 ): { canMaintain: boolean; reason?: string } {
   // Check focus limit
-  const currentFocusUsed = focusState.maintainedPowers.filter(p => p.focusRequired).length;
+  const currentFocusUsed = focusState.maintainedPowers.filter(
+    p => p.focusRequired
+  ).length;
   if (newPower.requiresFocus && currentFocusUsed >= focusState.focusLimit) {
-    return { 
-      canMaintain: false, 
-      reason: `Focus limit reached (${currentFocusUsed}/${focusState.focusLimit})` 
+    return {
+      canMaintain: false,
+      reason: `Focus limit reached (${currentFocusUsed}/${focusState.focusLimit})`,
     };
   }
-  
+
   // Check concentration limit (only one concentration power at a time)
   if (newPower.requiresConcentration && focusState.concentrationPower) {
-    return { 
-      canMaintain: false, 
-      reason: 'Already concentrating on another power' 
+    return {
+      canMaintain: false,
+      reason: 'Already concentrating on another power',
     };
   }
-  
+
   return { canMaintain: true };
 }
 
@@ -116,19 +118,19 @@ export function addMaintainedPower(
     focusRequired: power.requiresFocus || false,
     amplificationLevel,
     targetInfo,
-    remainingDuration: calculateInitialDuration(power.duration)
+    remainingDuration: calculateInitialDuration(power.duration),
   };
-  
+
   const newState: PsionicFocusState = {
     ...focusState,
-    maintainedPowers: [...focusState.maintainedPowers, maintainedPower]
+    maintainedPowers: [...focusState.maintainedPowers, maintainedPower],
   };
-  
+
   // Set concentration power if needed
   if (power.requiresConcentration) {
     newState.concentrationPower = power.id;
   }
-  
+
   return newState;
 }
 
@@ -140,8 +142,10 @@ export function removeMaintainedPower(
   powerId: string,
   cause: FocusBreakCause = 'voluntary'
 ): { newState: PsionicFocusState; result: FocusBreakResult } {
-  const powerToRemove = focusState.maintainedPowers.find(p => p.powerId === powerId);
-  
+  const powerToRemove = focusState.maintainedPowers.find(
+    p => p.powerId === powerId
+  );
+
   if (!powerToRemove) {
     return {
       newState: focusState,
@@ -149,27 +153,30 @@ export function removeMaintainedPower(
         success: false,
         psychicBacklash: false,
         powersDropped: [],
-        cause
-      }
+        cause,
+      },
     };
   }
-  
-  const newMaintainedPowers = focusState.maintainedPowers.filter(p => p.powerId !== powerId);
-  const newConcentrationPower = focusState.concentrationPower === powerId 
-    ? undefined 
-    : focusState.concentrationPower;
-  
+
+  const newMaintainedPowers = focusState.maintainedPowers.filter(
+    p => p.powerId !== powerId
+  );
+  const newConcentrationPower =
+    focusState.concentrationPower === powerId
+      ? undefined
+      : focusState.concentrationPower;
+
   // Determine if psychic backlash occurs (involuntary focus breaks)
   const psychicBacklash = cause !== 'voluntary' && powerToRemove.focusRequired;
-  
+
   const result: FocusBreakResult = {
     success: true,
     psychicBacklash,
     backlashDamage: psychicBacklash ? '1d4' : undefined,
     powersDropped: [powerId],
-    cause
+    cause,
   };
-  
+
   const newState: PsionicFocusState = {
     ...focusState,
     maintainedPowers: newMaintainedPowers,
@@ -177,10 +184,10 @@ export function removeMaintainedPower(
     lastFocusBreak: {
       time: new Date(),
       cause,
-      powersLost: [powerId]
-    }
+      powersLost: [powerId],
+    },
   };
-  
+
   return { newState, result };
 }
 
@@ -192,18 +199,21 @@ export function breakAllMaintainedPowers(
   cause: FocusBreakCause
 ): { newState: PsionicFocusState; result: FocusBreakResult } {
   const powersDropped = focusState.maintainedPowers.map(p => p.powerId);
-  const focusPowersDropped = focusState.maintainedPowers.filter(p => p.focusRequired);
-  
-  const psychicBacklash = cause !== 'voluntary' && focusPowersDropped.length > 0;
-  
+  const focusPowersDropped = focusState.maintainedPowers.filter(
+    p => p.focusRequired
+  );
+
+  const psychicBacklash =
+    cause !== 'voluntary' && focusPowersDropped.length > 0;
+
   const result: FocusBreakResult = {
     success: true,
     psychicBacklash,
     backlashDamage: psychicBacklash ? '1d4' : undefined,
     powersDropped,
-    cause
+    cause,
   };
-  
+
   const newState: PsionicFocusState = {
     ...focusState,
     maintainedPowers: [],
@@ -211,10 +221,10 @@ export function breakAllMaintainedPowers(
     lastFocusBreak: {
       time: new Date(),
       cause,
-      powersLost: powersDropped
-    }
+      powersLost: powersDropped,
+    },
   };
-  
+
   return { newState, result };
 }
 
@@ -228,18 +238,18 @@ export function updateMaintainedPowers(
   const updatedPowers = focusState.maintainedPowers
     .map(power => updatePowerDuration(power, timeElapsed))
     .filter(power => !isPowerExpired(power));
-  
+
   // Update concentration power if it expired
   const concentrationPowerStillActive = updatedPowers.some(
     p => p.powerId === focusState.concentrationPower
   );
-  
+
   return {
     ...focusState,
     maintainedPowers: updatedPowers,
-    concentrationPower: concentrationPowerStillActive 
-      ? focusState.concentrationPower 
-      : undefined
+    concentrationPower: concentrationPowerStillActive
+      ? focusState.concentrationPower
+      : undefined,
   };
 }
 
@@ -254,9 +264,10 @@ export function calculateConcentrationSave(damage: number): number {
 /**
  * Handle concentration save failure
  */
-export function handleConcentrationFailure(
-  focusState: PsionicFocusState
-): { newState: PsionicFocusState; result: FocusBreakResult } {
+export function handleConcentrationFailure(focusState: PsionicFocusState): {
+  newState: PsionicFocusState;
+  result: FocusBreakResult;
+} {
   if (!focusState.concentrationPower) {
     return {
       newState: focusState,
@@ -264,12 +275,16 @@ export function handleConcentrationFailure(
         success: false,
         psychicBacklash: false,
         powersDropped: [],
-        cause: 'failed_save'
-      }
+        cause: 'failed_save',
+      },
     };
   }
-  
-  return removeMaintainedPower(focusState, focusState.concentrationPower, 'failed_save');
+
+  return removeMaintainedPower(
+    focusState,
+    focusState.concentrationPower,
+    'failed_save'
+  );
 }
 
 /**
@@ -282,23 +297,25 @@ export function getCurrentFocusUsage(focusState: PsionicFocusState): {
   concentrationUsed: boolean;
 } {
   const used = focusState.maintainedPowers.filter(p => p.focusRequired).length;
-  
+
   return {
     used,
     limit: focusState.focusLimit,
     available: focusState.focusLimit - used,
-    concentrationUsed: !!focusState.concentrationPower
+    concentrationUsed: !!focusState.concentrationPower,
   };
 }
 
 /**
  * Create initial focus state for a character
  */
-export function createInitialFocusState(characterLevel: number): PsionicFocusState {
+export function createInitialFocusState(
+  characterLevel: number
+): PsionicFocusState {
   return {
     focusLimit: calculateFocusLimit(characterLevel),
     maintainedPowers: [],
-    concentrationPower: undefined
+    concentrationPower: undefined,
   };
 }
 
@@ -318,15 +335,15 @@ function calculateInitialDuration(duration: PowerDuration): number | undefined {
  * Update a single power's remaining duration
  */
 function updatePowerDuration(
-  power: MaintainedPower, 
+  power: MaintainedPower,
   timeElapsed: { rounds?: number; minutes?: number; hours?: number }
 ): MaintainedPower {
   if (!power.remainingDuration || typeof power.duration === 'string') {
     return power; // No duration tracking needed
   }
-  
+
   let reduction = 0;
-  
+
   if (typeof power.duration === 'object') {
     if ('rounds' in power.duration && timeElapsed.rounds) {
       reduction = timeElapsed.rounds;
@@ -336,10 +353,10 @@ function updatePowerDuration(
       reduction = timeElapsed.hours;
     }
   }
-  
+
   return {
     ...power,
-    remainingDuration: Math.max(0, power.remainingDuration - reduction)
+    remainingDuration: Math.max(0, power.remainingDuration - reduction),
   };
 }
 
@@ -350,6 +367,6 @@ function isPowerExpired(power: MaintainedPower): boolean {
   if (typeof power.duration === 'string') {
     return power.duration === 'instantaneous';
   }
-  
+
   return power.remainingDuration !== undefined && power.remainingDuration <= 0;
 }
