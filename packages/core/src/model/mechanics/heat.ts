@@ -218,8 +218,8 @@ export const STEAM_VENT_HARNESS_SPECS: Record<SteamVentHarnessType, {
     cost: { gears: 20 }
   }
 };
-/
-**
+
+/**
  * Calculate heat stress level from current heat points
  */
 export function calculateHeatStressLevel(heatPoints: number): HeatStressLevel {

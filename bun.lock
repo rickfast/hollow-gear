@@ -3,8 +3,35 @@
   "workspaces": {
     "": {
       "name": "hollow-gear-5e",
+      "dependencies": {
+        "@hollow-gear/core": "workspace:*",
+        "@hollow-gear/data": "workspace:*",
+      },
       "devDependencies": {
         "@types/bun": "latest",
+        "typescript": "^5",
+      },
+    },
+    "packages/core": {
+      "name": "@hollow-gear/core",
+      "version": "1.0.0",
+      "devDependencies": {
+        "@types/bun": "latest",
+        "typescript": "^5",
+      },
+      "peerDependencies": {
+        "typescript": "^5",
+      },
+    },
+    "packages/data": {
+      "name": "@hollow-gear/data",
+      "version": "1.0.0",
+      "dependencies": {
+        "@hollow-gear/core": "workspace:*",
+      },
+      "devDependencies": {
+        "@types/bun": "latest",
+        "typescript": "^5",
       },
       "peerDependencies": {
         "typescript": "^5",
@@ -12,6 +39,10 @@
     },
   },
   "packages": {
+    "@hollow-gear/core": ["@hollow-gear/core@workspace:packages/core"],
+
+    "@hollow-gear/data": ["@hollow-gear/data@workspace:packages/data"],
+
     "@types/bun": ["@types/bun@1.2.23", "https://artifactory-edge.expedia.biz/artifactory/api/npm/all-npm-virtual/@types/bun/-/bun-1.2.23.tgz", { "dependencies": { "bun-types": "1.2.23" } }, "sha512-le8ueOY5b6VKYf19xT3McVbXqLqmxzPXHsQT/q9JHgikJ2X22wyTW3g3ohz2ZMnp7dod6aduIiq8A14Xyimm0A=="],
 
     "@types/node": ["@types/node@24.7.0", "https://artifactory-edge.expedia.biz/artifactory/api/npm/all-npm-virtual/@types/node/-/node-24.7.0.tgz", { "dependencies": { "undici-types": "~7.14.0" } }, "sha512-IbKooQVqUBrlzWTi79E8Fw78l8k1RNtlDDNWsFZs7XonuQSJ8oNYfEeclhprUldXISRMLzBpILuKgPlIxm+/Yw=="],

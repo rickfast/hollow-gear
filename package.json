@@ -1,12 +1,36 @@
 {
   "name": "hollow-gear-5e",
-  "module": "index.ts",
+  "version": "1.0.0",
+  "description": "Hollow Gear TTRPG - A steampunk D&D 5e variant with mobile companion app",
   "type": "module",
   "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "bun main.ts",
+    "build": "bun run build:core",
+    "build:core": "cd packages/core && bun run tsc --noEmit",
+    "test": "bun test",
+    "test:packages": "bun example-usage.ts",
+    "dev": "bun run --watch main.ts",
+    "typecheck": "bun run tsc --noEmit"
   },
-  "peerDependencies": {
+  "devDependencies": {
+    "@types/bun": "latest",
     "typescript": "^5"
-  }
+  },
+  "dependencies": {
+    "@hollow-gear/core": "workspace:*"
+  },
+  "keywords": [
+    "ttrpg",
+    "hollow-gear",
+    "d20",
+    "steampunk",
+    "mobile-app",
+    "character-sheet"
+  ],
+  "author": "Hollow Gear Development Team",
+  "license": "MIT"
 }

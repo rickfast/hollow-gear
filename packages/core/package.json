@@ -1,0 +1,41 @@
+{
+  "name": "@hollow-gear/core",
+  "version": "1.0.0",
+  "description": "Core character models and game mechanics for Hollow Gear TTRPG",
+  "type": "module",
+  "main": "./src/model/index.ts",
+  "exports": {
+    ".": {
+      "import": "./src/model/index.ts",
+      "types": "./src/model/index.ts"
+    },
+    "./model": {
+      "import": "./src/model/index.ts",
+      "types": "./src/model/index.ts"
+    },
+    "./model/*": {
+      "import": "./src/model/*.ts",
+      "types": "./src/model/*.ts"
+    }
+  },
+  "files": [
+    "src/**/*.ts",
+    "README.md"
+  ],
+  "keywords": [
+    "ttrpg",
+    "hollow-gear",
+    "character-models",
+    "typescript",
+    "d20"
+  ],
+  "author": "Hollow Gear Development Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
