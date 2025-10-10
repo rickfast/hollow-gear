@@ -1,5 +1,22 @@
-import { Card, CardBody, CardHeader, Avatar, Chip, Tabs, Tab } from "@heroui/react";
+import {
+    Card,
+    CardBody,
+    CardHeader,
+    Avatar,
+    Chip,
+    Tabs,
+    Tab,
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    useDisclosure,
+    Button,
+    Select,
+    SelectItem,
+} from "@heroui/react";
 import type { Character } from "@/types";
+import { useState, useEffect } from "react";
 
 interface CharacterSheetProps {
     character: Character;
@@ -15,7 +32,27 @@ function formatModifier(modifier: number): string {
     return modifier >= 0 ? `+${modifier}` : `${modifier}`;
 }
 
+type SectionKey = "skills" | "actions" | "inventory" | "spells" | "features" | "mindcraft";
+
 export function CharacterSheet({ character }: CharacterSheetProps) {
+    const [isMobile, setIsMobile] = useState(false);
+    const [activeSection, setActiveSection] = useState<SectionKey>("skills");
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    // Detect mobile screen size
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
+
+    const handleSectionSelect = (section: SectionKey) => {
+        setActiveSection(section);
+        onOpen();
+    };
     const primaryClass = character.classes[0];
     const classDisplay = primaryClass
         ? primaryClass.subclass
@@ -173,14 +210,22 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
             {/* Main Content */}
             <div
                 style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 2fr",
+                    display: isMobile ? "flex" : "grid",
+                    flexDirection: isMobile ? "column" : undefined,
+                    gridTemplateColumns: isMobile ? undefined : "1fr 2fr",
                     gap: "1.5rem",
                     alignItems: "flex-start",
                 }}
             >
                 {/* Left Column - Ability Scores & Saving Throws */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                <div
+                    style={{
+                        display: isMobile ? "grid" : "flex",
+                        gridTemplateColumns: isMobile ? "1fr 1fr" : undefined,
+                        flexDirection: isMobile ? undefined : "column",
+                        gap: "1.5rem",
+                    }}
+                >
                     {/* Ability Scores */}
                     <Card>
                         <CardHeader>
@@ -290,46 +335,111 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
                     </Card>
                 </div>
 
-                {/* Right Column - Navigation Tabs */}
-                <Card>
-                    <CardBody>
-                        <Tabs aria-label="Character sections" variant="underlined" size="lg">
-                            <Tab key="skills" title="Skills">
-                                <div style={{ padding: "1rem" }}>
-                                    <p style={{ opacity: 0.7 }}>Skills content coming soon...</p>
-                                </div>
-                            </Tab>
-                            <Tab key="actions" title="Actions">
-                                <div style={{ padding: "1rem" }}>
-                                    <p style={{ opacity: 0.7 }}>Actions content coming soon...</p>
-                                </div>
-                            </Tab>
-                            <Tab key="inventory" title="Inventory">
-                                <div style={{ padding: "1rem" }}>
-                                    <p style={{ opacity: 0.7 }}>Inventory content coming soon...</p>
-                                </div>
-                            </Tab>
-                            <Tab key="spells" title="Spells">
-                                <div style={{ padding: "1rem" }}>
-                                    <p style={{ opacity: 0.7 }}>Spells content coming soon...</p>
-                                </div>
-                            </Tab>
-                            <Tab key="features" title="Features + Traits">
-                                <div style={{ padding: "1rem" }}>
-                                    <p style={{ opacity: 0.7 }}>
-                                        Features & Traits content coming soon...
-                                    </p>
-                                </div>
-                            </Tab>
-                            <Tab key="mindcraft" title="Mindcraft">
-                                <div style={{ padding: "1rem" }}>
-                                    <p style={{ opacity: 0.7 }}>Mindcraft content coming soon...</p>
-                                </div>
-                            </Tab>
-                        </Tabs>
-                    </CardBody>
-                </Card>
+                {/* Right Column - Navigation */}
+                {isMobile ? (
+                    <>
+                        <Select
+                            label="Select Section"
+                            value={activeSection}
+                            onChange={(e) => handleSectionSelect(e.target.value as SectionKey)}
+                        >
+                            <SelectItem key="Home">Home</SelectItem>
+                            <SelectItem key="skills">Skills</SelectItem>
+                            <SelectItem key="actions">Actions</SelectItem>
+                            <SelectItem key="inventory">Inventory</SelectItem>
+                            <SelectItem key="spells">Spells</SelectItem>
+                            <SelectItem key="features">Features</SelectItem>
+                            <SelectItem key="mindcraft">Mindcraft</SelectItem>
+                        </Select>
+                    </>
+                ) : (
+                    <Card>
+                        <CardBody>
+                            <Tabs aria-label="Character sections" variant="underlined" size="lg">
+                                <Tab key="skills" title="Skills">
+                                    <div style={{ padding: "1rem" }}>
+                                        <p style={{ opacity: 0.7 }}>
+                                            Skills content coming soon...
+                                        </p>
+                                    </div>
+                                </Tab>
+                                <Tab key="actions" title="Actions">
+                                    <div style={{ padding: "1rem" }}>
+                                        <p style={{ opacity: 0.7 }}>
+                                            Actions content coming soon...
+                                        </p>
+                                    </div>
+                                </Tab>
+                                <Tab key="inventory" title="Inventory">
+                                    <div style={{ padding: "1rem" }}>
+                                        <p style={{ opacity: 0.7 }}>
+                                            Inventory content coming soon...
+                                        </p>
+                                    </div>
+                                </Tab>
+                                <Tab key="spells" title="Spells">
+                                    <div style={{ padding: "1rem" }}>
+                                        <p style={{ opacity: 0.7 }}>
+                                            Spells content coming soon...
+                                        </p>
+                                    </div>
+                                </Tab>
+                                <Tab key="features" title="Features + Traits">
+                                    <div style={{ padding: "1rem" }}>
+                                        <p style={{ opacity: 0.7 }}>
+                                            Features & Traits content coming soon...
+                                        </p>
+                                    </div>
+                                </Tab>
+                                <Tab key="mindcraft" title="Mindcraft">
+                                    <div style={{ padding: "1rem" }}>
+                                        <p style={{ opacity: 0.7 }}>
+                                            Mindcraft content coming soon...
+                                        </p>
+                                    </div>
+                                </Tab>
+                            </Tabs>
+                        </CardBody>
+                    </Card>
+                )}
             </div>
+
+            {/* Mobile Modal for Section Content */}
+            <Modal isOpen={isOpen} onClose={onClose} size="full" scrollBehavior="inside">
+                <ModalContent>
+                    <ModalHeader>
+                        <h3
+                            style={{
+                                fontSize: "1.5rem",
+                                fontWeight: 600,
+                                textTransform: "capitalize",
+                            }}
+                        >
+                            {activeSection === "features" ? "Features + Traits" : activeSection}
+                        </h3>
+                    </ModalHeader>
+                    <ModalBody>
+                        {activeSection === "skills" && (
+                            <p style={{ opacity: 0.7 }}>Skills content coming soon...</p>
+                        )}
+                        {activeSection === "actions" && (
+                            <p style={{ opacity: 0.7 }}>Actions content coming soon...</p>
+                        )}
+                        {activeSection === "inventory" && (
+                            <p style={{ opacity: 0.7 }}>Inventory content coming soon...</p>
+                        )}
+                        {activeSection === "spells" && (
+                            <p style={{ opacity: 0.7 }}>Spells content coming soon...</p>
+                        )}
+                        {activeSection === "features" && (
+                            <p style={{ opacity: 0.7 }}>Features & Traits content coming soon...</p>
+                        )}
+                        {activeSection === "mindcraft" && (
+                            <p style={{ opacity: 0.7 }}>Mindcraft content coming soon...</p>
+                        )}
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
         </div>
     );
 }
