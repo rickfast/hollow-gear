@@ -1,12 +1,14 @@
 import { Card, CardBody, Avatar, Chip } from "@heroui/react";
-import type { Character } from "@/types";
-import { PREGENS } from "@/data/pregens";
+import { useCharacterViewModel } from "@/model/use-character-view-model";
 
 interface CharacterListProps {
     onSelectCharacter?: (characterId: string) => void;
 }
 
 export function CharacterList({ onSelectCharacter }: CharacterListProps) {
+    const { getAllCharacters } = useCharacterViewModel();
+    const characters = getAllCharacters();
+
     return (
         <div
             style={{
@@ -15,7 +17,7 @@ export function CharacterList({ onSelectCharacter }: CharacterListProps) {
                 gap: "1rem",
             }}
         >
-            {PREGENS.map((character) => {
+            {characters.map((character) => {
                 const primaryClass = character.classes[0];
                 const classDisplay = primaryClass
                     ? primaryClass.subclass
