@@ -26,6 +26,7 @@ export const PREGENS: Character[] = [
     // Lyrra Quenchcoil — Rendai Artifex (Engineer)
     // ========================================================================
     {
+        avatarUrl: "/avatars/lyrra-quenchcoil.png",
         id: "lyrra-quenchcoil-pregen-001",
         name: "Lyrra Quenchcoil",
         species: "Rendai",
@@ -54,7 +55,7 @@ export const PREGENS: Character[] = [
             current: 0,
             maximum: 10,
         },
-        equipment: [
+        inventory: [
             createInventoryItem(WEAPONS.find((w) => w.name === "Rivetgun")!),
             createInventoryItem(WEAPONS.find((w) => w.name === "Cogwrench")!),
             createInventoryItem(BASIC_EQUIPMENT.find((e) => e.name === "Tinker's Tools")!),
@@ -89,6 +90,7 @@ export const PREGENS: Character[] = [
     // ========================================================================
     {
         id: "karn-voss-pregen-002",
+        avatarUrl: "/avatars/karn-voss.png",
         name: "Karn Voss",
         species: "Karnathi",
         classes: [
@@ -116,7 +118,7 @@ export const PREGENS: Character[] = [
             current: 0,
             maximum: 10,
         },
-        equipment: [
+        inventory: [
             createInventoryItem(WEAPONS.find((w) => w.name === "Aether Spear")!),
             createInventoryItem(ARMOR.find((a) => a.name === "Gearmail Hauberk")!, true),
             createInventoryItem(SHIELDS.find((s) => s.name === "Standard Shield")!, true),
@@ -159,6 +161,7 @@ export const PREGENS: Character[] = [
     // ========================================================================
     {
         id: "rick-vaul-pregen-003",
+        avatarUrl: "/avatars/rick-vaul.png",
         name: "Rick Vaul",
         species: "Tharn",
         classes: [
@@ -186,7 +189,7 @@ export const PREGENS: Character[] = [
             current: 0,
             maximum: 10,
         },
-        equipment: [
+        inventory: [
             createInventoryItem(WEAPONS.find((w) => w.name === "Steam Hammer")!),
             createInventoryItem(WEAPONS.find((w) => w.name === "Aether Spear")!),
             createInventoryItem(ARMOR.find((a) => a.name === "Gearmail Hauberk")!, true),
@@ -217,6 +220,7 @@ export const PREGENS: Character[] = [
     // ========================================================================
     {
         id: "velka-pregen-004",
+        avatarUrl: "/avatars/velka.png",
         name: "Velka",
         species: "Skellin",
         classes: [
@@ -244,7 +248,7 @@ export const PREGENS: Character[] = [
             current: 0,
             maximum: 10,
         },
-        equipment: [
+        inventory: [
             createInventoryItem(WEAPONS.find((w) => w.name === "Brass Dagger")!),
             createInventoryItem(WEAPONS.find((w) => w.name === "Steam Slingshot")!),
             createInventoryItem(BASIC_EQUIPMENT.find((e) => e.name === "Mechanist's Satchel")!),
@@ -276,6 +280,7 @@ export const PREGENS: Character[] = [
     // ========================================================================
     {
         id: "ixoth-pregen-005",
+        avatarUrl: "/avatars/ixoth.png",
         name: "Ixoth",
         species: "Aqualoth",
         classes: [
@@ -303,7 +308,7 @@ export const PREGENS: Character[] = [
             current: 0,
             maximum: 10,
         },
-        equipment: [createInventoryItem(ARMOR.find((a) => a.name === "Aetherweave Coat")!, true)],
+        inventory: [createInventoryItem(ARMOR.find((a) => a.name === "Aetherweave Coat")!, true)],
         currency: {
             cogs: 25,
             gears: 0,
@@ -369,7 +374,7 @@ export const PREGENS: Character[] = [
             current: 0,
             maximum: 10,
         },
-        equipment: [
+        inventory: [
             createInventoryItem(BASIC_EQUIPMENT.find((e) => e.name === "Mechanist's Satchel")!),
             createInventoryItem(ARCANE_ITEMS.find((e) => e.name === "Aether Lamp")!),
         ],
@@ -442,7 +447,7 @@ export const PREGENS: Character[] = [
             current: 0,
             maximum: 10,
         },
-        equipment: [
+        inventory: [
             createInventoryItem(WEAPONS.find((w) => w.name === "Cogwrench")!),
             createInventoryItem(ARCANE_ITEMS.find((e) => e.name === "Steam Vent Harness")!),
             createInventoryItem(ARMOR.find((a) => a.name === "Steamweave Vest")!, true),

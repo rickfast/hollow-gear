@@ -3,6 +3,7 @@
 // ============================================================================
 
 export interface Character {
+    avatarUrl?: string;
     id: string; // unique identifier
     name: string;
     species: SpeciesType;
@@ -24,7 +25,7 @@ export interface Character {
     };
 
     // Equipment & Inventory
-    equipment: InventoryItem[];
+    inventory: InventoryItem[];
     currency: Currency;
 
     // Magic & Psionics
