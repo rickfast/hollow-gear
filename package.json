@@ -9,8 +9,8 @@
   ],
   "scripts": {
     "start": "bun main.ts",
-    "build": "bun run format && bun run build:core",
-    "build:core": "cd packages/core && bun run tsc --noEmit",
+    "build": "bun run format && bun run build:model",
+    "build:model": "cd packages/model && bun run tsc --noEmit",
     "test": "bun test",
     "test:packages": "bun example-usage.ts",
     "dev": "bun run --watch main.ts",
@@ -25,7 +25,7 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@hollow-gear/core": "workspace:*"
+    "@hollow-gear/model": "workspace:*"
   },
   "keywords": [
     "ttrpg",
