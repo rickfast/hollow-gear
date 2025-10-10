@@ -1,16 +1,16 @@
 name: build
 on: [pull_request]
 jobs:
-  my-job:
-    name: bun-build-job
-    runs-on: ubuntu-latest
-    steps:
-      # ...
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
+    my-job:
+        name: bun-build-job
+        runs-on: ubuntu-latest
+        steps:
+            # ...
+            - uses: actions/checkout@v4
+            - uses: oven-sh/setup-bun@v2
 
-      # run any `bun` or `bunx` command
-      - run: bun install
-      - run: bun index.ts
-      - run: bun run build
-      - run: bun run test
+            # run any `bun` or `bunx` command
+            - run: bun install
+            - run: bun index.ts
+            - run: bun run build
+            - run: bun run test

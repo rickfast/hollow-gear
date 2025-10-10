@@ -127,9 +127,9 @@ When out of RC, you may still cast by burning vitality.
 
 - Spend HP = 2 × spell level to cast.
 - Roll a **Faith Feedback check (DC 10 + spell level)**.
-  - **Success:** The spell stabilizes.
-  - **Failure:** You gain one level of **Heat Stress** and disadvantage on concentration checks
-    until rest.
+    - **Success:** The spell stabilizes.
+    - **Failure:** You gain one level of **Heat Stress** and disadvantage on concentration checks
+      until rest.
 
 Templars may safely Overchannel once per day without consequence.
 

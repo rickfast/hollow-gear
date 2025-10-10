@@ -1,0 +1,20 @@
+{
+    "name": "hollow-gear-5e",
+    "module": "index.ts",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "start": "bun run src/index.ts",
+        "test": "bun test",
+        "build": "bun build src/index.ts --outdir dist --target bun",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
+    },
+    "devDependencies": {
+        "@types/bun": "latest",
+        "prettier": "^3.6.2"
+    },
+    "peerDependencies": {
+        "typescript": "^5"
+    }
+}
