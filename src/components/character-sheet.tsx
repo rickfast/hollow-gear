@@ -23,6 +23,7 @@ import { s } from "framer-motion/client";
 import type { AbilityScore, CharacterSummary, SavingThrow } from "@/model/character-view-model";
 import { PointBar } from "./point-bar";
 import { Skills } from "./skills";
+import { Inventory } from "./inventory";
 
 interface CharacterSheetProps {
     id: string;
@@ -325,7 +326,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                 <Tab key="inventory" title="Inventory">
                                     <div style={{ padding: "1rem" }}>
                                         <p style={{ opacity: 0.7 }}>
-                                            Inventory content coming soon...
+                                            <Inventory items={getCharacter(id)!.inventory} />
                                         </p>
                                     </div>
                                 </Tab>
@@ -388,7 +389,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             <p style={{ opacity: 0.7 }}>Actions content coming soon...</p>
                         )}
                         {activeSection === "inventory" && (
-                            <p style={{ opacity: 0.7 }}>Inventory content coming soon...</p>
+                            <Inventory items={getCharacter(id)!.inventory} />
                         )}
                         {activeSection === "spells" && (
                             <p style={{ opacity: 0.7 }}>Spells content coming soon...</p>

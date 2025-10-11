@@ -1128,3 +1128,19 @@ export const MODS: Mod[] = [
         notes: "Reaction.",
     },
 ];
+
+export const ALL_EQUIPMENT: Equipment[] = [
+    ...WEAPONS,
+    ...ARMOR,
+    ...SHIELDS,
+    ...BASIC_EQUIPMENT,
+    ...ARCANE_ITEMS,
+];
+
+export const EQUIPMENT_BY_ID: Record<string, Equipment> = ALL_EQUIPMENT.reduce(
+    (acc, item) => {
+        acc[item.id] = item;
+        return acc;
+    },
+    {} as Record<string, Equipment>
+);

@@ -1,5 +1,6 @@
 import type { Character, HitPoints, SkillType } from "@/types";
 import { SKILLS } from "@/data/skills";
+import { EQUIPMENT_BY_ID } from "@/data";
 
 const formatModifier = (modifier: number) => (modifier >= 0 ? `+${modifier}` : `${modifier}`);
 
@@ -52,11 +53,22 @@ export type Skills = Record<
     { modifier: string; proficient: boolean; expertise: boolean; ability: string }
 >;
 
+export interface InventoryItem {
+    id: string;
+    equipped: boolean;
+    name: string;
+    quantity: number;
+    cost: string;
+    weight: string;
+    tags?: string[];
+}
+
 export class CharacterViewModel {
     abilityScores: AbilityScores;
     summary: CharacterSummary;
     savingThrows: SavingThrows;
     skills: Skills;
+    inventory: InventoryItem[];
 
     constructor(private character: Character) {
         const primaryClass = this.character.classes[0];
@@ -156,5 +168,17 @@ export class CharacterViewModel {
                 ];
             })
         );
+        this.inventory = character.inventory.map((item) => {
+            const equipment = EQUIPMENT_BY_ID[item.equipmentId]!;
+            return {
+                id: item.id,
+                equipped: item.equipped,
+                name: equipment.name,
+                quantity: 1,
+                cost: `${equipment.cost} Cogs`,
+                weight: `${equipment.weight} lbs`,
+                tags: [equipment.tier, equipment.type],
+            };
+        });
     }
 }
