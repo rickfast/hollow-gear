@@ -20,6 +20,8 @@ export interface Character {
         maximum: number; // normally 10
     };
 
+    skills: Skills;
+
     // Equipment & Inventory
     inventory: InventoryItem[];
     currency: Currency;
@@ -539,7 +541,7 @@ export interface Proficiencies {
     weapons: WeaponType[];
     tools: Tool[];
     savingThrows: (keyof AbilityScores)[];
-    skills: Skill[];
+    skills: SkillType[];
 }
 
 export type Tool =
@@ -550,7 +552,7 @@ export type Tool =
     | "Smith's Tools"
     | "Alchemist's Supplies";
 
-export type Skill =
+export type SkillType =
     | "Acrobatics"
     | "Animal Handling"
     | "Arcana"
@@ -570,6 +572,34 @@ export type Skill =
     | "Stealth"
     | "Survival"
     | "Tinkering"; // Hollowgear-specific
+
+export interface Skill {
+    modifier: number;
+    proficient: boolean;
+    expertise: boolean;
+}
+
+export interface Skills {
+    Acrobatics: Skill;
+    "Animal Handling": Skill;
+    Arcana: Skill;
+    Athletics: Skill;
+    Deception: Skill;
+    History: Skill;
+    Insight: Skill;
+    Intimidation: Skill;
+    Investigation: Skill;
+    Medicine: Skill;
+    Nature: Skill;
+    Perception: Skill;
+    Performance: Skill;
+    Persuasion: Skill;
+    Religion: Skill;
+    "Sleight of Hand": Skill;
+    Stealth: Skill;
+    Survival: Skill;
+    Tinkering: Skill;
+}
 
 // ============================================================================
 // CONDITIONS & STATUS EFFECTS

@@ -4,3 +4,4 @@ export * from "./mindcraft";
 export * from "./equipment";
 export * from "./spells";
 export * from "./pregens";
+export * from "./skills";

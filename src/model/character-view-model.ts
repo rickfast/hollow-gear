@@ -1,4 +1,5 @@
-import type { Character, HitPoints } from "@/types";
+import type { Character, HitPoints, SkillType } from "@/types";
+import { SKILLS } from "@/data/skills";
 
 const formatModifier = (modifier: number) => (modifier >= 0 ? `+${modifier}` : `${modifier}`);
 
@@ -46,10 +47,16 @@ export interface SavingThrows {
     charisma: SavingThrow;
 }
 
+export type Skills = Record<
+    string,
+    { modifier: string; proficient: boolean; expertise: boolean; ability: string }
+>;
+
 export class CharacterViewModel {
     abilityScores: AbilityScores;
     summary: CharacterSummary;
     savingThrows: SavingThrows;
+    skills: Skills;
 
     constructor(private character: Character) {
         const primaryClass = this.character.classes[0];
@@ -136,5 +143,18 @@ export class CharacterViewModel {
             };
         }
         this.savingThrows = savingThrows;
+        this.skills = Object.fromEntries(
+            Object.entries(character.skills).map(([skillName, skillData]) => {
+                return [
+                    skillName,
+                    {
+                        modifier: formatModifier(skillData.modifier),
+                        proficient: skillData.proficient,
+                        expertise: skillData.expertise,
+                        ability: SKILLS[skillName as SkillType].substring(0, 3).toUpperCase(),
+                    },
+                ];
+            })
+        );
     }
 }

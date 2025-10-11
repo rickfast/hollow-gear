@@ -22,6 +22,7 @@ import { useCharacterViewModel } from "@/model/use-character-view-model";
 import { s } from "framer-motion/client";
 import type { AbilityScore, CharacterSummary, SavingThrow } from "@/model/character-view-model";
 import { PointBar } from "./point-bar";
+import { Skills } from "./skills";
 
 interface CharacterSheetProps {
     id: string;
@@ -45,7 +46,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const { getCharacter } = useCharacterViewModel();
-    const { summary, abilityScores, savingThrows } = getCharacter(id)!;
+    const { summary, abilityScores, savingThrows, skills } = getCharacter(id)!;
 
     // Detect mobile screen size
     useEffect(() => {
@@ -310,7 +311,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                 <Tab key="skills" title="Skills">
                                     <div style={{ padding: "1rem" }}>
                                         <p style={{ opacity: 0.7 }}>
-                                            Skills content coming soon...
+                                            <Skills skills={skills} />
                                         </p>
                                     </div>
                                 </Tab>
@@ -379,7 +380,9 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                     </ModalHeader>
                     <ModalBody>
                         {activeSection === "skills" && (
-                            <p style={{ opacity: 0.7 }}>Skills content coming soon...</p>
+                            <p style={{ opacity: 0.7 }}>
+                                <Skills skills={skills} />
+                            </p>
                         )}
                         {activeSection === "actions" && (
                             <p style={{ opacity: 0.7 }}>Actions content coming soon...</p>
