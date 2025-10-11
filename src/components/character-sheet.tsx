@@ -25,6 +25,8 @@ import { PointBar } from "./point-bar";
 import { Skills } from "./skills";
 import { Inventory } from "./inventory";
 import { Actions } from "./actions";
+import { Roll } from "./roll";
+import { RollButton } from "./roll-button";
 
 interface CharacterSheetProps {
     id: string;
@@ -295,7 +297,12 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                                 {ability}
                                             </span>
                                             <span style={{ fontSize: "0.875rem", fontWeight: 600 }}>
-                                                {modifier}
+                                                <RollButton
+                                                    title={`${ability.substring(0, 3).toUpperCase()} Save`}
+                                                    rollables={[savingThrows[ability].rollable]}
+                                                >
+                                                    {modifier}
+                                                </RollButton>
                                             </span>
                                         </div>
                                     );

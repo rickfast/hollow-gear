@@ -12,10 +12,6 @@ export function useCharacterViewModel() {
         }, new Map<string, Character>())
     );
 
-    // const getCharacter = (id: string): Character | undefined => {
-    //     return characters.get(id);
-    // };
-
     const getCharacter = (id: string): CharacterViewModel => {
         const character = characters.get(id);
         if (!character) throw new Error(`Character with id ${id} not found`);

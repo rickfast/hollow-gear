@@ -1,4 +1,5 @@
 import type { Skills as CharacterSkills } from "@/model/character-view-model";
+import { RollButton } from "./roll-button";
 
 export const Skills = ({ skills }: { skills: CharacterSkills }) => {
     const skillEntries = Object.entries(skills);
@@ -33,7 +34,9 @@ export const Skills = ({ skills }: { skills: CharacterSkills }) => {
 
                     {/* Modifier */}
                     <div className="text-sm font-semibold w-10 text-right">
-                        {skillData.modifier}
+                        <RollButton title={`${skillName} DC`} rollables={[skillData.rollable]}>
+                            {skillData.modifier}
+                        </RollButton>
                     </div>
                 </div>
             ))}

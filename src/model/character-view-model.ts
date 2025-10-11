@@ -46,6 +46,7 @@ export interface CharacterSummary {
 export interface SavingThrow {
     proficient: boolean;
     modifier: string;
+    rollable: Rollable;
 }
 
 export interface SavingThrows {
@@ -59,7 +60,13 @@ export interface SavingThrows {
 
 export type Skills = Record<
     string,
-    { modifier: string; proficient: boolean; expertise: boolean; ability: string }
+    {
+        modifier: string;
+        proficient: boolean;
+        expertise: boolean;
+        ability: string;
+        rollable: Rollable;
+    }
 >;
 
 export interface InventoryItem {
@@ -166,6 +173,11 @@ export class CharacterViewModel {
                 [ability]: {
                     proficient: isProficient,
                     modifier: formatModifier(total),
+                    rollable: {
+                        count: 1,
+                        die: 20,
+                        bonus: total,
+                    },
                 },
             };
         }
@@ -179,6 +191,11 @@ export class CharacterViewModel {
                         proficient: skillData.proficient,
                         expertise: skillData.expertise,
                         ability: SKILLS[skillName as SkillType].substring(0, 3).toUpperCase(),
+                        rollable: {
+                            count: 1,
+                            die: 20,
+                            bonus: skillData.modifier,
+                        },
                     },
                 ];
             })
