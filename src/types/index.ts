@@ -14,11 +14,7 @@ export interface Character {
     abilityScores: AbilityScores;
 
     // Resources
-    hitPoints: {
-        current: number;
-        maximum: number;
-        temporary: number;
-    };
+    hitPoints: HitPoints;
     heatPoints: {
         current: number;
         maximum: number; // normally 10
@@ -55,6 +51,12 @@ export interface Character {
     ideals?: string[];
     bonds?: string[];
     flaws?: string[];
+}
+
+export interface HitPoints {
+    current: number;
+    maximum: number;
+    temporary?: number;
 }
 
 // ============================================================================

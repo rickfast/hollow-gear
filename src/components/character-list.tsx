@@ -17,31 +17,24 @@ export function CharacterList({ onSelectCharacter }: CharacterListProps) {
                 gap: "1rem",
             }}
         >
-            {characters.map((character) => {
-                const primaryClass = character.classes[0];
-                const classDisplay = primaryClass
-                    ? primaryClass.subclass
-                        ? `${primaryClass.class} (${primaryClass.subclass})`
-                        : primaryClass.class
-                    : "Unknown";
-
+            {characters.map(({ summary }) => {
                 return (
                     <Card
-                        key={character.id}
+                        key={summary.id}
                         isPressable
-                        onPress={() => onSelectCharacter?.(character.id)}
+                        onPress={() => onSelectCharacter?.(summary.id)}
                     >
                         <CardBody>
                             <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
                                 <Avatar
-                                    src={character.avatarUrl}
-                                    name={character.name}
+                                    src={summary.avatarUrl}
+                                    name={summary.name}
                                     size="lg"
                                     showFallback
                                 />
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                     <h3 style={{ fontSize: "1.25rem", fontWeight: 600, margin: 0 }}>
-                                        {character.name}
+                                        {summary.name}
                                     </h3>
                                     <p
                                         style={{
@@ -50,7 +43,7 @@ export function CharacterList({ onSelectCharacter }: CharacterListProps) {
                                             margin: "0.25rem 0",
                                         }}
                                     >
-                                        {character.species}
+                                        {summary.species}
                                     </p>
                                     <div
                                         style={{
@@ -60,14 +53,14 @@ export function CharacterList({ onSelectCharacter }: CharacterListProps) {
                                         }}
                                     >
                                         <Chip size="sm" variant="flat">
-                                            Level {character.level}
+                                            Level {summary.level}
                                         </Chip>
                                     </div>
                                 </div>
                             </div>
 
                             <div style={{ fontSize: "0.875rem", marginBottom: "0.75rem" }}>
-                                {classDisplay}
+                                {summary.class}
                             </div>
 
                             <div
@@ -81,19 +74,16 @@ export function CharacterList({ onSelectCharacter }: CharacterListProps) {
                                 <div>
                                     <div style={{ opacity: 0.6 }}>HP</div>
                                     <div style={{ fontWeight: 500 }}>
-                                        {character.hitPoints.current}/{character.hitPoints.maximum}
+                                        {summary.hitPoints.current}/{summary.hitPoints.maximum}
                                     </div>
                                 </div>
                                 <div>
                                     <div style={{ opacity: 0.6 }}>AC</div>
-                                    <div style={{ fontWeight: 500 }}>{character.armorClass}</div>
+                                    <div style={{ fontWeight: 500 }}>{summary.armorClass}</div>
                                 </div>
                                 <div>
                                     <div style={{ opacity: 0.6 }}>Init</div>
-                                    <div style={{ fontWeight: 500 }}>
-                                        {character.initiative >= 0 ? "+" : ""}
-                                        {character.initiative}
-                                    </div>
+                                    <div style={{ fontWeight: 500 }}>{summary.initiative}</div>
                                 </div>
                             </div>
                         </CardBody>

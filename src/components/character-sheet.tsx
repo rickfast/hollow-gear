@@ -15,11 +15,14 @@ import {
     Select,
     SelectItem,
 } from "@heroui/react";
-import type { Character } from "@/types";
+import type { Character, HitPoints } from "@/types";
 import { useState, useEffect } from "react";
+import { useCharacterViewModel } from "@/model/use-character-view-model";
+import { s } from "framer-motion/client";
+import type { AbilityScore, CharacterSummary, SavingThrow } from "@/model/character-view-model";
 
 interface CharacterSheetProps {
-    character: Character;
+    id: string;
 }
 
 // Helper function to calculate ability modifier
@@ -34,10 +37,13 @@ function formatModifier(modifier: number): string {
 
 type SectionKey = "skills" | "actions" | "inventory" | "spells" | "features" | "mindcraft";
 
-export function CharacterSheet({ character }: CharacterSheetProps) {
+export function CharacterSheet({ id }: CharacterSheetProps) {
     const [isMobile, setIsMobile] = useState(false);
     const [activeSection, setActiveSection] = useState<SectionKey>("skills");
     const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const { getCharacter } = useCharacterViewModel();
+    const { summary, abilityScores, savingThrows } = getCharacter(id)!;
 
     // Detect mobile screen size
     useEffect(() => {
@@ -52,22 +58,6 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
     const handleSectionSelect = (section: SectionKey) => {
         setActiveSection(section);
         onOpen();
-    };
-    const primaryClass = character.classes[0];
-    const classDisplay = primaryClass
-        ? primaryClass.subclass
-            ? `${primaryClass.class} (${primaryClass.subclass})`
-            : primaryClass.class
-        : "Unknown";
-
-    // Calculate ability modifiers
-    const abilityMods = {
-        strength: getAbilityModifier(character.abilityScores.strength),
-        dexterity: getAbilityModifier(character.abilityScores.dexterity),
-        constitution: getAbilityModifier(character.abilityScores.constitution),
-        intelligence: getAbilityModifier(character.abilityScores.intelligence),
-        wisdom: getAbilityModifier(character.abilityScores.wisdom),
-        charisma: getAbilityModifier(character.abilityScores.charisma),
     };
 
     return (
@@ -85,8 +75,8 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
                     >
                         {/* Avatar */}
                         <Avatar
-                            src={character.avatarUrl}
-                            name={character.name}
+                            src={summary.avatarUrl}
+                            name={summary.name}
                             size="lg"
                             showFallback
                             style={{ width: "120px", height: "120px", flexShrink: 0 }}
@@ -95,15 +85,17 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
                         {/* Character Info */}
                         <div style={{ flex: "1", minWidth: "250px" }}>
                             <h1 style={{ fontSize: "2rem", fontWeight: 700, margin: 0 }}>
-                                {character.name}
+                                {summary.name}
                             </h1>
                             <p style={{ fontSize: "1.125rem", margin: "0.5rem 0", opacity: 0.8 }}>
-                                Level {character.level} {character.species} {primaryClass?.class}
+                                Level {summary.level} {summary.species} {summary.class}
                             </p>
-                            <p style={{ fontSize: "0.875rem", opacity: 0.7 }}>{classDisplay}</p>
-                            {character.background && (
+                            <p style={{ fontSize: "0.875rem", opacity: 0.7 }}>
+                                {summary.fullClass}
+                            </p>
+                            {summary.background && (
                                 <Chip size="sm" variant="flat" style={{ marginTop: "0.5rem" }}>
-                                    {character.background}
+                                    {summary.background}
                                 </Chip>
                             )}
                         </div>
@@ -128,7 +120,7 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
                                     ARMOR CLASS
                                 </div>
                                 <div style={{ fontSize: "2rem", fontWeight: 700 }}>
-                                    {character.armorClass}
+                                    {summary.armorClass}
                                 </div>
                             </div>
                             <div style={{ textAlign: "center" }}>
@@ -142,7 +134,7 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
                                     INITIATIVE
                                 </div>
                                 <div style={{ fontSize: "2rem", fontWeight: 700 }}>
-                                    {formatModifier(character.initiative)}
+                                    {summary.initiative}
                                 </div>
                             </div>
                             <div style={{ textAlign: "center" }}>
@@ -156,54 +148,15 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
                                     SPEED
                                 </div>
                                 <div style={{ fontSize: "2rem", fontWeight: 700 }}>
-                                    {character.speed}
+                                    {summary.speed}
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Hit Points */}
-                    <div style={{ marginTop: "1.5rem" }}>
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                marginBottom: "0.5rem",
-                            }}
-                        >
-                            <span style={{ fontSize: "0.875rem", fontWeight: 600 }}>
-                                Hit Points
-                            </span>
-                            <span style={{ fontSize: "0.875rem" }}>
-                                {character.hitPoints.current} / {character.hitPoints.maximum}
-                            </span>
-                        </div>
-                        <div
-                            style={{
-                                width: "100%",
-                                height: "8px",
-                                background: "rgba(0,0,0,0.1)",
-                                borderRadius: "4px",
-                                overflow: "hidden",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    width: `${(character.hitPoints.current / character.hitPoints.maximum) * 100}%`,
-                                    height: "100%",
-                                    background: "var(--heroui-success)",
-                                    transition: "width 0.3s",
-                                }}
-                            />
-                        </div>
-                        {character.hitPoints.temporary > 0 && (
-                            <div
-                                style={{ fontSize: "0.75rem", marginTop: "0.25rem", opacity: 0.7 }}
-                            >
-                                +{character.hitPoints.temporary} temp HP
-                            </div>
-                        )}
-                    </div>
+                    <PointBar label="Hit Points" points={summary.hitPoints} />
+                    <PointBar label="Heat Points" points={summary.heatPoints} />
                 </CardBody>
             </Card>
 
@@ -217,13 +170,31 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
                     alignItems: "flex-start",
                 }}
             >
+                {isMobile && (
+                    <>
+                        <Select
+                            label="Select Section"
+                            value={activeSection}
+                            onChange={(e) => handleSectionSelect(e.target.value as SectionKey)}
+                        >
+                            <SelectItem key="Home">Home</SelectItem>
+                            <SelectItem key="skills">Skills</SelectItem>
+                            <SelectItem key="actions">Actions</SelectItem>
+                            <SelectItem key="inventory">Inventory</SelectItem>
+                            <SelectItem key="spells">Spells</SelectItem>
+                            <SelectItem key="features">Features</SelectItem>
+                            <SelectItem key="mindcraft">Mindcraft</SelectItem>
+                        </Select>
+                    </>
+                )}
                 {/* Left Column - Ability Scores & Saving Throws */}
                 <div
                     style={{
                         display: isMobile ? "grid" : "flex",
-                        gridTemplateColumns: isMobile ? "1fr 1fr" : undefined,
-                        flexDirection: isMobile ? undefined : "column",
+                        gridTemplateColumns: !isMobile ? "1fr 1fr" : undefined,
+                        flexDirection: "column", //isMobile ? undefined : "column",
                         gap: "1.5rem",
+                        width: "100%",
                     }}
                 >
                     {/* Ability Scores */}
@@ -237,16 +208,16 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
                             <div
                                 style={{
                                     display: "grid",
-                                    gridTemplateColumns: "repeat(2, 1fr)",
+                                    gridTemplateColumns: "repeat(3, 1fr)",
                                     gap: "1rem",
                                 }}
                             >
                                 {(
-                                    Object.entries(character.abilityScores) as [
-                                        keyof typeof character.abilityScores,
-                                        number,
+                                    Object.entries(abilityScores) as [
+                                        keyof typeof abilityScores,
+                                        AbilityScore,
                                     ][]
-                                ).map(([ability, score]) => (
+                                ).map(([ability, { score, modifier }]) => (
                                     <div
                                         key={ability}
                                         style={{
@@ -270,7 +241,7 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
                                             {score}
                                         </div>
                                         <div style={{ fontSize: "0.875rem", opacity: 0.8 }}>
-                                            {formatModifier(abilityMods[ability])}
+                                            {modifier}
                                         </div>
                                     </div>
                                 ))}
@@ -290,17 +261,11 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
                                 style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
                             >
                                 {(
-                                    Object.entries(abilityMods) as [
-                                        keyof typeof abilityMods,
-                                        number,
+                                    Object.entries(savingThrows) as [
+                                        keyof typeof abilityScores,
+                                        SavingThrow,
                                     ][]
-                                ).map(([ability, modifier]) => {
-                                    const isProficient =
-                                        character.proficiencies?.savingThrows?.includes(ability) ||
-                                        false;
-                                    const profBonus = isProficient ? 2 : 0; // Simplified, should use actual proficiency bonus
-                                    const total = modifier + profBonus;
-
+                                ).map(([ability, { proficient, modifier }]) => {
                                     return (
                                         <div
                                             key={ability}
@@ -309,7 +274,7 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
                                                 justifyContent: "space-between",
                                                 alignItems: "center",
                                                 padding: "0.5rem",
-                                                background: isProficient
+                                                background: proficient
                                                     ? "rgba(0,0,0,0.05)"
                                                     : "transparent",
                                                 borderRadius: "4px",
@@ -321,11 +286,11 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
                                                     textTransform: "capitalize",
                                                 }}
                                             >
-                                                {isProficient && "● "}
+                                                {proficient && "● "}
                                                 {ability}
                                             </span>
                                             <span style={{ fontSize: "0.875rem", fontWeight: 600 }}>
-                                                {formatModifier(total)}
+                                                {modifier}
                                             </span>
                                         </div>
                                     );
@@ -336,23 +301,7 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
                 </div>
 
                 {/* Right Column - Navigation */}
-                {isMobile ? (
-                    <>
-                        <Select
-                            label="Select Section"
-                            value={activeSection}
-                            onChange={(e) => handleSectionSelect(e.target.value as SectionKey)}
-                        >
-                            <SelectItem key="Home">Home</SelectItem>
-                            <SelectItem key="skills">Skills</SelectItem>
-                            <SelectItem key="actions">Actions</SelectItem>
-                            <SelectItem key="inventory">Inventory</SelectItem>
-                            <SelectItem key="spells">Spells</SelectItem>
-                            <SelectItem key="features">Features</SelectItem>
-                            <SelectItem key="mindcraft">Mindcraft</SelectItem>
-                        </Select>
-                    </>
-                ) : (
+                {isMobile || (
                     <Card>
                         <CardBody>
                             <Tabs aria-label="Character sections" variant="underlined" size="lg">
@@ -440,6 +389,54 @@ export function CharacterSheet({ character }: CharacterSheetProps) {
                     </ModalBody>
                 </ModalContent>
             </Modal>
+        </div>
+    );
+}
+function PointBar({ label, points }: { label: string; points: HitPoints }) {
+    return (
+        <div style={{ marginTop: "1.5rem" }}>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "0.5rem",
+                }}
+            >
+                <span style={{ fontSize: "0.875rem", fontWeight: 600 }}>{label}</span>
+                <span style={{ fontSize: "0.875rem" }}>
+                    {points.current} / {points.maximum}
+                </span>
+            </div>
+            <div
+                style={{
+                    width: "100%",
+                    height: "8px",
+                    background: "rgba(0,0,0,0.1)",
+                    borderRadius: "4px",
+                    overflow: "hidden",
+                }}
+            >
+                <div
+                    style={{
+                        width: `${(points.current / points.maximum) * 100}%`,
+                        height: "100%",
+                        background: "var(--heroui-success)",
+                        transition: "width 0.3s",
+                    }}
+                />
+            </div>
+            {points.temporary ||
+                (0 > 0 && (
+                    <div
+                        style={{
+                            fontSize: "0.75rem",
+                            marginTop: "0.25rem",
+                            opacity: 0.7,
+                        }}
+                    >
+                        +{points.temporary} temp HP
+                    </div>
+                ))}
         </div>
     );
 }

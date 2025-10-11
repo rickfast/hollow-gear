@@ -17,7 +17,7 @@ function App() {
                         ← Back to Characters
                     </Button>
                 </div>
-                <CharacterSheet character={character} />
+                <CharacterSheet id={character.id} />
             </div>
         );
     }
