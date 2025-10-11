@@ -24,18 +24,7 @@ function App() {
 
     return (
         <div style={{ padding: "2rem", maxWidth: "1400px", margin: "0 auto" }}>
-            <Card style={{ marginBottom: "2rem" }}>
-                <CardHeader>
-                    <h1 style={{ fontSize: "2.5rem", fontWeight: 700, margin: 0 }}>
-                        Hollow Gear 5E
-                    </h1>
-                </CardHeader>
-                <CardBody>
-                    <p style={{ fontSize: "1.125rem", opacity: 0.8, margin: 0 }}>
-                        Select a pre-generated character to view their character sheet
-                    </p>
-                </CardBody>
-            </Card>
+            <img src="/logo.png" alt="Hollow Gear 5E" style={{ paddingBottom: "1rem" }} />
             <CharacterList onSelectCharacter={setSelectedCharacter} />
         </div>
     );

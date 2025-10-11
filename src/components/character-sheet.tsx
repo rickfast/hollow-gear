@@ -14,12 +14,14 @@ import {
     Button,
     Select,
     SelectItem,
+    Progress,
 } from "@heroui/react";
 import type { Character, HitPoints } from "@/types";
 import { useState, useEffect } from "react";
 import { useCharacterViewModel } from "@/model/use-character-view-model";
 import { s } from "framer-motion/client";
 import type { AbilityScore, CharacterSummary, SavingThrow } from "@/model/character-view-model";
+import { PointBar } from "./point-bar";
 
 interface CharacterSheetProps {
     id: string;
@@ -156,7 +158,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
 
                     {/* Hit Points */}
                     <PointBar label="Hit Points" points={summary.hitPoints} />
-                    <PointBar label="Heat Points" points={summary.heatPoints} />
+                    <PointBar label="Heat Points" points={summary.heatPoints} invert={true} />
                 </CardBody>
             </Card>
 
@@ -354,7 +356,15 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
             </div>
 
             {/* Mobile Modal for Section Content */}
-            <Modal isOpen={isOpen} onClose={onClose} size="full" scrollBehavior="inside">
+            <Modal
+                isOpen={isOpen}
+                onClose={() => {
+                    onClose();
+                    setActiveSection("skills");
+                }}
+                size="full"
+                scrollBehavior="inside"
+            >
                 <ModalContent>
                     <ModalHeader>
                         <h3
@@ -389,54 +399,6 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                     </ModalBody>
                 </ModalContent>
             </Modal>
-        </div>
-    );
-}
-function PointBar({ label, points }: { label: string; points: HitPoints }) {
-    return (
-        <div style={{ marginTop: "1.5rem" }}>
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    marginBottom: "0.5rem",
-                }}
-            >
-                <span style={{ fontSize: "0.875rem", fontWeight: 600 }}>{label}</span>
-                <span style={{ fontSize: "0.875rem" }}>
-                    {points.current} / {points.maximum}
-                </span>
-            </div>
-            <div
-                style={{
-                    width: "100%",
-                    height: "8px",
-                    background: "rgba(0,0,0,0.1)",
-                    borderRadius: "4px",
-                    overflow: "hidden",
-                }}
-            >
-                <div
-                    style={{
-                        width: `${(points.current / points.maximum) * 100}%`,
-                        height: "100%",
-                        background: "var(--heroui-success)",
-                        transition: "width 0.3s",
-                    }}
-                />
-            </div>
-            {points.temporary ||
-                (0 > 0 && (
-                    <div
-                        style={{
-                            fontSize: "0.75rem",
-                            marginTop: "0.25rem",
-                            opacity: 0.7,
-                        }}
-                    >
-                        +{points.temporary} temp HP
-                    </div>
-                ))}
         </div>
     );
 }

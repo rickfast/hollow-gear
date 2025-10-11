@@ -347,6 +347,7 @@ export const PREGENS: Character[] = [
     // ========================================================================
     {
         id: "selenn-vire-pregen-006",
+        avatarUrl: "/avatars/selenn-vire.png",
         name: "Selenn Vire",
         species: "Avenar",
         classes: [
@@ -371,7 +372,7 @@ export const PREGENS: Character[] = [
             temporary: 0,
         },
         heatPoints: {
-            current: 0,
+            current: 7,
             maximum: 10,
         },
         inventory: [
