@@ -219,7 +219,7 @@ export class CharacterViewModel {
                         damageType: damage.damageType,
                     },
                     description: equipment.description,
-                    range: `${equipment.range?.normal} (${equipment.range?.max})` || "",
+                    range: `${equipment.range?.normal}' (${equipment.range?.max}')` || "",
                 });
             });
         this.actions.push(createUnarmedStrikeAction(this.abilityScores.strength.modifier));
