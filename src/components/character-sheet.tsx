@@ -24,6 +24,7 @@ import type { AbilityScore, CharacterSummary, SavingThrow } from "@/model/charac
 import { PointBar } from "./point-bar";
 import { Skills } from "./skills";
 import { Inventory } from "./inventory";
+import { Actions } from "./actions";
 
 interface CharacterSheetProps {
     id: string;
@@ -221,7 +222,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                         keyof typeof abilityScores,
                                         AbilityScore,
                                     ][]
-                                ).map(([ability, { score, modifier }]) => (
+                                ).map(([ability, value]) => (
                                     <div
                                         key={ability}
                                         style={{
@@ -242,10 +243,10 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                             {ability.substring(0, 3)}
                                         </div>
                                         <div style={{ fontSize: "1.5rem", fontWeight: 700 }}>
-                                            {score}
+                                            {value.score}
                                         </div>
                                         <div style={{ fontSize: "0.875rem", opacity: 0.8 }}>
-                                            {modifier}
+                                            {value.modifierDisplay}
                                         </div>
                                     </div>
                                 ))}
@@ -319,7 +320,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                 <Tab key="actions" title="Actions">
                                     <div style={{ padding: "1rem" }}>
                                         <p style={{ opacity: 0.7 }}>
-                                            Actions content coming soon...
+                                            <Actions actions={getCharacter(id)!.actions} />
                                         </p>
                                     </div>
                                 </Tab>
@@ -386,7 +387,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             </p>
                         )}
                         {activeSection === "actions" && (
-                            <p style={{ opacity: 0.7 }}>Actions content coming soon...</p>
+                            <Actions actions={getCharacter(id)!.actions} />
                         )}
                         {activeSection === "inventory" && (
                             <Inventory items={getCharacter(id)!.inventory} />

@@ -55,6 +55,14 @@ export interface Character {
     flaws?: string[];
 }
 
+export type Die = 1 | 4 | 6 | 8 | 10 | 12 | 20 | 100;
+
+export interface Rollable {
+    count: number; // number of dice
+    die: Die; // type of die (e.g., d6, d20)
+    bonus?: number; // flat bonus to add
+}
+
 export interface HitPoints {
     current: number;
     maximum: number;
@@ -270,6 +278,7 @@ export interface Weapon extends Equipment {
     type: "Weapon";
     weaponType: WeaponType;
     damage: DamageInfo;
+    additionalDamage?: DamageInfo[];
     properties: WeaponProperty[];
     range?: { normal: number; max: number };
     ammoType?: AmmoType;
@@ -283,9 +292,9 @@ export type WeaponType =
     | "Ranged Martial"
     | "Heavy";
 
-export interface DamageInfo {
-    diceCount: number;
-    diceSize: number;
+export interface DamageInfo extends Rollable {
+    count: number;
+    die: Die;
     damageType: DamageType;
     bonus?: number;
 }

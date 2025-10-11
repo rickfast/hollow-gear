@@ -77,8 +77,8 @@ export const PREGENS: Character[] = [
             Tinkering: { proficient: true, modifier: 5, expertise: true },
         },
         inventory: [
-            createInventoryItem(WEAPONS.find((w) => w.name === "Rivetgun")!),
-            createInventoryItem(WEAPONS.find((w) => w.name === "Cogwrench")!),
+            createInventoryItem(WEAPONS.find((w) => w.name === "Rivetgun")!, true),
+            createInventoryItem(WEAPONS.find((w) => w.name === "Cogwrench")!, true),
             createInventoryItem(BASIC_EQUIPMENT.find((e) => e.name === "Tinker's Tools")!),
             createInventoryItem(ARCANE_ITEMS.find((e) => e.name === "Aether Cell")!),
             createInventoryItem(ARCANE_ITEMS.find((e) => e.name === "Aether Cell")!),
@@ -161,7 +161,7 @@ export const PREGENS: Character[] = [
             Tinkering: { proficient: false, modifier: 0, expertise: false },
         },
         inventory: [
-            createInventoryItem(WEAPONS.find((w) => w.name === "Aether Spear")!),
+            createInventoryItem(WEAPONS.find((w) => w.name === "Aether Spear")!, true),
             createInventoryItem(ARMOR.find((a) => a.name === "Gearmail Hauberk")!, true),
             createInventoryItem(SHIELDS.find((s) => s.name === "Standard Shield")!, true),
         ],
@@ -253,7 +253,7 @@ export const PREGENS: Character[] = [
             Tinkering: { proficient: false, modifier: 0, expertise: false },
         },
         inventory: [
-            createInventoryItem(WEAPONS.find((w) => w.name === "Steam Hammer")!),
+            createInventoryItem(WEAPONS.find((w) => w.name === "Steam Hammer")!, true),
             createInventoryItem(WEAPONS.find((w) => w.name === "Aether Spear")!),
             createInventoryItem(ARMOR.find((a) => a.name === "Gearmail Hauberk")!, true),
         ],
@@ -333,8 +333,8 @@ export const PREGENS: Character[] = [
             Tinkering: { proficient: true, modifier: 3, expertise: false },
         },
         inventory: [
-            createInventoryItem(WEAPONS.find((w) => w.name === "Brass Dagger")!),
-            createInventoryItem(WEAPONS.find((w) => w.name === "Steam Slingshot")!),
+            createInventoryItem(WEAPONS.find((w) => w.name === "Brass Dagger")!, true),
+            createInventoryItem(WEAPONS.find((w) => w.name === "Steam Slingshot")!, true),
             createInventoryItem(BASIC_EQUIPMENT.find((e) => e.name === "Mechanist's Satchel")!),
             createInventoryItem(ARMOR.find((a) => a.name === "Wireweave Jacket")!, true),
         ],
@@ -596,7 +596,7 @@ export const PREGENS: Character[] = [
             Tinkering: { proficient: true, modifier: 3, expertise: true },
         },
         inventory: [
-            createInventoryItem(WEAPONS.find((w) => w.name === "Cogwrench")!),
+            createInventoryItem(WEAPONS.find((w) => w.name === "Cogwrench")!, true),
             createInventoryItem(ARCANE_ITEMS.find((e) => e.name === "Steam Vent Harness")!),
             createInventoryItem(ARMOR.find((a) => a.name === "Steamweave Vest")!, true),
         ],

@@ -1,12 +1,21 @@
-import type { Character, HitPoints, SkillType } from "@/types";
+import type { Character, DamageType, Die, HitPoints, Rollable, SkillType, Weapon } from "@/types";
 import { SKILLS } from "@/data/skills";
 import { EQUIPMENT_BY_ID } from "@/data";
 
 const formatModifier = (modifier: number) => (modifier >= 0 ? `+${modifier}` : `${modifier}`);
 
-export interface AbilityScore {
-    score: number;
-    modifier: string;
+export class AbilityScore {
+    public score: number;
+    public modifier: number;
+
+    constructor(score: { score: number; modifier: number }) {
+        this.score = score.score;
+        this.modifier = score.modifier;
+    }
+
+    get modifierDisplay() {
+        return formatModifier(this.modifier);
+    }
 }
 
 export interface AbilityScores {
@@ -63,12 +72,30 @@ export interface InventoryItem {
     tags?: string[];
 }
 
+export interface Action {
+    name: string;
+    type: string;
+    hit?: { modifier: string };
+    damage?: Damage;
+    description?: string;
+    range?: string;
+}
+
+export interface Damage extends Rollable {
+    count: number;
+    die: Die;
+    staticDamage?: number;
+    damageType: DamageType;
+    bonus?: number;
+}
+
 export class CharacterViewModel {
     abilityScores: AbilityScores;
     summary: CharacterSummary;
     savingThrows: SavingThrows;
     skills: Skills;
     inventory: InventoryItem[];
+    actions: Action[] = []; // Placeholder for future implementation
 
     constructor(private character: Character) {
         const primaryClass = this.character.classes[0];
@@ -92,42 +119,30 @@ export class CharacterViewModel {
             id: this.character.id,
         };
         this.abilityScores = {
-            strength: {
+            strength: new AbilityScore({
                 score: this.character.abilityScores.strength,
-                modifier: formatModifier(
-                    Math.floor((this.character.abilityScores.strength - 10) / 2)
-                ),
-            },
-            dexterity: {
+                modifier: Math.floor((this.character.abilityScores.strength - 10) / 2),
+            }),
+            dexterity: new AbilityScore({
                 score: this.character.abilityScores.dexterity,
-                modifier: formatModifier(
-                    Math.floor((this.character.abilityScores.dexterity - 10) / 2)
-                ),
-            },
-            constitution: {
+                modifier: Math.floor((this.character.abilityScores.dexterity - 10) / 2),
+            }),
+            constitution: new AbilityScore({
                 score: this.character.abilityScores.constitution,
-                modifier: formatModifier(
-                    Math.floor((this.character.abilityScores.constitution - 10) / 2)
-                ),
-            },
-            intelligence: {
+                modifier: Math.floor((this.character.abilityScores.constitution - 10) / 2),
+            }),
+            intelligence: new AbilityScore({
                 score: this.character.abilityScores.intelligence,
-                modifier: formatModifier(
-                    Math.floor((this.character.abilityScores.intelligence - 10) / 2)
-                ),
-            },
-            wisdom: {
+                modifier: Math.floor((this.character.abilityScores.intelligence - 10) / 2),
+            }),
+            wisdom: new AbilityScore({
                 score: this.character.abilityScores.wisdom,
-                modifier: formatModifier(
-                    Math.floor((this.character.abilityScores.wisdom - 10) / 2)
-                ),
-            },
-            charisma: {
+                modifier: Math.floor((this.character.abilityScores.wisdom - 10) / 2),
+            }),
+            charisma: new AbilityScore({
                 score: this.character.abilityScores.charisma,
-                modifier: formatModifier(
-                    Math.floor((this.character.abilityScores.charisma - 10) / 2)
-                ),
-            },
+                modifier: Math.floor((this.character.abilityScores.charisma - 10) / 2),
+            }),
         };
 
         let savingThrows = {} as SavingThrows;
@@ -180,5 +195,67 @@ export class CharacterViewModel {
                 tags: [equipment.tier, equipment.type],
             };
         });
+        this.character.inventory
+            .filter((item) => {
+                const equipment = EQUIPMENT_BY_ID[item.equipmentId]!;
+                return item.equipped && equipment.type === "Weapon";
+            })
+            .forEach((item) => {
+                const equipment = EQUIPMENT_BY_ID[item.equipmentId]! as Weapon;
+                const damage = equipment.damage;
+                const { hitModifier, damageBonus } = calculateHitAndDamage(
+                    this.abilityScores,
+                    equipment
+                );
+
+                this.actions.push({
+                    name: equipment.name,
+                    type: equipment.weaponType,
+                    hit: { modifier: hitModifier },
+                    damage: {
+                        count: damage.count,
+                        die: damage.die,
+                        bonus: damageBonus,
+                        damageType: damage.damageType,
+                    },
+                    description: equipment.description,
+                    range: `${equipment.range?.normal} (${equipment.range?.max})` || "",
+                });
+            });
+        this.actions.push(createUnarmedStrikeAction(this.abilityScores.strength.modifier));
     }
+}
+
+function calculateHitAndDamage(abilityScores: AbilityScores, weapon: Weapon) {
+    const strengthMod = abilityScores.strength.modifier;
+    const dexterityMod = abilityScores.dexterity.modifier;
+    const isFinesse = weapon.properties?.includes("Finesse");
+    const isRanged = ["Simple Ranged", "Martial Ranged"].includes(weapon.weaponType);
+
+    let attackMod = isFinesse
+        ? Math.max(strengthMod, dexterityMod)
+        : isRanged
+          ? dexterityMod
+          : strengthMod;
+
+    return {
+        hitModifier: formatModifier(attackMod),
+        damageBonus: attackMod,
+    };
+}
+
+function createUnarmedStrikeAction(strengthModifier: number): Action {
+    return {
+        name: "Unarmed Strike",
+        type: "Melee",
+        hit: { modifier: formatModifier(1 + strengthModifier) },
+        damage: {
+            count: 1,
+            die: 1,
+            staticDamage: 1 + strengthModifier,
+            damageType: "Bludgeoning",
+            bonus: strengthModifier,
+        },
+        description: "Your unarmed strike can deal damage equal to 1 + your Strength modifier.",
+    };
 }
