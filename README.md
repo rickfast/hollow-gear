@@ -41,6 +41,53 @@ bun run build
 bun run preview
 ```
 
+## Docker Deployment
+
+### Quick Start with Make
+
+```bash
+# Show all commands
+make help
+
+# Build and run
+make build
+make run
+```
+
+### Or with Docker Compose
+
+```bash
+# Build and run
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop
+docker-compose down
+```
+
+The application will be available at [http://localhost:8080](http://localhost:8080)
+
+### Using Docker CLI
+
+```bash
+# Build
+docker build -t hollow-gear-5e .
+
+# Run
+docker run -d -p 8080:80 --name hollow-gear-5e hollow-gear-5e
+```
+
+**Image Details:**
+
+- Ultra-lightweight (~15-20 MB)
+- Multi-stage build with Bun + nginx:alpine
+- Includes health checks and optimized nginx config
+- Production-ready static file serving
+
+For detailed Docker documentation, see [docs/DOCKER.md](docs/DOCKER.md)
+
 ## Project Structure
 
 ```

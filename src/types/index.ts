@@ -55,6 +55,7 @@ export interface Character {
     flaws?: string[];
 }
 
+export type ActionType = "Action" | "Bonus Action" | "Reaction";
 export type Die = 1 | 4 | 6 | 8 | 10 | 12 | 20 | 100;
 
 export interface Rollable {
@@ -204,6 +205,7 @@ export interface ClassFeature {
         amount: number;
         restType: "short" | "long";
     };
+    damage?: DamageInfo; // for features that deal damage
 }
 
 // ============================================================================
@@ -259,7 +261,6 @@ export interface Equipment {
     cost: number; // in Cogs
     weight: number; // in lbs
     description?: string;
-    modSlots: ModSlot[];
 }
 
 export type EquipmentType =
@@ -355,7 +356,17 @@ export interface ModSlot {
     empty: boolean;
 }
 
-export type ModTier = "I" | "II" | "III" | "IV";
+export type ModTier = "I - Common" | "II - Advanced" | "III - Relic" | "IV - Prototype";
+
+export interface ModTierSpec {
+    tier: ModTier;
+    craftTier: CraftTier;
+    craftDC: number;
+    timeHours: number;
+    cost: number; // in Cogs
+    powerLevel: string;
+    slots: number; // number of mod slots of this tier
+}
 
 export interface Mod {
     id: string;

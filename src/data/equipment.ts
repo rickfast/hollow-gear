@@ -19,7 +19,6 @@ export const WEAPONS: Weapon[] = [
         properties: ["Light", "Finesse"],
         cost: 2,
         weight: 1,
-        modSlots: [],
     },
     {
         id: "cogwrench-001",
@@ -35,7 +34,6 @@ export const WEAPONS: Weapon[] = [
         properties: ["Versatile"], // 1d8 versatile
         cost: 5,
         weight: 3,
-        modSlots: [],
         description: "Versatile (1d8)",
     },
 
@@ -54,7 +52,6 @@ export const WEAPONS: Weapon[] = [
         properties: ["Two-Handed"],
         cost: 15,
         weight: 8,
-        modSlots: [],
     },
     {
         id: "volt-blade-001",
@@ -72,7 +69,6 @@ export const WEAPONS: Weapon[] = [
         cost: 30,
         weight: 3,
         powered: true,
-        modSlots: [],
         description: "+1 lightning damage when powered",
     },
     {
@@ -89,7 +85,6 @@ export const WEAPONS: Weapon[] = [
         properties: ["Heavy", "Two-Handed"],
         cost: 25,
         weight: 10,
-        modSlots: [],
     },
     {
         id: "aether-spear-001",
@@ -106,7 +101,6 @@ export const WEAPONS: Weapon[] = [
         range: { normal: 20, max: 60 },
         cost: 20,
         weight: 4,
-        modSlots: [],
     },
     {
         id: "monofilament-whip-001",
@@ -122,7 +116,6 @@ export const WEAPONS: Weapon[] = [
         properties: ["Finesse", "Reach"],
         cost: 35,
         weight: 2,
-        modSlots: [],
     },
     {
         id: "plasma-pike-001",
@@ -139,7 +132,6 @@ export const WEAPONS: Weapon[] = [
         cost: 40,
         weight: 6,
         powered: true,
-        modSlots: [],
     },
 
     // Ranged Weapons - Simple
@@ -159,7 +151,6 @@ export const WEAPONS: Weapon[] = [
         ammoType: "Slugs",
         cost: 10,
         weight: 2,
-        modSlots: [],
 
         description: "Reload (6)",
     },
@@ -179,7 +170,6 @@ export const WEAPONS: Weapon[] = [
         ammoType: "Bolts",
         cost: 20,
         weight: 5,
-        modSlots: [],
 
         description: "Reload (6)",
     },
@@ -199,7 +189,6 @@ export const WEAPONS: Weapon[] = [
         ammoType: "Pellets",
         cost: 5,
         weight: 1,
-        modSlots: [],
     },
 
     // Ranged Weapons - Martial
@@ -219,7 +208,6 @@ export const WEAPONS: Weapon[] = [
         ammoType: "Rivets",
         cost: 25,
         weight: 4,
-        modSlots: [{ tier: "I", empty: true }],
 
         description: "Reload (5), mod-ready",
     },
@@ -239,7 +227,6 @@ export const WEAPONS: Weapon[] = [
         ammoType: "Slugs",
         cost: 35,
         weight: 7,
-        modSlots: [],
 
         description: "Reload (5)",
     },
@@ -260,7 +247,6 @@ export const WEAPONS: Weapon[] = [
         cost: 50,
         weight: 6,
         powered: true,
-        modSlots: [],
     },
     {
         id: "volleygun-001",
@@ -278,7 +264,6 @@ export const WEAPONS: Weapon[] = [
         ammoType: "Slugs",
         cost: 45,
         weight: 10,
-        modSlots: [],
 
         description: "Burst (15-ft cone), Reload (1)",
     },
@@ -301,7 +286,6 @@ export const WEAPONS: Weapon[] = [
         cost: 120,
         weight: 18,
         powered: true,
-        modSlots: [],
         description: "Reload (1)",
     },
 ];
@@ -321,7 +305,6 @@ export const ARMOR: Armor[] = [
         stealthDisadvantage: false,
         cost: 10,
         weight: 8,
-        modSlots: [],
         description: "Common fabric-metal hybrid.",
     },
     {
@@ -334,7 +317,6 @@ export const ARMOR: Armor[] = [
         stealthDisadvantage: false,
         cost: 25,
         weight: 10,
-        modSlots: [],
         description: "Resists shock & heat.",
     },
     {
@@ -347,7 +329,6 @@ export const ARMOR: Armor[] = [
         stealthDisadvantage: false,
         cost: 40,
         weight: 9,
-        modSlots: [],
         description: "+1 vs psionics. Adv on Stealth vs machines. Conducts Aether energy safely.",
     },
 
@@ -362,7 +343,6 @@ export const ARMOR: Armor[] = [
         stealthDisadvantage: true,
         cost: 50,
         weight: 20,
-        modSlots: [],
 
         description: "Common militia armor.",
     },
@@ -376,7 +356,6 @@ export const ARMOR: Armor[] = [
         stealthDisadvantage: true,
         cost: 75,
         weight: 25,
-        modSlots: [{ tier: "I", empty: true }],
 
         description: "Has mod slot for Steam Vent.",
     },
@@ -390,7 +369,6 @@ export const ARMOR: Armor[] = [
         stealthDisadvantage: true,
         cost: 100,
         weight: 30,
-        modSlots: [],
 
         description: "Resist psychic dmg 1/long rest.",
     },
@@ -407,7 +385,6 @@ export const ARMOR: Armor[] = [
         stealthDisadvantage: true,
         cost: 150,
         weight: 45,
-        modSlots: [],
 
         description: "Common industrial plate.",
     },
@@ -422,7 +399,6 @@ export const ARMOR: Armor[] = [
         stealthDisadvantage: true,
         cost: 250,
         weight: 50,
-        modSlots: [],
 
         description: "Templar make; +1 vs radiant.",
     },
@@ -438,7 +414,6 @@ export const ARMOR: Armor[] = [
         powered: true,
         cost: 500,
         weight: 65,
-        modSlots: [{ tier: "II", empty: true }],
 
         description:
             "Steam-driven servo plate; requires maintenance (1 Cog/day). Consumes 1 Aether Cell per hour.",
@@ -457,7 +432,6 @@ export const SHIELDS: Shield[] = [
         armorClassBonus: 2,
         cost: 10,
         weight: 6,
-        modSlots: [{ tier: "I", empty: true }],
 
         description: "Basic steel buckler.",
     },
@@ -469,7 +443,6 @@ export const SHIELDS: Shield[] = [
         armorClassBonus: 2,
         cost: 35,
         weight: 10,
-        modSlots: [{ tier: "I", empty: true }],
 
         description: "Can release steam cloud (1/short rest).",
     },
@@ -481,7 +454,6 @@ export const SHIELDS: Shield[] = [
         armorClassBonus: 3,
         cost: 60,
         weight: 8,
-        modSlots: [{ tier: "I", empty: true }],
 
         description: "+3 vs psionics. Glows when detecting Aether fields.",
     },
@@ -493,7 +465,6 @@ export const SHIELDS: Shield[] = [
         armorClassBonus: 2,
         cost: 70,
         weight: 12,
-        modSlots: [{ tier: "I", empty: true }],
 
         description: "Retaliates 1d4 lightning on melee hits.",
     },
@@ -505,7 +476,6 @@ export const SHIELDS: Shield[] = [
         armorClassBonus: 2,
         cost: 700,
         weight: 6,
-        modSlots: [{ tier: "II", empty: true }],
 
         description: "Restores 1 HP each hour, up to half total HP.",
     },
@@ -522,7 +492,6 @@ export const BASIC_EQUIPMENT: Equipment[] = [
         tier: "Workshop",
         cost: 25,
         weight: 10,
-        modSlots: [],
 
         description: "Essential for mod crafting and repairs.",
     },
@@ -533,7 +502,6 @@ export const BASIC_EQUIPMENT: Equipment[] = [
         tier: "Workshop",
         cost: 15,
         weight: 6,
-        modSlots: [],
 
         description: "Contains wrenches, microgears, soldering kit.",
     },
@@ -544,7 +512,6 @@ export const BASIC_EQUIPMENT: Equipment[] = [
         tier: "Workshop",
         cost: 10,
         weight: 3,
-        modSlots: [],
 
         description: "Emits bright light 30 ft (requires Aether Cell, 10 hours).",
     },
@@ -555,7 +522,6 @@ export const BASIC_EQUIPMENT: Equipment[] = [
         tier: "Guild",
         cost: 50,
         weight: 2,
-        modSlots: [],
 
         description: "Always points toward nearest psionic field or powered device.",
     },
@@ -566,7 +532,6 @@ export const BASIC_EQUIPMENT: Equipment[] = [
         tier: "Workshop",
         cost: 5,
         weight: 5,
-        modSlots: [],
 
         description: "Conductive, can deliver shocks or carry Aether charge.",
     },
@@ -577,7 +542,6 @@ export const BASIC_EQUIPMENT: Equipment[] = [
         tier: "Workshop",
         cost: 8,
         weight: 2,
-        modSlots: [],
 
         description: "Reduces Heat by 1d4 when consumed or poured on armor.",
     },
@@ -588,7 +552,6 @@ export const BASIC_EQUIPMENT: Equipment[] = [
         tier: "Workshop",
         cost: 10,
         weight: 8,
-        modSlots: [],
 
         description: "Portable, steam-insulated shelter.",
     },
@@ -599,7 +562,6 @@ export const BASIC_EQUIPMENT: Equipment[] = [
         tier: "Workshop",
         cost: 15,
         weight: 0.5,
-        modSlots: [],
 
         description: "Repairs 1d8 HP of damage to armor, weapons, or constructs.",
     },
@@ -610,7 +572,6 @@ export const BASIC_EQUIPMENT: Equipment[] = [
         tier: "Workshop",
         cost: 25,
         weight: 0.5,
-        modSlots: [],
 
         description: "Refined psionic residue, reagent for mod crafting.",
     },
@@ -621,7 +582,6 @@ export const BASIC_EQUIPMENT: Equipment[] = [
         tier: "Workshop",
         cost: 5,
         weight: 0,
-        modSlots: [],
 
         description: "Keeps precise time for 100 years; valued by scholars.",
     },
@@ -632,7 +592,6 @@ export const BASIC_EQUIPMENT: Equipment[] = [
         tier: "Workshop",
         cost: 15,
         weight: 3,
-        modSlots: [],
 
         description: "30-ft blue light, 10-hour Aether Cell.",
     },
@@ -643,7 +602,6 @@ export const BASIC_EQUIPMENT: Equipment[] = [
         tier: "Workshop",
         cost: 40,
         weight: 10,
-        modSlots: [],
 
         description: "Emit steam to obscure area (1/short rest).",
     },
@@ -654,7 +612,6 @@ export const BASIC_EQUIPMENT: Equipment[] = [
         tier: "Workshop",
         cost: 25,
         weight: 0,
-        modSlots: [],
 
         description: "Immune to blindness from steam or flash.",
     },
@@ -672,7 +629,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Workshop",
         cost: 10,
         weight: 0.5,
-        modSlots: [],
 
         description: "Rechargeable psionic battery used by weapons and armor. 10 charges.",
     },
@@ -683,7 +639,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Workshop",
         cost: 40,
         weight: 10,
-        modSlots: [],
 
         description: "Emits a 10-ft radius steam cloud (1/short rest); clears 2 Heat.",
     },
@@ -694,7 +649,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Workshop",
         cost: 25,
         weight: 0,
-        modSlots: [],
 
         description: "Immune to blindness from steam, sparks, or psionic flashes.",
     },
@@ -705,7 +659,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Workshop",
         cost: 15,
         weight: 3,
-        modSlots: [],
 
         description: "Emits pale blue light; reveals psionic signatures within 30 ft.",
     },
@@ -718,7 +671,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Guild",
         cost: 100,
         weight: 3,
-        modSlots: [],
 
         description: "Gain resistance to lightning damage. Wearing metal armor negates this.",
     },
@@ -729,7 +681,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Guild",
         cost: 150,
         weight: 1,
-        modSlots: [],
 
         description: "Tiny automaton (AC 13, 5 HP) that acts as a familiar once per day.",
     },
@@ -740,7 +691,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Guild",
         cost: 125,
         weight: 2,
-        modSlots: [],
 
         description: "Pull a metal object or weapon up to 30 ft once per short rest.",
     },
@@ -751,7 +701,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Guild",
         cost: 80,
         weight: 0,
-        modSlots: [],
 
         description: "While wearing this, gain +1 on Tinkering and Arcana checks.",
     },
@@ -762,7 +711,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Guild",
         cost: 175,
         weight: 0,
-        modSlots: [],
 
         description:
             "Once per long rest, recall a scene you witnessed within the last week with perfect clarity.",
@@ -774,7 +722,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Guild",
         cost: 200,
         weight: 1,
-        modSlots: [],
 
         description:
             "Expend a charge to deal 1d8 lightning or force damage (6 charges, recharges 1d4/day).",
@@ -788,7 +735,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Relic",
         cost: 500,
         weight: 1,
-        modSlots: [],
 
         description: "Crystal focus. Gain +1 to psionic save DCs and power attacks.",
     },
@@ -799,7 +745,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Relic",
         cost: 450,
         weight: 3,
-        modSlots: [],
 
         description: "Replace a weapon's power source; doubles Aether Cell capacity.",
     },
@@ -810,7 +755,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Relic",
         cost: 400,
         weight: 4,
-        modSlots: [],
 
         description: "When hit in melee, retaliate for 1d4 lightning damage.",
     },
@@ -821,7 +765,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Relic",
         cost: 800,
         weight: 2,
-        modSlots: [],
 
         description: "Once per long rest, rewind your last action by 6 seconds (GM discretion).",
     },
@@ -832,7 +775,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Relic",
         cost: 600,
         weight: 3,
-        modSlots: [],
 
         description: "Grants advantage on saves vs. psionics; wearer emits soft harmonic hum.",
     },
@@ -843,7 +785,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Relic",
         cost: 550,
         weight: 0,
-        modSlots: [],
 
         description: "Absorbs up to 10 psychic damage/day; release it as 1d10 healing.",
     },
@@ -854,7 +795,6 @@ export const ARCANE_ITEMS: Equipment[] = [
         tier: "Relic",
         cost: 650,
         weight: 1,
-        modSlots: [],
 
         description: "When wielding powered weapons, add +1 to attack and damage rolls.",
     },

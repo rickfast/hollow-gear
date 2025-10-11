@@ -33,11 +33,11 @@ export const Skills = ({ skills }: { skills: CharacterSkills }) => {
                     </div>
 
                     {/* Modifier */}
-                    <div className="text-sm font-semibold w-10 text-right">
-                        <RollButton title={`${skillName} DC`} rollables={[skillData.rollable]}>
-                            {skillData.modifier}
-                        </RollButton>
-                    </div>
+                    {/* <div className="text-sm font-semibold w-10 text-right"> */}
+                    <RollButton title={`${skillName} DC`} rollables={[skillData.rollable]}>
+                        {skillData.modifier}
+                    </RollButton>
+                    {/* </div> */}
                 </div>
             ))}
         </div>
