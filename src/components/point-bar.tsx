@@ -1,4 +1,4 @@
-import type { HitPoints } from "@/types";
+import type { Points } from "@/types";
 import { Progress } from "@heroui/react";
 
 export const PointBar = ({
@@ -7,7 +7,7 @@ export const PointBar = ({
     invert = false,
 }: {
     label: string;
-    points: HitPoints;
+    points: Points;
     invert?: boolean;
 }) => {
     const color = invert
@@ -37,18 +37,6 @@ export const PointBar = ({
                 </span>
             </div>
             <Progress value={(points.current / points.maximum) * 100} size="md" color={color} />
-            {points.temporary ||
-                (0 > 0 && (
-                    <div
-                        style={{
-                            fontSize: "0.75rem",
-                            marginTop: "0.25rem",
-                            opacity: 0.7,
-                        }}
-                    >
-                        +{points.temporary} temp HP
-                    </div>
-                ))}
         </div>
     );
 };

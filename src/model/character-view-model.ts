@@ -1,6 +1,19 @@
-import type { Character, DamageType, Die, HitPoints, Rollable, SkillType, Weapon } from "@/types";
+import type {
+    AetherFluxPoints,
+    Character,
+    CharacterClass,
+    CraftTier,
+    DamageType,
+    Die,
+    HitPoints,
+    ResonanceCharges,
+    Rollable,
+    SkillType,
+    Weapon,
+} from "@/types";
 import { SKILLS } from "@/data/skills";
 import { EQUIPMENT_BY_ID } from "@/data";
+import { CRAFT_TIER_LOOKUP } from "@/data/mods";
 
 const formatModifier = (modifier: number) => (modifier >= 0 ? `+${modifier}` : `${modifier}`);
 
@@ -27,6 +40,11 @@ export interface AbilityScores {
     charisma: AbilityScore;
 }
 
+interface Points {
+    current: number;
+    maximum: number;
+}
+
 export interface CharacterSummary {
     id: string;
     name: string;
@@ -37,6 +55,8 @@ export interface CharacterSummary {
     background: string;
     hitPoints: HitPoints;
     heatPoints: HitPoints;
+    aetherFluxPoints?: AetherFluxPoints;
+    resonanceCharges?: ResonanceCharges;
     armorClass: number;
     initiative: string;
     speed: number;
@@ -77,7 +97,12 @@ export interface InventoryItem {
     cost: string;
     weight: string;
     tags?: string[];
+    craftTier: CraftTier;
+    slots: number;
+    mods: Mod[];
 }
+
+export interface Mod {}
 
 export interface Action {
     name: string;
@@ -103,9 +128,16 @@ export class CharacterViewModel {
     skills: Skills;
     inventory: InventoryItem[];
     actions: Action[] = []; // Placeholder for future implementation
+    spellType: "Formulae" | "Miracles" | "None";
 
     constructor(private character: Character) {
         const primaryClass = this.character.classes[0];
+        const classes = this.character.classes.map((cls) => cls.class);
+        this.spellType = classes.includes("Templar")
+            ? "Miracles"
+            : classes.includes("Arcanist")
+              ? "Formulae"
+              : "None";
         this.summary = {
             name: this.character.name,
             class: primaryClass ? primaryClass.class : "Unknown",
@@ -119,6 +151,8 @@ export class CharacterViewModel {
             background: this.character.background || "Unknown",
             hitPoints: this.character.hitPoints,
             heatPoints: this.character.heatPoints,
+            aetherFluxPoints: this.character.aetherFluxPoints,
+            resonanceCharges: this.character.resonanceCharges,
             armorClass: this.character.armorClass,
             initiative: formatModifier(this.character.initiative),
             speed: this.character.speed,
@@ -210,6 +244,9 @@ export class CharacterViewModel {
                 cost: `${equipment.cost} Cogs`,
                 weight: `${equipment.weight} lbs`,
                 tags: [equipment.tier, equipment.type],
+                craftTier: equipment.tier,
+                slots: CRAFT_TIER_LOOKUP[equipment.tier]?.slots || 0,
+                mods: item.mods || [],
             };
         });
         this.character.inventory

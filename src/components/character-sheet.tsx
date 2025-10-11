@@ -42,7 +42,7 @@ function formatModifier(modifier: number): string {
     return modifier >= 0 ? `+${modifier}` : `${modifier}`;
 }
 
-type SectionKey = "skills" | "actions" | "inventory" | "spells" | "features" | "mindcraft";
+type SectionKey = "skills" | "actions" | "inventory" | "spells" | "features" | "mindcraft" | "mods";
 
 export function CharacterSheet({ id }: CharacterSheetProps) {
     const [isMobile, setIsMobile] = useState(false);
@@ -51,6 +51,9 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
 
     const { getCharacter } = useCharacterViewModel();
     const { summary, abilityScores, savingThrows, skills } = getCharacter(id)!;
+
+    const showSpellsTab = getCharacter(id)!.spellType !== "None";
+    const spellType = getCharacter(id)!.spellType;
 
     // Detect mobile screen size
     useEffect(() => {
@@ -162,8 +165,26 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                     </div>
 
                     {/* Hit Points */}
-                    <PointBar label="Hit Points" points={summary.hitPoints} />
-                    <PointBar label="Heat Points" points={summary.heatPoints} invert={true} />
+                    <div
+                        style={{
+                            display: "grid",
+                            gridTemplateColumns: "repeat(2, 1fr)",
+                            gap: "1rem",
+                            minWidth: "250px",
+                        }}
+                    >
+                        <PointBar label="Hit Points" points={summary.hitPoints} />
+                        <PointBar label="Heat Points" points={summary.heatPoints} invert={true} />
+                        {summary.aetherFluxPoints?.maximum && (
+                            <PointBar label="Aether Flux" points={summary.aetherFluxPoints!} />
+                        )}
+                        {summary.resonanceCharges?.maximum && (
+                            <PointBar
+                                label="Resonance Charges"
+                                points={summary.resonanceCharges!}
+                            />
+                        )}
+                    </div>
                 </CardBody>
             </Card>
 
@@ -188,7 +209,10 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             <SelectItem key="skills">Skills</SelectItem>
                             <SelectItem key="actions">Actions</SelectItem>
                             <SelectItem key="inventory">Inventory</SelectItem>
-                            <SelectItem key="spells">Spells</SelectItem>
+                            <SelectItem key="mods">Mods</SelectItem>
+                            {showSpellsTab ? (
+                                <SelectItem key="spells">{spellType}</SelectItem>
+                            ) : null}
                             <SelectItem key="features">Features</SelectItem>
                             <SelectItem key="mindcraft">Mindcraft</SelectItem>
                         </Select>
@@ -338,13 +362,20 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                         </p>
                                     </div>
                                 </Tab>
-                                <Tab key="spells" title="Spells">
+                                <Tab key="mods" title="Mods">
                                     <div style={{ padding: "1rem" }}>
-                                        <p style={{ opacity: 0.7 }}>
-                                            Spells content coming soon...
-                                        </p>
+                                        <p style={{ opacity: 0.7 }}>Mods content coming soon...</p>
                                     </div>
                                 </Tab>
+                                {showSpellsTab && (
+                                    <Tab key="spells" title={spellType}>
+                                        <div style={{ padding: "1rem" }}>
+                                            <p style={{ opacity: 0.7 }}>
+                                                Spells content coming soon...
+                                            </p>
+                                        </div>
+                                    </Tab>
+                                )}
                                 <Tab key="features" title="Features + Traits">
                                     <div style={{ padding: "1rem" }}>
                                         <p style={{ opacity: 0.7 }}>
@@ -399,7 +430,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                         {activeSection === "inventory" && (
                             <Inventory items={getCharacter(id)!.inventory} />
                         )}
-                        {activeSection === "spells" && (
+                        {showSpellsTab && activeSection === "spells" && (
                             <p style={{ opacity: 0.7 }}>Spells content coming soon...</p>
                         )}
                         {activeSection === "features" && (

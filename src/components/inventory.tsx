@@ -50,6 +50,27 @@ export const Inventory = ({ items }: { items: InventoryItem[] }) => {
                             </div>
                         )}
 
+                        {/* Mod Slots */}
+                        {item.slots > 0 && (
+                            <div className="flex items-center gap-1 mb-1">
+                                <span className="text-xs text-default-500 mr-1">Mods:</span>
+                                {Array.from({ length: item.slots }).map((_, index) => {
+                                    const hasMod = index < item.mods.length;
+                                    return (
+                                        <div
+                                            key={index}
+                                            className={`w-3 h-3 rounded-full border-2 ${
+                                                hasMod
+                                                    ? "bg-primary border-primary"
+                                                    : "border-default-300"
+                                            }`}
+                                            title={hasMod ? "Mod installed" : "Empty slot"}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        )}
+
                         {/* Cost */}
                         <div className="text-xs text-default-500">{item.cost}</div>
                     </div>

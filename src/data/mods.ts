@@ -1,4 +1,4 @@
-import type { ModTierSpec } from "@/types";
+import type { CraftTier, ModTierSpec } from "@/types";
 
 export const MOD_TIERS: ModTierSpec[] = [
     {
@@ -39,9 +39,9 @@ export const MOD_TIERS: ModTierSpec[] = [
     },
 ];
 
-export const MOD_TIER_LOOKUP: Record<string, ModTierSpec> = {
-    I: MOD_TIERS[0]!,
-    II: MOD_TIERS[1]!,
-    III: MOD_TIERS[2]!,
-    IV: MOD_TIERS[3]!,
+export const CRAFT_TIER_LOOKUP: Record<CraftTier, ModTierSpec> = {
+    Workshop: MOD_TIERS[0]!,
+    Guild: MOD_TIERS[1]!,
+    Relic: MOD_TIERS[2]!,
+    Mythic: MOD_TIERS[3]!,
 };

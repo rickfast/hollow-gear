@@ -286,6 +286,7 @@ export const WEAPONS: Weapon[] = [
         cost: 120,
         weight: 18,
         powered: true,
+
         description: "Reload (1)",
     },
 ];
@@ -305,6 +306,7 @@ export const ARMOR: Armor[] = [
         stealthDisadvantage: false,
         cost: 10,
         weight: 8,
+
         description: "Common fabric-metal hybrid.",
     },
     {
@@ -317,6 +319,7 @@ export const ARMOR: Armor[] = [
         stealthDisadvantage: false,
         cost: 25,
         weight: 10,
+
         description: "Resists shock & heat.",
     },
     {
@@ -329,6 +332,7 @@ export const ARMOR: Armor[] = [
         stealthDisadvantage: false,
         cost: 40,
         weight: 9,
+
         description: "+1 vs psionics. Adv on Stealth vs machines. Conducts Aether energy safely.",
     },
 
@@ -432,7 +436,6 @@ export const SHIELDS: Shield[] = [
         armorClassBonus: 2,
         cost: 10,
         weight: 6,
-
         description: "Basic steel buckler.",
     },
     {
@@ -810,7 +813,7 @@ export const MODS: Mod[] = [
     {
         id: "overclock-coil-001",
         name: "Overclock Coil",
-        tier: "I",
+        tier: "I - Common",
         modType: "Power",
         effect: "+1d8 damage (once/short rest)",
         craftDC: 10,
@@ -822,7 +825,7 @@ export const MODS: Mod[] = [
     {
         id: "steam-vent-array-001",
         name: "Steam Vent Array",
-        tier: "I",
+        tier: "I - Common",
         modType: "Utility",
         effect: "Create 10-ft obscuring cloud for 1 round (1/short rest)",
         craftDC: 10,
@@ -833,7 +836,7 @@ export const MODS: Mod[] = [
     {
         id: "voltaic-mesh-001",
         name: "Voltaic Mesh",
-        tier: "II",
+        tier: "II - Advanced",
         modType: "Reactive",
         effect: "Deals 1d4 lightning to melee attackers",
         craftDC: 13,
@@ -844,7 +847,7 @@ export const MODS: Mod[] = [
     {
         id: "resonant-core-001",
         name: "Resonant Core",
-        tier: "II",
+        tier: "II - Advanced",
         modType: "Psionic",
         effect: "Converts damage to psychic (once/turn)",
         craftDC: 13,
@@ -855,7 +858,7 @@ export const MODS: Mod[] = [
     {
         id: "magnetron-housing-001",
         name: "Magnetron Housing",
-        tier: "II",
+        tier: "II - Advanced",
         modType: "Utility",
         effect: "You can disarm metallic weapons within 5 ft as bonus action",
         craftDC: 13,
@@ -866,7 +869,7 @@ export const MODS: Mod[] = [
     {
         id: "aether-injector-001",
         name: "Aether Injector",
-        tier: "III",
+        tier: "III - Relic",
         modType: "Power",
         effect: "Spend 1 Aether Cell to double weapon damage dice for 1 round",
         craftDC: 16,
@@ -878,7 +881,7 @@ export const MODS: Mod[] = [
     {
         id: "cryo-edge-001",
         name: "Cryo Edge",
-        tier: "III",
+        tier: "III - Relic",
         modType: "Elemental",
         effect: "On hit: target's speed reduced by 10 ft until end of next turn",
         craftDC: 16,
@@ -888,7 +891,7 @@ export const MODS: Mod[] = [
     {
         id: "entropy-lattice-001",
         name: "Entropy Lattice",
-        tier: "IV",
+        tier: "IV - Prototype",
         modType: "Psionic",
         effect: "Adds +1d6 force damage and 5-ft knockback",
         craftDC: 18,
@@ -899,7 +902,7 @@ export const MODS: Mod[] = [
     {
         id: "soul-capacitor-001",
         name: "Soul Capacitor",
-        tier: "IV",
+        tier: "IV - Prototype",
         modType: "Power",
         effect: "Stores 10 psychic dmg; next hit adds it",
         craftDC: 18,
@@ -914,7 +917,7 @@ export const MODS: Mod[] = [
     {
         id: "pressure-vents-001",
         name: "Pressure Vents",
-        tier: "I",
+        tier: "I - Common",
         modType: "Utility",
         effect: "Release steam to remove Heat Stress",
         craftDC: 10,
@@ -925,7 +928,7 @@ export const MODS: Mod[] = [
     {
         id: "reinforced-plating-001",
         name: "Reinforced Plating",
-        tier: "I",
+        tier: "I - Common",
         modType: "Defense",
         effect: "+1 AC vs slashing or piercing",
         craftDC: 10,
@@ -936,7 +939,7 @@ export const MODS: Mod[] = [
     {
         id: "reflective-sigil-001",
         name: "Reflective Sigil",
-        tier: "II",
+        tier: "II - Advanced",
         modType: "Reactive",
         effect: "Reflects 1 spell or psionic effect (1/long rest)",
         craftDC: 13,
@@ -947,7 +950,7 @@ export const MODS: Mod[] = [
     {
         id: "flux-dampener-001",
         name: "Flux Dampener",
-        tier: "II",
+        tier: "II - Advanced",
         modType: "Psionic",
         effect: "Reduces psychic damage by 3",
         craftDC: 13,
@@ -958,7 +961,7 @@ export const MODS: Mod[] = [
     {
         id: "servo-stabilizers-001",
         name: "Servo Stabilizers",
-        tier: "II",
+        tier: "II - Advanced",
         modType: "Power",
         effect: "+5 ft movement; ignore heavy armor Strength req",
         craftDC: 13,
@@ -969,7 +972,7 @@ export const MODS: Mod[] = [
     {
         id: "overheat-regulator-001",
         name: "Overheat Regulator",
-        tier: "III",
+        tier: "III - Relic",
         modType: "Utility",
         effect: "Ignore 1 level of Heat Stress per short rest",
         craftDC: 16,
@@ -980,7 +983,7 @@ export const MODS: Mod[] = [
     {
         id: "aether-amplifier-001",
         name: "Aether Amplifier",
-        tier: "III",
+        tier: "III - Relic",
         modType: "Psionic",
         effect: "Gain +1 to attack rolls or save DCs for psionic powers",
         craftDC: 16,
@@ -990,7 +993,7 @@ export const MODS: Mod[] = [
     {
         id: "graviton-anchor-001",
         name: "Graviton Anchor",
-        tier: "IV",
+        tier: "IV - Prototype",
         modType: "Power",
         effect: "Advantage vs knockback, forced move, or push/pull",
         craftDC: 18,
@@ -1001,7 +1004,7 @@ export const MODS: Mod[] = [
     {
         id: "soul-mirror-001",
         name: "Soul Mirror",
-        tier: "IV",
+        tier: "IV - Prototype",
         modType: "Psionic",
         effect: "Transfer ½ psychic dmg taken to nearest enemy within 10 ft",
         craftDC: 18,
@@ -1016,7 +1019,7 @@ export const MODS: Mod[] = [
     {
         id: "steam-deflector-001",
         name: "Steam Deflector",
-        tier: "I",
+        tier: "I - Common",
         modType: "Defense",
         effect: "Gain +2 AC vs ranged attacks for 1 round (1/short rest)",
         craftDC: 10,
@@ -1027,7 +1030,7 @@ export const MODS: Mod[] = [
     {
         id: "resonant-aegis-core-001",
         name: "Resonant Aegis Core",
-        tier: "II",
+        tier: "II - Advanced",
         modType: "Defense",
         effect: "Allies within 10 ft gain +1 AC",
         craftDC: 13,
@@ -1038,7 +1041,7 @@ export const MODS: Mod[] = [
     {
         id: "aether-ward-lens-001",
         name: "Aether Ward Lens",
-        tier: "III",
+        tier: "III - Relic",
         modType: "Psionic",
         effect: "Absorbs 10 psychic dmg per day",
         craftDC: 16,
@@ -1049,7 +1052,7 @@ export const MODS: Mod[] = [
     {
         id: "voltaic-pulse-coil-001",
         name: "Voltaic Pulse Coil",
-        tier: "III",
+        tier: "III - Relic",
         modType: "Reactive",
         effect: "When hit in melee, emit 5-ft burst (1d6 lightning)",
         craftDC: 16,
@@ -1059,7 +1062,7 @@ export const MODS: Mod[] = [
     {
         id: "kinetic-redirector-001",
         name: "Kinetic Redirector",
-        tier: "IV",
+        tier: "IV - Prototype",
         modType: "Reactive",
         effect: "Once/long rest, redirect melee attack to another target",
         craftDC: 18,

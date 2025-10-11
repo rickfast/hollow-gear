@@ -64,7 +64,7 @@ export interface Rollable {
     bonus?: number; // flat bonus to add
 }
 
-export interface HitPoints {
+export interface HitPoints extends Points {
     current: number;
     maximum: number;
     temporary?: number;
@@ -212,7 +212,12 @@ export interface ClassFeature {
 // RESOURCES (Chapters 9, 11)
 // ============================================================================
 
-export interface AetherFluxPoints {
+export interface Points {
+    current: number;
+    maximum: number;
+}
+
+export interface AetherFluxPoints extends Points {
     current: number;
     maximum: number; // Class Level + Ability Modifier
     rechargeRate: {
@@ -221,7 +226,7 @@ export interface AetherFluxPoints {
     };
 }
 
-export interface ResonanceCharges {
+export interface ResonanceCharges extends Points {
     current: number;
     maximum: number; // Templar Level + Wisdom modifier
     rechargeRate: {
@@ -366,6 +371,15 @@ export interface ModTierSpec {
     cost: number; // in Cogs
     powerLevel: string;
     slots: number; // number of mod slots of this tier
+}
+
+export type EffectType = "Hit Bonus" | "Damage Bonus" | "Heal";
+
+export interface Effect {
+    type: EffectType;
+    value?: number; // flat bonus
+    duration: "Instant" | "Round" | "Minute" | "Hour" | "UntilRest" | "Permanent";
+    rollable?: Rollable;
 }
 
 export interface Mod {
