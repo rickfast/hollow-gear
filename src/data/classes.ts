@@ -1,4 +1,4 @@
-import type { Class, ClassDescription, ClassFeature } from "../types";
+import type { Class, ClassFeature } from "../types";
 
 // ============================================================================
 // SUBCLASS FEATURES

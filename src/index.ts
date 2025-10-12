@@ -1,13 +1,6 @@
 import * as Data from "./data";
 // @ts-ignore
-import type {
-    Character,
-    CharacterClass,
-    Class,
-    ClassDescription,
-    ClassFeature,
-    Species,
-} from "./types";
+import type { Character } from "./types";
 // @ts-ignore
 import type { CharacterApi } from "./api/character";
 

@@ -1,7 +1,9 @@
+import { CLASSES, EQUIPMENT_BY_ID, SPECIES, SPELLS_BY_NAME } from "@/data";
+import { CRAFT_TIER_LOOKUP, MOD_LOOKUP } from "@/data/mods";
+import { SKILLS } from "@/data/skills";
 import type {
     AetherFluxPoints,
     Character,
-    CharacterClass,
     CraftTier,
     DamageType,
     Die,
@@ -15,9 +17,6 @@ import type {
     Spell,
     Weapon,
 } from "@/types";
-import { SKILLS } from "@/data/skills";
-import { CLASSES, EQUIPMENT_BY_ID, SPECIES, SPELLS_BY_NAME } from "@/data";
-import { ARMOR_MODS, CRAFT_TIER_LOOKUP, MOD_LOOKUP, SHIELD_MODS, WEAPON_MODS } from "@/data/mods";
 
 const formatModifier = (modifier: number) => (modifier >= 0 ? `+${modifier}` : `${modifier}`);
 

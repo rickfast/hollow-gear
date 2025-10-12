@@ -1,8 +1,8 @@
 import type { Action, Damage } from "@/model/character-view-model";
-import { Card, CardBody, Chip, Button } from "@heroui/react";
-import { Roll, showRollToast } from "./roll";
 import type { Rollable } from "@/types";
-import { CardTitle, Stat, StatRow, Description, EmptyState } from "./typography";
+import { Button, Card, CardBody, Chip } from "@heroui/react";
+import { showRollToast } from "./roll";
+import { CardTitle, EmptyState, Stat, StatRow } from "./typography";
 
 export const Actions = ({ actions }: { actions: Action[] }) => {
     if (actions.length === 0) {

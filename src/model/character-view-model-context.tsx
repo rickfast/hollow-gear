@@ -1,8 +1,8 @@
-import { createContext, useContext } from "react";
-import type { ReactNode } from "react";
-import { useCharacterViewModel } from "./use-character-view-model";
 import type { Character } from "@/types";
+import type { ReactNode } from "react";
+import { createContext, useContext } from "react";
 import type { CharacterViewModel } from "./character-view-model";
+import { useCharacterViewModel } from "./use-character-view-model";
 
 interface CharacterViewModelContextType {
     getCharacter: (id: string) => CharacterViewModel;

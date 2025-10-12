@@ -1,7 +1,7 @@
-import { Card, CardHeader, CardBody, Button } from "@heroui/react";
 import { CharacterList } from "@/components/character-list";
 import { CharacterSheet } from "@/components/character-sheet";
 import { PREGENS } from "@/data/pregens";
+import { Button } from "@heroui/react";
 import { useState } from "react";
 
 function App() {

@@ -1,5 +1,5 @@
-import { Card, CardBody, Avatar, Chip } from "@heroui/react";
 import { useCharacterViewModel } from "@/model/use-character-view-model";
+import { Avatar, Card, CardBody, Chip } from "@heroui/react";
 
 interface CharacterListProps {
     onSelectCharacter?: (characterId: string) => void;

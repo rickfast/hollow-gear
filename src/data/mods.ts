@@ -1,4 +1,4 @@
-import type { CraftTier, ModTierSpec, Mod } from "@/types";
+import type { CraftTier, Mod, ModTierSpec } from "@/types";
 
 export const MOD_TIERS: ModTierSpec[] = [
     {

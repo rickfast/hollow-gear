@@ -1,4 +1,4 @@
-import type { SkillType, AbilityScores } from "@/types";
+import type { AbilityScores, SkillType } from "@/types";
 
 export const SKILLS: Record<SkillType, keyof AbilityScores> = {
     Acrobatics: "dexterity",

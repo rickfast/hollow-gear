@@ -1,4 +1,4 @@
-import type { Armor, Equipment, Shield, Weapon, Mod } from "../types";
+import type { Armor, Equipment, Mod, Shield, Weapon } from "../types";
 
 // ============================================================================
 // MELEE WEAPONS

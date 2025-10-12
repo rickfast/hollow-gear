@@ -1,4 +1,4 @@
-import type { Character, AbilityScores } from "../types";
+import type { Character } from "../types";
 
 export interface AbilityScoreDisplay {
     score: number;

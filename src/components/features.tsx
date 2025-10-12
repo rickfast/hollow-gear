@@ -1,7 +1,6 @@
 import type { FeatureDisplay } from "@/model/character-view-model";
 import { Card, CardBody, Chip } from "@heroui/react";
-import { CardTitle, Stat, StatRow, Description, EmptyState } from "./typography";
-import { s } from "framer-motion/client";
+import { CardTitle, Description, EmptyState, Stat, StatRow } from "./typography";
 
 export const Features = ({ features }: { features: FeatureDisplay[] }) => {
     if (features.length === 0) {

@@ -1,6 +1,6 @@
+import { HeroUIProvider } from "@heroui/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { HeroUIProvider } from "@heroui/react";
 import { Toaster } from "sonner";
 import App from "./App";
 import "./index.css";

@@ -1,35 +1,30 @@
+import type { AbilityScore, SavingThrow } from "@/model/character-view-model";
+import { useCharacterViewModel } from "@/model/use-character-view-model";
 import {
+    Avatar,
     Card,
     CardBody,
     CardHeader,
-    Avatar,
     Chip,
-    Tabs,
-    Tab,
     Modal,
+    ModalBody,
     ModalContent,
     ModalHeader,
-    ModalBody,
-    useDisclosure,
-    Button,
     Select,
     SelectItem,
-    Progress,
+    Tab,
+    Tabs,
+    useDisclosure,
 } from "@heroui/react";
-import type { Character, HitPoints } from "@/types";
-import { useState, useEffect } from "react";
-import { useCharacterViewModel } from "@/model/use-character-view-model";
-import { s } from "framer-motion/client";
-import type { AbilityScore, CharacterSummary, SavingThrow } from "@/model/character-view-model";
-import { PointBar } from "./point-bar";
-import { Skills } from "./skills";
-import { Inventory } from "./inventory";
+import { useEffect, useState } from "react";
 import { Actions } from "./actions";
-import { Roll } from "./roll";
-import { RollButton } from "./roll-button";
-import { Spells } from "./spells";
 import { Features } from "./features";
+import { Inventory } from "./inventory";
 import { Mods } from "./mods";
+import { PointBar } from "./point-bar";
+import { RollButton } from "./roll-button";
+import { Skills } from "./skills";
+import { Spells } from "./spells";
 
 interface CharacterSheetProps {
     id: string;

@@ -1,19 +1,18 @@
-import type { InventoryItem, InventoryViewModel } from "@/model/character-view-model";
+import type { InventoryViewModel } from "@/model/character-view-model";
 import {
-    Checkbox,
-    Chip,
+    Button,
     Card,
     CardBody,
-    Button,
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
+    Checkbox,
+    Chip,
     Listbox,
     ListboxItem,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
 } from "@heroui/react";
-import { CardTitle, TertiaryText, SecondaryText, EmptyState } from "./typography";
 import { useState } from "react";
-import { MODS } from "@/data/mods";
+import { CardTitle, EmptyState, SecondaryText, TertiaryText } from "./typography";
 
 export const Inventory = ({ inventory }: { inventory: InventoryViewModel }) => {
     const items = inventory.items;

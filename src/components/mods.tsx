@@ -1,6 +1,6 @@
-import { Card, CardBody, Chip } from "@heroui/react";
-import { CardTitle, Stat, StatRow, Description, EmptyState } from "./typography";
 import type { InventoryViewModel } from "@/model/character-view-model";
+import { Card, CardBody, Chip } from "@heroui/react";
+import { CardTitle, Description, EmptyState, Stat, StatRow } from "./typography";
 
 interface ModsProps {
     inventory: InventoryViewModel;

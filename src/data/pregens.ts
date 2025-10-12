@@ -1,16 +1,5 @@
-import type { Character, InventoryItem, Equipment } from "../types";
-import {
-    CLASSES,
-    BASIC_EQUIPMENT,
-    WEAPONS,
-    ARMOR,
-    ARCANE_ITEMS,
-    SHIELDS,
-    FORMULAE,
-    MINDCRAFT_POWERS,
-    MIRACLES,
-    MODS,
-} from ".";
+import { ARCANE_ITEMS, ARMOR, BASIC_EQUIPMENT, MINDCRAFT_POWERS, SHIELDS, WEAPONS } from ".";
+import type { Character, Equipment, InventoryItem } from "../types";
 import { MOD_LOOKUP } from "./mods";
 
 // Helper function to create an InventoryItem from Equipment
@@ -169,7 +158,7 @@ export const PREGENS: Character[] = [
             {
                 id: "karn-voss-gearmail-hauberk-001",
                 equipmentId: ARMOR.find((a) => a.name === "Gearmail Hauberk")!.id,
-                mods: [],
+                mods: ["1"],
                 equipped: true,
             },
             createInventoryItem(SHIELDS.find((s) => s.name === "Standard Shield")!, true),
@@ -178,7 +167,7 @@ export const PREGENS: Character[] = [
             {
                 id: "1",
                 modId: MOD_LOOKUP["reinforced-plating"]!.id,
-                equipped: false,
+                equipped: true,
             },
         ],
         currency: {

@@ -1,15 +1,14 @@
-import type { Spell } from "@/types";
+import type { Rollable, Spell } from "@/types";
 import { Card, CardBody, Chip } from "@heroui/react";
 import { showRollToast } from "./roll";
-import type { Rollable } from "@/types";
 import {
     CardTitle,
-    Stat,
-    PrimaryStat,
     DangerStat,
-    StatRow,
     Description,
     EmptyState,
+    PrimaryStat,
+    Stat,
+    StatRow,
 } from "./typography";
 
 export const Spells = ({

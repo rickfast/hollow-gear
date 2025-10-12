@@ -1,6 +1,5 @@
 import { PREGENS } from "@/data";
-import type { Character, HitPoints } from "@/types";
-import { g } from "framer-motion/client";
+import type { Character } from "@/types";
 import { useState } from "react";
 import { CharacterViewModel } from "./character-view-model";
 
