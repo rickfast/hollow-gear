@@ -28,6 +28,7 @@ import { Actions } from "./actions";
 import { Roll } from "./roll";
 import { RollButton } from "./roll-button";
 import { Spells } from "./spells";
+import { Features } from "./features";
 
 interface CharacterSheetProps {
     id: string;
@@ -384,9 +385,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                 )}
                                 <Tab key="features" title="Features + Traits">
                                     <div style={{ padding: "1rem" }}>
-                                        <p style={{ opacity: 0.7 }}>
-                                            Features & Traits content coming soon...
-                                        </p>
+                                        <Features features={getCharacter(id)!.features} />
                                     </div>
                                 </Tab>
                                 <Tab key="mindcraft" title="Mindcraft">
@@ -445,7 +444,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             />
                         )}
                         {activeSection === "features" && (
-                            <p style={{ opacity: 0.7 }}>Features & Traits content coming soon...</p>
+                            <Features features={getCharacter(id)!.features} />
                         )}
                         {activeSection === "mindcraft" && (
                             <p style={{ opacity: 0.7 }}>Mindcraft content coming soon...</p>

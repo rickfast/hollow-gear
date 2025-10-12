@@ -5,6 +5,7 @@ import type {
     CraftTier,
     DamageType,
     Die,
+    Feature,
     HitPoints,
     ResonanceCharges,
     Rollable,
@@ -13,7 +14,7 @@ import type {
     Weapon,
 } from "@/types";
 import { SKILLS } from "@/data/skills";
-import { EQUIPMENT_BY_ID, SPELLS_BY_NAME } from "@/data";
+import { CLASSES, EQUIPMENT_BY_ID, SPECIES, SPELLS_BY_NAME } from "@/data";
 import { CRAFT_TIER_LOOKUP } from "@/data/mods";
 import { th } from "framer-motion/client";
 
@@ -42,11 +43,6 @@ export interface AbilityScores {
     charisma: AbilityScore;
 }
 
-interface Points {
-    current: number;
-    maximum: number;
-}
-
 export interface CharacterSummary {
     id: string;
     name: string;
@@ -63,6 +59,11 @@ export interface CharacterSummary {
     initiative: string;
     speed: number;
     avatarUrl?: string;
+}
+
+export interface FeatureDisplay {
+    type: "Class" | "Species";
+    feature: Feature;
 }
 
 export interface SavingThrow {
@@ -132,6 +133,7 @@ export class CharacterViewModel {
     actions: Action[] = []; // Placeholder for future implementation
     spellType: "Formulae" | "Miracles" | "None";
     spells: Spell[] = [];
+    features: FeatureDisplay[] = [];
 
     constructor(private character: Character) {
         const primaryClass = this.character.classes[0];
@@ -289,6 +291,13 @@ export class CharacterViewModel {
                     return SPELLS_BY_NAME[spellName];
                 })
                 .filter((spell) => spell !== undefined) as Spell[]) || [];
+        const species = SPECIES.find((s) => s.type === character.species);
+        const cls = CLASSES.find((c) => c.type === primaryClass?.class);
+
+        this.features = [
+            ...(species?.traits.map((feature) => ({ type: "Species" as const, feature })) || []),
+            ...(cls?.features.map((feature) => ({ type: "Class" as const, feature })) || []),
+        ];
     }
 }
 

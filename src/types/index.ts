@@ -106,7 +106,7 @@ export interface Species {
     languages: Language[];
 }
 
-export interface SpeciesTrait {
+export interface Feature {
     name: string;
     description: string;
     usesPerRest?: {
@@ -114,6 +114,8 @@ export interface SpeciesTrait {
         restType: "short" | "long";
     };
 }
+
+export interface SpeciesTrait extends Feature {}
 
 // ============================================================================
 // CLASSES (Chapter 3)
@@ -123,8 +125,6 @@ export interface CharacterClass {
     level: number;
     class: ClassType;
     subclass?: SubclassType;
-    // hitDie: string; // e.g., "1d6", "1d10"
-    // features: ClassFeature[];
 }
 
 export type ClassType =
@@ -197,14 +197,8 @@ export interface Subclass {
     features: ClassFeature[];
 }
 
-export interface ClassFeature {
-    name: string;
+export interface ClassFeature extends Feature {
     level: number;
-    description: string;
-    usesPerRest?: {
-        amount: number;
-        restType: "short" | "long";
-    };
     damage?: DamageInfo; // for features that deal damage
 }
 
@@ -299,10 +293,7 @@ export type WeaponType =
     | "Heavy";
 
 export interface DamageInfo extends Rollable {
-    count: number;
-    die: Die;
     damageType: DamageType;
-    bonus?: number;
 }
 
 export type DamageType =
@@ -417,7 +408,7 @@ export interface Spell {
     name: string;
     level: number; // 0-9 (0 = cantrip)
     school: SpellSchool;
-    type: SpellType;
+    type: SpellEffect;
     castingTime: string;
     range: string;
     components: {
@@ -445,7 +436,14 @@ export interface Spell {
     higherLevels?: string;
 }
 
-export type SpellType = "Attack" | "Save" | "Automatic Hit" | "Heal" | "Utility";
+export type SpellEffect =
+    | "Attack"
+    | "Save"
+    | "Automatic Hit"
+    | "Heal"
+    | "Buff"
+    | "Movement"
+    | "Utility";
 
 export type SpellSchool =
     | "Abjuration"
