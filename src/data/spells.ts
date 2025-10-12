@@ -10,6 +10,7 @@ export const FORMULAE: Spell[] = [
         hollowgearName: "Arc Pulse Array",
         level: 1,
         school: "Evocation",
+        type: "Automatic Hit",
         castingTime: "1 action",
         range: "120 feet",
         components: {
@@ -31,6 +32,7 @@ export const FORMULAE: Spell[] = [
         hollowgearName: "Deflection Field",
         level: 1,
         school: "Abjuration",
+        type: "Utility",
         castingTime: "1 reaction (when hit by an attack)",
         range: "Self",
         components: {
@@ -52,6 +54,7 @@ export const FORMULAE: Spell[] = [
         hollowgearName: "Arcane Vent",
         level: 1,
         school: "Evocation",
+        type: "Save",
         castingTime: "1 action",
         range: "Self (15-foot cone)",
         components: {
@@ -73,6 +76,7 @@ export const FORMULAE: Spell[] = [
         hollowgearName: "Blink Discharge",
         level: 2,
         school: "Conjuration",
+        type: "Utility",
         castingTime: "1 bonus action",
         range: "Self",
         components: {
@@ -96,6 +100,7 @@ export const FORMULAE: Spell[] = [
         hollowgearName: "Logic Override",
         level: 3,
         school: "Abjuration",
+        type: "Save",
         castingTime: "1 reaction (when you see a creature casting a spell)",
         range: "60 feet",
         components: {
@@ -118,6 +123,7 @@ export const FORMULAE: Spell[] = [
         hollowgearName: "Thermoflux Lance",
         level: 2,
         school: "Evocation",
+        type: "Attack",
         castingTime: "1 action",
         range: "120 feet",
         components: {
@@ -139,6 +145,7 @@ export const FORMULAE: Spell[] = [
         hollowgearName: "Aetheric Tether",
         level: 2,
         school: "Enchantment",
+        type: "Save",
         castingTime: "1 action",
         range: "60 feet",
         components: {
@@ -163,6 +170,7 @@ export const FORMULAE: Spell[] = [
         hollowgearName: "Thermoflux Core Ignition",
         level: 3,
         school: "Evocation",
+        type: "Save",
         castingTime: "1 action",
         range: "150 feet",
         components: {
@@ -185,6 +193,7 @@ export const FORMULAE: Spell[] = [
         hollowgearName: "Pulse Disruptor",
         level: 3,
         school: "Abjuration",
+        type: "Utility",
         castingTime: "1 action",
         range: "120 feet",
         components: {
@@ -207,6 +216,7 @@ export const FORMULAE: Spell[] = [
         hollowgearName: "Resonant Barrier",
         level: 3,
         school: "Evocation",
+        type: "Utility",
         castingTime: "1 minute (ritual)",
         range: "Self (10-foot-radius hemisphere)",
         components: {
@@ -236,6 +246,7 @@ export const MIRACLES: Spell[] = [
         hollowgearName: "Pulse of Restoration",
         level: 1,
         school: "Evocation",
+        type: "Heal",
         castingTime: "1 action",
         range: "Touch",
         components: {
@@ -257,6 +268,7 @@ export const MIRACLES: Spell[] = [
         hollowgearName: "Harmonic Field",
         level: 1,
         school: "Enchantment",
+        type: "Utility",
         castingTime: "1 action",
         range: "30 feet",
         components: {
@@ -279,6 +291,7 @@ export const MIRACLES: Spell[] = [
         hollowgearName: "Echo Barrier",
         level: 1,
         school: "Abjuration",
+        type: "Utility",
         castingTime: "1 bonus action",
         range: "30 feet",
         components: {
@@ -301,6 +314,7 @@ export const MIRACLES: Spell[] = [
         hollowgearName: "Radiant Recoil",
         level: 1,
         school: "Necromancy",
+        type: "Attack",
         castingTime: "1 action",
         range: "Touch",
         components: {
@@ -324,6 +338,7 @@ export const MIRACLES: Spell[] = [
         hollowgearName: "Faith Construct",
         level: 2,
         school: "Evocation",
+        type: "Attack",
         castingTime: "1 bonus action",
         range: "60 feet",
         components: {
@@ -345,6 +360,7 @@ export const MIRACLES: Spell[] = [
         hollowgearName: "Sense Resonance",
         level: 1,
         school: "Divination",
+        type: "Utility",
         castingTime: "1 action",
         range: "Self",
         components: {
@@ -366,6 +382,7 @@ export const MIRACLES: Spell[] = [
         hollowgearName: "Harmonic Reprisal",
         level: 2,
         school: "Abjuration",
+        type: "Utility",
         castingTime: "1 action",
         range: "Touch",
         components: {
@@ -389,6 +406,7 @@ export const MIRACLES: Spell[] = [
         hollowgearName: "Divine Pulse",
         level: 3,
         school: "Evocation",
+        type: "Heal",
         castingTime: "1 bonus action",
         range: "60 feet",
         components: {
@@ -410,6 +428,7 @@ export const MIRACLES: Spell[] = [
         hollowgearName: "Resonant Core",
         level: 3,
         school: "Conjuration",
+        type: "Save",
         castingTime: "1 action",
         range: "Self (15-foot radius)",
         components: {
@@ -432,6 +451,7 @@ export const MIRACLES: Spell[] = [
         hollowgearName: "Judgment Beam",
         level: 1,
         school: "Evocation",
+        type: "Attack",
         castingTime: "1 action",
         range: "120 feet",
         components: {
@@ -449,3 +469,11 @@ export const MIRACLES: Spell[] = [
         higherLevels: "+1d6 damage per spell level above 1.",
     },
 ];
+
+export const SPELLS_BY_NAME: Record<string, Spell> = [...FORMULAE, ...MIRACLES].reduce(
+    (acc, spell) => {
+        acc[spell.name] = spell;
+        return acc;
+    },
+    {} as Record<string, Spell>
+);

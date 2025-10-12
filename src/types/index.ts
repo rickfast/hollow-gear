@@ -27,7 +27,7 @@ export interface Character {
     currency: Currency;
 
     // Magic & Psionics
-    spells: Spell[];
+    spells: string[];
     spellSlots?: SpellSlots; // For Arcanist/Templar
     aetherFluxPoints?: AetherFluxPoints; // For Mindweaver/Arcanist
     resonanceCharges?: ResonanceCharges; // For Templar
@@ -417,6 +417,7 @@ export interface Spell {
     name: string;
     level: number; // 0-9 (0 = cantrip)
     school: SpellSchool;
+    type: SpellType;
     castingTime: string;
     range: string;
     components: {
@@ -434,9 +435,17 @@ export interface Spell {
     overclockable: boolean;
     heatGenerated?: number;
 
+    savingThrow?: {
+        ability: keyof AbilityScores;
+        dc: number;
+    };
+    damage?: DamageInfo; // for spells that deal damage
+
     description: string;
     higherLevels?: string;
 }
+
+export type SpellType = "Attack" | "Save" | "Automatic Hit" | "Heal" | "Utility";
 
 export type SpellSchool =
     | "Abjuration"

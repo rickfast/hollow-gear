@@ -27,6 +27,7 @@ import { Inventory } from "./inventory";
 import { Actions } from "./actions";
 import { Roll } from "./roll";
 import { RollButton } from "./roll-button";
+import { Spells } from "./spells";
 
 interface CharacterSheetProps {
     id: string;
@@ -370,9 +371,14 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                 {showSpellsTab && (
                                     <Tab key="spells" title={spellType}>
                                         <div style={{ padding: "1rem" }}>
-                                            <p style={{ opacity: 0.7 }}>
-                                                Spells content coming soon...
-                                            </p>
+                                            <Spells
+                                                resourceType={
+                                                    spellType === "Formulae"
+                                                        ? "Aether Flux"
+                                                        : "Resonance Charges"
+                                                }
+                                                spells={getCharacter(id)!.spells}
+                                            />
                                         </div>
                                     </Tab>
                                 )}
@@ -431,7 +437,12 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             <Inventory items={getCharacter(id)!.inventory} />
                         )}
                         {showSpellsTab && activeSection === "spells" && (
-                            <p style={{ opacity: 0.7 }}>Spells content coming soon...</p>
+                            <Spells
+                                resourceType={
+                                    spellType === "Formulae" ? "Aether Flux" : "Resonance Charges"
+                                }
+                                spells={getCharacter(id)!.spells}
+                            />
                         )}
                         {activeSection === "features" && (
                             <p style={{ opacity: 0.7 }}>Features & Traits content coming soon...</p>

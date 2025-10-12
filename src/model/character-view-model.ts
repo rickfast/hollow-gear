@@ -9,11 +9,13 @@ import type {
     ResonanceCharges,
     Rollable,
     SkillType,
+    Spell,
     Weapon,
 } from "@/types";
 import { SKILLS } from "@/data/skills";
-import { EQUIPMENT_BY_ID } from "@/data";
+import { EQUIPMENT_BY_ID, SPELLS_BY_NAME } from "@/data";
 import { CRAFT_TIER_LOOKUP } from "@/data/mods";
+import { th } from "framer-motion/client";
 
 const formatModifier = (modifier: number) => (modifier >= 0 ? `+${modifier}` : `${modifier}`);
 
@@ -129,6 +131,7 @@ export class CharacterViewModel {
     inventory: InventoryItem[];
     actions: Action[] = []; // Placeholder for future implementation
     spellType: "Formulae" | "Miracles" | "None";
+    spells: Spell[] = [];
 
     constructor(private character: Character) {
         const primaryClass = this.character.classes[0];
@@ -279,6 +282,13 @@ export class CharacterViewModel {
                 });
             });
         this.actions.push(createUnarmedStrikeAction(this.abilityScores.strength.modifier));
+        this.spells =
+            (character.spells
+                ?.map((spellName) => {
+                    // Map spell names to full spell data
+                    return SPELLS_BY_NAME[spellName];
+                })
+                .filter((spell) => spell !== undefined) as Spell[]) || [];
     }
 }
 

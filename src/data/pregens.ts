@@ -170,11 +170,7 @@ export const PREGENS: Character[] = [
             gears: 0,
             cores: 0,
         },
-        spells: [
-            MIRACLES.find((s) => s.name === "Cure Wounds")!,
-            MIRACLES.find((s) => s.name === "Bless")!,
-            MIRACLES.find((s) => s.name === "Sanctuary")!,
-        ],
+        spells: ["Cure Wounds", "Bless", "Sanctuary"],
         resonanceCharges: {
             current: 2,
             maximum: 2, // Level 1 + Wis mod (+1)
@@ -510,11 +506,7 @@ export const PREGENS: Character[] = [
             gears: 0,
             cores: 0,
         },
-        spells: [
-            FORMULAE.find((s) => s.name === "Magic Missile")!,
-            FORMULAE.find((s) => s.name === "Shield")!,
-            FORMULAE.find((s) => s.name === "Burning Hands")!,
-        ],
+        spells: ["Magic Missile", "Shield", "Burning Hands"],
         aetherFluxPoints: {
             current: 4,
             maximum: 4, // Level 1 + Int mod (+3)
