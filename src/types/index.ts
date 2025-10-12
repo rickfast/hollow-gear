@@ -24,6 +24,7 @@ export interface Character {
 
     // Equipment & Inventory
     inventory: InventoryItem[];
+    mods: InventoryMod[];
     currency: Currency;
 
     // Magic & Psionics
@@ -248,7 +249,13 @@ export interface SpellSlots {
 export interface InventoryItem {
     id: string;
     equipmentId: string;
-    mods: Mod[];
+    mods: string[];
+    equipped: boolean;
+}
+
+export interface InventoryMod {
+    id: string;
+    modId: string;
     equipped: boolean;
 }
 
@@ -384,6 +391,7 @@ export interface Mod {
     cost: number; // in Cogs
     malfunctionChance?: number;
     notes?: string;
+    additionalDamage?: DamageInfo;
 }
 
 export type ModType =

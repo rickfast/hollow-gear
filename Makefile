@@ -1,7 +1,7 @@
 .PHONY: help build run stop clean test logs shell rebuild up down
 
 # Variables
-IMAGE_NAME = hollow-gear-5e
+IMAGE_NAME = rickfast/hollow-gear-5e
 CONTAINER_NAME = hollow-gear-5e
 PORT = 8080
 

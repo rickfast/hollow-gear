@@ -7,6 +7,7 @@ import type {
     Die,
     Feature,
     HitPoints,
+    InventoryMod,
     ResonanceCharges,
     Rollable,
     SkillType,
@@ -15,8 +16,7 @@ import type {
 } from "@/types";
 import { SKILLS } from "@/data/skills";
 import { CLASSES, EQUIPMENT_BY_ID, SPECIES, SPELLS_BY_NAME } from "@/data";
-import { CRAFT_TIER_LOOKUP } from "@/data/mods";
-import { th } from "framer-motion/client";
+import { ARMOR_MODS, CRAFT_TIER_LOOKUP, MOD_LOOKUP, SHIELD_MODS, WEAPON_MODS } from "@/data/mods";
 
 const formatModifier = (modifier: number) => (modifier >= 0 ? `+${modifier}` : `${modifier}`);
 
@@ -95,6 +95,7 @@ export type Skills = Record<
 
 export interface InventoryItem {
     id: string;
+    equipmentId: string;
     equipped: boolean;
     name: string;
     quantity: number;
@@ -103,10 +104,8 @@ export interface InventoryItem {
     tags?: string[];
     craftTier: CraftTier;
     slots: number;
-    mods: Mod[];
+    mods: string[];
 }
-
-export interface Mod {}
 
 export interface Action {
     name: string;
@@ -125,16 +124,55 @@ export interface Damage extends Rollable {
     bonus?: number;
 }
 
+export class InventoryViewModel {
+    items: InventoryItem[];
+    mods: InventoryMod[];
+
+    constructor(inventory: InventoryItem[], mods: InventoryMod[]) {
+        this.items = inventory;
+        this.mods = mods;
+    }
+
+    filterModsForEquipment(inventoryItem: InventoryItem): InventoryMod[] {
+        if (!inventoryItem) return [];
+
+        const equipment = EQUIPMENT_BY_ID[inventoryItem.equipmentId];
+        const modIds = this.mods.map((mod) => mod.modId);
+
+        if (!equipment) return [];
+
+        switch (equipment?.type) {
+            case "Armor":
+                const armorMods = ARMOR_MODS.filter((mod) => modIds.includes(mod.id)).map(
+                    (mod) => mod.id
+                );
+                return this.mods.filter((mod) => armorMods.includes(mod.id));
+            case "Weapon":
+                const weaponMods = WEAPON_MODS.filter((mod) => modIds.includes(mod.id)).map(
+                    (mod) => mod.id
+                );
+                return this.mods.filter((mod) => weaponMods.includes(mod.id));
+            case "Shield":
+                const shieldMods = SHIELD_MODS.filter((mod) => modIds.includes(mod.id)).map(
+                    (mod) => mod.id
+                );
+                return this.mods.filter((mod) => shieldMods.includes(mod.id));
+            default:
+                return [];
+        }
+    }
+}
+
 export class CharacterViewModel {
     abilityScores: AbilityScores;
     summary: CharacterSummary;
     savingThrows: SavingThrows;
     skills: Skills;
-    inventory: InventoryItem[];
     actions: Action[] = []; // Placeholder for future implementation
     spellType: "Formulae" | "Miracles" | "None";
     spells: Spell[] = [];
     features: FeatureDisplay[] = [];
+    inventory: InventoryViewModel;
 
     constructor(private character: Character) {
         const primaryClass = this.character.classes[0];
@@ -240,11 +278,12 @@ export class CharacterViewModel {
                 ];
             })
         );
-        this.inventory = character.inventory.map((item) => {
+        const inventoryItems = character.inventory.map((item) => {
             const equipment = EQUIPMENT_BY_ID[item.equipmentId]!;
             return {
                 id: item.id,
                 equipped: item.equipped,
+                equipmentId: equipment.id,
                 name: equipment.name,
                 quantity: 1,
                 cost: `${equipment.cost} Cogs`,
@@ -255,7 +294,7 @@ export class CharacterViewModel {
                 mods: item.mods || [],
             };
         });
-        this.character.inventory
+        inventoryItems
             .filter((item) => {
                 const equipment = EQUIPMENT_BY_ID[item.equipmentId]!;
                 return item.equipped && equipment.type === "Weapon";
@@ -307,6 +346,10 @@ export class CharacterViewModel {
                 feature,
             })) || []),
         ];
+
+        const inventoryMods = character.mods;
+
+        this.inventory = new InventoryViewModel(inventoryItems, inventoryMods);
     }
 }
 

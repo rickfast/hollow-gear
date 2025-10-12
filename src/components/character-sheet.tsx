@@ -29,6 +29,7 @@ import { Roll } from "./roll";
 import { RollButton } from "./roll-button";
 import { Spells } from "./spells";
 import { Features } from "./features";
+import { Mods } from "./mods";
 
 interface CharacterSheetProps {
     id: string;
@@ -360,13 +361,13 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                 <Tab key="inventory" title="Inventory">
                                     <div style={{ padding: "1rem" }}>
                                         <p style={{ opacity: 0.7 }}>
-                                            <Inventory items={getCharacter(id)!.inventory} />
+                                            <Inventory items={getCharacter(id)!.inventory.items} />
                                         </p>
                                     </div>
                                 </Tab>
                                 <Tab key="mods" title="Mods">
                                     <div style={{ padding: "1rem" }}>
-                                        <p style={{ opacity: 0.7 }}>Mods content coming soon...</p>
+                                        <Mods inventoryMods={getCharacter(id)!.inventory.mods} />
                                     </div>
                                 </Tab>
                                 {showSpellsTab && (
@@ -433,7 +434,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             <Actions actions={getCharacter(id)!.actions} />
                         )}
                         {activeSection === "inventory" && (
-                            <Inventory items={getCharacter(id)!.inventory} />
+                            <Inventory inventory={getCharacter(id)!.inventory} />
                         )}
                         {showSpellsTab && activeSection === "spells" && (
                             <Spells
@@ -445,6 +446,9 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                         )}
                         {activeSection === "features" && (
                             <Features features={getCharacter(id)!.features} />
+                        )}
+                        {activeSection === "mods" && (
+                            <Mods inventoryMods={getCharacter(id)!.inventory.mods} />
                         )}
                         {activeSection === "mindcraft" && (
                             <p style={{ opacity: 0.7 }}>Mindcraft content coming soon...</p>

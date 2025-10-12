@@ -9,7 +9,9 @@ import {
     FORMULAE,
     MINDCRAFT_POWERS,
     MIRACLES,
+    MODS,
 } from ".";
+import { MOD_LOOKUP } from "./mods";
 
 // Helper function to create an InventoryItem from Equipment
 function createInventoryItem(equipment: Equipment, equipped: boolean = false): InventoryItem {
@@ -104,6 +106,7 @@ export const PREGENS: Character[] = [
         ideals: ["Innovation and progress above all"],
         bonds: ["Loyal to my guild and fellow mechanists"],
         flaws: ["Can't resist tinkering with things that work fine"],
+        mods: [],
     },
 
     // ========================================================================
@@ -162,8 +165,21 @@ export const PREGENS: Character[] = [
         },
         inventory: [
             createInventoryItem(WEAPONS.find((w) => w.name === "Aether Spear")!, true),
-            createInventoryItem(ARMOR.find((a) => a.name === "Gearmail Hauberk")!, true),
+            // createInventoryItem(ARMOR.find((a) => a.name === "Gearmail Hauberk")!, true),
+            {
+                id: "karn-voss-gearmail-hauberk-001",
+                equipmentId: ARMOR.find((a) => a.name === "Gearmail Hauberk")!.id,
+                mods: ["1"],
+                equipped: true,
+            },
             createInventoryItem(SHIELDS.find((s) => s.name === "Standard Shield")!, true),
+        ],
+        mods: [
+            {
+                id: "1",
+                modId: MOD_LOOKUP["reinforced-plating"]!.id,
+                equipped: true,
+            },
         ],
         currency: {
             cogs: 30,
@@ -272,6 +288,7 @@ export const PREGENS: Character[] = [
         ideals: ["Duty and protection above personal glory"],
         bonds: ["My squad is my family"],
         flaws: ["Stubborn and unwilling to retreat"],
+        mods: [],
     },
 
     // ========================================================================
@@ -353,6 +370,7 @@ export const PREGENS: Character[] = [
         ideals: ["Freedom and independence at any cost"],
         bonds: ["Owes a debt to the Undercity guilds"],
         flaws: ["Kleptomaniac tendencies, can't resist a shiny mod"],
+        mods: [],
     },
 
     // ========================================================================
@@ -441,6 +459,7 @@ export const PREGENS: Character[] = [
         ideals: ["Knowledge and understanding lead to power"],
         bonds: ["Seeking to master all psionic disciplines"],
         flaws: ["Overconfident in mental abilities"],
+        mods: [],
     },
 
     // ========================================================================
@@ -532,6 +551,7 @@ export const PREGENS: Character[] = [
         ideals: ["Knowledge should be preserved and shared"],
         bonds: ["Guardian of ancient Aetheric texts"],
         flaws: ["Obsessive about cataloging and categorizing"],
+        mods: [],
     },
 
     // ========================================================================
@@ -611,5 +631,6 @@ export const PREGENS: Character[] = [
         ideals: ["Self-improvement through any means necessary"],
         bonds: ["Owes life to underground mod-doctors"],
         flaws: ["Reckless with experimental modifications"],
+        mods: [],
     },
 ];
