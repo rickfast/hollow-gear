@@ -8,6 +8,7 @@ import type {
     Feature,
     HitPoints,
     InventoryMod,
+    Mod,
     ResonanceCharges,
     Rollable,
     SkillType,
@@ -124,42 +125,22 @@ export interface Damage extends Rollable {
     bonus?: number;
 }
 
+export type ModViewModel = InventoryMod & { mod: Mod };
+
 export class InventoryViewModel {
     items: InventoryItem[];
-    mods: InventoryMod[];
+    mods: ModViewModel[];
 
-    constructor(inventory: InventoryItem[], mods: InventoryMod[]) {
+    constructor(inventory: InventoryItem[], mods: ModViewModel[]) {
         this.items = inventory;
         this.mods = mods;
     }
 
-    filterModsForEquipment(inventoryItem: InventoryItem): InventoryMod[] {
-        if (!inventoryItem) return [];
-
-        const equipment = EQUIPMENT_BY_ID[inventoryItem.equipmentId];
-        const modIds = this.mods.map((mod) => mod.modId);
-
-        if (!equipment) return [];
-
-        switch (equipment?.type) {
-            case "Armor":
-                const armorMods = ARMOR_MODS.filter((mod) => modIds.includes(mod.id)).map(
-                    (mod) => mod.id
-                );
-                return this.mods.filter((mod) => armorMods.includes(mod.id));
-            case "Weapon":
-                const weaponMods = WEAPON_MODS.filter((mod) => modIds.includes(mod.id)).map(
-                    (mod) => mod.id
-                );
-                return this.mods.filter((mod) => weaponMods.includes(mod.id));
-            case "Shield":
-                const shieldMods = SHIELD_MODS.filter((mod) => modIds.includes(mod.id)).map(
-                    (mod) => mod.id
-                );
-                return this.mods.filter((mod) => shieldMods.includes(mod.id));
-            default:
-                return [];
-        }
+    filterModsForEquipment(inventoryItem: InventoryItem): Mod[] {
+        const equipment = EQUIPMENT_BY_ID[inventoryItem.equipmentId]!;
+        return this.mods
+            .filter((invMod) => invMod.mod.equipmentType === equipment.type)
+            .map((m) => m.mod);
     }
 }
 
@@ -347,7 +328,13 @@ export class CharacterViewModel {
             })) || []),
         ];
 
-        const inventoryMods = character.mods;
+        const inventoryMods = character.mods.map((invMod) => {
+            const mod = MOD_LOOKUP[invMod.modId]!;
+            return {
+                ...invMod,
+                mod,
+            } as ModViewModel;
+        });
 
         this.inventory = new InventoryViewModel(inventoryItems, inventoryMods);
     }

@@ -361,13 +361,13 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                 <Tab key="inventory" title="Inventory">
                                     <div style={{ padding: "1rem" }}>
                                         <p style={{ opacity: 0.7 }}>
-                                            <Inventory items={getCharacter(id)!.inventory.items} />
+                                            <Inventory inventory={getCharacter(id)!.inventory} />
                                         </p>
                                     </div>
                                 </Tab>
                                 <Tab key="mods" title="Mods">
                                     <div style={{ padding: "1rem" }}>
-                                        <Mods inventoryMods={getCharacter(id)!.inventory.mods} />
+                                        <Mods inventory={getCharacter(id)!.inventory} />
                                     </div>
                                 </Tab>
                                 {showSpellsTab && (
@@ -448,7 +448,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             <Features features={getCharacter(id)!.features} />
                         )}
                         {activeSection === "mods" && (
-                            <Mods inventoryMods={getCharacter(id)!.inventory.mods} />
+                            <Mods inventory={getCharacter(id)!.inventory} />
                         )}
                         {activeSection === "mindcraft" && (
                             <p style={{ opacity: 0.7 }}>Mindcraft content coming soon...</p>

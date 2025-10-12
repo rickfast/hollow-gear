@@ -36,7 +36,12 @@ export const PointBar = ({
                     {points.current} / {points.maximum}
                 </span>
             </div>
-            <Progress value={(points.current / points.maximum) * 100} size="md" color={color} />
+            <Progress
+                aria-label={label}
+                value={(points.current / points.maximum) * 100}
+                size="md"
+                color={color}
+            />
         </div>
     );
 };

@@ -169,7 +169,7 @@ export const PREGENS: Character[] = [
             {
                 id: "karn-voss-gearmail-hauberk-001",
                 equipmentId: ARMOR.find((a) => a.name === "Gearmail Hauberk")!.id,
-                mods: ["1"],
+                mods: [],
                 equipped: true,
             },
             createInventoryItem(SHIELDS.find((s) => s.name === "Standard Shield")!, true),
@@ -178,7 +178,7 @@ export const PREGENS: Character[] = [
             {
                 id: "1",
                 modId: MOD_LOOKUP["reinforced-plating"]!.id,
-                equipped: true,
+                equipped: false,
             },
         ],
         currency: {

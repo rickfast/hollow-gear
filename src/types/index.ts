@@ -385,6 +385,7 @@ export interface Mod {
     name: string;
     tier: ModTier;
     modType: ModType;
+    equipmentType?: EquipmentType; // if restricted to certain equipment
     effect: string;
     craftDC: number;
     craftTime: number; // in hours
