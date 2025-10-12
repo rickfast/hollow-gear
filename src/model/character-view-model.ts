@@ -63,6 +63,7 @@ export interface CharacterSummary {
 
 export interface FeatureDisplay {
     type: "Class" | "Species";
+    source: string;
     feature: Feature;
 }
 
@@ -295,8 +296,16 @@ export class CharacterViewModel {
         const cls = CLASSES.find((c) => c.type === primaryClass?.class);
 
         this.features = [
-            ...(species?.traits.map((feature) => ({ type: "Species" as const, feature })) || []),
-            ...(cls?.features.map((feature) => ({ type: "Class" as const, feature })) || []),
+            ...(species?.traits.map((feature) => ({
+                type: "Species" as const,
+                source: species.type,
+                feature,
+            })) || []),
+            ...(cls?.features.map((feature) => ({
+                type: "Class" as const,
+                source: cls.type,
+                feature,
+            })) || []),
         ];
     }
 }

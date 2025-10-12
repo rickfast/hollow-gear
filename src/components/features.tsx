@@ -1,6 +1,7 @@
 import type { FeatureDisplay } from "@/model/character-view-model";
 import { Card, CardBody, Chip } from "@heroui/react";
 import { CardTitle, Stat, StatRow, Description, EmptyState } from "./typography";
+import { s } from "framer-motion/client";
 
 export const Features = ({ features }: { features: FeatureDisplay[] }) => {
     if (features.length === 0) {
@@ -10,7 +11,7 @@ export const Features = ({ features }: { features: FeatureDisplay[] }) => {
     return (
         <div className="space-y-2">
             {features.map((featureDisplay, index) => {
-                const { type, feature } = featureDisplay;
+                const { type, feature, source } = featureDisplay;
 
                 return (
                     <Card key={index} className="border border-default-200">
@@ -23,7 +24,7 @@ export const Features = ({ features }: { features: FeatureDisplay[] }) => {
                                     variant="flat"
                                     color={type === "Class" ? "primary" : "secondary"}
                                 >
-                                    {type}
+                                    {source}
                                 </Chip>
                             </div>
 
