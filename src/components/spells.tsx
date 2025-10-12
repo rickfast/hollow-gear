@@ -77,11 +77,11 @@ export const Spells = ({
                                 </div>
 
                                 {/* Stats Row */}
-                                <div className="flex flex-wrap gap-3 text-xs mb-2">
+                                <div className="flex flex-wrap gap-3 mb-2">
                                     {/* Time */}
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-default-500">Time:</span>
-                                        <span className="font-semibold">
+                                        <span className="text-xs text-default-500">Time:</span>
+                                        <span className="text-sm font-semibold">
                                             {getActionTime(spell.castingTime)}
                                         </span>
                                     </div>
@@ -89,8 +89,8 @@ export const Spells = ({
                                     {/* Cost */}
                                     {spell.aetherCost !== undefined && (
                                         <div className="flex items-baseline gap-1">
-                                            <span className="text-default-500">Cost:</span>
-                                            <span className="font-semibold text-primary">
+                                            <span className="text-xs text-default-500">Cost:</span>
+                                            <span className="text-sm font-semibold text-primary">
                                                 {spell.aetherCost} {resourceAbbr}
                                             </span>
                                         </div>
@@ -98,21 +98,23 @@ export const Spells = ({
 
                                     {/* Range */}
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-default-500">Range:</span>
-                                        <span className="font-semibold">{spell.range}</span>
+                                        <span className="text-xs text-default-500">Range:</span>
+                                        <span className="text-sm font-semibold">{spell.range}</span>
                                     </div>
 
                                     {/* Hit/DC */}
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-default-500">Hit/DC:</span>
-                                        <span className="font-semibold">{getHitDC(spell)}</span>
+                                        <span className="text-xs text-default-500">Hit/DC:</span>
+                                        <span className="text-sm font-semibold">
+                                            {getHitDC(spell)}
+                                        </span>
                                     </div>
 
                                     {/* Heat */}
                                     {spell.heatGenerated && spell.heatGenerated > 0 && (
                                         <div className="flex items-baseline gap-1">
-                                            <span className="text-default-500">Heat:</span>
-                                            <span className="font-semibold text-danger">
+                                            <span className="text-xs text-default-500">Heat:</span>
+                                            <span className="text-sm font-semibold text-danger">
                                                 {spell.heatGenerated}
                                             </span>
                                         </div>

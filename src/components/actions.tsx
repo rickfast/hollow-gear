@@ -39,13 +39,13 @@ export const Actions = ({ actions }: { actions: Action[] }) => {
     };
 
     return (
-        <div className="space-y-3">
+        <div className="space-y-2">
             {actions.map((action, index) => (
                 <Card key={index} className="border border-default-200">
-                    <CardBody className="p-4">
+                    <CardBody className="p-3">
                         {/* Action Name and Type */}
                         <div className="flex items-start justify-between mb-2">
-                            <h3 className="font-bold text-lg">{action.name}</h3>
+                            <h3 className="font-bold text-base">{action.name}</h3>
                             <Chip size="sm" variant="flat" color="primary">
                                 {action.type}
                             </Chip>
@@ -53,10 +53,10 @@ export const Actions = ({ actions }: { actions: Action[] }) => {
 
                         {/* Attack Info */}
                         {action.hit && action.damage && (
-                            <div className="flex flex-wrap gap-4 mb-2">
+                            <div className="flex flex-wrap gap-3 mb-2">
                                 {/* Hit Modifier */}
                                 <div className="flex items-baseline gap-1">
-                                    <span className="text-sm text-default-500">Hit:</span>
+                                    <span className="text-xs text-default-500">Hit:</span>
                                     <span className="font-semibold text-primary">
                                         <Button
                                             variant="bordered"
@@ -70,7 +70,7 @@ export const Actions = ({ actions }: { actions: Action[] }) => {
 
                                 {/* Damage */}
                                 <div className="flex items-baseline gap-1">
-                                    <span className="text-sm text-default-500">Damage:</span>
+                                    <span className="text-xs text-default-500">Damage:</span>
                                     <span className="font-semibold">
                                         <Button
                                             variant="bordered"
@@ -88,8 +88,10 @@ export const Actions = ({ actions }: { actions: Action[] }) => {
                                 {/* Range */}
                                 {action.range && (
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-sm text-default-500">Range:</span>
-                                        <span className="font-semibold">{action.range}</span>
+                                        <span className="text-xs text-default-500">Range:</span>
+                                        <span className="text-sm font-semibold">
+                                            {action.range}
+                                        </span>
                                     </div>
                                 )}
                             </div>

@@ -1,5 +1,5 @@
 import type { InventoryItem } from "@/model/character-view-model";
-import { Checkbox, Chip } from "@heroui/react";
+import { Checkbox, Chip, Card, CardBody } from "@heroui/react";
 
 export const Inventory = ({ items }: { items: InventoryItem[] }) => {
     if (items.length === 0) {
@@ -13,74 +13,75 @@ export const Inventory = ({ items }: { items: InventoryItem[] }) => {
     return (
         <div className="space-y-2">
             {items.map((item) => (
-                <div
-                    key={item.id}
-                    className="flex items-start gap-3 py-3 px-3 hover:bg-default-100 rounded-lg border border-default-200"
-                >
-                    {/* Equipped Checkbox */}
-                    <div className="flex-shrink-0 pt-0.5">
-                        <Checkbox
-                            isSelected={item.equipped}
-                            isReadOnly
-                            size="sm"
-                            color="primary"
-                            aria-label="Equipped"
-                        />
-                    </div>
-
-                    {/* Item Details */}
-                    <div className="flex-1 min-w-0">
-                        {/* Item Name */}
-                        <div className="font-medium text-sm mb-1">{item.name}</div>
-
-                        {/* Tags */}
-                        {item.tags && item.tags.length > 0 && (
-                            <div className="flex flex-wrap gap-1 mb-1">
-                                {item.tags.map((tag, index) => (
-                                    <Chip
-                                        key={index}
-                                        size="sm"
-                                        variant="flat"
-                                        color="default"
-                                        className="text-xs"
-                                    >
-                                        {tag}
-                                    </Chip>
-                                ))}
+                <Card key={item.id} className="border border-default-200">
+                    <CardBody className="p-3">
+                        <div className="flex items-start gap-3">
+                            {/* Equipped Checkbox */}
+                            <div className="flex-shrink-0 pt-0.5">
+                                <Checkbox
+                                    isSelected={item.equipped}
+                                    isReadOnly
+                                    size="sm"
+                                    color="primary"
+                                    aria-label="Equipped"
+                                />
                             </div>
-                        )}
 
-                        {/* Mod Slots */}
-                        {item.slots > 0 && (
-                            <div className="flex items-center gap-1 mb-1">
-                                <span className="text-xs text-default-500 mr-1">Mods:</span>
-                                {Array.from({ length: item.slots }).map((_, index) => {
-                                    const hasMod = index < item.mods.length;
-                                    return (
-                                        <div
-                                            key={index}
-                                            className={`w-3 h-3 rounded-full border-2 ${
-                                                hasMod
-                                                    ? "bg-primary border-primary"
-                                                    : "border-default-300"
-                                            }`}
-                                            title={hasMod ? "Mod installed" : "Empty slot"}
-                                        />
-                                    );
-                                })}
+                            {/* Item Details */}
+                            <div className="flex-1 min-w-0">
+                                {/* Item Name */}
+                                <div className="font-bold text-base mb-1">{item.name}</div>
+
+                                {/* Tags */}
+                                {item.tags && item.tags.length > 0 && (
+                                    <div className="flex flex-wrap gap-1 mb-1">
+                                        {item.tags.map((tag, index) => (
+                                            <Chip
+                                                key={index}
+                                                size="sm"
+                                                variant="flat"
+                                                color="default"
+                                                className="text-xs"
+                                            >
+                                                {tag}
+                                            </Chip>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* Mod Slots */}
+                                {item.slots > 0 && (
+                                    <div className="flex items-center gap-1 mb-1">
+                                        <span className="text-xs text-default-500 mr-1">Mods:</span>
+                                        {Array.from({ length: item.slots }).map((_, index) => {
+                                            const hasMod = index < item.mods.length;
+                                            return (
+                                                <div
+                                                    key={index}
+                                                    className={`w-3 h-3 rounded-full border-2 ${
+                                                        hasMod
+                                                            ? "bg-primary border-primary"
+                                                            : "border-default-300"
+                                                    }`}
+                                                    title={hasMod ? "Mod installed" : "Empty slot"}
+                                                />
+                                            );
+                                        })}
+                                    </div>
+                                )}
+
+                                {/* Cost */}
+                                <div className="text-xs text-default-500">{item.cost}</div>
                             </div>
-                        )}
 
-                        {/* Cost */}
-                        <div className="text-xs text-default-500">{item.cost}</div>
-                    </div>
-
-                    {/* Quantity and Weight */}
-                    <div className="flex-shrink-0 text-right">
-                        <div className="text-sm font-medium">×{item.quantity}</div>
-                        <div className="text-xs text-default-500">{item.weight}</div>
-                    </div>
-                </div>
+                            {/* Quantity and Weight */}
+                            <div className="flex-shrink-0 text-right">
+                                <div className="text-sm font-medium">×{item.quantity}</div>
+                                <div className="text-xs text-default-500">{item.weight}</div>
+                            </div>
+                        </div>
+                    </CardBody>
+                </Card>
             ))}
         </div>
     );
