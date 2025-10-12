@@ -1,13 +1,10 @@
 import type { InventoryItem } from "@/model/character-view-model";
 import { Checkbox, Chip, Card, CardBody } from "@heroui/react";
+import { CardTitle, TertiaryText, SecondaryText, EmptyState } from "./typography";
 
 export const Inventory = ({ items }: { items: InventoryItem[] }) => {
     if (items.length === 0) {
-        return (
-            <div className="text-center py-8 text-default-400">
-                <p>No items in inventory</p>
-            </div>
-        );
+        return <EmptyState message="No items in inventory" />;
     }
 
     return (
@@ -30,7 +27,7 @@ export const Inventory = ({ items }: { items: InventoryItem[] }) => {
                             {/* Item Details */}
                             <div className="flex-1 min-w-0">
                                 {/* Item Name */}
-                                <div className="font-bold text-base mb-1">{item.name}</div>
+                                <CardTitle className="mb-1">{item.name}</CardTitle>
 
                                 {/* Tags */}
                                 {item.tags && item.tags.length > 0 && (
@@ -52,7 +49,7 @@ export const Inventory = ({ items }: { items: InventoryItem[] }) => {
                                 {/* Mod Slots */}
                                 {item.slots > 0 && (
                                     <div className="flex items-center gap-1 mb-1">
-                                        <span className="text-xs text-default-500 mr-1">Mods:</span>
+                                        <TertiaryText className="mr-1">Mods:</TertiaryText>
                                         {Array.from({ length: item.slots }).map((_, index) => {
                                             const hasMod = index < item.mods.length;
                                             return (
@@ -71,13 +68,15 @@ export const Inventory = ({ items }: { items: InventoryItem[] }) => {
                                 )}
 
                                 {/* Cost */}
-                                <div className="text-xs text-default-500">{item.cost}</div>
+                                <TertiaryText>{item.cost}</TertiaryText>
                             </div>
 
                             {/* Quantity and Weight */}
                             <div className="flex-shrink-0 text-right">
-                                <div className="text-sm font-medium">×{item.quantity}</div>
-                                <div className="text-xs text-default-500">{item.weight}</div>
+                                <SecondaryText className="font-medium">
+                                    ×{item.quantity}
+                                </SecondaryText>
+                                <TertiaryText>{item.weight}</TertiaryText>
                             </div>
                         </div>
                     </CardBody>

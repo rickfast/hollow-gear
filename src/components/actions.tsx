@@ -2,14 +2,11 @@ import type { Action, Damage } from "@/model/character-view-model";
 import { Card, CardBody, Chip, Button } from "@heroui/react";
 import { Roll, showRollToast } from "./roll";
 import type { Rollable } from "@/types";
+import { CardTitle, Stat, StatRow, Description, EmptyState } from "./typography";
 
 export const Actions = ({ actions }: { actions: Action[] }) => {
     if (actions.length === 0) {
-        return (
-            <div className="text-center py-8 text-default-400">
-                <p>No actions available</p>
-            </div>
-        );
+        return <EmptyState message="No actions available" />;
     }
 
     const handleAttackRoll = (action: Action) => {
@@ -45,7 +42,7 @@ export const Actions = ({ actions }: { actions: Action[] }) => {
                     <CardBody className="p-3">
                         {/* Action Name and Type */}
                         <div className="flex items-start justify-between mb-2">
-                            <h3 className="font-bold text-base">{action.name}</h3>
+                            <CardTitle>{action.name}</CardTitle>
                             <Chip size="sm" variant="flat" color="primary">
                                 {action.type}
                             </Chip>
@@ -53,20 +50,22 @@ export const Actions = ({ actions }: { actions: Action[] }) => {
 
                         {/* Attack Info */}
                         {action.hit && action.damage && (
-                            <div className="flex flex-wrap gap-3 mb-2">
+                            <StatRow>
                                 {/* Hit Modifier */}
-                                <div className="flex items-baseline gap-1">
-                                    <span className="text-xs text-default-500">Hit:</span>
-                                    <span className="font-semibold text-primary">
-                                        <Button
-                                            variant="bordered"
-                                            size="sm"
-                                            onPress={() => handleAttackRoll(action)}
-                                        >
-                                            {action.hit.modifier}
-                                        </Button>
-                                    </span>
-                                </div>
+                                <Stat
+                                    label="Hit"
+                                    value={
+                                        <span className="text-primary">
+                                            <Button
+                                                variant="bordered"
+                                                size="sm"
+                                                onPress={() => handleAttackRoll(action)}
+                                            >
+                                                {action.hit.modifier}
+                                            </Button>
+                                        </span>
+                                    }
+                                />
 
                                 {/* Damage */}
                                 <div className="flex items-baseline gap-1">
@@ -86,15 +85,8 @@ export const Actions = ({ actions }: { actions: Action[] }) => {
                                 </div>
 
                                 {/* Range */}
-                                {action.range && (
-                                    <div className="flex items-baseline gap-1">
-                                        <span className="text-xs text-default-500">Range:</span>
-                                        <span className="text-sm font-semibold">
-                                            {action.range}
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
+                                {action.range && <Stat label="Range" value={action.range} />}
+                            </StatRow>
                         )}
 
                         {/* Roll Buttons */}

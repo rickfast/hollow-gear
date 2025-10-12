@@ -2,6 +2,15 @@ import type { Spell } from "@/types";
 import { Card, CardBody, Chip } from "@heroui/react";
 import { showRollToast } from "./roll";
 import type { Rollable } from "@/types";
+import {
+    CardTitle,
+    Stat,
+    PrimaryStat,
+    DangerStat,
+    StatRow,
+    Description,
+    EmptyState,
+} from "./typography";
 
 export const Spells = ({
     resourceType,
@@ -11,11 +20,7 @@ export const Spells = ({
     spells: Spell[];
 }) => {
     if (spells.length === 0) {
-        return (
-            <div className="text-center py-8 text-default-400">
-                <p>No spells available</p>
-            </div>
-        );
+        return <EmptyState message="No spells available" />;
     }
 
     const getActionTime = (castingTime: string): string => {
@@ -61,9 +66,7 @@ export const Spells = ({
                             <div className="flex-1 min-w-0">
                                 {/* Name and Level */}
                                 <div className="flex items-center gap-2 mb-1">
-                                    <h4 className="font-bold text-base">
-                                        {spell.hollowgearName || spell.name}
-                                    </h4>
+                                    <CardTitle>{spell.hollowgearName || spell.name}</CardTitle>
                                     {spell.level > 0 && (
                                         <Chip size="sm" variant="flat" color="default">
                                             Lvl {spell.level}
@@ -77,52 +80,32 @@ export const Spells = ({
                                 </div>
 
                                 {/* Stats Row */}
-                                <div className="flex flex-wrap gap-3 mb-2">
+                                <StatRow>
                                     {/* Time */}
-                                    <div className="flex items-baseline gap-1">
-                                        <span className="text-xs text-default-500">Time:</span>
-                                        <span className="text-sm font-semibold">
-                                            {getActionTime(spell.castingTime)}
-                                        </span>
-                                    </div>
+                                    <Stat label="Time" value={getActionTime(spell.castingTime)} />
 
                                     {/* Cost */}
                                     {spell.aetherCost !== undefined && (
-                                        <div className="flex items-baseline gap-1">
-                                            <span className="text-xs text-default-500">Cost:</span>
-                                            <span className="text-sm font-semibold text-primary">
-                                                {spell.aetherCost} {resourceAbbr}
-                                            </span>
-                                        </div>
+                                        <PrimaryStat
+                                            label="Cost"
+                                            value={`${spell.aetherCost} ${resourceAbbr}`}
+                                        />
                                     )}
 
                                     {/* Range */}
-                                    <div className="flex items-baseline gap-1">
-                                        <span className="text-xs text-default-500">Range:</span>
-                                        <span className="text-sm font-semibold">{spell.range}</span>
-                                    </div>
+                                    <Stat label="Range" value={spell.range} />
 
                                     {/* Hit/DC */}
-                                    <div className="flex items-baseline gap-1">
-                                        <span className="text-xs text-default-500">Hit/DC:</span>
-                                        <span className="text-sm font-semibold">
-                                            {getHitDC(spell)}
-                                        </span>
-                                    </div>
+                                    <Stat label="Hit/DC" value={getHitDC(spell)} />
 
                                     {/* Heat */}
                                     {spell.heatGenerated && spell.heatGenerated > 0 && (
-                                        <div className="flex items-baseline gap-1">
-                                            <span className="text-xs text-default-500">Heat:</span>
-                                            <span className="text-sm font-semibold text-danger">
-                                                {spell.heatGenerated}
-                                            </span>
-                                        </div>
+                                        <DangerStat label="Heat" value={spell.heatGenerated} />
                                     )}
-                                </div>
+                                </StatRow>
 
                                 {/* Description */}
-                                <p className="text-sm text-default-600 mb-2">{spell.description}</p>
+                                <Description>{spell.description}</Description>
 
                                 {/* Damage/Heal Roll Button */}
                                 {spell.damage && (
