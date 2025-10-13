@@ -37,7 +37,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
     const [activeSection, setActiveSection] = useState<SectionKey>("skills");
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const { getCharacter } = useCharacterViewModelContext();
+    const { getCharacter, updateCharacter } = useCharacterViewModelContext();
     const { summary, abilityScores, savingThrows, skills } = getCharacter(id);
 
     const showSpellsTab = getCharacter(id).spellType !== "None";
@@ -56,6 +56,55 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
     const handleSectionSelect = (section: SectionKey) => {
         setActiveSection(section);
         onOpen();
+    };
+
+    // Resource update handlers
+    const handleHitPointsChange = (delta: number) => {
+        updateCharacter(id, (vm) => {
+            const newValue = Math.max(
+                0,
+                Math.min(vm.summary.hitPoints.maximum, vm.summary.hitPoints.current + delta)
+            );
+            return vm.updateHitPoints(newValue, vm.summary.hitPoints.temporary);
+        });
+    };
+
+    const handleHeatPointsChange = (delta: number) => {
+        updateCharacter(id, (vm) => {
+            const newValue = Math.max(
+                0,
+                Math.min(vm.summary.heatPoints.maximum, vm.summary.heatPoints.current + delta)
+            );
+            return vm.updateHeatPoints(newValue);
+        });
+    };
+
+    const handleAetherFluxChange = (delta: number) => {
+        updateCharacter(id, (vm) => {
+            if (!vm.summary.aetherFluxPoints) return vm.toCharacter();
+            const newValue = Math.max(
+                0,
+                Math.min(
+                    vm.summary.aetherFluxPoints.maximum,
+                    vm.summary.aetherFluxPoints.current + delta
+                )
+            );
+            return vm.updateAetherFluxPoints(newValue);
+        });
+    };
+
+    const handleResonanceChargesChange = (delta: number) => {
+        updateCharacter(id, (vm) => {
+            if (!vm.summary.resonanceCharges) return vm.toCharacter();
+            const newValue = Math.max(
+                0,
+                Math.min(
+                    vm.summary.resonanceCharges.maximum,
+                    vm.summary.resonanceCharges.current + delta
+                )
+            );
+            return vm.updateResonanceCharges(newValue);
+        });
     };
 
     return (
@@ -152,24 +201,41 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                         </div>
                     </div>
 
-                    {/* Hit Points */}
+                    {/* Resource Bars */}
                     <div
                         style={{
                             display: "grid",
-                            gridTemplateColumns: "repeat(2, 1fr)",
-                            gap: "1rem",
-                            minWidth: "250px",
+                            gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
+                            gap: "0.5rem",
                         }}
                     >
-                        <PointBar label="Hit Points" points={summary.hitPoints} />
-                        <PointBar label="Heat Points" points={summary.heatPoints} invert={true} />
+                        <PointBar
+                            label="Hit Points"
+                            points={summary.hitPoints}
+                            onIncrement={() => handleHitPointsChange(1)}
+                            onDecrement={() => handleHitPointsChange(-1)}
+                        />
+                        <PointBar
+                            label="Heat Points"
+                            points={summary.heatPoints}
+                            invert={true}
+                            onIncrement={() => handleHeatPointsChange(1)}
+                            onDecrement={() => handleHeatPointsChange(-1)}
+                        />
                         {summary.aetherFluxPoints?.maximum && (
-                            <PointBar label="Aether Flux" points={summary.aetherFluxPoints!} />
+                            <PointBar
+                                label="Aether Flux"
+                                points={summary.aetherFluxPoints!}
+                                onIncrement={() => handleAetherFluxChange(1)}
+                                onDecrement={() => handleAetherFluxChange(-1)}
+                            />
                         )}
                         {summary.resonanceCharges?.maximum && (
                             <PointBar
                                 label="Resonance Charges"
                                 points={summary.resonanceCharges!}
+                                onIncrement={() => handleResonanceChargesChange(1)}
+                                onDecrement={() => handleResonanceChargesChange(-1)}
                             />
                         )}
                     </div>
