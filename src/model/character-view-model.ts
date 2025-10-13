@@ -4,6 +4,8 @@ import { SKILLS } from "@/data/skills";
 import type {
     AetherFluxPoints,
     Character,
+    ClassFeature,
+    ClassType,
     CraftTier,
     DamageInfo,
     DamageType,
@@ -15,7 +17,10 @@ import type {
     Mod,
     ResonanceCharges,
     Rollable,
+    Skill,
     SkillType,
+    SpeciesTrait,
+    SpeciesType,
     Spell,
     Weapon,
 } from "@/types";
@@ -67,11 +72,22 @@ export interface CharacterSummary {
     avatarUrl?: string;
 }
 
-export interface FeatureDisplay {
-    type: "Class" | "Species" | "Archetype";
-    source: string;
-    feature: Feature;
-}
+export type FeatureDisplay =
+    | {
+          type: "Species";
+          source: SpeciesType;
+          feature: SpeciesTrait;
+      }
+    | {
+          type: "Class";
+          source: ClassType;
+          feature: ClassFeature;
+      }
+    | {
+          type: "Archetype";
+          source: string;
+          feature: ClassFeature;
+      };
 
 export interface SavingThrow {
     proficient: boolean;
@@ -251,17 +267,18 @@ export class CharacterViewModel {
         this.savingThrows = savingThrows;
         this.skills = Object.fromEntries(
             Object.entries(character.skills).map(([skillName, skillData]) => {
+                const skill = skillData as Skill;
                 return [
                     skillName,
                     {
-                        modifier: formatModifier(skillData.modifier),
-                        proficient: skillData.proficient,
-                        expertise: skillData.expertise,
+                        modifier: formatModifier(skill.modifier),
+                        proficient: skill.proficient,
+                        expertise: skill.expertise,
                         ability: SKILLS[skillName as SkillType].substring(0, 3).toUpperCase(),
                         rollable: {
                             count: 1,
                             die: 20,
-                            bonus: skillData.modifier,
+                            bonus: skill.modifier,
                         },
                     },
                 ];
@@ -298,16 +315,16 @@ export class CharacterViewModel {
 
                 // Calculate additional damage from mods
                 const attachedMods = item.mods
-                    .map((modId) => MOD_LOOKUP[modId])
+                    .map((modId: string) => MOD_LOOKUP[modId])
                     .filter(
-                        (mod): mod is Mod => mod !== undefined && mod.additionalDamage !== undefined
+                        (mod: Mod | undefined): mod is Mod => mod !== undefined && mod.additionalDamage !== undefined
                     );
 
                 // Build description with mod effects
                 let description = equipment.description || "";
                 if (attachedMods.length > 0) {
                     const modEffects = attachedMods
-                        .map((mod) => {
+                        .map((mod: Mod) => {
                             if (mod.additionalDamage) {
                                 return `+${mod.additionalDamage.count}d${mod.additionalDamage.die} ${mod.additionalDamage.damageType} (${mod.name})`;
                             }
@@ -329,8 +346,8 @@ export class CharacterViewModel {
                         bonus: damageBonus,
                         damageType: damage.damageType,
                         additionalDamage: attachedMods
-                            .map((mod) => mod.additionalDamage!)
-                            .filter((dmg): dmg is DamageInfo => dmg !== undefined),
+                            .map((mod: Mod) => mod.additionalDamage!)
+                            .filter((dmg: DamageInfo | undefined): dmg is DamageInfo => dmg !== undefined),
                     },
                     description,
                     range: equipment.range
