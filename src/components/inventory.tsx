@@ -1,4 +1,5 @@
 import type { InventoryViewModel } from "@/model/character-view-model";
+import { useCharacterViewModelContext } from "@/model/character-view-model-context";
 import {
     Button,
     Card,
@@ -11,22 +12,64 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@heroui/react";
-import { useState } from "react";
 import { CardTitle, EmptyState, SecondaryText, TertiaryText } from "./typography";
 
-export const Inventory = ({ inventory }: { inventory: InventoryViewModel }) => {
+export const Inventory = ({
+    inventory,
+    characterId,
+}: {
+    inventory: InventoryViewModel;
+    characterId: string;
+}) => {
     const items = inventory.items;
-    const [selectedMods, setSelectedMods] = useState<Map<string, Set<string>>>(new Map());
+    const { updateCharacter } = useCharacterViewModelContext();
 
     if (items.length === 0) {
         return <EmptyState message="No items in inventory" />;
     }
 
-    const handleModSelection = (itemId: string, keys: Set<string>) => {
-        setSelectedMods((prev) => {
-            const newMap = new Map(prev);
-            newMap.set(itemId, keys);
-            return newMap;
+    const handleEquipToggle = (inventoryItemId: string, currentlyEquipped: boolean) => {
+        updateCharacter(characterId, (vm) => {
+            if (currentlyEquipped) {
+                vm.unequipItem(inventoryItemId);
+            } else {
+                vm.equipItem(inventoryItemId);
+            }
+            return vm.toCharacter();
+        });
+    };
+
+    const handleModSelection = (inventoryItemId: string, keys: Set<string>) => {
+        const item = items.find((i) => i.id === inventoryItemId);
+        if (!item) return;
+
+        const currentMods = new Set(item.mods);
+        const newMods = keys as Set<string>;
+
+        // Find mods to attach (in newMods but not in currentMods)
+        const modsToAttach = Array.from(newMods).filter((modId) => !currentMods.has(modId));
+
+        // Find mods to detach (in currentMods but not in newMods)
+        const modsToDetach = Array.from(currentMods).filter((modId) => !newMods.has(modId));
+
+        // Check if we're exceeding slot limit
+        if (newMods.size > item.slots) {
+            return; // Don't allow more mods than slots
+        }
+
+        // Apply changes
+        updateCharacter(characterId, (vm) => {
+            // Attach new mods
+            for (const modId of modsToAttach) {
+                vm.attachMod(inventoryItemId, modId);
+            }
+
+            // Detach removed mods
+            for (const modId of modsToDetach) {
+                vm.detachMod(inventoryItemId, modId);
+            }
+
+            return vm.toCharacter();
         });
     };
 
@@ -43,7 +86,9 @@ export const Inventory = ({ inventory }: { inventory: InventoryViewModel }) => {
                                 <div className="flex-shrink-0 pt-0.5">
                                     <Checkbox
                                         isSelected={item.equipped}
-                                        isReadOnly
+                                        onValueChange={() =>
+                                            handleEquipToggle(item.id, item.equipped)
+                                        }
                                         size="sm"
                                         color="primary"
                                         aria-label="Equipped"
@@ -69,6 +114,29 @@ export const Inventory = ({ inventory }: { inventory: InventoryViewModel }) => {
                                                     {tag}
                                                 </Chip>
                                             ))}
+                                        </div>
+                                    )}
+
+                                    {/* Installed Mods */}
+                                    {item.mods.length > 0 && (
+                                        <div className="flex flex-wrap gap-1 mb-1">
+                                            {item.mods.map((modId) => {
+                                                const modData = inventory.mods.find(
+                                                    (m) => m.mod.id === modId
+                                                )?.mod;
+                                                if (!modData) return null;
+                                                return (
+                                                    <Chip
+                                                        key={modId}
+                                                        size="sm"
+                                                        variant="flat"
+                                                        color="primary"
+                                                        className="text-xs"
+                                                    >
+                                                        {modData.name}
+                                                    </Chip>
+                                                );
+                                            })}
                                         </div>
                                     )}
 
@@ -116,15 +184,28 @@ export const Inventory = ({ inventory }: { inventory: InventoryViewModel }) => {
                                                             variant="flat"
                                                             disallowEmptySelection={false}
                                                             selectionMode="multiple"
-                                                            selectedKeys={
-                                                                selectedMods.get(item.id) ||
-                                                                new Set()
-                                                            }
+                                                            selectedKeys={new Set(item.mods)}
                                                             onSelectionChange={(keys) =>
                                                                 handleModSelection(
                                                                     item.id,
                                                                     keys as Set<string>
                                                                 )
+                                                            }
+                                                            disabledKeys={
+                                                                item.mods.length >= item.slots
+                                                                    ? Array.from(
+                                                                          new Set(
+                                                                              availableMods
+                                                                                  .map((m) => m.id)
+                                                                                  .filter(
+                                                                                      (id) =>
+                                                                                          !item.mods.includes(
+                                                                                              id
+                                                                                          )
+                                                                                  )
+                                                                          )
+                                                                      )
+                                                                    : []
                                                             }
                                                         >
                                                             {availableMods.map((mod) => (

@@ -412,7 +412,10 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                 <Tab key="inventory" title="Inventory">
                                     <div style={{ padding: "1rem" }}>
                                         <p style={{ opacity: 0.7 }}>
-                                            <Inventory inventory={getCharacter(id).inventory} />
+                                            <Inventory
+                                                inventory={getCharacter(id).inventory}
+                                                characterId={id}
+                                            />
                                         </p>
                                     </div>
                                 </Tab>
@@ -485,7 +488,10 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             <Actions actions={getCharacter(id).actions} />
                         )}
                         {activeSection === "inventory" && (
-                            <Inventory inventory={getCharacter(id).inventory} />
+                            <Inventory
+                                inventory={getCharacter(id).inventory}
+                                characterId={id}
+                            />
                         )}
                         {showSpellsTab && activeSection === "spells" && (
                             <Spells
