@@ -1,5 +1,5 @@
-import { describe, expect, it } from "bun:test";
 import type { Character, Drone } from "@/types";
+import { describe, expect, it } from "bun:test";
 import { getActiveDrone, validateActiveDrone, validateDroneOwnership } from "./character-utils";
 
 describe("Drone Utilities", () => {

@@ -2,7 +2,7 @@ import type { Action, Damage } from "@/model/character-view-model";
 import type { Rollable } from "@/types";
 import { Button, Card, CardBody, Chip } from "@heroui/react";
 import { showRollToast } from "./roll";
-import { CardTitle, EmptyState, Stat, StatRow } from "./typography";
+import { CardTitle, EmptyState, Stat } from "./typography";
 
 export const Actions = ({ actions }: { actions: Action[] }) => {
     if (actions.length === 0) {
@@ -63,7 +63,7 @@ export const Actions = ({ actions }: { actions: Action[] }) => {
 
                         {/* Attack Info */}
                         {action.hit && action.damage && (
-                            <StatRow>
+                            <div className="flex flex-wrap gap-3 mb-2 items-center">
                                 {/* Hit Modifier */}
                                 <Stat
                                     label="Hit"
@@ -81,25 +81,27 @@ export const Actions = ({ actions }: { actions: Action[] }) => {
                                 />
 
                                 {/* Damage */}
-                                <div className="flex items-baseline gap-1">
-                                    <span className="text-xs text-default-500">Damage:</span>
-                                    <span className="font-semibold">
-                                        <Button
-                                            variant="bordered"
-                                            size="sm"
-                                            onPress={() => handleDamageRoll(action)}
-                                        >
-                                            <DamageDisplay damage={action.damage} />
-                                        </Button>
-                                    </span>
-                                    <span className="text-xs text-default-400 ml-1">
-                                        ({action.damage.damageType})
-                                    </span>
-                                </div>
+                                <Stat
+                                    label="Damage"
+                                    value={
+                                        <span className="flex items-baseline gap-1">
+                                            <Button
+                                                variant="bordered"
+                                                size="sm"
+                                                onPress={() => handleDamageRoll(action)}
+                                            >
+                                                <DamageDisplay damage={action.damage} />
+                                            </Button>
+                                            <span className="text-xs text-default-400">
+                                                ({action.damage.damageType})
+                                            </span>
+                                        </span>
+                                    }
+                                />
 
                                 {/* Range */}
                                 {action.range && <Stat label="Range" value={action.range} />}
-                            </StatRow>
+                            </div>
                         )}
 
                         {/* Roll Buttons */}

@@ -52,8 +52,12 @@ export function Drones({
                                 gap: "0.5rem",
                             }}
                         >
-                            <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-                                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                            <div
+                                style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}
+                            >
+                                <div
+                                    style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                                >
                                     <h4 style={{ margin: 0, fontSize: "1.25rem", fontWeight: 700 }}>
                                         {drone.name}
                                     </h4>
@@ -69,7 +73,8 @@ export function Drones({
                                     )}
                                 </div>
                                 <p style={{ margin: 0, fontSize: "0.875rem", opacity: 0.7 }}>
-                                    Level {drone.level} {template?.stats.size} {template?.type} Drone
+                                    Level {drone.level} {template?.stats.size} {template?.type}{" "}
+                                    Drone
                                 </p>
                             </div>
                         </CardHeader>
@@ -193,7 +198,11 @@ export function Drones({
                                             Additional Movement
                                         </p>
                                         <div
-                                            style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}
+                                            style={{
+                                                display: "flex",
+                                                gap: "0.5rem",
+                                                flexWrap: "wrap",
+                                            }}
                                         >
                                             {template?.stats.speed.fly && (
                                                 <Chip size="sm" variant="flat">

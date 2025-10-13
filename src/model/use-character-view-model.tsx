@@ -1,9 +1,9 @@
 import { PREGENS } from "@/data";
+import { CharacterStorageService } from "@/service/character-storage-service";
 import type { Character } from "@/types";
 import { useEffect, useRef, useState } from "react";
-import { CharacterStorageService } from "@/service/character-storage-service";
-import { MutableCharacterViewModel } from "./mutable-character-view-model";
 import { CharacterBuilder } from "./character-builder";
+import { MutableCharacterViewModel } from "./mutable-character-view-model";
 
 /**
  * Initialize characters from localStorage or fall back to PREGENS
@@ -230,9 +230,7 @@ export function useCharacterViewModel() {
             // Generate new ID if one already exists
             let finalCharacter = character;
             if (characters.has(character.id)) {
-                console.log(
-                    `Character with id ${character.id} already exists, generating new ID`
-                );
+                console.log(`Character with id ${character.id} already exists, generating new ID`);
                 finalCharacter = {
                     ...character,
                     id: `char-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,

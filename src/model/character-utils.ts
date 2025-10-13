@@ -16,14 +16,8 @@
  * @module character-utils
  */
 
-import type {
-    AbilityScores,
-    Armor,
-    Character,
-    Shield,
-    InventoryItem as CharacterInventoryItem,
-} from "@/types";
 import { EQUIPMENT_BY_ID } from "@/data";
+import type { Armor, Character, InventoryItem as CharacterInventoryItem, Shield } from "@/types";
 
 /**
  * Custom error class for domain-specific validation errors

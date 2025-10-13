@@ -9,6 +9,7 @@ Drone Hit Points and Heat Points are now editable using the same PointBar compon
 ### 1. Drones Component Updates
 
 **Added Props:**
+
 ```typescript
 interface DronesProps {
     drones: Drone[];
@@ -19,20 +20,22 @@ interface DronesProps {
 ```
 
 **Layout Changes:**
+
 - Moved AC and Speed to a 2-column grid (static stats)
 - Added HP and Heat as PointBar components below (editable resources)
 - Disabled editing for destroyed drones
 
 **PointBar Integration:**
+
 ```typescript
 <PointBar
     label="Hit Points"
     points={drone.hitPoints}
-    onIncrement={onDroneHitPointsChange && !isDestroyed 
-        ? () => onDroneHitPointsChange(drone.id, 1) 
+    onIncrement={onDroneHitPointsChange && !isDestroyed
+        ? () => onDroneHitPointsChange(drone.id, 1)
         : undefined}
-    onDecrement={onDroneHitPointsChange && !isDestroyed 
-        ? () => onDroneHitPointsChange(drone.id, -1) 
+    onDecrement={onDroneHitPointsChange && !isDestroyed
+        ? () => onDroneHitPointsChange(drone.id, -1)
         : undefined}
 />
 ```
@@ -42,6 +45,7 @@ interface DronesProps {
 Added two new methods for drone resource management:
 
 **updateDroneHitPoints(droneId: string, current: number): Character**
+
 - Validates drone exists
 - Validates HP is within range (0 to maximum)
 - Updates specific drone's HP
@@ -49,6 +53,7 @@ Added two new methods for drone resource management:
 - Maintains immutability
 
 **updateDroneHeatPoints(droneId: string, current: number): Character**
+
 - Validates drone exists
 - Validates heat is within range (0 to maximum)
 - Updates specific drone's heat
@@ -56,6 +61,7 @@ Added two new methods for drone resource management:
 - Maintains immutability
 
 **Error Handling:**
+
 - Throws `ValidationError` if character has no drones
 - Throws `ValidationError` if drone ID not found
 - Throws `ValidationError` if value out of range
@@ -63,6 +69,7 @@ Added two new methods for drone resource management:
 ### 3. Character Sheet Integration
 
 **Added Handlers:**
+
 ```typescript
 const handleDroneHitPointsChange = (droneId: string, delta: number) => {
     updateCharacter(id, (vm) => {
@@ -90,6 +97,7 @@ const handleDroneHeatPointsChange = (droneId: string, delta: number) => {
 ```
 
 **Passed to Drones Component:**
+
 ```typescript
 <Drones
     drones={getCharacter(id).drones}
@@ -118,6 +126,7 @@ const handleDroneHeatPointsChange = (droneId: string, delta: number) => {
 ### Visual Design
 
 **Before (Static Display):**
+
 ```
 ┌──────────────────────────────────────────┐
 │  ARMOR CLASS │ HIT POINTS │ SPEED │ HEAT │
@@ -126,6 +135,7 @@ const handleDroneHeatPointsChange = (droneId: string, delta: number) => {
 ```
 
 **After (Editable Resources):**
+
 ```
 ┌──────────────────────────┐
 │ ARMOR CLASS │   SPEED    │
@@ -143,6 +153,7 @@ const handleDroneHeatPointsChange = (droneId: string, delta: number) => {
 ### Unit Tests (8/8 passing ✓)
 
 **MutableCharacterViewModel Tests:**
+
 1. ✓ Should update drone hit points
 2. ✓ Should update drone heat points
 3. ✓ Should throw error if drone not found
@@ -164,19 +175,20 @@ const handleDroneHeatPointsChange = (droneId: string, delta: number) => {
 
 The drone resource editing follows the exact same patterns as character resources:
 
-| Feature | Character | Drone |
-|---------|-----------|-------|
-| Component | PointBar | PointBar |
-| Increment/Decrement | ±1 | ±1 |
-| Range Validation | 0 to max | 0 to max |
-| Update Method | updateHitPoints() | updateDroneHitPoints() |
-| Handler Pattern | handleHitPointsChange() | handleDroneHitPointsChange() |
-| Immutability | ✓ | ✓ |
-| Error Handling | ValidationError | ValidationError |
+| Feature             | Character               | Drone                        |
+| ------------------- | ----------------------- | ---------------------------- |
+| Component           | PointBar                | PointBar                     |
+| Increment/Decrement | ±1                      | ±1                           |
+| Range Validation    | 0 to max                | 0 to max                     |
+| Update Method       | updateHitPoints()       | updateDroneHitPoints()       |
+| Handler Pattern     | handleHitPointsChange() | handleDroneHitPointsChange() |
+| Immutability        | ✓                       | ✓                            |
+| Error Handling      | ValidationError         | ValidationError              |
 
 ## Future Enhancements
 
 Potential additions:
+
 1. **Bulk Updates**: Heal all drones at once
 2. **Heat Warnings**: Visual indicator at 5+ heat (malfunction risk)
 3. **Auto-Vent**: Button to reduce heat by 1d6 (action cost)

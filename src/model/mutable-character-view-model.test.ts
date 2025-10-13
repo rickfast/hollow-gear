@@ -1,7 +1,7 @@
-import { describe, it, expect } from "vitest";
-import { MutableCharacterViewModel } from "./mutable-character-view-model";
-import { ValidationError } from "./character-utils";
 import type { Character } from "@/types";
+import { describe, expect, it } from "vitest";
+import { ValidationError } from "./character-utils";
+import { MutableCharacterViewModel } from "./mutable-character-view-model";
 
 // Helper to create a minimal test character
 function createTestCharacter(): Character {

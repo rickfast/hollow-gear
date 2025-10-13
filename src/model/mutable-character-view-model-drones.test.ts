@@ -1,5 +1,5 @@
-import { describe, expect, it } from "bun:test";
 import { PREGENS } from "@/data";
+import { describe, expect, it } from "bun:test";
 import { MutableCharacterViewModel } from "./mutable-character-view-model";
 
 describe("MutableCharacterViewModel - Drone Updates", () => {

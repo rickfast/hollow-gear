@@ -7,24 +7,16 @@
  * @module character-builder
  */
 
-import type {
-    AbilityScores,
-    Character,
-    ClassType,
-    SpeciesType,
-    Skills,
-    Skill,
-    SkillType,
-} from "@/types";
-import { SPECIES } from "@/data/species";
 import { CLASSES } from "@/data/classes";
+import { SPECIES } from "@/data/species";
+import type { AbilityScores, Character, ClassType, SkillType, Skills, SpeciesType } from "@/types";
 import {
     ValidationError,
     calculateAbilityModifier,
-    calculateProficiencyBonus,
-    calculateSkillModifier,
     calculateArmorClass,
     calculateInitiative,
+    calculateProficiencyBonus,
+    calculateSkillModifier,
 } from "./character-utils";
 
 /**

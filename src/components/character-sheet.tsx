@@ -32,7 +32,15 @@ interface CharacterSheetProps {
     id: string;
 }
 
-type SectionKey = "skills" | "actions" | "inventory" | "spells" | "features" | "mindcraft" | "mods" | "drones";
+type SectionKey =
+    | "skills"
+    | "actions"
+    | "inventory"
+    | "spells"
+    | "features"
+    | "mindcraft"
+    | "mods"
+    | "drones";
 
 export function CharacterSheet({ id }: CharacterSheetProps) {
     const [isMobile, setIsMobile] = useState(false);
@@ -292,7 +300,11 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             <SelectItem key="actions">Actions</SelectItem>
                             <SelectItem key="inventory">Inventory</SelectItem>
                             <SelectItem key="mods">Mods</SelectItem>
-                            {showSpellsTab ? <SelectItem key="spells">{spellType}</SelectItem> : <></>}
+                            {showSpellsTab ? (
+                                <SelectItem key="spells">{spellType}</SelectItem>
+                            ) : (
+                                <></>
+                            )}
                             {showDronesTab ? <SelectItem key="drones">Drones</SelectItem> : <></>}
                             <SelectItem key="features">Features</SelectItem>
                             <SelectItem key="mindcraft">Mindcraft</SelectItem>
@@ -470,9 +482,13 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                         <div style={{ padding: "1rem" }}>
                                             <Drones
                                                 drones={getCharacter(id).drones}
-                                                activeDroneId={getCharacter(id).summary.activeDroneId}
+                                                activeDroneId={
+                                                    getCharacter(id).summary.activeDroneId
+                                                }
                                                 onDroneHitPointsChange={handleDroneHitPointsChange}
-                                                onDroneHeatPointsChange={handleDroneHeatPointsChange}
+                                                onDroneHeatPointsChange={
+                                                    handleDroneHeatPointsChange
+                                                }
                                             />
                                         </div>
                                     </Tab>
@@ -512,7 +528,11 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                 textTransform: "capitalize",
                             }}
                         >
-                            {activeSection === "features" ? "Features + Traits" : activeSection}
+                            {activeSection === "features"
+                                ? "Features + Traits"
+                                : activeSection === "drones"
+                                  ? "Drones"
+                                  : activeSection}
                         </h3>
                     </ModalHeader>
                     <ModalBody>
@@ -540,6 +560,14 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                         )}
                         {activeSection === "mods" && (
                             <Mods inventory={getCharacter(id).inventory} />
+                        )}
+                        {showDronesTab && activeSection === "drones" && (
+                            <Drones
+                                drones={getCharacter(id).drones}
+                                activeDroneId={getCharacter(id).summary.activeDroneId}
+                                onDroneHitPointsChange={handleDroneHitPointsChange}
+                                onDroneHeatPointsChange={handleDroneHeatPointsChange}
+                            />
                         )}
                         {activeSection === "mindcraft" && (
                             <Mindcraft powers={getCharacter(id)!.mindcraftPowers} />

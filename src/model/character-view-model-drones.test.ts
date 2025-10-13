@@ -1,5 +1,5 @@
-import { describe, expect, it } from "bun:test";
 import { PREGENS } from "@/data";
+import { describe, expect, it } from "bun:test";
 import { CharacterViewModel } from "./character-view-model";
 
 describe("CharacterViewModel - Drones", () => {

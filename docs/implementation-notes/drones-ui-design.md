@@ -7,6 +7,7 @@ The Drones component now follows the same visual design patterns as the Characte
 ## Layout Structure
 
 ### Header Section
+
 ```
 ┌─────────────────────────────────────────────────┐
 │ Sparky [Active]                                 │
@@ -15,11 +16,13 @@ The Drones component now follows the same visual design patterns as the Characte
 ```
 
 **Similar to Character Sheet:**
+
 - Name in large, bold font (1.25rem, weight 700)
 - Status chips (Active/Destroyed) inline with name
 - Subtitle with level, size, and type (0.875rem, opacity 0.7)
 
 ### Combat Stats Grid
+
 ```
 ┌─────────────────────────────────────────────────┐
 │  ARMOR CLASS  │  HIT POINTS  │  SPEED  │  HEAT  │
@@ -28,6 +31,7 @@ The Drones component now follows the same visual design patterns as the Characte
 ```
 
 **Design Features:**
+
 - 4-column grid layout
 - Uppercase labels (0.75rem, opacity 0.7, weight 600)
 - Large values (1.75rem, weight 700)
@@ -37,12 +41,14 @@ The Drones component now follows the same visual design patterns as the Characte
 - Centered text alignment
 
 **Matches Character Sheet Pattern:**
+
 - Same label styling (uppercase, small, muted)
 - Same value styling (large, bold)
 - Same background treatment
 - Same spacing and padding
 
 ### Additional Movement
+
 ```
 ┌─────────────────────────────────────────────────┐
 │ ADDITIONAL MOVEMENT                             │
@@ -51,6 +57,7 @@ The Drones component now follows the same visual design patterns as the Characte
 ```
 
 **Only shown when drone has:**
+
 - Fly speed
 - Climb speed
 - Swim speed
@@ -58,12 +65,14 @@ The Drones component now follows the same visual design patterns as the Characte
 ## Visual Hierarchy
 
 ### Before (Old Design)
+
 - Stats in small boxes with individual backgrounds
 - Less visual prominence
 - Harder to scan quickly
 - Inconsistent with character sheet
 
 ### After (New Design)
+
 - Stats in unified grid with shared background
 - High visual prominence
 - Easy to scan at a glance
@@ -72,6 +81,7 @@ The Drones component now follows the same visual design patterns as the Characte
 ## Responsive Behavior
 
 The 4-column grid automatically adjusts:
+
 - Desktop: All 4 stats in one row
 - Tablet: May wrap to 2x2 grid
 - Mobile: May stack vertically
@@ -79,11 +89,13 @@ The 4-column grid automatically adjusts:
 ## Color & Contrast
 
 **Active Drone:**
+
 - Border: 2px solid primary color
 - Full opacity
 - Primary chip for "Active" status
 
 **Destroyed Drone:**
+
 - Opacity: 0.6 (entire card)
 - Danger chip for "Destroyed" status
 - Maintains readability while indicating inactive state
@@ -91,6 +103,7 @@ The 4-column grid automatically adjusts:
 ## Typography Scale
 
 Matches character sheet typography:
+
 - **Drone Name**: 1.25rem, weight 700
 - **Subtitle**: 0.875rem, opacity 0.7
 - **Stat Labels**: 0.75rem, uppercase, weight 600, opacity 0.7
@@ -100,6 +113,7 @@ Matches character sheet typography:
 ## Spacing System
 
 Consistent spacing throughout:
+
 - Card gap: 1rem
 - Grid gap: 1rem
 - Section gap: 1rem
@@ -150,6 +164,7 @@ Consistent spacing throughout:
 ## Future Enhancements
 
 Potential additions to match character sheet features:
+
 - Interactive HP/Heat bars (like PointBar component)
 - Increment/decrement buttons for HP and Heat
 - Hover states for interactive elements

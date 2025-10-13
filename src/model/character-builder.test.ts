@@ -2,10 +2,10 @@
  * Unit tests for CharacterBuilder
  */
 
-import { describe, it, expect } from "vitest";
+import type { AbilityScores } from "@/types";
+import { describe, expect, it } from "vitest";
 import { CharacterBuilder } from "./character-builder";
 import { ValidationError } from "./character-utils";
-import type { AbilityScores } from "@/types";
 
 describe("CharacterBuilder", () => {
     const validAbilityScores: AbilityScores = {
@@ -121,7 +121,11 @@ describe("CharacterBuilder", () => {
         it("should throw error when ability scores are missing", () => {
             const builder = new CharacterBuilder();
             expect(() => {
-                builder.setName("Test Character").setSpecies("Aqualoth").setClass("Arcanist").build();
+                builder
+                    .setName("Test Character")
+                    .setSpecies("Aqualoth")
+                    .setClass("Arcanist")
+                    .build();
             }).toThrow(ValidationError);
         });
 

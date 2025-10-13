@@ -38,7 +38,8 @@ export const DRONE_TEMPLATES: DroneTemplate[] = [
             },
         },
         features: ["Carries 10 lb", "Assists with repairs"],
-        description: "A versatile helper drone designed for field repairs and light cargo transport.",
+        description:
+            "A versatile helper drone designed for field repairs and light cargo transport.",
         modSlots: 1,
     },
     {
@@ -250,7 +251,7 @@ export const DRONE_REPAIR: DroneRepair = {
         cost: 3,
         healing: {
             count: 3,
-            die: 6
+            die: 6,
         },
         heatGain: 1,
     },

@@ -1,6 +1,10 @@
+import {
+    getActiveDrone,
+    validateActiveDrone,
+    validateDroneOwnership,
+} from "@/model/character-utils";
 import { describe, expect, it } from "bun:test";
 import { PREGENS, PREGEN_DRONES } from "./pregens";
-import { getActiveDrone, validateActiveDrone, validateDroneOwnership } from "@/model/character-utils";
 
 describe("Pregen Characters with Drones", () => {
     it("should have Lyrra Quenchcoil as an Artifex with drones", () => {
@@ -14,7 +18,7 @@ describe("Pregen Characters with Drones", () => {
     it("should have Sparky as the active drone", () => {
         const lyrra = PREGENS.find((c) => c.name === "Lyrra Quenchcoil");
         expect(lyrra?.activeDroneId).toBe("lyrra-drone-sparky");
-        
+
         const activeDrone = getActiveDrone(lyrra!);
         expect(activeDrone).toBeDefined();
         expect(activeDrone?.name).toBe("Sparky");
@@ -24,7 +28,7 @@ describe("Pregen Characters with Drones", () => {
     it("should have Tinker as a destroyed drone", () => {
         const lyrra = PREGENS.find((c) => c.name === "Lyrra Quenchcoil");
         const tinker = lyrra?.drones?.find((d) => d.name === "Tinker");
-        
+
         expect(tinker).toBeDefined();
         expect(tinker?.destroyed).toBe(true);
         expect(tinker?.templateId).toBe("utility-drone");
@@ -55,10 +59,10 @@ describe("Pregen Characters with Drones", () => {
     it("should have correct customization for both drones", () => {
         const sparky = PREGEN_DRONES[0];
         const tinker = PREGEN_DRONES[1];
-        
+
         expect(sparky?.customization?.shellFinish).toBe("Black enamel");
         expect(sparky?.customization?.coreColor).toBe("Blue");
-        
+
         expect(tinker?.customization?.shellFinish).toBe("Verdigris brass");
         expect(tinker?.customization?.coreColor).toBe("Green");
     });
