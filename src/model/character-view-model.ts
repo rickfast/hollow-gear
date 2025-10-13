@@ -68,7 +68,7 @@ export interface CharacterSummary {
 }
 
 export interface FeatureDisplay {
-    type: "Class" | "Species";
+    type: "Class" | "Species" | "Archetype";
     source: string;
     feature: Feature;
 }
@@ -348,6 +348,7 @@ export class CharacterViewModel {
                 .filter((spell) => spell !== undefined) as Spell[]) || [];
         const species = SPECIES.find((s) => s.type === character.species);
         const cls = CLASSES.find((c) => c.type === primaryClass?.class);
+        const subclass = cls?.subclasses.find((s) => s.type === primaryClass?.subclass);
 
         this.features = [
             ...(species?.traits.map((feature) => ({
@@ -358,6 +359,11 @@ export class CharacterViewModel {
             ...(cls?.features.map((feature) => ({
                 type: "Class" as const,
                 source: cls.type,
+                feature,
+            })) || []),
+            ...(subclass?.features.map((feature) => ({
+                type: "Archetype" as const,
+                source: subclass.type,
                 feature,
             })) || []),
         ];
