@@ -26,13 +26,26 @@ export const Actions = ({ actions }: { actions: Action[] }) => {
     const handleDamageRoll = (action: Action) => {
         if (!action.damage) return;
 
-        const damageRollable: Rollable = {
-            count: action.damage.count,
-            die: action.damage.die,
-            bonus: action.damage.bonus,
-        };
+        const rollables: Rollable[] = [
+            {
+                count: action.damage.count,
+                die: action.damage.die,
+                bonus: action.damage.bonus,
+            },
+        ];
 
-        showRollToast(`${action.name} - Damage (${action.damage.damageType})`, [damageRollable]);
+        // Add additional damage from mods
+        if (action.damage.additionalDamage && action.damage.additionalDamage.length > 0) {
+            action.damage.additionalDamage.forEach((addDmg) => {
+                rollables.push({
+                    count: addDmg.count,
+                    die: addDmg.die,
+                    bonus: 0,
+                });
+            });
+        }
+
+        showRollToast(`${action.name} - Damage (${action.damage.damageType})`, rollables);
     };
 
     return (
@@ -123,7 +136,7 @@ export const Actions = ({ actions }: { actions: Action[] }) => {
 };
 
 const DamageDisplay = ({ damage }: { damage: Damage }) => {
-    return damage.staticDamage ? (
+    const baseDamage = damage.staticDamage ? (
         <span className="font-semibold">{damage.staticDamage}</span>
     ) : (
         <span className="font-semibold">
@@ -131,4 +144,21 @@ const DamageDisplay = ({ damage }: { damage: Damage }) => {
             {damage.bonus ? ` + ${damage.bonus}` : ""}
         </span>
     );
+
+    // Add additional damage from mods
+    if (damage.additionalDamage && damage.additionalDamage.length > 0) {
+        return (
+            <span>
+                {baseDamage}
+                {damage.additionalDamage.map((addDmg, idx) => (
+                    <span key={idx} className="text-primary">
+                        {" "}
+                        + {addDmg.count}d{addDmg.die} {addDmg.damageType}
+                    </span>
+                ))}
+            </span>
+        );
+    }
+
+    return baseDamage;
 };

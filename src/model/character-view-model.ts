@@ -5,6 +5,7 @@ import type {
     AetherFluxPoints,
     Character,
     CraftTier,
+    DamageInfo,
     DamageType,
     Die,
     Feature,
@@ -125,6 +126,7 @@ export interface Damage extends Rollable {
     staticDamage?: number;
     damageType: DamageType;
     bonus?: number;
+    additionalDamage?: DamageInfo[];
 }
 
 export type ModViewModel = InventoryMod & { mod: Mod };
@@ -291,6 +293,29 @@ export class CharacterViewModel {
                     equipment
                 );
 
+                // Calculate additional damage from mods
+                const attachedMods = item.mods
+                    .map((modId) => MOD_LOOKUP[modId])
+                    .filter(
+                        (mod): mod is Mod => mod !== undefined && mod.additionalDamage !== undefined
+                    );
+
+                // Build description with mod effects
+                let description = equipment.description || "";
+                if (attachedMods.length > 0) {
+                    const modEffects = attachedMods
+                        .map((mod) => {
+                            if (mod.additionalDamage) {
+                                return `+${mod.additionalDamage.count}d${mod.additionalDamage.die} ${mod.additionalDamage.damageType} (${mod.name})`;
+                            }
+                            return mod.effect;
+                        })
+                        .join(", ");
+                    description = description
+                        ? `${description}\nMods: ${modEffects}`
+                        : `Mods: ${modEffects}`;
+                }
+
                 this.actions.push({
                     name: equipment.name,
                     type: equipment.weaponType,
@@ -300,8 +325,11 @@ export class CharacterViewModel {
                         die: damage.die,
                         bonus: damageBonus,
                         damageType: damage.damageType,
+                        additionalDamage: attachedMods
+                            .map((mod) => mod.additionalDamage!)
+                            .filter((dmg): dmg is DamageInfo => dmg !== undefined),
                     },
-                    description: equipment.description,
+                    description,
                     range: equipment.range
                         ? `${equipment.range?.normal}' (${equipment.range?.max}')`
                         : "",

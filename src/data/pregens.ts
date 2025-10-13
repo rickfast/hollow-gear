@@ -95,7 +95,13 @@ export const PREGENS: Character[] = [
         ideals: ["Innovation and progress above all"],
         bonds: ["Loyal to my guild and fellow mechanists"],
         flaws: ["Can't resist tinkering with things that work fine"],
-        mods: [],
+        mods: [
+            {
+                id: "1",
+                modId: "overclock-coil",
+                equipped: false
+            }
+        ],
     },
 
     // ========================================================================
