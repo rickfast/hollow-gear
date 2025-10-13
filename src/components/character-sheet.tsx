@@ -1,5 +1,5 @@
 import type { AbilityScore, SavingThrow } from "@/model/character-view-model";
-import { useCharacterViewModel } from "@/model/use-character-view-model";
+import { useCharacterViewModelContext } from "@/model/character-view-model-context";
 import {
     Avatar,
     Card,
@@ -30,16 +30,6 @@ interface CharacterSheetProps {
     id: string;
 }
 
-// Helper function to calculate ability modifier
-function getAbilityModifier(score: number): number {
-    return Math.floor((score - 10) / 2);
-}
-
-// Helper function to format modifier
-function formatModifier(modifier: number): string {
-    return modifier >= 0 ? `+${modifier}` : `${modifier}`;
-}
-
 type SectionKey = "skills" | "actions" | "inventory" | "spells" | "features" | "mindcraft" | "mods";
 
 export function CharacterSheet({ id }: CharacterSheetProps) {
@@ -47,11 +37,11 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
     const [activeSection, setActiveSection] = useState<SectionKey>("skills");
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const { getCharacter } = useCharacterViewModel();
-    const { summary, abilityScores, savingThrows, skills } = getCharacter(id)!;
+    const { getCharacter } = useCharacterViewModelContext();
+    const { summary, abilityScores, savingThrows, skills } = getCharacter(id);
 
-    const showSpellsTab = getCharacter(id)!.spellType !== "None";
-    const spellType = getCharacter(id)!.spellType;
+    const showSpellsTab = getCharacter(id).spellType !== "None";
+    const spellType = getCharacter(id).spellType;
 
     // Detect mobile screen size
     useEffect(() => {
@@ -349,20 +339,20 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                 <Tab key="actions" title="Actions">
                                     <div style={{ padding: "1rem" }}>
                                         <p style={{ opacity: 0.7 }}>
-                                            <Actions actions={getCharacter(id)!.actions} />
+                                            <Actions actions={getCharacter(id).actions} />
                                         </p>
                                     </div>
                                 </Tab>
                                 <Tab key="inventory" title="Inventory">
                                     <div style={{ padding: "1rem" }}>
                                         <p style={{ opacity: 0.7 }}>
-                                            <Inventory inventory={getCharacter(id)!.inventory} />
+                                            <Inventory inventory={getCharacter(id).inventory} />
                                         </p>
                                     </div>
                                 </Tab>
                                 <Tab key="mods" title="Mods">
                                     <div style={{ padding: "1rem" }}>
-                                        <Mods inventory={getCharacter(id)!.inventory} />
+                                        <Mods inventory={getCharacter(id).inventory} />
                                     </div>
                                 </Tab>
                                 {showSpellsTab && (
@@ -374,14 +364,14 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                                         ? "Aether Flux"
                                                         : "Resonance Charges"
                                                 }
-                                                spells={getCharacter(id)!.spells}
+                                                spells={getCharacter(id).spells}
                                             />
                                         </div>
                                     </Tab>
                                 )}
                                 <Tab key="features" title="Features + Traits">
                                     <div style={{ padding: "1rem" }}>
-                                        <Features features={getCharacter(id)!.features} />
+                                        <Features features={getCharacter(id).features} />
                                     </div>
                                 </Tab>
                                 <Tab key="mindcraft" title="Mindcraft">
@@ -426,24 +416,24 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             </p>
                         )}
                         {activeSection === "actions" && (
-                            <Actions actions={getCharacter(id)!.actions} />
+                            <Actions actions={getCharacter(id).actions} />
                         )}
                         {activeSection === "inventory" && (
-                            <Inventory inventory={getCharacter(id)!.inventory} />
+                            <Inventory inventory={getCharacter(id).inventory} />
                         )}
                         {showSpellsTab && activeSection === "spells" && (
                             <Spells
                                 resourceType={
                                     spellType === "Formulae" ? "Aether Flux" : "Resonance Charges"
                                 }
-                                spells={getCharacter(id)!.spells}
+                                spells={getCharacter(id).spells}
                             />
                         )}
                         {activeSection === "features" && (
-                            <Features features={getCharacter(id)!.features} />
+                            <Features features={getCharacter(id).features} />
                         )}
                         {activeSection === "mods" && (
-                            <Mods inventory={getCharacter(id)!.inventory} />
+                            <Mods inventory={getCharacter(id).inventory} />
                         )}
                         {activeSection === "mindcraft" && (
                             <p style={{ opacity: 0.7 }}>Mindcraft content coming soon...</p>

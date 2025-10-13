@@ -1,4 +1,4 @@
-import { useCharacterViewModel } from "@/model/use-character-view-model";
+import { useCharacterViewModelContext } from "@/model/character-view-model-context";
 import { Avatar, Card, CardBody, Chip } from "@heroui/react";
 
 interface CharacterListProps {
@@ -6,7 +6,7 @@ interface CharacterListProps {
 }
 
 export function CharacterList({ onSelectCharacter }: CharacterListProps) {
-    const { getAllCharacters } = useCharacterViewModel();
+    const { getAllCharacters } = useCharacterViewModelContext();
     const characters = getAllCharacters();
 
     return (

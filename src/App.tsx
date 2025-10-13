@@ -1,15 +1,13 @@
 import { CharacterList } from "@/components/character-list";
 import { CharacterSheet } from "@/components/character-sheet";
-import { PREGENS } from "@/data/pregens";
+import { CharacterViewModelProvider } from "@/model/character-view-model-context";
 import { Button } from "@heroui/react";
 import { useState } from "react";
 
-function App() {
+function AppContent() {
     const [selectedCharacter, setSelectedCharacter] = useState<string | null>(null);
 
-    const character = selectedCharacter ? PREGENS.find((c) => c.id === selectedCharacter) : null;
-
-    if (character) {
+    if (selectedCharacter) {
         return (
             <div>
                 <div style={{ padding: "1rem", borderBottom: "1px solid rgba(0,0,0,0.1)" }}>
@@ -17,7 +15,7 @@ function App() {
                         ← Back to Characters
                     </Button>
                 </div>
-                <CharacterSheet id={character.id} />
+                <CharacterSheet id={selectedCharacter} />
             </div>
         );
     }
@@ -27,6 +25,14 @@ function App() {
             <img src="/logo.png" alt="Hollow Gear 5E" style={{ paddingBottom: "1rem" }} />
             <CharacterList onSelectCharacter={setSelectedCharacter} />
         </div>
+    );
+}
+
+function App() {
+    return (
+        <CharacterViewModelProvider>
+            <AppContent />
+        </CharacterViewModelProvider>
     );
 }
 
