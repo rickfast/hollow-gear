@@ -99,8 +99,8 @@ export const PREGENS: Character[] = [
             {
                 id: "1",
                 modId: "overclock-coil",
-                equipped: false
-            }
+                equipped: false,
+            },
         ],
     },
 
@@ -438,9 +438,9 @@ export const PREGENS: Character[] = [
             },
         },
         mindcraftPowers: [
-            MINDCRAFT_POWERS.find((p) => p.name === "Entropy Lash")!,
-            MINDCRAFT_POWERS.find((p) => p.name === "Aether Push")!,
-            MINDCRAFT_POWERS.find((p) => p.name === "Empathic Link")!,
+            MINDCRAFT_POWERS.find((p) => p.name === "Entropy Lash")!.id,
+            MINDCRAFT_POWERS.find((p) => p.name === "Aether Push")!.id,
+            MINDCRAFT_POWERS.find((p) => p.name === "Empathic Link")!.id,
         ],
         armorClass: 12,
         initiative: 1,
@@ -530,9 +530,9 @@ export const PREGENS: Character[] = [
             },
         },
         mindcraftPowers: [
-            MINDCRAFT_POWERS.find((p) => p.name === "Resonant Pulse")!,
-            MINDCRAFT_POWERS.find((p) => p.name === "Echo Step")!,
-            MINDCRAFT_POWERS.find((p) => p.name === "Veil Touch")!,
+            MINDCRAFT_POWERS.find((p) => p.name === "Resonant Pulse")!.id,
+            MINDCRAFT_POWERS.find((p) => p.name === "Echo Step")!.id,
+            MINDCRAFT_POWERS.find((p) => p.name === "Veil Touch")!.id,
         ],
         armorClass: 12, // 11 + Dex mod (+1)
         initiative: 1,

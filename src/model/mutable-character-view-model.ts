@@ -940,13 +940,13 @@ export class MutableCharacterViewModel extends CharacterViewModel {
         }
 
         // Check if power is already known
-        if (this._mutableCharacter.mindcraftPowers.some((p) => p.name === power.name)) {
+        if (this._mutableCharacter.mindcraftPowers.some((p) => p === power.id)) {
             throw new ValidationError("power.name", power.name, "power already known");
         }
 
         this._mutableCharacter = {
             ...this._mutableCharacter,
-            mindcraftPowers: [...this._mutableCharacter.mindcraftPowers, power],
+            mindcraftPowers: [...this._mutableCharacter.mindcraftPowers, power.id],
         };
 
         return this.toCharacter();
@@ -958,20 +958,16 @@ export class MutableCharacterViewModel extends CharacterViewModel {
      * @returns Updated character
      * @throws ValidationError if power is not known
      */
-    forgetMindcraftPower(powerName: string): Character {
-        const powerIndex = this._mutableCharacter.mindcraftPowers.findIndex(
-            (p) => p.name === powerName
-        );
+    forgetMindcraftPower(id: string): Character {
+        const powerIndex = this._mutableCharacter.mindcraftPowers.findIndex((p) => p === id);
 
         if (powerIndex === -1) {
-            throw new ValidationError("powerName", powerName, "power not known");
+            throw new ValidationError("id", id, "power not known");
         }
 
         this._mutableCharacter = {
             ...this._mutableCharacter,
-            mindcraftPowers: this._mutableCharacter.mindcraftPowers.filter(
-                (p) => p.name !== powerName
-            ),
+            mindcraftPowers: this._mutableCharacter.mindcraftPowers.filter((p) => p !== id),
         };
 
         return this.toCharacter();

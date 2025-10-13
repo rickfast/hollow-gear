@@ -32,7 +32,7 @@ export interface Character {
     spellSlots?: SpellSlots; // For Arcanist/Templar
     aetherFluxPoints?: AetherFluxPoints; // For Mindweaver/Arcanist
     resonanceCharges?: ResonanceCharges; // For Templar
-    mindcraftPowers: MindcraftPower[];
+    mindcraftPowers: string[];
 
     // Combat Stats
     armorClass: number;
@@ -477,6 +477,7 @@ export interface SpellcastingMethod {
 // ============================================================================
 
 export interface MindcraftPower {
+    id: string;
     name: string;
     tier: number; // 1-5
     discipline: PsionicDiscipline;

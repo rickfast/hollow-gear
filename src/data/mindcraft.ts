@@ -5,6 +5,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
     // DISCIPLINE OF FLUX - Entropy & Energy
     // ============================================================================
     {
+        id: "entropy-lash",
         name: "Entropy Lash",
         tier: 1,
         discipline: "Flux",
@@ -14,6 +15,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "aether-push",
         name: "Aether Push",
         tier: 2,
         discipline: "Flux",
@@ -27,6 +29,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "plasma-burst",
         name: "Plasma Burst",
         tier: 3,
         discipline: "Flux",
@@ -40,6 +43,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "kinetic-barrier",
         name: "Kinetic Barrier",
         tier: 4,
         discipline: "Flux",
@@ -51,6 +55,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "collapse-field",
         name: "Collapse Field",
         tier: 5,
         discipline: "Flux",
@@ -68,6 +73,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
     // DISCIPLINE OF ECHO - Sound, Vibration, & Resonance
     // ============================================================================
     {
+        id: "resonant-pulse",
         name: "Resonant Pulse",
         tier: 1,
         discipline: "Echo",
@@ -81,6 +87,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "echo-step",
         name: "Echo Step",
         tier: 2,
         discipline: "Echo",
@@ -90,6 +97,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "dissonant-strike",
         name: "Dissonant Strike",
         tier: 3,
         discipline: "Echo",
@@ -99,6 +107,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "waveform-shatter",
         name: "Waveform Shatter",
         tier: 4,
         discipline: "Echo",
@@ -112,6 +121,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "harmonic-collapse",
         name: "Harmonic Collapse",
         tier: 5,
         discipline: "Echo",
@@ -129,6 +139,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
     // DISCIPLINE OF EIDOLON - Soul Projection & Manifestation
     // ============================================================================
     {
+        id: "spectral-hand",
         name: "Spectral Hand",
         tier: 1,
         discipline: "Eidolon",
@@ -140,6 +151,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "soul-anchor",
         name: "Soul Anchor",
         tier: 2,
         discipline: "Eidolon",
@@ -149,6 +161,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "astral-shard",
         name: "Astral Shard",
         tier: 3,
         discipline: "Eidolon",
@@ -160,6 +173,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "phantom-strike",
         name: "Phantom Strike",
         tier: 4,
         discipline: "Eidolon",
@@ -169,6 +183,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "reunion-of-thought",
         name: "Reunion of Thought",
         tier: 5,
         discipline: "Eidolon",
@@ -184,6 +199,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
     // DISCIPLINE OF EMPYRIC - Emotion, Mind, & Memory
     // ============================================================================
     {
+        id: "empathic-link",
         name: "Empathic Link",
         tier: 1,
         discipline: "Empyric",
@@ -194,6 +210,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "mind-dull",
         name: "Mind Dull",
         tier: 2,
         discipline: "Empyric",
@@ -208,6 +225,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "calm-hostility",
         name: "Calm Hostility",
         tier: 3,
         discipline: "Empyric",
@@ -222,6 +240,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "reunion-of-thought",
         name: "Memory Echo",
         tier: 4,
         discipline: "Empyric",
@@ -231,6 +250,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "mind-link",
         name: "Mass Link",
         tier: 5,
         discipline: "Empyric",
@@ -246,6 +266,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
     // DISCIPLINE OF VEIL - Illusion, Concealment, & Deception
     // ============================================================================
     {
+        id: "veil-touch",
         name: "Veil Touch",
         tier: 1,
         discipline: "Veil",
@@ -256,6 +277,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "phase-blur",
         name: "Phase Blur",
         tier: 2,
         discipline: "Veil",
@@ -266,6 +288,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "mirate-step",
         name: "Mirage Step",
         tier: 3,
         discipline: "Veil",
@@ -277,6 +300,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "aether-veil",
         name: "Aether Veil",
         tier: 4,
         discipline: "Veil",
@@ -288,6 +312,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "false-horizon",
         name: "False Horizon",
         tier: 5,
         discipline: "Veil",
@@ -307,6 +332,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
     // DISCIPLINE OF KINESIS - Telekinetic Force & Motion
     // ============================================================================
     {
+        id: "telekinetic-grip",
         name: "Telekinetic Grip",
         tier: 1,
         discipline: "Kinesis",
@@ -318,6 +344,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "force-pull",
         name: "Force Pull",
         tier: 2,
         discipline: "Kinesis",
@@ -331,6 +358,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "levitate-self",
         name: "Levitate Self",
         tier: 3,
         discipline: "Kinesis",
@@ -342,6 +370,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "crush-field",
         name: "Crush Field",
         tier: 4,
         discipline: "Kinesis",
@@ -357,6 +386,7 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
     {
+        id: "mass-lift",
         name: "Mass Lift",
         tier: 5,
         discipline: "Kinesis",
@@ -368,3 +398,11 @@ export const MINDCRAFT_POWERS: MindcraftPower[] = [
         amplifiable: true,
     },
 ];
+
+export const MINDCRAFT_POWERS_LOOKUP: Record<string, MindcraftPower> = MINDCRAFT_POWERS.reduce(
+    (acc, power) => {
+        acc[power.id] = power;
+        return acc;
+    },
+    {} as Record<string, MindcraftPower>
+);

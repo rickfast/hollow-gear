@@ -488,10 +488,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             <Actions actions={getCharacter(id).actions} />
                         )}
                         {activeSection === "inventory" && (
-                            <Inventory
-                                inventory={getCharacter(id).inventory}
-                                characterId={id}
-                            />
+                            <Inventory inventory={getCharacter(id).inventory} characterId={id} />
                         )}
                         {showSpellsTab && activeSection === "spells" && (
                             <Spells
