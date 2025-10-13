@@ -8,6 +8,7 @@
  */
 
 import { CLASSES } from "@/data/classes";
+import { FIRST_NAMES, LAST_NAMES } from "@/data/names";
 import { SPECIES } from "@/data/species";
 import type { AbilityScores, Character, ClassType, SkillType, Skills, SpeciesType } from "@/types";
 import {
@@ -34,6 +35,22 @@ export class CharacterBuilder {
         }
         this.character.name = name.trim();
         return this;
+    }
+
+    generateName(): this {
+        const randomFirstName = FIRST_NAMES[Math.floor(Math.random() * FIRST_NAMES.length)];
+        const randomLastName = LAST_NAMES[Math.floor(Math.random() * LAST_NAMES.length)];
+
+        const generatedName = `${randomFirstName} ${randomLastName}`;
+
+        return this.setName(generatedName);
+    }
+
+    /**
+     * Get the current name (useful for accessing generated names)
+     */
+    getName(): string | undefined {
+        return this.character.name;
     }
 
     /**
