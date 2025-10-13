@@ -1,14 +1,20 @@
 import type { Character } from "@/types";
 import type { ReactNode } from "react";
 import { createContext, useContext } from "react";
-import type { CharacterViewModel } from "./character-view-model";
+import type { MutableCharacterViewModel } from "./mutable-character-view-model";
+import type { CharacterBuilder } from "./character-builder";
 import { useCharacterViewModel } from "./use-character-view-model";
 
 interface CharacterViewModelContextType {
-    getCharacter: (id: string) => CharacterViewModel;
-    getAllCharacters: () => CharacterViewModel[];
-    addCharacter: (character: Character) => void;
-    updateCharacter: (id: string, character: Partial<Character>) => void;
+    getCharacter: (id: string) => MutableCharacterViewModel;
+    getAllCharacters: () => MutableCharacterViewModel[];
+    createCharacter: (builder: CharacterBuilder) => string;
+    updateCharacter: (id: string, updater: (vm: MutableCharacterViewModel) => Character) => void;
+    deleteCharacter: (id: string) => void;
+    exportCharacter: (id: string) => string;
+    importCharacter: (json: string) => string;
+    isLoading: boolean;
+    error: Error | null;
 }
 
 const CharacterViewModelContext = createContext<CharacterViewModelContextType | undefined>(

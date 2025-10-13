@@ -17,8 +17,11 @@ import type {
     Spell,
     Weapon,
 } from "@/types";
-
-const formatModifier = (modifier: number) => (modifier >= 0 ? `+${modifier}` : `${modifier}`);
+import {
+    calculateAbilityModifier,
+    calculateProficiencyBonus,
+    formatModifier,
+} from "./character-utils";
 
 export class AbilityScore {
     public score: number;
@@ -186,30 +189,31 @@ export class CharacterViewModel {
         this.abilityScores = {
             strength: new AbilityScore({
                 score: this.character.abilityScores.strength,
-                modifier: Math.floor((this.character.abilityScores.strength - 10) / 2),
+                modifier: calculateAbilityModifier(this.character.abilityScores.strength),
             }),
             dexterity: new AbilityScore({
                 score: this.character.abilityScores.dexterity,
-                modifier: Math.floor((this.character.abilityScores.dexterity - 10) / 2),
+                modifier: calculateAbilityModifier(this.character.abilityScores.dexterity),
             }),
             constitution: new AbilityScore({
                 score: this.character.abilityScores.constitution,
-                modifier: Math.floor((this.character.abilityScores.constitution - 10) / 2),
+                modifier: calculateAbilityModifier(this.character.abilityScores.constitution),
             }),
             intelligence: new AbilityScore({
                 score: this.character.abilityScores.intelligence,
-                modifier: Math.floor((this.character.abilityScores.intelligence - 10) / 2),
+                modifier: calculateAbilityModifier(this.character.abilityScores.intelligence),
             }),
             wisdom: new AbilityScore({
                 score: this.character.abilityScores.wisdom,
-                modifier: Math.floor((this.character.abilityScores.wisdom - 10) / 2),
+                modifier: calculateAbilityModifier(this.character.abilityScores.wisdom),
             }),
             charisma: new AbilityScore({
                 score: this.character.abilityScores.charisma,
-                modifier: Math.floor((this.character.abilityScores.charisma - 10) / 2),
+                modifier: calculateAbilityModifier(this.character.abilityScores.charisma),
             }),
         };
 
+        const proficiencyBonus = calculateProficiencyBonus(this.character.level);
         let savingThrows = {} as SavingThrows;
         for (const ability of [
             "strength",
@@ -220,10 +224,10 @@ export class CharacterViewModel {
             "charisma",
         ] as const) {
             const score = this.character.abilityScores[ability];
-            const modifier = Math.floor((score - 10) / 2);
+            const modifier = calculateAbilityModifier(score);
             const isProficient =
                 this.character.proficiencies?.savingThrows?.includes(ability) || false;
-            const profBonus = isProficient ? 2 : 0; // Simplified, should use actual proficiency bonus
+            const profBonus = isProficient ? proficiencyBonus : 0;
             const total = modifier + profBonus;
 
             savingThrows = {
