@@ -1,4 +1,5 @@
 export * from "./classes";
+export * from "./drones";
 export * from "./equipment";
 export * from "./mindcraft";
 export * from "./pregens";

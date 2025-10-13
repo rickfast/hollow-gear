@@ -17,6 +17,7 @@ export * from "./mods";
 export * from "./spells";
 export * from "./mindcraft";
 export * from "./combat";
+export * from "./drones";
 
 // Supporting
 export * from "./proficiencies";
