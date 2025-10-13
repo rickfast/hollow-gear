@@ -554,6 +554,7 @@ export const PREGENS: Character[] = [
     // ========================================================================
     {
         id: "rhul-greypike-pregen-007",
+        avatarUrl: "/avatars/rhul-greypike.png",
         name: "Rhul Greypike",
         species: "Tharn",
         classes: [

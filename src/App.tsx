@@ -1,15 +1,32 @@
 import { CharacterList } from "@/components/character-list";
 import { CharacterSheet } from "@/components/character-sheet";
 import { CharacterViewModelProvider } from "@/model/character-view-model-context";
-import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/react";
+import {
+    Button,
+    Link,
+    Navbar,
+    NavbarBrand,
+    NavbarContent,
+    NavbarItem,
+    NavbarMenu,
+    NavbarMenuItem,
+    NavbarMenuToggle,
+} from "@heroui/react";
 import { useState } from "react";
 
 function AppContent() {
     const [selectedCharacter, setSelectedCharacter] = useState<string | null>(null);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const menuItems = [
+        { name: "Characters", key: "characters" },
+        { name: "Build Character", key: "build" },
+        { name: "Rules", key: "rules" },
+    ];
 
     return (
         <div className="min-h-screen flex flex-col">
-            <Navbar isBordered maxWidth="full">
+            <Navbar isBordered maxWidth="full" onMenuOpenChange={setIsMenuOpen}>
                 <div
                     style={{
                         maxWidth: "1400px",
@@ -20,14 +37,31 @@ function AppContent() {
                         justifyContent: "space-between",
                     }}
                 >
-                    <NavbarBrand>
-                        <img
-                            src="/logo.png"
-                            alt="Hollow Gear 5E"
-                            style={{ height: "40px", cursor: "pointer" }}
-                            onClick={() => setSelectedCharacter(null)}
+                    <NavbarContent>
+                        <NavbarMenuToggle
+                            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                            className="sm:hidden"
                         />
-                    </NavbarBrand>
+                        <NavbarBrand>
+                            <img
+                                src="/logo.png"
+                                alt="Hollow Gear 5E"
+                                style={{ height: "40px", cursor: "pointer" }}
+                                onClick={() => setSelectedCharacter(null)}
+                            />
+                        </NavbarBrand>
+                    </NavbarContent>
+
+                    <NavbarContent className="hidden sm:flex gap-4" justify="center">
+                        {menuItems.map((item) => (
+                            <NavbarItem key={item.key}>
+                                <Link color="foreground" href="#" className="cursor-pointer">
+                                    {item.name}
+                                </Link>
+                            </NavbarItem>
+                        ))}
+                    </NavbarContent>
+
                     {selectedCharacter && (
                         <NavbarContent justify="end">
                             <NavbarItem>
@@ -42,6 +76,21 @@ function AppContent() {
                         </NavbarContent>
                     )}
                 </div>
+
+                <NavbarMenu>
+                    {menuItems.map((item, index) => (
+                        <NavbarMenuItem key={`${item.key}-${index}`}>
+                            <Link
+                                color="foreground"
+                                className="w-full cursor-pointer"
+                                href="#"
+                                size="lg"
+                            >
+                                {item.name}
+                            </Link>
+                        </NavbarMenuItem>
+                    ))}
+                </NavbarMenu>
             </Navbar>
 
             <main className="flex-1">
