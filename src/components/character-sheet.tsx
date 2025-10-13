@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { Actions } from "./actions";
 import { Features } from "./features";
 import { Inventory } from "./inventory";
+import { Mindcraft } from "./mindcraft";
 import { Mods } from "./mods";
 import { PointBar } from "./point-bar";
 import { RollButton } from "./roll-button";
@@ -445,9 +446,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                 </Tab>
                                 <Tab key="mindcraft" title="Mindcraft">
                                     <div style={{ padding: "1rem" }}>
-                                        <p style={{ opacity: 0.7 }}>
-                                            Mindcraft content coming soon...
-                                        </p>
+                                        <Mindcraft powers={getCharacter(id)!.mindcraftPowers} />
                                     </div>
                                 </Tab>
                             </Tabs>
@@ -505,7 +504,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             <Mods inventory={getCharacter(id).inventory} />
                         )}
                         {activeSection === "mindcraft" && (
-                            <p style={{ opacity: 0.7 }}>Mindcraft content coming soon...</p>
+                            <Mindcraft powers={getCharacter(id)!.mindcraftPowers} />
                         )}
                     </ModalBody>
                 </ModalContent>

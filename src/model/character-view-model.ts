@@ -1,4 +1,4 @@
-import { CLASSES, EQUIPMENT_BY_ID, SPECIES, SPELLS_BY_NAME } from "@/data";
+import { CLASSES, EQUIPMENT_BY_ID, MINDCRAFT_POWERS_LOOKUP, SPECIES, SPELLS_BY_NAME } from "@/data";
 import { CRAFT_TIER_LOOKUP, MOD_LOOKUP } from "@/data/mods";
 import { SKILLS } from "@/data/skills";
 import type {
@@ -11,6 +11,7 @@ import type {
     Feature,
     HitPoints,
     InventoryMod,
+    MindcraftPower,
     Mod,
     ResonanceCharges,
     Rollable,
@@ -22,6 +23,7 @@ import {
     calculateAbilityModifier,
     calculateProficiencyBonus,
     formatModifier,
+    ValidationError,
 } from "./character-utils";
 
 export class AbilityScore {
@@ -156,6 +158,7 @@ export class CharacterViewModel {
     actions: Action[] = []; // Placeholder for future implementation
     spellType: "Formulae" | "Miracles" | "None";
     spells: Spell[] = [];
+    mindcraftPowers: MindcraftPower[] = [];
     features: FeatureDisplay[] = [];
     inventory: InventoryViewModel;
 
@@ -368,6 +371,14 @@ export class CharacterViewModel {
         });
 
         this.inventory = new InventoryViewModel(inventoryItems, inventoryMods);
+        this.mindcraftPowers =
+            character.mindcraftPowers?.map((id) => {
+                const power = MINDCRAFT_POWERS_LOOKUP[id];
+                if (!power) {
+                    throw new ValidationError("mindcraftPower", id, "unknown mindcraft power");
+                }
+                return power;
+            }) || [];
     }
 }
 
