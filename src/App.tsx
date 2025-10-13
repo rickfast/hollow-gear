@@ -1,8 +1,9 @@
-import { CharacterList } from "@/components/character-list";
-import { CharacterSheet } from "@/components/character-sheet";
 import { CharacterViewModelProvider } from "@/model/character-view-model-context";
+import { CharacterBuilderPage } from "@/pages/character-builder-page";
+import { CharacterSheetPage } from "@/pages/character-sheet-page";
+import { CharactersPage } from "@/pages/characters-page";
+import { RulesPage } from "@/pages/rules-page";
 import {
-    Button,
     Link,
     Navbar,
     NavbarBrand,
@@ -13,16 +14,19 @@ import {
     NavbarMenuToggle,
 } from "@heroui/react";
 import { useState } from "react";
+import { BrowserRouter, Route, Link as RouterLink, Routes, useLocation } from "react-router-dom";
 
 function AppContent() {
-    const [selectedCharacter, setSelectedCharacter] = useState<string | null>(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const location = useLocation();
 
     const menuItems = [
-        { name: "Characters", key: "characters" },
-        { name: "Build Character", key: "build" },
-        { name: "Rules", key: "rules" },
+        { name: "Characters", path: "/", key: "characters" },
+        { name: "Build Character", path: "/builder", key: "build" },
+        { name: "Rules", path: "/rules", key: "rules" },
     ];
+
+    const isCharacterSheet = location.pathname.startsWith("/characters/");
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -43,35 +47,44 @@ function AppContent() {
                             className="sm:hidden"
                         />
                         <NavbarBrand>
-                            <img
-                                src="/logo.png"
-                                alt="Hollow Gear 5E"
-                                style={{ height: "40px", cursor: "pointer" }}
-                                onClick={() => setSelectedCharacter(null)}
-                            />
+                            <RouterLink to="/">
+                                <img
+                                    src="/logo.png"
+                                    alt="Hollow Gear 5E"
+                                    style={{ height: "40px", cursor: "pointer" }}
+                                />
+                            </RouterLink>
                         </NavbarBrand>
                     </NavbarContent>
 
                     <NavbarContent className="hidden sm:flex gap-4" justify="center">
                         {menuItems.map((item) => (
-                            <NavbarItem key={item.key}>
-                                <Link color="foreground" href="#" className="cursor-pointer">
+                            <NavbarItem key={item.key} isActive={location.pathname === item.path}>
+                                <Link
+                                    as={RouterLink}
+                                    to={item.path}
+                                    color={
+                                        location.pathname === item.path ? "primary" : "foreground"
+                                    }
+                                    className="cursor-pointer"
+                                >
                                     {item.name}
                                 </Link>
                             </NavbarItem>
                         ))}
                     </NavbarContent>
 
-                    {selectedCharacter && (
+                    {isCharacterSheet && (
                         <NavbarContent justify="end">
                             <NavbarItem>
-                                <Button
-                                    variant="light"
-                                    onPress={() => setSelectedCharacter(null)}
-                                    size="sm"
+                                <Link
+                                    as={RouterLink}
+                                    to="/"
+                                    color="foreground"
+                                    className="cursor-pointer"
                                 >
                                     ← Back to Characters
-                                </Button>
+                                </Link>
                             </NavbarItem>
                         </NavbarContent>
                     )}
@@ -81,9 +94,10 @@ function AppContent() {
                     {menuItems.map((item, index) => (
                         <NavbarMenuItem key={`${item.key}-${index}`}>
                             <Link
+                                as={RouterLink}
+                                to={item.path}
                                 color="foreground"
                                 className="w-full cursor-pointer"
-                                href="#"
                                 size="lg"
                             >
                                 {item.name}
@@ -94,13 +108,12 @@ function AppContent() {
             </Navbar>
 
             <main className="flex-1">
-                {selectedCharacter ? (
-                    <CharacterSheet id={selectedCharacter} />
-                ) : (
-                    <div style={{ padding: "2rem", maxWidth: "1400px", margin: "0 auto" }}>
-                        <CharacterList onSelectCharacter={setSelectedCharacter} />
-                    </div>
-                )}
+                <Routes>
+                    <Route path="/" element={<CharactersPage />} />
+                    <Route path="/characters/:id" element={<CharacterSheetPage />} />
+                    <Route path="/builder" element={<CharacterBuilderPage />} />
+                    <Route path="/rules" element={<RulesPage />} />
+                </Routes>
             </main>
         </div>
     );
@@ -108,9 +121,11 @@ function AppContent() {
 
 function App() {
     return (
-        <CharacterViewModelProvider>
-            <AppContent />
-        </CharacterViewModelProvider>
+        <BrowserRouter>
+            <CharacterViewModelProvider>
+                <AppContent />
+            </CharacterViewModelProvider>
+        </BrowserRouter>
     );
 }
 
