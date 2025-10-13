@@ -238,3 +238,69 @@ export function calculateTotalWeight(inventory: CharacterInventoryItem[]): numbe
         return total + (equipment?.weight || 0);
     }, 0);
 }
+
+/**
+ * Validate that only Artifex characters have drones
+ * @param character - The character to validate
+ * @throws ValidationError if non-Artifex has drones
+ */
+export function validateDroneOwnership(character: Character): void {
+    const hasArtifexClass = character.classes.some((cls) => cls.class === "Artifex");
+
+    if (character.drones && character.drones.length > 0 && !hasArtifexClass) {
+        throw new ValidationError(
+            "drones",
+            character.drones.length,
+            "only Artifex characters can have drones"
+        );
+    }
+}
+
+/**
+ * Validate that only one drone is active
+ * @param character - The character to validate
+ * @throws ValidationError if multiple drones reference the same active ID or activeDroneId is invalid
+ */
+export function validateActiveDrone(character: Character): void {
+    if (!character.drones || character.drones.length === 0) {
+        if (character.activeDroneId) {
+            throw new ValidationError(
+                "activeDroneId",
+                character.activeDroneId,
+                "character has no drones but activeDroneId is set"
+            );
+        }
+        return;
+    }
+
+    if (character.activeDroneId) {
+        const activeDrone = character.drones.find((d) => d.id === character.activeDroneId);
+        if (!activeDrone) {
+            throw new ValidationError(
+                "activeDroneId",
+                character.activeDroneId,
+                "activeDroneId does not match any drone in drones array"
+            );
+        }
+
+        if (activeDrone.destroyed) {
+            throw new ValidationError(
+                "activeDroneId",
+                character.activeDroneId,
+                "active drone is marked as destroyed"
+            );
+        }
+    }
+}
+
+/**
+ * Get the active drone for a character
+ * @param character - The character
+ * @returns The active drone or undefined
+ */
+export function getActiveDrone(character: Character) {
+    if (!character.activeDroneId || !character.drones) {
+        return undefined;
+    }
+    return character.drones.find((d) => d.id === character.activeDroneId);
+}

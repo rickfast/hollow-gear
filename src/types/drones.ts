@@ -2,7 +2,7 @@
 // ARTIFEX DRONES (Chapter 13)
 // ============================================================================
 
-import type { DamageInfo } from "./combat";
+import type { DamageInfo, Rollable } from "./combat";
 import type { Feature } from "./common";
 import type { HitPoints } from "./resources";
 
@@ -83,7 +83,7 @@ export interface Drone {
         coreColor?: "Blue" | "Green" | "Red";
         behavioralQuirk?: string;
     };
-    active: boolean; // Only one drone can be active at a time
+    destroyed?: boolean; // Track if drone has been destroyed (can be rebuilt)
 }
 
 export interface DroneCommand {
@@ -134,7 +134,7 @@ export interface DroneRepair {
     healing: string; // e.g., "1d6"
     overclock?: {
         cost: number;
-        healing: string; // e.g., "3d6"
+        healing: Rollable; // e.g., "3d6"
         heatGain: number;
     };
 }

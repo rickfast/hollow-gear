@@ -1,4 +1,11 @@
-import { CLASSES, EQUIPMENT_BY_ID, MINDCRAFT_POWERS_LOOKUP, SPECIES, SPELLS_BY_NAME } from "@/data";
+import {
+    CLASSES,
+    DRONE_TEMPLATES_BY_ID,
+    EQUIPMENT_BY_ID,
+    MINDCRAFT_POWERS_LOOKUP,
+    SPECIES,
+    SPELLS_BY_NAME,
+} from "@/data";
 import { CRAFT_TIER_LOOKUP, MOD_LOOKUP } from "@/data/mods";
 import { SKILLS } from "@/data/skills";
 import type {
@@ -10,6 +17,7 @@ import type {
     DamageInfo,
     DamageType,
     Die,
+    Drone,
     Feature,
     HitPoints,
     InventoryMod,
@@ -28,6 +36,7 @@ import {
     calculateAbilityModifier,
     calculateProficiencyBonus,
     formatModifier,
+    getActiveDrone,
     ValidationError,
 } from "./character-utils";
 
@@ -177,6 +186,8 @@ export class CharacterViewModel {
     mindcraftPowers: MindcraftPower[] = [];
     features: FeatureDisplay[] = [];
     inventory: InventoryViewModel;
+    activeDrone?: Drone;
+    drones: Drone[] = [];
 
     constructor(private character: Character) {
         const primaryClass = this.character.classes[0];
@@ -402,6 +413,10 @@ export class CharacterViewModel {
                 }
                 return power;
             }) || [];
+
+        // Drones (Artifex only)
+        this.drones = character.drones || [];
+        this.activeDrone = getActiveDrone(character);
     }
 }
 

@@ -1,5 +1,5 @@
 import { ARCANE_ITEMS, ARMOR, BASIC_EQUIPMENT, MINDCRAFT_POWERS, SHIELDS, WEAPONS } from ".";
-import type { Character, Equipment, InventoryItem } from "../types";
+import type { Character, Drone, Equipment, InventoryItem } from "../types";
 import { MOD_LOOKUP } from "./mods";
 
 // Helper function to create an InventoryItem from Equipment
@@ -11,6 +11,59 @@ function createInventoryItem(equipment: Equipment, equipped: boolean = false): I
         equipped,
     };
 }
+
+// ============================================================================
+// PREGEN DRONES
+// ============================================================================
+
+// Lyrra's Combat Drone - "Sparky"
+const LYRRA_DRONE_SPARKY: Drone = {
+    id: "lyrra-drone-sparky",
+    name: "Sparky",
+    templateId: "combat-drone",
+    level: 1,
+    hitPoints: {
+        current: 12,
+        maximum: 12,
+    },
+    heatPoints: {
+        current: 0,
+        maximum: 10,
+    },
+    modSlots: 1,
+    mods: [],
+    personalityQuirk: "Emits low mechanical purring when praised",
+    customization: {
+        shellFinish: "Black enamel",
+        coreColor: "Blue",
+    },
+};
+
+// Lyrra's Utility Drone - "Tinker"
+const LYRRA_DRONE_TINKER: Drone = {
+    id: "lyrra-drone-tinker",
+    name: "Tinker",
+    templateId: "utility-drone",
+    level: 1,
+    hitPoints: {
+        current: 8,
+        maximum: 8,
+    },
+    heatPoints: {
+        current: 0,
+        maximum: 10,
+    },
+    modSlots: 1,
+    mods: [],
+    personalityQuirk: "Obsessively catalogs all mechanical sounds",
+    customization: {
+        shellFinish: "Verdigris brass",
+        coreColor: "Green",
+    },
+    destroyed: true, // Previously destroyed, can be rebuilt
+};
+
+export const PREGEN_DRONES: Drone[] = [LYRRA_DRONE_SPARKY, LYRRA_DRONE_TINKER];
 
 export const PREGENS: Character[] = [
     // ========================================================================
@@ -102,6 +155,8 @@ export const PREGENS: Character[] = [
                 equipped: false,
             },
         ],
+        drones: [LYRRA_DRONE_SPARKY, LYRRA_DRONE_TINKER], // Sparky (active) and Tinker (destroyed)
+        activeDroneId: "lyrra-drone-sparky",
     },
 
     // ========================================================================

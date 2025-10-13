@@ -6,6 +6,7 @@ import type { AbilityScores } from "./abilities";
 import type { CharacterClass } from "./classes";
 import type { Condition } from "./conditions";
 import type { Currency } from "./currency";
+import type { Drone } from "./drones";
 import type { InventoryItem, InventoryMod } from "./equipment";
 import type { Language } from "./languages";
 import type { Proficiencies, Skills } from "./proficiencies";
@@ -43,6 +44,10 @@ export interface Character {
     aetherFluxPoints?: AetherFluxPoints; // For Mindweaver/Arcanist
     resonanceCharges?: ResonanceCharges; // For Templar
     mindcraftPowers: string[];
+
+    // Drones (Artifex only)
+    drones?: Drone[]; // All drones the Artifex has built
+    activeDroneId?: string; // ID of currently active/deployed drone
 
     // Combat Stats
     armorClass: number;

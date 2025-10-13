@@ -359,7 +359,6 @@ export const EXAMPLE_DRONES: Drone[] = [
             shellFinish: "Black enamel",
             coreColor: "Blue",
         },
-        active: true,
     },
     {
         id: "drone-002",
@@ -382,6 +381,6 @@ export const EXAMPLE_DRONES: Drone[] = [
             shellFinish: "Verdigris brass",
             coreColor: "Green",
         },
-        active: false,
+        destroyed: false,
     },
 ];
