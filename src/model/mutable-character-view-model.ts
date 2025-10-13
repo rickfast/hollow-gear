@@ -119,6 +119,80 @@ export class MutableCharacterViewModel extends CharacterViewModel {
     }
 
     /**
+     * Update drone hit points
+     * @param droneId - ID of the drone to update
+     * @param current - Current hit points
+     * @returns Updated character
+     * @throws ValidationError if drone not found or HP out of range
+     */
+    updateDroneHitPoints(droneId: string, current: number): Character {
+        if (!this._mutableCharacter.drones) {
+            throw new ValidationError("drones", undefined, "character has no drones");
+        }
+
+        const droneIndex = this._mutableCharacter.drones.findIndex((d) => d.id === droneId);
+        if (droneIndex === -1) {
+            throw new ValidationError("droneId", droneId, "drone not found");
+        }
+
+        const drone = this._mutableCharacter.drones[droneIndex]!;
+        validateRange("drone.hitPoints.current", current, 0, drone.hitPoints.maximum);
+
+        const updatedDrones = [...this._mutableCharacter.drones];
+        updatedDrones[droneIndex] = {
+            ...drone,
+            hitPoints: {
+                ...drone.hitPoints,
+                current,
+            },
+        };
+
+        this._mutableCharacter = {
+            ...this._mutableCharacter,
+            drones: updatedDrones,
+        };
+
+        return this.toCharacter();
+    }
+
+    /**
+     * Update drone heat points
+     * @param droneId - ID of the drone to update
+     * @param current - Current heat points
+     * @returns Updated character
+     * @throws ValidationError if drone not found or heat out of range
+     */
+    updateDroneHeatPoints(droneId: string, current: number): Character {
+        if (!this._mutableCharacter.drones) {
+            throw new ValidationError("drones", undefined, "character has no drones");
+        }
+
+        const droneIndex = this._mutableCharacter.drones.findIndex((d) => d.id === droneId);
+        if (droneIndex === -1) {
+            throw new ValidationError("droneId", droneId, "drone not found");
+        }
+
+        const drone = this._mutableCharacter.drones[droneIndex]!;
+        validateRange("drone.heatPoints.current", current, 0, drone.heatPoints.maximum);
+
+        const updatedDrones = [...this._mutableCharacter.drones];
+        updatedDrones[droneIndex] = {
+            ...drone,
+            heatPoints: {
+                ...drone.heatPoints,
+                current,
+            },
+        };
+
+        this._mutableCharacter = {
+            ...this._mutableCharacter,
+            drones: updatedDrones,
+        };
+
+        return this.toCharacter();
+    }
+
+    /**
      * Update spell slot for a specific level
      * @param level - Spell slot level (1-9)
      * @param current - Current spell slots available

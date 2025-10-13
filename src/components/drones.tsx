@@ -1,13 +1,21 @@
 import { DRONE_TEMPLATES_BY_ID } from "@/data";
 import type { Drone } from "@/types";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
+import { PointBar } from "./point-bar";
 
 interface DronesProps {
     drones: Drone[];
     activeDroneId?: string;
+    onDroneHitPointsChange?: (droneId: string, delta: number) => void;
+    onDroneHeatPointsChange?: (droneId: string, delta: number) => void;
 }
 
-export function Drones({ drones, activeDroneId }: DronesProps) {
+export function Drones({
+    drones,
+    activeDroneId,
+    onDroneHitPointsChange,
+    onDroneHeatPointsChange,
+}: DronesProps) {
     if (!drones || drones.length === 0) {
         return (
             <div style={{ padding: "1rem", textAlign: "center", opacity: 0.6 }}>
@@ -84,11 +92,11 @@ export function Drones({ drones, activeDroneId }: DronesProps) {
                                     </p>
                                 </div>
 
-                                {/* Combat Stats - Similar to Character Sheet */}
+                                {/* Combat Stats - AC and Speed */}
                                 <div
                                     style={{
                                         display: "grid",
-                                        gridTemplateColumns: "repeat(4, 1fr)",
+                                        gridTemplateColumns: "repeat(2, 1fr)",
                                         gap: "1rem",
                                         padding: "1rem",
                                         backgroundColor: "var(--heroui-content2)",
@@ -121,44 +129,51 @@ export function Drones({ drones, activeDroneId }: DronesProps) {
                                                 fontWeight: 600,
                                             }}
                                         >
-                                            Hit Points
-                                        </div>
-                                        <div style={{ fontSize: "1.75rem", fontWeight: 700 }}>
-                                            {drone.hitPoints.current}/{drone.hitPoints.maximum}
-                                        </div>
-                                    </div>
-                                    <div style={{ textAlign: "center" }}>
-                                        <div
-                                            style={{
-                                                fontSize: "0.75rem",
-                                                opacity: 0.7,
-                                                marginBottom: "0.25rem",
-                                                textTransform: "uppercase",
-                                                fontWeight: 600,
-                                            }}
-                                        >
                                             Speed
                                         </div>
                                         <div style={{ fontSize: "1.75rem", fontWeight: 700 }}>
                                             {template?.stats.speed.walk || "—"}
                                         </div>
                                     </div>
-                                    <div style={{ textAlign: "center" }}>
-                                        <div
-                                            style={{
-                                                fontSize: "0.75rem",
-                                                opacity: 0.7,
-                                                marginBottom: "0.25rem",
-                                                textTransform: "uppercase",
-                                                fontWeight: 600,
-                                            }}
-                                        >
-                                            Heat
-                                        </div>
-                                        <div style={{ fontSize: "1.75rem", fontWeight: 700 }}>
-                                            {drone.heatPoints.current}/{drone.heatPoints.maximum}
-                                        </div>
-                                    </div>
+                                </div>
+
+                                {/* Resource Bars - HP and Heat */}
+                                <div
+                                    style={{
+                                        display: "grid",
+                                        gridTemplateColumns: "repeat(2, 1fr)",
+                                        gap: "0.5rem",
+                                    }}
+                                >
+                                    <PointBar
+                                        label="Hit Points"
+                                        points={drone.hitPoints}
+                                        onIncrement={
+                                            onDroneHitPointsChange && !isDestroyed
+                                                ? () => onDroneHitPointsChange(drone.id, 1)
+                                                : undefined
+                                        }
+                                        onDecrement={
+                                            onDroneHitPointsChange && !isDestroyed
+                                                ? () => onDroneHitPointsChange(drone.id, -1)
+                                                : undefined
+                                        }
+                                    />
+                                    <PointBar
+                                        label="Heat Points"
+                                        points={drone.heatPoints}
+                                        invert={true}
+                                        onIncrement={
+                                            onDroneHeatPointsChange && !isDestroyed
+                                                ? () => onDroneHeatPointsChange(drone.id, 1)
+                                                : undefined
+                                        }
+                                        onDecrement={
+                                            onDroneHeatPointsChange && !isDestroyed
+                                                ? () => onDroneHeatPointsChange(drone.id, -1)
+                                                : undefined
+                                        }
+                                    />
                                 </div>
 
                                 {/* Additional Speed Types */}

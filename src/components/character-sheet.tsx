@@ -111,6 +111,30 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
         });
     };
 
+    const handleDroneHitPointsChange = (droneId: string, delta: number) => {
+        updateCharacter(id, (vm) => {
+            const drone = vm.drones.find((d) => d.id === droneId);
+            if (!drone) return vm.toCharacter();
+            const newValue = Math.max(
+                0,
+                Math.min(drone.hitPoints.maximum, drone.hitPoints.current + delta)
+            );
+            return vm.updateDroneHitPoints(droneId, newValue);
+        });
+    };
+
+    const handleDroneHeatPointsChange = (droneId: string, delta: number) => {
+        updateCharacter(id, (vm) => {
+            const drone = vm.drones.find((d) => d.id === droneId);
+            if (!drone) return vm.toCharacter();
+            const newValue = Math.max(
+                0,
+                Math.min(drone.heatPoints.maximum, drone.heatPoints.current + delta)
+            );
+            return vm.updateDroneHeatPoints(droneId, newValue);
+        });
+    };
+
     return (
         <div style={{ padding: "2rem", maxWidth: "1400px", margin: "0 auto" }}>
             {/* Header Section */}
@@ -447,6 +471,8 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                             <Drones
                                                 drones={getCharacter(id).drones}
                                                 activeDroneId={getCharacter(id).summary.activeDroneId}
+                                                onDroneHitPointsChange={handleDroneHitPointsChange}
+                                                onDroneHeatPointsChange={handleDroneHeatPointsChange}
                                             />
                                         </div>
                                     </Tab>

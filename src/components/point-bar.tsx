@@ -14,15 +14,16 @@ export const PointBar = ({
     onIncrement?: () => void;
     onDecrement?: () => void;
 }) => {
+    const percentage = points.current / points.maximum;
     const color = invert
-        ? points.current / points.maximum > 0.5
+        ? percentage > 0.5
             ? "danger"
-            : points.current / points.maximum > 0.2
+            : percentage > 0.2
               ? "warning"
-              : "success"
-        : points.current / points.maximum > 0.5
+              : "primary"
+        : percentage > 0.5
           ? "success"
-          : points.current / points.maximum > 0.2
+          : percentage > 0.2
             ? "warning"
             : "danger";
 
