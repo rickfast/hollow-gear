@@ -18,6 +18,7 @@ import {
 } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { Actions } from "./actions";
+import { Drones } from "./drones";
 import { Features } from "./features";
 import { Inventory } from "./inventory";
 import { Mindcraft } from "./mindcraft";
@@ -31,7 +32,7 @@ interface CharacterSheetProps {
     id: string;
 }
 
-type SectionKey = "skills" | "actions" | "inventory" | "spells" | "features" | "mindcraft" | "mods";
+type SectionKey = "skills" | "actions" | "inventory" | "spells" | "features" | "mindcraft" | "mods" | "drones";
 
 export function CharacterSheet({ id }: CharacterSheetProps) {
     const [isMobile, setIsMobile] = useState(false);
@@ -43,6 +44,8 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
 
     const showSpellsTab = getCharacter(id).spellType !== "None";
     const spellType = getCharacter(id).spellType;
+    const isArtifex = summary.class === "Artifex" || summary.fullClass.includes("Artifex");
+    const showDronesTab = isArtifex && getCharacter(id).drones.length > 0;
 
     // Detect mobile screen size
     useEffect(() => {
@@ -265,9 +268,8 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             <SelectItem key="actions">Actions</SelectItem>
                             <SelectItem key="inventory">Inventory</SelectItem>
                             <SelectItem key="mods">Mods</SelectItem>
-                            {showSpellsTab ? (
-                                <SelectItem key="spells">{spellType}</SelectItem>
-                            ) : null}
+                            {showSpellsTab ? <SelectItem key="spells">{spellType}</SelectItem> : <></>}
+                            {showDronesTab ? <SelectItem key="drones">Drones</SelectItem> : <></>}
                             <SelectItem key="features">Features</SelectItem>
                             <SelectItem key="mindcraft">Mindcraft</SelectItem>
                         </Select>
@@ -435,6 +437,16 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                                         : "Resonance Charges"
                                                 }
                                                 spells={getCharacter(id).spells}
+                                            />
+                                        </div>
+                                    </Tab>
+                                )}
+                                {showDronesTab && (
+                                    <Tab key="drones" title="Drones">
+                                        <div style={{ padding: "1rem" }}>
+                                            <Drones
+                                                drones={getCharacter(id).drones}
+                                                activeDroneId={getCharacter(id).summary.activeDroneId}
                                             />
                                         </div>
                                     </Tab>

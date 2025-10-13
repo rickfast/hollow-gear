@@ -18,7 +18,6 @@ import type {
     DamageType,
     Die,
     Drone,
-    Feature,
     HitPoints,
     InventoryMod,
     MindcraftPower,
@@ -79,6 +78,7 @@ export interface CharacterSummary {
     initiative: string;
     speed: number;
     avatarUrl?: string;
+    activeDroneId?: string;
 }
 
 export type FeatureDisplay =
@@ -217,6 +217,7 @@ export class CharacterViewModel {
             speed: this.character.speed,
             avatarUrl: this.character.avatarUrl,
             id: this.character.id,
+            activeDroneId: this.character.activeDroneId,
         };
         this.abilityScores = {
             strength: new AbilityScore({
@@ -328,7 +329,8 @@ export class CharacterViewModel {
                 const attachedMods = item.mods
                     .map((modId: string) => MOD_LOOKUP[modId])
                     .filter(
-                        (mod: Mod | undefined): mod is Mod => mod !== undefined && mod.additionalDamage !== undefined
+                        (mod: Mod | undefined): mod is Mod =>
+                            mod !== undefined && mod.additionalDamage !== undefined
                     );
 
                 // Build description with mod effects
@@ -358,7 +360,10 @@ export class CharacterViewModel {
                         damageType: damage.damageType,
                         additionalDamage: attachedMods
                             .map((mod: Mod) => mod.additionalDamage!)
-                            .filter((dmg: DamageInfo | undefined): dmg is DamageInfo => dmg !== undefined),
+                            .filter(
+                                (dmg: DamageInfo | undefined): dmg is DamageInfo =>
+                                    dmg !== undefined
+                            ),
                     },
                     description,
                     range: equipment.range
@@ -367,6 +372,30 @@ export class CharacterViewModel {
                 });
             });
         this.actions.push(createUnarmedStrikeAction(this.abilityScores.strength.modifier));
+
+        // Add drone actions if there's an active drone
+        if (character.activeDroneId && character.drones) {
+            const activeDrone = character.drones.find((d) => d.id === character.activeDroneId);
+            if (activeDrone && !activeDrone.destroyed) {
+                const droneTemplate = DRONE_TEMPLATES_BY_ID[activeDrone.templateId];
+                if (droneTemplate?.stats.attack) {
+                    this.actions.push({
+                        name: `${activeDrone.name} - ${droneTemplate.stats.attack.name}`,
+                        type: "Drone Attack",
+                        hit: { modifier: formatModifier(droneTemplate.stats.attack.bonus) },
+                        damage: {
+                            count: droneTemplate.stats.attack.damage.count,
+                            die: droneTemplate.stats.attack.damage.die,
+                            bonus: 0,
+                            damageType: droneTemplate.stats.attack.damage.damageType,
+                        },
+                        description: `Your drone ${activeDrone.name} attacks with its ${droneTemplate.stats.attack.name}.`,
+                        range: "60 ft (command range)",
+                    });
+                }
+            }
+        }
+
         this.spells =
             (character.spells
                 ?.map((spellName) => {
