@@ -7,59 +7,65 @@ A multi-step character creation wizard that guides users through creating a new 
 ## Steps
 
 ### 1. Basics
+
 - **Input:** Character name
 - **Validation:** Name must not be empty
 - **Purpose:** Set the character's identity
 
 ### 2. Species
+
 - **Input:** Select from 7 Etherborne species
 - **Display:** Shows species details including:
-  - Speed (walk, swim, climb)
-  - Ability score increases
-  - Racial traits
+    - Speed (walk, swim, climb)
+    - Ability score increases
+    - Racial traits
 - **Options:**
-  - Aqualoth (Axolotl)
-  - Vulmir (Fox)
-  - Rendai (Red Panda)
-  - Karnathi (Ibex)
-  - Tharn (Elk)
-  - Skellin (Gecko)
-  - Avenar (Avian)
+    - Aqualoth (Axolotl)
+    - Vulmir (Fox)
+    - Rendai (Red Panda)
+    - Karnathi (Ibex)
+    - Tharn (Elk)
+    - Skellin (Gecko)
+    - Avenar (Avian)
 
 ### 3. Class
+
 - **Input:** Select from 7 classes
 - **Display:** Shows class details including:
-  - Role and description
-  - Hit die
-  - Primary ability
+    - Role and description
+    - Hit die
+    - Primary ability
 - **Options:**
-  - Arcanist (Scholar, Aether manipulator)
-  - Templar (Psionic paladin)
-  - Tweaker (Brawler, flesh modder)
-  - Shadehand (Rogue, infiltrator)
-  - Vanguard (Frontline fighter)
-  - Artifex (Inventor, engineer)
-  - Mindweaver (Psionic master)
+    - Arcanist (Scholar, Aether manipulator)
+    - Templar (Psionic paladin)
+    - Tweaker (Brawler, flesh modder)
+    - Shadehand (Rogue, infiltrator)
+    - Vanguard (Frontline fighter)
+    - Artifex (Inventor, engineer)
+    - Mindweaver (Psionic master)
 
 ### 4. Ability Scores
+
 - **Input:** Set 6 ability scores (1-20)
 - **Default:** All start at 10
 - **Suggestion:** Standard array (15, 14, 13, 12, 10, 8)
 - **Abilities:**
-  - Strength
-  - Dexterity
-  - Constitution
-  - Intelligence
-  - Wisdom
-  - Charisma
+    - Strength
+    - Dexterity
+    - Constitution
+    - Intelligence
+    - Wisdom
+    - Charisma
 
 ### 5. Background
+
 - **Input:** Optional background text
 - **Default:** "Adventurer" if left empty
 - **Examples:** Guild Mechanist, Street Urchin, Noble
 - **Purpose:** Provides character context and story
 
 ### 6. Review
+
 - **Display:** Summary of all choices
 - **Action:** Create character button
 - **Note:** Indicates class-specific features will be configured later
@@ -67,6 +73,7 @@ A multi-step character creation wizard that guides users through creating a new 
 ## Progress Indicator
 
 Visual progress chips show:
+
 - ✓ Completed steps (green)
 - → Current step (blue, solid)
 - ○ Upcoming steps (gray, flat)
@@ -80,6 +87,7 @@ Visual progress chips show:
 ## Validation
 
 Each step validates before allowing progression:
+
 - **Basics:** Name must not be empty
 - **Species:** Must select a species
 - **Class:** Must select a class
@@ -96,7 +104,9 @@ Each step validates before allowing progression:
 ## Integration
 
 ### CharacterBuilder
+
 Uses the existing `CharacterBuilder` class:
+
 ```typescript
 const builder = new CharacterBuilder();
 builder
@@ -110,11 +120,13 @@ const characterId = createCharacter(builder);
 ```
 
 ### Context
+
 - Uses `createCharacter()` from CharacterViewModelContext
 - Returns character ID for navigation
 - Character automatically added to character list
 
 ### Navigation
+
 - After creation, navigates to `/characters/:id`
 - Shows newly created character sheet
 - Character appears in character list
@@ -122,6 +134,7 @@ const characterId = createCharacter(builder);
 ## What's NOT Included
 
 The builder focuses on common elements only. These are configured separately:
+
 - ❌ Subclass selection
 - ❌ Skill proficiencies
 - ❌ Spell selection
@@ -131,6 +144,7 @@ The builder focuses on common elements only. These are configured separately:
 - ❌ Personality traits/ideals/bonds/flaws
 
 These will be added through:
+
 1. Character sheet editing
 2. Separate configuration screens
 3. Future builder steps
@@ -138,6 +152,7 @@ These will be added through:
 ## User Experience
 
 ### Flow
+
 1. User clicks "Build Character" in navbar
 2. Guided through 6 steps
 3. Can go back to change choices
@@ -146,6 +161,7 @@ These will be added through:
 6. Redirected to character sheet
 
 ### Visual Design
+
 - Clean, card-based layout
 - Progress indicator at top
 - Large, clear inputs
@@ -154,6 +170,7 @@ These will be added through:
 - Responsive design
 
 ### Mobile Support
+
 - Works on all screen sizes
 - Touch-friendly inputs
 - Scrollable content
@@ -162,6 +179,7 @@ These will be added through:
 ## Future Enhancements
 
 Potential additions:
+
 1. **Point Buy System**: Alternative to manual ability scores
 2. **Dice Rolling**: Roll 4d6 drop lowest for abilities
 3. **Skill Selection**: Choose skill proficiencies
@@ -176,6 +194,7 @@ Potential additions:
 ## Testing
 
 To test the builder:
+
 1. Navigate to `/builder`
 2. Enter name "Test Character"
 3. Select species "Rendai"

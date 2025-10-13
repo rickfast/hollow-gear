@@ -6,12 +6,12 @@ The application now uses React Router for client-side routing, providing a bette
 
 ## Routes
 
-| Path | Component | Description |
-|------|-----------|-------------|
-| `/` | CharactersPage | Character list (home page) |
-| `/characters/:id` | CharacterSheetPage | Individual character sheet |
-| `/builder` | CharacterBuilderPage | Character builder (placeholder) |
-| `/rules` | RulesPage | Rules reference (placeholder) |
+| Path              | Component            | Description                     |
+| ----------------- | -------------------- | ------------------------------- |
+| `/`               | CharactersPage       | Character list (home page)      |
+| `/characters/:id` | CharacterSheetPage   | Individual character sheet      |
+| `/builder`        | CharacterBuilderPage | Character builder (placeholder) |
+| `/rules`          | RulesPage            | Rules reference (placeholder)   |
 
 ## File Structure
 
@@ -33,6 +33,7 @@ src/
 ### Navbar Links
 
 The navbar includes three main navigation items:
+
 - **Characters** → `/` (home)
 - **Build Character** → `/builder`
 - **Rules** → `/rules`
@@ -79,6 +80,7 @@ The navbar includes three main navigation items:
 ### Dynamic Route Parameters
 
 Character sheet uses URL parameter:
+
 ```typescript
 const { id } = useParams<{ id: string }>();
 ```
@@ -86,6 +88,7 @@ const { id } = useParams<{ id: string }>();
 ### Programmatic Navigation
 
 Character list navigates on selection:
+
 ```typescript
 const navigate = useNavigate();
 const handleSelectCharacter = (id: string) => {
@@ -111,6 +114,7 @@ const handleSelectCharacter = (id: string) => {
 ## Future Enhancements
 
 Potential additions:
+
 1. **404 Page**: Handle unknown routes
 2. **Loading States**: Show loading during navigation
 3. **Route Guards**: Protect certain routes
@@ -122,6 +126,7 @@ Potential additions:
 ## Testing
 
 To test routing:
+
 1. Navigate to `/` - see character list
 2. Click a character - URL changes to `/characters/:id`
 3. Click "Back to Characters" - returns to `/`
