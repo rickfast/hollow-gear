@@ -10,7 +10,16 @@
 import { CLASSES } from "@/data/classes";
 import { FIRST_NAMES, LAST_NAMES } from "@/data/names";
 import { SPECIES } from "@/data/species";
-import type { AbilityScores, Character, ClassType, SkillType, Skills, SpeciesType } from "@/types";
+import { startingEquipmentService } from "@/service/starting-equipment-service";
+import type {
+    AbilityScores,
+    Character,
+    ClassConfiguration,
+    ClassType,
+    SkillType,
+    Skills,
+    SpeciesType,
+} from "@/types";
 import {
     ValidationError,
     calculateAbilityModifier,
@@ -25,6 +34,7 @@ import {
  */
 export class CharacterBuilder {
     private character: Partial<Character> = {};
+    private classConfiguration?: ClassConfiguration;
 
     /**
      * Set the character's name
@@ -150,6 +160,36 @@ export class CharacterBuilder {
     }
 
     /**
+     * Set class configuration for level 1
+     * This stores the choices made during class configuration (subclass, features, spells, etc.)
+     */
+    setClassConfiguration(config: ClassConfiguration): this {
+        // Validate that configuration matches the character's class
+        if (this.character.classes && this.character.classes.length > 0) {
+            const characterClass = this.character.classes[0]!.class;
+            if (config.classType !== characterClass) {
+                throw new ValidationError(
+                    "classConfiguration",
+                    config.classType,
+                    `must match character class ${characterClass}`
+                );
+            }
+        }
+
+        // Validate that configuration is for level 1
+        if (config.level !== 1) {
+            throw new ValidationError(
+                "classConfiguration.level",
+                config.level,
+                "must be 1 for character creation"
+            );
+        }
+
+        this.classConfiguration = config;
+        return this;
+    }
+
+    /**
      * Build and validate the complete character
      */
     build(): Character {
@@ -157,6 +197,8 @@ export class CharacterBuilder {
         this.applySpeciesTraits();
         this.applyClassFeatures();
         this.initializeResources();
+        this.applyStartingEquipment();
+        this.storeClassConfiguration();
         this.calculateDerivedStats();
 
         return this.character as Character;
@@ -224,7 +266,7 @@ export class CharacterBuilder {
             return;
         }
 
-        // Set proficiencies
+        // Set proficiencies (initialize empty if not defined)
         if (classData.proficiencies) {
             this.character.proficiencies = {
                 armor: classData.proficiencies.armor || [],
@@ -233,6 +275,80 @@ export class CharacterBuilder {
                 savingThrows: classData.proficiencies.savingThrows || [],
                 skills: classData.proficiencies.skills || [],
             };
+        } else {
+            // Initialize empty proficiencies structure
+            this.character.proficiencies = {
+                armor: [],
+                weapons: [],
+                tools: [],
+                savingThrows: [],
+                skills: [],
+            };
+        }
+    }
+
+    /**
+     * Apply starting equipment from the character's class
+     */
+    private applyStartingEquipment(): void {
+        const classType = this.character.classes![0]!.class;
+
+        try {
+            // Use StartingEquipmentService to apply equipment
+            const characterWithEquipment = startingEquipmentService.applyStartingEquipment(
+                this.character as Character,
+                classType
+            );
+
+            // Update character with new inventory and currency
+            this.character.inventory = characterWithEquipment.inventory;
+            this.character.currency = characterWithEquipment.currency;
+        } catch (error) {
+            // If starting equipment fails, log warning but continue
+            // This allows character creation to proceed even if equipment data is incomplete
+            console.warn(`Failed to apply starting equipment for ${classType}:`, error);
+        }
+    }
+
+    /**
+     * Store class configuration in character data
+     */
+    private storeClassConfiguration(): void {
+        if (this.classConfiguration) {
+            // Initialize classConfigurations array if not present
+            if (!this.character.classConfigurations) {
+                this.character.classConfigurations = [];
+            }
+
+            // Add the configuration to the character
+            this.character.classConfigurations.push(this.classConfiguration);
+
+            // Apply subclass if selected
+            if (this.classConfiguration.subclass && this.character.classes) {
+                this.character.classes[0]!.subclass = this.classConfiguration.subclass;
+            }
+
+            // Apply selected spells if any
+            if (this.classConfiguration.spellsSelected) {
+                this.character.spells = [...this.classConfiguration.spellsSelected];
+            }
+
+            // Apply selected proficiencies if any
+            if (
+                this.classConfiguration.proficienciesSelected &&
+                this.classConfiguration.proficienciesSelected.length > 0
+            ) {
+                // Add to existing proficiencies
+                if (this.character.proficiencies) {
+                    // Merge with existing skills, avoiding duplicates
+                    const existingSkills = new Set(this.character.proficiencies.skills);
+                    for (const prof of this.classConfiguration.proficienciesSelected) {
+                        // Type assertion since proficienciesSelected should contain valid SkillType values
+                        existingSkills.add(prof as SkillType);
+                    }
+                    this.character.proficiencies.skills = Array.from(existingSkills);
+                }
+            }
         }
     }
 

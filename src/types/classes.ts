@@ -38,6 +38,8 @@ export interface Class {
     proficiencies?: Proficiencies;
     features: ClassFeature[];
     subclasses: Subclass[];
+    startingEquipment: StartingEquipment;
+    configurableFeatures: ConfigurableFeature[];
 }
 
 export type ResourceType =
@@ -86,4 +88,43 @@ export interface Subclass {
 export interface ClassFeature extends Feature {
     level: number;
     damage?: DamageInfo; // for features that deal damage
+}
+
+// ============================================================================
+// CLASS CONFIGURATION SYSTEM
+// ============================================================================
+
+export interface StartingEquipment {
+    weapons: string[]; // Equipment IDs
+    armor?: string; // Equipment ID
+    tools: string[]; // Equipment IDs
+    items: string[]; // Equipment IDs
+    currency: {
+        cogs: number;
+        gears: number;
+        cores: number;
+    };
+}
+
+export interface ConfigurableFeature {
+    featureName: string;
+    level: number;
+    configurationType: FeatureConfigurationType;
+    options: FeatureOption[];
+    required: boolean;
+    description: string;
+}
+
+export type FeatureConfigurationType =
+    | "choice" // Single choice from list
+    | "multiple" // Multiple choices from list
+    | "spell-selection" // Spell selection
+    | "proficiency-selection" // Skill/tool proficiency
+    | "ability-selection"; // Primary ability (e.g., Mindweaver INT/WIS)
+
+export interface FeatureOption {
+    id: string;
+    name: string;
+    description: string;
+    prerequisites?: string[];
 }

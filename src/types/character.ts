@@ -3,7 +3,7 @@
 // ============================================================================
 
 import type { AbilityScores } from "./abilities";
-import type { CharacterClass } from "./classes";
+import type { CharacterClass, ClassType, SubclassType } from "./classes";
 import type { Condition } from "./conditions";
 import type { Currency } from "./currency";
 import type { Drone } from "./drones";
@@ -69,4 +69,20 @@ export interface Character {
     ideals?: string[];
     bonds?: string[];
     flaws?: string[];
+
+    // Class Configuration
+    classConfigurations?: ClassConfiguration[]; // Track choices made at each level
+}
+
+// ============================================================================
+// CLASS CONFIGURATION
+// ============================================================================
+
+export interface ClassConfiguration {
+    classType: ClassType;
+    level: number;
+    subclass?: SubclassType;
+    featureChoices: Record<string, string | string[]>; // featureName -> selected option(s)
+    spellsSelected?: string[];
+    proficienciesSelected?: string[];
 }

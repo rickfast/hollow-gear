@@ -68,13 +68,17 @@ export const WEAPON_MODS: Mod[] = [
             die: 8,
             damageType: "Fire",
         },
+        usesPerRest: {
+            amount: 1,
+            restType: "short"
+        }
     },
     {
         id: "steam-vent-array",
         name: "Steam Vent Array",
         tier: "I - Common",
         modType: "Utility",
-        equipmentType: "Armor",
+        equipmentType: "Weapon",
         effect: "Create 10-ft obscuring cloud for 1 round (1/short rest)",
         craftDC: 10,
         craftTime: 2,
@@ -86,7 +90,7 @@ export const WEAPON_MODS: Mod[] = [
         name: "Voltaic Mesh",
         tier: "II - Advanced",
         modType: "Reactive",
-        equipmentType: "Armor",
+        equipmentType: "Weapon",
         effect: "Deals 1d4 lightning to melee attackers",
         craftDC: 13,
         craftTime: 4,
@@ -193,6 +197,10 @@ export const ARMOR_MODS: Mod[] = [
         craftTime: 2,
         cost: 25,
         notes: "1/short rest",
+        usesPerRest: {
+            amount: 1,
+            restType: "short"
+        }
     },
     {
         id: "reinforced-plating",
@@ -217,6 +225,10 @@ export const ARMOR_MODS: Mod[] = [
         craftTime: 4,
         cost: 75,
         notes: "Consumes sigil charge",
+        usesPerRest: {
+            amount: 1,
+            restType: "long"
+        }
     },
     {
         id: "flux-dampener",
@@ -253,6 +265,10 @@ export const ARMOR_MODS: Mod[] = [
         craftTime: 8,
         cost: 200,
         notes: "Cannot stack",
+        usesPerRest: {
+            amount: 1,
+            restType: "short"
+        }
     },
     {
         id: "aether-amplifier",
@@ -288,6 +304,10 @@ export const ARMOR_MODS: Mod[] = [
         craftTime: 16,
         cost: 400,
         notes: "Once per short rest",
+        usesPerRest: {
+            amount: 1,
+            restType: "short"
+        }
     },
 ];
 
@@ -307,6 +327,10 @@ export const SHIELD_MODS: Mod[] = [
         craftTime: 2,
         cost: 25,
         notes: "Vent-assisted",
+        usesPerRest: {
+            amount: 1,
+            restType: "short"
+        }
     },
     {
         id: "resonant-aegis-core",
@@ -331,6 +355,10 @@ export const SHIELD_MODS: Mod[] = [
         craftTime: 8,
         cost: 200,
         notes: "Refills at dawn",
+        usesPerRest: {
+            amount: 1,
+            restType: "long"
+        }
     },
     {
         id: "voltaic-pulse-coil",
@@ -359,6 +387,10 @@ export const SHIELD_MODS: Mod[] = [
         craftTime: 16,
         cost: 400,
         notes: "Reaction",
+        usesPerRest: {
+            amount: 1,
+            restType: "long"
+        }
     },
 ];
 

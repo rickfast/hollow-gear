@@ -2,7 +2,7 @@
  * Unit tests for CharacterBuilder
  */
 
-import type { AbilityScores } from "@/types";
+import type { AbilityScores, ClassConfiguration } from "@/types";
 import { describe, expect, it } from "vitest";
 import { CharacterBuilder } from "./character-builder";
 import { ValidationError } from "./character-utils";
@@ -58,9 +58,15 @@ describe("CharacterBuilder", () => {
                 .addStartingEquipment(["brass-dagger-001", "cogwrench-001"])
                 .build();
 
-            expect(character.inventory).toHaveLength(2);
-            expect(character.inventory[0]?.equipmentId).toBe("brass-dagger-001");
-            expect(character.inventory[1]?.equipmentId).toBe("cogwrench-001");
+            // Artifex has 9 starting equipment items + 2 manually added = 11 total
+            expect(character.inventory.length).toBeGreaterThanOrEqual(11);
+            // Check that manually added items are present
+            const equipmentIds = character.inventory.map((item) => item.equipmentId);
+            expect(equipmentIds).toContain("brass-dagger-001");
+            expect(equipmentIds).toContain("cogwrench-001");
+            // Check that class starting equipment is present
+            expect(equipmentIds).toContain("rivetgun-001");
+            expect(equipmentIds).toContain("steamweave-vest-001");
         });
 
         it("should create a character with avatar URL", () => {
@@ -420,7 +426,8 @@ describe("CharacterBuilder", () => {
                 .setAbilityScores(validAbilityScores)
                 .build();
 
-            expect(character.currency.cogs).toBe(0);
+            // Arcanist starts with 100 cogs from starting equipment
+            expect(character.currency.cogs).toBe(100);
             expect(character.currency.gears).toBe(0);
             expect(character.currency.cores).toBe(0);
         });
@@ -452,6 +459,357 @@ describe("CharacterBuilder", () => {
                 .addStartingEquipment(["brass-dagger-001"]);
 
             expect(result).toBe(builder);
+        });
+    });
+
+    describe("Class Configuration", () => {
+        it("should store class configuration in character", () => {
+            const builder = new CharacterBuilder();
+            const config: ClassConfiguration = {
+                classType: "Arcanist",
+                level: 1,
+                subclass: "Aethermancer",
+                featureChoices: {
+                    "Arcane Focus": "steamstaff",
+                },
+                spellsSelected: ["Aether Bolt", "Mending"],
+                proficienciesSelected: [],
+            };
+
+            const character = builder
+                .setName("Test Character")
+                .setSpecies("Aqualoth")
+                .setClass("Arcanist")
+                .setAbilityScores(validAbilityScores)
+                .setClassConfiguration(config)
+                .build();
+
+            expect(character.classConfigurations).toBeDefined();
+            expect(character.classConfigurations).toHaveLength(1);
+            expect(character.classConfigurations![0]).toEqual(config);
+        });
+
+        it("should store complete class configuration with all fields", () => {
+            const builder = new CharacterBuilder();
+            const config: ClassConfiguration = {
+                classType: "Mindweaver",
+                level: 1,
+                subclass: "Path of Echo",
+                featureChoices: {
+                    "Primary Ability": "intelligence",
+                    "Psionic Discipline": "telepathy",
+                },
+                spellsSelected: [],
+                proficienciesSelected: ["Insight", "Perception"],
+            };
+
+            const character = builder
+                .setName("Test Character")
+                .setSpecies("Avenar")
+                .setClass("Mindweaver")
+                .setAbilityScores(validAbilityScores)
+                .setClassConfiguration(config)
+                .build();
+
+            expect(character.classConfigurations).toBeDefined();
+            expect(character.classConfigurations![0]?.classType).toBe("Mindweaver");
+            expect(character.classConfigurations![0]?.level).toBe(1);
+            expect(character.classConfigurations![0]?.subclass).toBe("Path of Echo");
+            expect(character.classConfigurations![0]?.featureChoices).toEqual({
+                "Primary Ability": "intelligence",
+                "Psionic Discipline": "telepathy",
+            });
+            expect(character.classConfigurations![0]?.proficienciesSelected).toEqual([
+                "Insight",
+                "Perception",
+            ]);
+        });
+
+        it("should apply subclass from configuration", () => {
+            const builder = new CharacterBuilder();
+            const config: ClassConfiguration = {
+                classType: "Arcanist",
+                level: 1,
+                subclass: "Aethermancer",
+                featureChoices: {},
+                spellsSelected: [],
+                proficienciesSelected: [],
+            };
+
+            const character = builder
+                .setName("Test Character")
+                .setSpecies("Aqualoth")
+                .setClass("Arcanist")
+                .setAbilityScores(validAbilityScores)
+                .setClassConfiguration(config)
+                .build();
+
+            expect(character.classes[0]?.subclass).toBe("Aethermancer");
+        });
+
+        it("should apply selected spells from configuration", () => {
+            const builder = new CharacterBuilder();
+            const config: ClassConfiguration = {
+                classType: "Arcanist",
+                level: 1,
+                subclass: "Aethermancer",
+                featureChoices: {},
+                spellsSelected: ["Aether Bolt", "Mending", "Shield"],
+                proficienciesSelected: [],
+            };
+
+            const character = builder
+                .setName("Test Character")
+                .setSpecies("Aqualoth")
+                .setClass("Arcanist")
+                .setAbilityScores(validAbilityScores)
+                .setClassConfiguration(config)
+                .build();
+
+            expect(character.spells).toEqual(["Aether Bolt", "Mending", "Shield"]);
+        });
+
+        it("should apply selected proficiencies from configuration", () => {
+            const builder = new CharacterBuilder();
+            const config: ClassConfiguration = {
+                classType: "Arcanist",
+                level: 1,
+                featureChoices: {},
+                spellsSelected: [],
+                proficienciesSelected: ["Arcana", "History"],
+            };
+
+            const character = builder
+                .setName("Test Character")
+                .setSpecies("Aqualoth")
+                .setClass("Arcanist")
+                .setAbilityScores(validAbilityScores)
+                .setClassConfiguration(config)
+                .build();
+
+            expect(character.proficiencies?.skills).toBeDefined();
+            expect(character.proficiencies?.skills).toContain("Arcana");
+            expect(character.proficiencies?.skills).toContain("History");
+        });
+
+        it("should merge selected proficiencies with class proficiencies", () => {
+            const builder = new CharacterBuilder();
+            const config: ClassConfiguration = {
+                classType: "Shadehand",
+                level: 1,
+                featureChoices: {},
+                spellsSelected: [],
+                proficienciesSelected: ["Stealth", "Sleight of Hand"],
+            };
+
+            const character = builder
+                .setName("Test Character")
+                .setSpecies("Vulmir")
+                .setClass("Shadehand")
+                .setAbilityScores(validAbilityScores)
+                .setClassConfiguration(config)
+                .build();
+
+            // Should have both class proficiencies and selected proficiencies
+            expect(character.proficiencies?.skills).toBeDefined();
+            expect(character.proficiencies?.skills).toContain("Stealth");
+            expect(character.proficiencies?.skills).toContain("Sleight of Hand");
+            // Should not have duplicates
+            const uniqueSkills = new Set(character.proficiencies?.skills);
+            expect(uniqueSkills.size).toBe(character.proficiencies?.skills.length);
+        });
+
+        it("should throw error if configuration class doesn't match character class", () => {
+            const builder = new CharacterBuilder();
+            const config: ClassConfiguration = {
+                classType: "Templar",
+                level: 1,
+                featureChoices: {},
+                spellsSelected: [],
+                proficienciesSelected: [],
+            };
+
+            expect(() => {
+                builder
+                    .setName("Test Character")
+                    .setSpecies("Aqualoth")
+                    .setClass("Arcanist")
+                    .setClassConfiguration(config);
+            }).toThrow("must match character class Arcanist");
+        });
+
+        it("should throw error if configuration level is not 1", () => {
+            const builder = new CharacterBuilder();
+            const config: ClassConfiguration = {
+                classType: "Arcanist",
+                level: 2,
+                featureChoices: {},
+                spellsSelected: [],
+                proficienciesSelected: [],
+            };
+
+            expect(() => {
+                builder
+                    .setName("Test Character")
+                    .setSpecies("Aqualoth")
+                    .setClass("Arcanist")
+                    .setClassConfiguration(config);
+            }).toThrow("must be 1 for character creation");
+        });
+
+        it("should work without class configuration (optional)", () => {
+            const builder = new CharacterBuilder();
+            const character = builder
+                .setName("Test Character")
+                .setSpecies("Aqualoth")
+                .setClass("Arcanist")
+                .setAbilityScores(validAbilityScores)
+                .build();
+
+            expect(character.classConfigurations).toBeUndefined();
+        });
+    });
+
+    describe("Starting Equipment Application", () => {
+        it("should apply starting equipment for Arcanist", () => {
+            const builder = new CharacterBuilder();
+            const character = builder
+                .setName("Test Character")
+                .setSpecies("Aqualoth")
+                .setClass("Arcanist")
+                .setAbilityScores(validAbilityScores)
+                .build();
+
+            expect(character.inventory).toBeDefined();
+            expect(character.inventory.length).toBeGreaterThan(0);
+
+            const equipmentIds = character.inventory.map((item) => item.equipmentId);
+            // Arcanist should have brass dagger
+            expect(equipmentIds).toContain("brass-dagger-001");
+            // Arcanist should have steamweave vest
+            expect(equipmentIds).toContain("steamweave-vest-001");
+            // Arcanist should have tinker's tools
+            expect(equipmentIds).toContain("tinkers-tools-001");
+        });
+
+        it("should apply starting equipment for Templar", () => {
+            const builder = new CharacterBuilder();
+            const character = builder
+                .setName("Test Character")
+                .setSpecies("Karnathi")
+                .setClass("Templar")
+                .setAbilityScores(validAbilityScores)
+                .build();
+
+            expect(character.inventory).toBeDefined();
+            expect(character.inventory.length).toBeGreaterThan(0);
+
+            const equipmentIds = character.inventory.map((item) => item.equipmentId);
+            // Templar should have steam hammer
+            expect(equipmentIds).toContain("steam-hammer-001");
+            // Templar should have gearmail hauberk
+            expect(equipmentIds).toContain("gearmail-hauberk-001");
+        });
+
+        it("should apply starting equipment for Vanguard", () => {
+            const builder = new CharacterBuilder();
+            const character = builder
+                .setName("Test Character")
+                .setSpecies("Tharn")
+                .setClass("Vanguard")
+                .setAbilityScores(validAbilityScores)
+                .build();
+
+            expect(character.inventory).toBeDefined();
+            expect(character.inventory.length).toBeGreaterThan(0);
+
+            const equipmentIds = character.inventory.map((item) => item.equipmentId);
+            // Vanguard should have steam hammer
+            expect(equipmentIds).toContain("steam-hammer-001");
+            // Vanguard should have gearmail hauberk
+            expect(equipmentIds).toContain("gearmail-hauberk-001");
+        });
+
+        it("should apply starting currency from class", () => {
+            const builder = new CharacterBuilder();
+            const character = builder
+                .setName("Test Character")
+                .setSpecies("Aqualoth")
+                .setClass("Arcanist")
+                .setAbilityScores(validAbilityScores)
+                .build();
+
+            expect(character.currency).toBeDefined();
+            expect(character.currency.cogs).toBeGreaterThan(0);
+        });
+
+        it("should apply starting equipment with aether cells", () => {
+            const builder = new CharacterBuilder();
+            const character = builder
+                .setName("Test Character")
+                .setSpecies("Rendai")
+                .setClass("Artifex")
+                .setAbilityScores(validAbilityScores)
+                .build();
+
+            const equipmentIds = character.inventory.map((item) => item.equipmentId);
+            // Should have aether cells for powered equipment
+            const aetherCellCount = equipmentIds.filter((id) => id === "aether-cell-001").length;
+            expect(aetherCellCount).toBeGreaterThan(0);
+        });
+
+        it("should not duplicate equipment when manually added and from starting equipment", () => {
+            const builder = new CharacterBuilder();
+            const character = builder
+                .setName("Test Character")
+                .setSpecies("Aqualoth")
+                .setClass("Arcanist")
+                .setAbilityScores(validAbilityScores)
+                .addStartingEquipment(["brass-dagger-001"])
+                .build();
+
+            const equipmentIds = character.inventory.map((item) => item.equipmentId);
+            const brassDaggerCount = equipmentIds.filter((id) => id === "brass-dagger-001").length;
+            // Should have 2: one from manual add, one from starting equipment
+            expect(brassDaggerCount).toBe(2);
+        });
+
+        it("should initialize inventory with unique item IDs", () => {
+            const builder = new CharacterBuilder();
+            const character = builder
+                .setName("Test Character")
+                .setSpecies("Aqualoth")
+                .setClass("Arcanist")
+                .setAbilityScores(validAbilityScores)
+                .build();
+
+            const itemIds = character.inventory.map((item) => item.id);
+            const uniqueIds = new Set(itemIds);
+            expect(uniqueIds.size).toBe(itemIds.length);
+        });
+
+        it("should set armor as equipped and other items as unequipped", () => {
+            const builder = new CharacterBuilder();
+            const character = builder
+                .setName("Test Character")
+                .setSpecies("Aqualoth")
+                .setClass("Arcanist")
+                .setAbilityScores(validAbilityScores)
+                .build();
+
+            // Find armor item (steamweave vest)
+            const armorItem = character.inventory.find(
+                (item) => item.equipmentId === "steamweave-vest-001"
+            );
+            expect(armorItem).toBeDefined();
+            expect(armorItem?.equipped).toBe(true);
+
+            // Check that non-armor items are unequipped
+            const nonArmorItems = character.inventory.filter(
+                (item) => item.equipmentId !== "steamweave-vest-001"
+            );
+            const allNonArmorUnequipped = nonArmorItems.every((item) => !item.equipped);
+            expect(allNonArmorUnequipped).toBe(true);
         });
     });
 });

@@ -12,7 +12,7 @@
  */
 
 import { CLASSES, EQUIPMENT_BY_ID } from "@/data";
-import type { AbilityScores, Character, SpellSlots, SubclassType } from "@/types";
+import type { AbilityScores, Character, ClassConfiguration, SpellSlots, SubclassType } from "@/types";
 import {
     ValidationError,
     calculateAbilityModifier,
@@ -36,6 +36,37 @@ export interface LevelUpOptions {
         ability1: keyof AbilityScores;
         ability2?: keyof AbilityScores;
     };
+    /**
+     * Class configuration for the new level
+     * 
+     * FUTURE ENHANCEMENT: This will be used to configure class-specific options
+     * when leveling up, similar to the character creation flow.
+     * 
+     * Usage:
+     * 1. Present ClassLevelConfigurator component in level-up UI
+     * 2. Pass current class, new level, and existing configurations
+     * 3. Capture user selections (subclass, features, spells, proficiencies)
+     * 4. Pass the configuration to levelUp() method
+     * 5. Apply configuration using ClassConfigurationService.applyConfiguration()
+     * 
+     * Example:
+     * ```typescript
+     * const config: ClassConfiguration = {
+     *   classType: "Arcanist",
+     *   level: 3,
+     *   subclass: "Aethermancer",
+     *   featureChoices: { "Psionic Discipline": "Telekinesis" },
+     *   spellsSelected: ["fireball", "lightning-bolt"],
+     *   proficienciesSelected: []
+     * };
+     * 
+     * mutableViewModel.levelUp({ classConfiguration: config });
+     * ```
+     * 
+     * @see ClassConfigurationService.applyConfiguration
+     * @see ClassLevelConfigurator component
+     */
+    classConfiguration?: ClassConfiguration;
 }
 
 /**
@@ -463,6 +494,19 @@ export class MutableCharacterViewModel extends CharacterViewModel {
 
     /**
      * Level up the character
+     * 
+     * FUTURE ENHANCEMENT: This method will be enhanced to use ClassConfigurationService
+     * to apply class-specific configurations when leveling up.
+     * 
+     * Integration steps:
+     * 1. Import ClassConfigurationService
+     * 2. If options.classConfiguration is provided:
+     *    - Validate configuration using service.validateConfiguration()
+     *    - Apply configuration using service.applyConfiguration()
+     *    - Store configuration in character.classConfigurations array
+     * 3. Update spells, proficiencies, and features from configuration
+     * 4. Handle subclass selection from configuration instead of direct option
+     * 
      * @param options - Level up options
      * @returns Updated character
      * @throws ValidationError if level up requirements are not met
@@ -488,7 +532,23 @@ export class MutableCharacterViewModel extends CharacterViewModel {
             throw new ValidationError("class", primaryClass.class, "invalid class type");
         }
 
+        // FUTURE ENHANCEMENT: Check if classConfiguration is provided and validate it
+        // Example:
+        // if (options.classConfiguration) {
+        //     const service = new ClassConfigurationService();
+        //     const validation = service.validateConfiguration(
+        //         primaryClass.class,
+        //         newLevel,
+        //         options.classConfiguration
+        //     );
+        //     if (!validation.valid) {
+        //         throw new ValidationError("classConfiguration", options.classConfiguration, 
+        //             validation.errors.join(", "));
+        //     }
+        // }
+
         // Check for subclass requirement at level 3
+        // FUTURE ENHANCEMENT: This will be handled by classConfiguration.subclass
         if (newLevel === 3 && !primaryClass.subclass && !options.subclass) {
             throw new ValidationError(
                 "subclass",
@@ -543,6 +603,17 @@ export class MutableCharacterViewModel extends CharacterViewModel {
             }
         }
 
+        // FUTURE ENHANCEMENT: Apply class configuration if provided
+        // Example:
+        // let updatedCharacter = { ...this._mutableCharacter };
+        // if (options.classConfiguration) {
+        //     const service = new ClassConfigurationService();
+        //     updatedCharacter = service.applyConfiguration(
+        //         updatedCharacter,
+        //         options.classConfiguration
+        //     );
+        // }
+
         // Update character
         this._mutableCharacter = {
             ...this._mutableCharacter,
@@ -551,6 +622,7 @@ export class MutableCharacterViewModel extends CharacterViewModel {
                 {
                     ...primaryClass,
                     level: newLevel,
+                    // FUTURE ENHANCEMENT: Use options.classConfiguration?.subclass if provided
                     subclass: options.subclass ?? primaryClass.subclass,
                 },
             ],
@@ -564,9 +636,15 @@ export class MutableCharacterViewModel extends CharacterViewModel {
             spellSlots: updatedSpellSlots,
             aetherFluxPoints: updatedAFP,
             resonanceCharges: updatedRC,
+            // FUTURE ENHANCEMENT: Spells will be handled by classConfiguration.spellsSelected
             spells: options.spellsLearned
                 ? [...this._mutableCharacter.spells, ...options.spellsLearned]
                 : this._mutableCharacter.spells,
+            // FUTURE ENHANCEMENT: Store class configuration
+            // classConfigurations: [
+            //     ...(this._mutableCharacter.classConfigurations || []),
+            //     options.classConfiguration
+            // ].filter(Boolean)
         };
 
         return this.toCharacter();

@@ -3,6 +3,7 @@
 // ============================================================================
 
 import type { AbilityScores } from "./abilities";
+import type { ClassType } from "./classes";
 import type { DamageInfo } from "./combat";
 
 export interface Spell {
@@ -22,6 +23,7 @@ export interface Spell {
     concentration: boolean;
 
     // Hollowgear-specific
+    classes: ClassType[]; // Which classes can cast this spell
     aetherCost?: number; // AFP/RC cost
     hollowgearName?: string; // e.g., "Arc Pulse Array" for Magic Missile
     overclockable: boolean;

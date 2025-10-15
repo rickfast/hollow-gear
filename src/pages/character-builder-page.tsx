@@ -1,12 +1,13 @@
 import { CLASSES, SPECIES } from "@/data";
 import { CharacterBuilder } from "@/model/character-builder";
 import { useCharacterViewModelContext } from "@/model/character-view-model-context";
-import type { AbilityScores, ClassType, SpeciesType } from "@/types";
+import type { AbilityScores, ClassConfiguration, ClassType, SpeciesType } from "@/types";
 import { Button, Card, CardBody, CardHeader, Chip, Input, Select, SelectItem } from "@heroui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ClassLevelConfigurator } from "@/components/class-level-configurator";
 
-type BuilderStep = "basics" | "species" | "class" | "abilities" | "background" | "review";
+type BuilderStep = "basics" | "species" | "class" | "class-configuration" | "abilities" | "background" | "review";
 
 export function CharacterBuilderPage() {
     const navigate = useNavigate();
@@ -16,6 +17,8 @@ export function CharacterBuilderPage() {
     const [name, setName] = useState("");
     const [species, setSpecies] = useState<SpeciesType | "">("");
     const [classType, setClassType] = useState<ClassType | "">("");
+    const [classConfiguration, setClassConfiguration] = useState<Partial<ClassConfiguration>>({});
+    const [isConfigurationValid, setIsConfigurationValid] = useState(false);
     const [abilityScores, setAbilityScores] = useState<AbilityScores>({
         strength: 10,
         dexterity: 10,
@@ -31,6 +34,7 @@ export function CharacterBuilderPage() {
         { key: "basics", label: "Basics" },
         { key: "species", label: "Species" },
         { key: "class", label: "Class" },
+        { key: "class-configuration", label: "Configuration" },
         { key: "abilities", label: "Abilities" },
         { key: "background", label: "Background" },
         { key: "review", label: "Review" },
@@ -62,6 +66,11 @@ export function CharacterBuilderPage() {
                 .setAbilityScores(abilityScores)
                 .setBackground(background || "Adventurer");
 
+            // Apply class configuration if provided
+            if (classConfiguration.classType && classConfiguration.level) {
+                builder.setClassConfiguration(classConfiguration as ClassConfiguration);
+            }
+
             const characterId = createCharacter(builder);
             navigate(`/characters/${characterId}`);
         } catch (err) {
@@ -77,6 +86,8 @@ export function CharacterBuilderPage() {
                 return species !== "";
             case "class":
                 return classType !== "";
+            case "class-configuration":
+                return isConfigurationValid;
             case "abilities":
                 return true; // Always valid
             case "background":
@@ -289,6 +300,9 @@ export function CharacterBuilderPage() {
                                     onSelectionChange={(keys) => {
                                         const selected = Array.from(keys)[0] as ClassType;
                                         setClassType(selected);
+                                        // Reset configuration when class changes
+                                        setClassConfiguration({});
+                                        setIsConfigurationValid(false);
                                     }}
                                     size="lg"
                                     isRequired
@@ -327,6 +341,34 @@ export function CharacterBuilderPage() {
                                         </CardBody>
                                     </Card>
                                 )}
+                            </div>
+                        )}
+
+                        {/* Step: Class Configuration */}
+                        {step === "class-configuration" && classType && (
+                            <div
+                                style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
+                            >
+                                <h2 style={{ fontSize: "1.5rem", fontWeight: 600 }}>
+                                    Configure {classType}
+                                </h2>
+                                <p style={{ fontSize: "0.875rem", opacity: 0.7 }}>
+                                    Select your class features, subclass, spells, and other options
+                                    for level 1.
+                                </p>
+                                <ClassLevelConfigurator
+                                    classType={classType as ClassType}
+                                    level={1}
+                                    existingConfig={
+                                        classConfiguration as ClassConfiguration | undefined
+                                    }
+                                    onConfigurationChange={(config) => {
+                                        setClassConfiguration(config);
+                                    }}
+                                    onValidationChange={(valid) => {
+                                        setIsConfigurationValid(valid);
+                                    }}
+                                />
                             </div>
                         )}
 
@@ -427,6 +469,12 @@ export function CharacterBuilderPage() {
                                             <div>
                                                 <strong>Class:</strong> {classType} (Level 1)
                                             </div>
+                                            {classConfiguration.subclass && (
+                                                <div>
+                                                    <strong>Subclass:</strong>{" "}
+                                                    {classConfiguration.subclass}
+                                                </div>
+                                            )}
                                             <div>
                                                 <strong>Background:</strong>{" "}
                                                 {background || "Adventurer"}
@@ -453,12 +501,30 @@ export function CharacterBuilderPage() {
                                                     )}
                                                 </div>
                                             </div>
+                                            {classConfiguration.spellsSelected &&
+                                                classConfiguration.spellsSelected.length > 0 && (
+                                                    <div>
+                                                        <strong>Spells Selected:</strong>{" "}
+                                                        {classConfiguration.spellsSelected.length}{" "}
+                                                        spell(s)
+                                                    </div>
+                                                )}
+                                            {classConfiguration.proficienciesSelected &&
+                                                classConfiguration.proficienciesSelected.length >
+                                                    0 && (
+                                                    <div>
+                                                        <strong>Additional Proficiencies:</strong>{" "}
+                                                        {classConfiguration.proficienciesSelected.join(
+                                                            ", "
+                                                        )}
+                                                    </div>
+                                                )}
                                         </div>
                                     </CardBody>
                                 </Card>
                                 <p style={{ fontSize: "0.875rem", opacity: 0.7 }}>
-                                    Note: Class-specific features, spells, and equipment will be
-                                    configured after character creation.
+                                    Starting equipment will be automatically added based on your
+                                    class.
                                 </p>
                             </div>
                         )}

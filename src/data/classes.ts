@@ -313,6 +313,44 @@ export const CLASSES: Class[] = [
                 "Arcanists are the thinkers and dreamers who see the Aether as both art and science. They record the laws of psionics, but also break them — crafting machines that blur the line between spell and mechanism.",
             archetypes: ["Aethermancer", "Gearwright"],
         },
+        startingEquipment: {
+            weapons: ["brass-dagger-001"],
+            armor: "steamweave-vest-001",
+            tools: ["tinkers-tools-001"],
+            items: [
+                "aether-lamp-001",
+                "aether-dust-vial-001",
+                "mechanists-satchel-001",
+                "aether-cell-001",
+                "aether-cell-001",
+            ],
+            currency: {
+                cogs: 100,
+                gears: 0,
+                cores: 0,
+            },
+        },
+        configurableFeatures: [
+            {
+                featureName: "Arcane Focus",
+                level: 1,
+                configurationType: "choice",
+                required: true,
+                description: "Choose your arcane focus type",
+                options: [
+                    {
+                        id: "steamstaff",
+                        name: "Steamstaff",
+                        description: "A staff that channels Aether through steam pressure",
+                    },
+                    {
+                        id: "aether-lens",
+                        name: "Aether Lens",
+                        description: "Crystalline lens that focuses psionic energy",
+                    },
+                ],
+            },
+        ],
         subclasses: [
             {
                 type: "Aethermancer",
@@ -367,6 +405,23 @@ export const CLASSES: Class[] = [
                 description: "Heal a construct or machine for 1d8 HP per Charge spent.",
             },
         ],
+        startingEquipment: {
+            weapons: ["steam-hammer-001", "standard-shield-001"],
+            armor: "gearmail-hauberk-001",
+            tools: [],
+            items: [
+                "aether-cell-001",
+                "aether-cell-001",
+                "repair-paste-vial-001",
+                "steam-lantern-001",
+            ],
+            currency: {
+                cogs: 120,
+                gears: 0,
+                cores: 0,
+            },
+        },
+        configurableFeatures: [],
         subclasses: [
             {
                 type: "Relic Knight",
@@ -417,6 +472,24 @@ export const CLASSES: Class[] = [
                 description: "You regain an extra 1d4 HP whenever you consume a healing effect.",
             },
         ],
+        startingEquipment: {
+            weapons: ["cogwrench-001"],
+            armor: "wireweave-jacket-001",
+            tools: [],
+            items: [
+                "steam-vent-harness-001",
+                "coolant-flask-001",
+                "coolant-flask-001",
+                "repair-paste-vial-001",
+                "aether-cell-001",
+            ],
+            currency: {
+                cogs: 80,
+                gears: 0,
+                cores: 0,
+            },
+        },
+        configurableFeatures: [],
         subclasses: [
             {
                 type: "Boilerheart",
@@ -462,6 +535,23 @@ export const CLASSES: Class[] = [
                 description: "You have proficiency with Thieves' Tools and Disguise Kit.",
             },
         ],
+        startingEquipment: {
+            weapons: ["brass-dagger-001", "brass-dagger-001"],
+            armor: "steamweave-vest-001",
+            tools: ["tinkers-tools-001"],
+            items: [
+                "goggles-of-clarity-001",
+                "wireweave-rope-50-ft-001",
+                "aether-lamp-001",
+                "mechanists-satchel-001",
+            ],
+            currency: {
+                cogs: 90,
+                gears: 0,
+                cores: 0,
+            },
+        },
+        configurableFeatures: [],
         subclasses: [
             {
                 type: "Circuitbreaker",
@@ -510,6 +600,23 @@ export const CLASSES: Class[] = [
                 description: "Install one armor or weapon mod without penalty.",
             },
         ],
+        startingEquipment: {
+            weapons: ["steam-hammer-001", "standard-shield-001"],
+            armor: "gearmail-hauberk-001",
+            tools: [],
+            items: [
+                "aether-cell-001",
+                "aether-cell-001",
+                "repair-paste-vial-001",
+                "wireweave-rope-50-ft-001",
+            ],
+            currency: {
+                cogs: 110,
+                gears: 0,
+                cores: 0,
+            },
+        },
+        configurableFeatures: [],
         subclasses: [
             {
                 type: "Bulwark Sentinel",
@@ -558,6 +665,25 @@ export const CLASSES: Class[] = [
                 description: "Add INT to weapon damage rolls for modded items.",
             },
         ],
+        startingEquipment: {
+            weapons: ["rivetgun-001"],
+            armor: "steamweave-vest-001",
+            tools: ["tinkers-tools-001"],
+            items: [
+                "mechanists-satchel-001",
+                "aether-cell-001",
+                "aether-cell-001",
+                "aether-dust-vial-001",
+                "repair-paste-vial-001",
+                "aether-compass-001",
+            ],
+            currency: {
+                cogs: 100,
+                gears: 0,
+                cores: 0,
+            },
+        },
+        configurableFeatures: [],
         subclasses: [
             {
                 type: "Fieldwright",
@@ -604,6 +730,44 @@ export const CLASSES: Class[] = [
                 name: "Focus Limit",
                 level: 1,
                 description: "Maintain one psionic effect (increases with level).",
+            },
+        ],
+        startingEquipment: {
+            weapons: ["brass-dagger-001"],
+            armor: "aetherweave-coat-001",
+            tools: [],
+            items: [
+                "aether-lamp-001",
+                "aether-dust-vial-001",
+                "aether-dust-vial-001",
+                "aether-cell-001",
+                "mnemonic-lens-001",
+            ],
+            currency: {
+                cogs: 90,
+                gears: 0,
+                cores: 0,
+            },
+        },
+        configurableFeatures: [
+            {
+                featureName: "Primary Ability",
+                level: 1,
+                configurationType: "ability-selection",
+                required: true,
+                description: "Choose your primary psionic ability",
+                options: [
+                    {
+                        id: "intelligence",
+                        name: "Intelligence",
+                        description: "Focus on analytical and structured psionic manipulation",
+                    },
+                    {
+                        id: "wisdom",
+                        name: "Wisdom",
+                        description: "Focus on intuitive and perceptive psionic awareness",
+                    },
+                ],
             },
         ],
         subclasses: [

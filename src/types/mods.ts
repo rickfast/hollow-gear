@@ -4,6 +4,7 @@
 
 import type { DamageInfo, Rollable } from "./combat";
 import type { CraftTier, EquipmentType } from "./equipment";
+import type { PerRestUse } from "./common";
 
 export interface ModSlot {
     tier: ModTier;
@@ -45,6 +46,7 @@ export interface Mod {
     malfunctionChance?: number;
     notes?: string;
     additionalDamage?: DamageInfo;
+    usesPerRest?: PerRestUse;
 }
 
 export type ModType =
