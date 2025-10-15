@@ -453,7 +453,7 @@ function calculateHitAndDamage(abilityScores: AbilityScores, weapon: Weapon) {
     const strengthMod = abilityScores.strength.modifier;
     const dexterityMod = abilityScores.dexterity.modifier;
     const isFinesse = weapon.properties?.includes("Finesse");
-    const isRanged = ["Simple Ranged", "Martial Ranged"].includes(weapon.weaponType);
+    const isRanged = ["Ranged Simple", "Ranged Martial"].includes(weapon.weaponType);
 
     let attackMod = isFinesse
         ? Math.max(strengthMod, dexterityMod)
