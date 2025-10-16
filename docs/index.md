@@ -11,8 +11,11 @@
 7. [Chapter 7: Combat & Overheat Rules](chapter-7-combat.md)
 8. [Chapter 8: Languages & Scripts](chapter-8-languages.md)
 9. [Chapter 9: Spellcraft & Resonance](chapter-9-spells.md)
+10. [Chapter 10: Drones](chapter-10-drones.md)
+11. [Chapter 11: Heat](chapter-11-heat.md)
 
-Appendix
+## Appendices
 
-- a. [Formulae & Miracles](appendix-a-formulae-miracles.md)
-- b. [Bestiary](appendix-b-bestiary.md)
+- A. [Formulae & Miracles](appendix-a-formulae-miracles.md)
+- B. [Bestiary](appendix-b-bestiary.md)
+- C. [Pre-Generated Characters](appendix-c-pregens.md)
