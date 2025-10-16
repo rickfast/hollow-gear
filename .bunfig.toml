@@ -1,0 +1,3 @@
+[install]
+# Use public npm registry for Docker builds
+registry = "https://registry.npmjs.org/"
