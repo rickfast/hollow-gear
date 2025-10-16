@@ -1,12 +1,14 @@
-import type { AbilityScores } from "@/types";
+import { OPTIMIZED_ABILITY_SCORES } from "@/data/optimized-ability-scores";
+import type { AbilityScores, ClassType } from "@/types";
 import { Button, Card, CardBody, CardHeader, Chip, Select, SelectItem } from "@heroui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-type AbilityScoreMode = "standard-array" | "point-buy" | "roll";
+type AbilityScoreMode = "standard-array" | "point-buy" | "roll" | "optimized";
 
 interface AbilityScoreSelectorProps {
     abilityScores: AbilityScores;
     onAbilityScoresChange: (scores: AbilityScores) => void;
+    selectedClass?: ClassType;
 }
 
 const STANDARD_ARRAY = [15, 14, 13, 12, 10, 8];
@@ -27,9 +29,18 @@ const POINT_BUY_MAX = 27;
 export function AbilityScoreSelector({
     abilityScores,
     onAbilityScoresChange,
+    selectedClass,
 }: AbilityScoreSelectorProps) {
     const [mode, setMode] = useState<AbilityScoreMode>("standard-array");
     const [availableScores, setAvailableScores] = useState<number[]>([...STANDARD_ARRAY]);
+
+    // Update ability scores when class changes and mode is optimized
+    useEffect(() => {
+        if (mode === "optimized" && selectedClass) {
+            const optimizedScores = OPTIMIZED_ABILITY_SCORES[selectedClass];
+            onAbilityScoresChange(optimizedScores);
+        }
+    }, [selectedClass, mode, onAbilityScoresChange]);
 
     const abilities: (keyof AbilityScores)[] = [
         "strength",
@@ -91,6 +102,24 @@ export function AbilityScoreSelector({
                 charisma: 8,
             };
             onAbilityScoresChange(resetScores);
+        } else if (newMode === "optimized") {
+            // Use optimized array for selected class
+            if (selectedClass) {
+                const optimizedScores = OPTIMIZED_ABILITY_SCORES[selectedClass];
+                onAbilityScoresChange(optimizedScores);
+            } else {
+                // Fallback to standard array if no class selected
+                setAvailableScores([...STANDARD_ARRAY]);
+                const resetScores: AbilityScores = {
+                    strength: 10,
+                    dexterity: 10,
+                    constitution: 10,
+                    intelligence: 10,
+                    wisdom: 10,
+                    charisma: 10,
+                };
+                onAbilityScoresChange(resetScores);
+            }
         }
     };
 
@@ -165,7 +194,9 @@ export function AbilityScoreSelector({
     return (
         <Card>
             <CardHeader>
-                <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "1rem" }}>
+                <div
+                    style={{ width: "100%", display: "flex", flexDirection: "column", gap: "1rem" }}
+                >
                     <h3 style={{ fontSize: "1.25rem", fontWeight: 600, margin: 0 }}>
                         Ability Scores
                     </h3>
@@ -178,13 +209,34 @@ export function AbilityScoreSelector({
                         }}
                         size="sm"
                     >
-                        <SelectItem key="standard-array">Standard Array (15, 14, 13, 12, 10, 8)</SelectItem>
+                        <SelectItem key="optimized">
+                            Optimized for Class {!selectedClass && "(select class first)"}
+                        </SelectItem>
+                        <SelectItem key="standard-array">
+                            Standard Array (15, 14, 13, 12, 10, 8)
+                        </SelectItem>
                         <SelectItem key="point-buy">Point Buy (27 points)</SelectItem>
                         <SelectItem key="roll">Roll 4d6 Drop Lowest</SelectItem>
                     </Select>
                 </div>
             </CardHeader>
             <CardBody>
+                {mode === "optimized" && selectedClass && (
+                    <div style={{ marginBottom: "1rem" }}>
+                        <Chip color="success" variant="flat">
+                            Optimized for {selectedClass}
+                        </Chip>
+                    </div>
+                )}
+
+                {mode === "optimized" && !selectedClass && (
+                    <div style={{ marginBottom: "1rem" }}>
+                        <Chip color="warning" variant="flat">
+                            Please select a class first to use optimized scores
+                        </Chip>
+                    </div>
+                )}
+
                 {mode === "point-buy" && (
                     <div style={{ marginBottom: "1rem" }}>
                         <Chip color={pointsRemaining === 0 ? "success" : "primary"} variant="flat">
@@ -194,7 +246,14 @@ export function AbilityScoreSelector({
                 )}
 
                 {mode === "roll" && (
-                    <div style={{ marginBottom: "1rem", display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                    <div
+                        style={{
+                            marginBottom: "1rem",
+                            display: "flex",
+                            gap: "0.5rem",
+                            alignItems: "center",
+                        }}
+                    >
                         <div style={{ fontSize: "0.875rem" }}>
                             Rolled: {availableScores.join(", ")}
                         </div>
@@ -219,7 +278,18 @@ export function AbilityScoreSelector({
                                 {ability}
                             </div>
 
-                            {mode === "standard-array" || mode === "roll" ? (
+                            {mode === "optimized" ? (
+                                <div
+                                    style={{
+                                        minWidth: "40px",
+                                        textAlign: "center",
+                                        fontWeight: 600,
+                                        fontSize: "1.125rem",
+                                    }}
+                                >
+                                    {abilityScores[ability]}
+                                </div>
+                            ) : mode === "standard-array" || mode === "roll" ? (
                                 <Select
                                     selectedKeys={[abilityScores[ability].toString()]}
                                     onSelectionChange={(keys) => {
@@ -248,7 +318,9 @@ export function AbilityScoreSelector({
                                     ]}
                                 </Select>
                             ) : (
-                                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                                <div
+                                    style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                                >
                                     <Button
                                         size="sm"
                                         variant="flat"
@@ -279,7 +351,13 @@ export function AbilityScoreSelector({
                                     >
                                         +
                                     </Button>
-                                    <div style={{ fontSize: "0.75rem", opacity: 0.7, minWidth: "60px" }}>
+                                    <div
+                                        style={{
+                                            fontSize: "0.75rem",
+                                            opacity: 0.7,
+                                            minWidth: "60px",
+                                        }}
+                                    >
                                         ({POINT_BUY_COSTS[abilityScores[ability]] || 0} pts)
                                     </div>
                                 </div>

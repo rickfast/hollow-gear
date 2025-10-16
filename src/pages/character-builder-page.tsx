@@ -425,6 +425,7 @@ export function CharacterBuilderPage() {
                                     <AbilityScoreSelector
                                         abilityScores={abilityScores}
                                         onAbilityScoresChange={setAbilityScores}
+                                        selectedClass={classType || undefined}
                                     />
                                 </div>
                             )}

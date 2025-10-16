@@ -2,6 +2,7 @@ export * from "./classes";
 export * from "./drones";
 export * from "./equipment";
 export * from "./mindcraft";
+export * from "./optimized-ability-scores";
 export * from "./pregens";
 export * from "./skills";
 export * from "./species";
