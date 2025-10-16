@@ -1,3 +1,4 @@
+import { AbilityScoreSelector } from "@/components/ability-score-selector";
 import { CharacterBuilderSummary } from "@/components/character-builder-summary";
 import { ClassLevelConfigurator } from "@/components/class-level-configurator";
 import { CLASSES, SPECIES } from "@/data";
@@ -420,58 +421,11 @@ export function CharacterBuilderPage() {
 
                             {/* Step: Abilities */}
                             {step === "abilities" && (
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        gap: "1.5rem",
-                                    }}
-                                >
-                                    <h2 style={{ fontSize: "1.5rem", fontWeight: 600 }}>
-                                        Ability Scores
-                                    </h2>
-                                    <p style={{ fontSize: "0.875rem", opacity: 0.7 }}>
-                                        Set your character's base ability scores (before species
-                                        bonuses). Standard array: 15, 14, 13, 12, 10, 8
-                                    </p>
-                                    <div
-                                        style={{
-                                            display: "grid",
-                                            gridTemplateColumns:
-                                                "repeat(auto-fit, minmax(150px, 1fr))",
-                                            gap: "1rem",
-                                        }}
-                                    >
-                                        {(
-                                            [
-                                                "strength",
-                                                "dexterity",
-                                                "constitution",
-                                                "intelligence",
-                                                "wisdom",
-                                                "charisma",
-                                            ] as const
-                                        ).map((ability) => (
-                                            <Input
-                                                key={ability}
-                                                label={
-                                                    ability.charAt(0).toUpperCase() +
-                                                    ability.slice(1)
-                                                }
-                                                type="number"
-                                                value={abilityScores[ability].toString()}
-                                                onValueChange={(value) => {
-                                                    const num = parseInt(value) || 10;
-                                                    setAbilityScores({
-                                                        ...abilityScores,
-                                                        [ability]: Math.max(1, Math.min(20, num)),
-                                                    });
-                                                }}
-                                                min={1}
-                                                max={20}
-                                            />
-                                        ))}
-                                    </div>
+                                <div>
+                                    <AbilityScoreSelector
+                                        abilityScores={abilityScores}
+                                        onAbilityScoresChange={setAbilityScores}
+                                    />
                                 </div>
                             )}
 
