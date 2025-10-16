@@ -1,3 +1,4 @@
+import { AbilityScores as AbilityScoresComponent } from "@/components/ability-scores";
 import { CLASSES, SPECIES } from "@/data";
 import type { AbilityScores, ClassConfiguration, ClassType, SpeciesType } from "@/types";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
@@ -116,54 +117,41 @@ export function CharacterBuilderSummary({
                         <div style={{ fontSize: "0.75rem", opacity: 0.6, marginBottom: "0.5rem" }}>
                             ABILITY SCORES
                         </div>
-                        <div
-                            style={{
-                                display: "grid",
-                                gridTemplateColumns: "repeat(2, 1fr)",
-                                gap: "0.5rem",
+                        <AbilityScoresComponent
+                            abilityScores={{
+                                strength: {
+                                    score: finalAbilityScores.strength,
+                                    modifierDisplay: calculateModifier(finalAbilityScores.strength),
+                                },
+                                dexterity: {
+                                    score: finalAbilityScores.dexterity,
+                                    modifierDisplay: calculateModifier(
+                                        finalAbilityScores.dexterity
+                                    ),
+                                },
+                                constitution: {
+                                    score: finalAbilityScores.constitution,
+                                    modifierDisplay: calculateModifier(
+                                        finalAbilityScores.constitution
+                                    ),
+                                },
+                                intelligence: {
+                                    score: finalAbilityScores.intelligence,
+                                    modifierDisplay: calculateModifier(
+                                        finalAbilityScores.intelligence
+                                    ),
+                                },
+                                wisdom: {
+                                    score: finalAbilityScores.wisdom,
+                                    modifierDisplay: calculateModifier(finalAbilityScores.wisdom),
+                                },
+                                charisma: {
+                                    score: finalAbilityScores.charisma,
+                                    modifierDisplay: calculateModifier(finalAbilityScores.charisma),
+                                },
                             }}
-                        >
-                            {(
-                                [
-                                    "strength",
-                                    "dexterity",
-                                    "constitution",
-                                    "intelligence",
-                                    "wisdom",
-                                    "charisma",
-                                ] as const
-                            ).map((ability) => {
-                                const base = abilityScores[ability];
-                                const final = finalAbilityScores[ability];
-                                const hasBonus = base !== final;
-
-                                return (
-                                    <div
-                                        key={ability}
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            alignItems: "center",
-                                            fontSize: "0.875rem",
-                                        }}
-                                    >
-                                        <span style={{ textTransform: "uppercase", fontSize: "0.75rem" }}>
-                                            {ability.substring(0, 3)}
-                                        </span>
-                                        <div style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
-                                            {hasBonus && (
-                                                <span style={{ opacity: 0.5, textDecoration: "line-through" }}>
-                                                    {base}
-                                                </span>
-                                            )}
-                                            <span style={{ fontWeight: 600 }}>
-                                                {final} ({calculateModifier(final)})
-                                            </span>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
+                            compact
+                        />
                         {selectedSpecies && (
                             <div style={{ fontSize: "0.75rem", opacity: 0.6, marginTop: "0.5rem" }}>
                                 Includes species bonuses
@@ -205,7 +193,13 @@ export function CharacterBuilderSummary({
                                     >
                                         SPELLS
                                     </div>
-                                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.25rem" }}>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            flexWrap: "wrap",
+                                            gap: "0.25rem",
+                                        }}
+                                    >
                                         {classConfiguration.spellsSelected.map((spell) => (
                                             <Chip key={spell} size="sm" variant="flat">
                                                 {spell}
@@ -231,7 +225,13 @@ export function CharacterBuilderSummary({
                                     >
                                         SKILL PROFICIENCIES
                                     </div>
-                                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.25rem" }}>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            flexWrap: "wrap",
+                                            gap: "0.25rem",
+                                        }}
+                                    >
                                         {classConfiguration.proficienciesSelected.map((prof) => (
                                             <Chip key={prof} size="sm" variant="flat">
                                                 {prof}
