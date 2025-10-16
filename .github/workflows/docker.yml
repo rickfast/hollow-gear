@@ -7,7 +7,7 @@ on:
         branches: [main]
 
 env:
-    IMAGE_NAME: hollow-gear-5e
+    IMAGE_NAME: rickfast/hollowgear
 
 jobs:
     build:
