@@ -3,6 +3,16 @@
 @source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+    font-family: "Centra No2";
+    src: url("https://db.onlinewebfonts.com/t/229a57bbeef591e04a1fdfe347c90864.eot");
+    src: url("https://db.onlinewebfonts.com/t/229a57bbeef591e04a1fdfe347c90864.eot?#iefix")format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/229a57bbeef591e04a1fdfe347c90864.woff2")format("woff2"),
+    url("https://db.onlinewebfonts.com/t/229a57bbeef591e04a1fdfe347c90864.woff")format("woff"),
+    url("https://db.onlinewebfonts.com/t/229a57bbeef591e04a1fdfe347c90864.ttf")format("truetype"),
+    url("https://db.onlinewebfonts.com/t/229a57bbeef591e04a1fdfe347c90864.svg#Centra No2")format("svg");
+}
+
 /* Centra No2 Font Family */
 * {
     font-family:

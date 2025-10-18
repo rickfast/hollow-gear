@@ -51,7 +51,13 @@ function AppContent() {
                                 <img
                                     src="/logo.png"
                                     alt="Hollow Gear 5E"
-                                    style={{ height: "40px", cursor: "pointer" }}
+                                    style={{
+                                        height: "40px",
+                                        width: "auto",
+                                        maxWidth: "100%",
+                                        objectFit: "contain",
+                                        cursor: "pointer",
+                                    }}
                                 />
                             </RouterLink>
                         </NavbarBrand>
