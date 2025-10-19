@@ -163,7 +163,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             name={summary.name}
                             size="lg"
                             showFallback
-                            style={{ width: "120px", height: "120px", flexShrink: 0 }}
+                            style={{ width: "120px", height: "120px", flexShrink: 0, backgroundColor: 'transparent' }}
                         />
 
                         {/* Character Info */}

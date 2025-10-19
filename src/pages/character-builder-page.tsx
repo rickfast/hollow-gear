@@ -1,6 +1,7 @@
 import { AbilityScoreSelector } from "@/components/ability-score-selector";
 import { CharacterBuilderSummary } from "@/components/character-builder-summary";
 import { ClassLevelConfigurator } from "@/components/class-level-configurator";
+import { PortraitSelector } from "@/components/portrait-selector";
 import { CLASSES, SPECIES } from "@/data";
 import { CharacterBuilder } from "@/model/character-builder";
 import { useCharacterViewModelContext } from "@/model/character-view-model-context";
@@ -15,6 +16,7 @@ type BuilderStep =
     | "class"
     | "class-configuration"
     | "abilities"
+    | "portrait"
     | "background"
     | "review";
 
@@ -37,6 +39,7 @@ export function CharacterBuilderPage() {
         charisma: 10,
     });
     const [background, setBackground] = useState("");
+    const [avatarUrl, setAvatarUrl] = useState("");
     const [error, setError] = useState<string | null>(null);
 
     const steps: { key: BuilderStep; label: string }[] = [
@@ -45,6 +48,7 @@ export function CharacterBuilderPage() {
         { key: "class", label: "Class" },
         { key: "class-configuration", label: "Configuration" },
         { key: "abilities", label: "Abilities" },
+        { key: "portrait", label: "Portrait" },
         { key: "background", label: "Background" },
         { key: "review", label: "Review" },
     ];
@@ -73,6 +77,7 @@ export function CharacterBuilderPage() {
                 .setSpecies(species as SpeciesType)
                 .setClass(classType as ClassType)
                 .setAbilityScores(abilityScores)
+                .setAvatarUrl(avatarUrl)
                 .setBackground(background || "Adventurer");
 
             // Apply class configuration if provided
@@ -99,6 +104,8 @@ export function CharacterBuilderPage() {
                 return isConfigurationValid;
             case "abilities":
                 return true; // Always valid
+            case "portrait":
+                return avatarUrl !== ""; // Must select a portrait
             case "background":
                 return true; // Optional
             case "review":
@@ -426,6 +433,18 @@ export function CharacterBuilderPage() {
                                         abilityScores={abilityScores}
                                         onAbilityScoresChange={setAbilityScores}
                                         selectedClass={classType || undefined}
+                                    />
+                                </div>
+                            )}
+
+                            {/* Step: Portrait */}
+                            {step === "portrait" && (
+                                <div>
+                                    <PortraitSelector
+                                        selectedPortrait={avatarUrl}
+                                        onPortraitChange={setAvatarUrl}
+                                        speciesFilter={species || undefined}
+                                        classFilter={undefined}
                                     />
                                 </div>
                             )}
