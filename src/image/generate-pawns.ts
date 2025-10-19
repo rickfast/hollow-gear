@@ -3,7 +3,8 @@ import { openai } from "@ai-sdk/openai";
 import { experimental_generateImage as generateImage } from "ai";
 import { join } from "path";
 import { PROMPTS } from "./prompts";
-import { exit } from "process";
+const sharp = require("sharp");
+const Smartcrop = require("smartcrop-sharp");
 
 export const generatePawns = async () => {
     const classNames = CLASSES.map((cls) => cls.type);
@@ -11,6 +12,9 @@ export const generatePawns = async () => {
 
     // Create output directory if it doesn't exist
     const outputDir = join(process.cwd(), "public", "pawns");
+    const portraits = join(process.cwd(), "public", "portraits");
+
+    await Bun.write(join(portraits, ".gitkeep"), "");
     await Bun.write(join(outputDir, ".gitkeep"), "");
 
     console.log(`Output directory: ${outputDir}`);
@@ -30,23 +34,24 @@ export const generatePawns = async () => {
                 `This is a description of what the species "${species}" looks like: ${PROMPTS.species[species]}`,
                 `This is a description of the class "${cls}": ${PROMPTS.classes[cls]}`,
                 finalPrompt,
-                `### User Prompt:`
+                `### User Prompt:`,
             ];
 
-            console.log(prompts.join("\n"));
             const file = Bun.file(filename);
             if (!(await file.exists())) {
                 console.log(`Generating ${species} ${cls}...`);
                 try {
                     const result = await generateImage({
                         model: openai.image("gpt-image-1"),
-                        prompt: [...prompts, `Generate an image of a ${species} ${cls}, full body, transparent background`].join("\n"),
+                        prompt: [
+                            ...prompts,
+                            `Generate an image of a ${species} ${cls}, full body, transparent background`,
+                        ].join("\n"),
                     });
 
                     console.log(`Writing ${filename}`);
                     await Bun.write(filename, result.image.uint8Array);
                     console.log(`✓ Generated ${species} ${cls}`);
-                    
                 } catch (error) {
                     console.error(`✗ Failed to generate ${species} ${cls}:`, error);
                     return;
