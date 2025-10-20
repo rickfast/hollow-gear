@@ -12,7 +12,13 @@
  */
 
 import { CLASSES, EQUIPMENT_BY_ID } from "@/data";
-import type { AbilityScores, Character, ClassConfiguration, SpellSlots, SubclassType } from "@/types";
+import type {
+    AbilityScores,
+    Character,
+    ClassConfiguration,
+    SpellSlots,
+    SubclassType,
+} from "@/types";
 import {
     ValidationError,
     calculateAbilityModifier,
@@ -38,17 +44,17 @@ export interface LevelUpOptions {
     };
     /**
      * Class configuration for the new level
-     * 
+     *
      * FUTURE ENHANCEMENT: This will be used to configure class-specific options
      * when leveling up, similar to the character creation flow.
-     * 
+     *
      * Usage:
      * 1. Present ClassLevelConfigurator component in level-up UI
      * 2. Pass current class, new level, and existing configurations
      * 3. Capture user selections (subclass, features, spells, proficiencies)
      * 4. Pass the configuration to levelUp() method
      * 5. Apply configuration using ClassConfigurationService.applyConfiguration()
-     * 
+     *
      * Example:
      * ```typescript
      * const config: ClassConfiguration = {
@@ -59,10 +65,10 @@ export interface LevelUpOptions {
      *   spellsSelected: ["fireball", "lightning-bolt"],
      *   proficienciesSelected: []
      * };
-     * 
+     *
      * mutableViewModel.levelUp({ classConfiguration: config });
      * ```
-     * 
+     *
      * @see ClassConfigurationService.applyConfiguration
      * @see ClassLevelConfigurator component
      */
@@ -494,10 +500,10 @@ export class MutableCharacterViewModel extends CharacterViewModel {
 
     /**
      * Level up the character
-     * 
+     *
      * FUTURE ENHANCEMENT: This method will be enhanced to use ClassConfigurationService
      * to apply class-specific configurations when leveling up.
-     * 
+     *
      * Integration steps:
      * 1. Import ClassConfigurationService
      * 2. If options.classConfiguration is provided:
@@ -506,7 +512,7 @@ export class MutableCharacterViewModel extends CharacterViewModel {
      *    - Store configuration in character.classConfigurations array
      * 3. Update spells, proficiencies, and features from configuration
      * 4. Handle subclass selection from configuration instead of direct option
-     * 
+     *
      * @param options - Level up options
      * @returns Updated character
      * @throws ValidationError if level up requirements are not met
@@ -542,7 +548,7 @@ export class MutableCharacterViewModel extends CharacterViewModel {
         //         options.classConfiguration
         //     );
         //     if (!validation.valid) {
-        //         throw new ValidationError("classConfiguration", options.classConfiguration, 
+        //         throw new ValidationError("classConfiguration", options.classConfiguration,
         //             validation.errors.join(", "));
         //     }
         // }

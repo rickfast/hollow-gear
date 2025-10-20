@@ -333,6 +333,11 @@ export class CharacterBuilder {
                 this.character.spells = [...this.classConfiguration.spellsSelected];
             }
 
+            // Apply selected Mindcraft powers if any (Mindweavers)
+            if (this.classConfiguration.powersSelected) {
+                this.character.mindcraftPowers = [...this.classConfiguration.powersSelected];
+            }
+
             // Apply selected proficiencies if any
             if (
                 this.classConfiguration.proficienciesSelected &&

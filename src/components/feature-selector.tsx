@@ -1,5 +1,5 @@
-import { Card, CardBody, Radio, RadioGroup, Checkbox, CheckboxGroup } from "@heroui/react";
 import type { ConfigurableFeature } from "@/types";
+import { Card, CardBody, Checkbox, CheckboxGroup, Radio, RadioGroup } from "@heroui/react";
 import { CardTitle, Description } from "./typography";
 
 interface FeatureSelectorProps {
@@ -86,7 +86,9 @@ export function FeatureSelector({ feature, selectedOptions, onSelect }: FeatureS
                             >
                                 <div>
                                     <div className="text-sm font-semibold">{option.name}</div>
-                                    <div className="text-xs text-default-500">{option.description}</div>
+                                    <div className="text-xs text-default-500">
+                                        {option.description}
+                                    </div>
                                 </div>
                             </Checkbox>
                         ))}

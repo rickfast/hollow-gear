@@ -1,5 +1,5 @@
-import { Card, CardBody, Button } from "@heroui/react";
 import type { Subclass, SubclassType } from "@/types";
+import { Button, Card, CardBody } from "@heroui/react";
 import { CardTitle, Description, SecondaryText } from "./typography";
 
 interface SubclassSelectorProps {
@@ -57,7 +57,9 @@ export function SubclassSelector({
                                     <ul className="space-y-1">
                                         {subclass.features.slice(0, 3).map((feature, idx) => (
                                             <li key={idx} className="text-xs text-default-600">
-                                                <span className="font-semibold">{feature.name}</span>
+                                                <span className="font-semibold">
+                                                    {feature.name}
+                                                </span>
                                                 {feature.level > 1 && (
                                                     <span className="text-default-400">
                                                         {" "}

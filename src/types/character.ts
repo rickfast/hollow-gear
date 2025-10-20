@@ -84,5 +84,6 @@ export interface ClassConfiguration {
     subclass?: SubclassType;
     featureChoices: Record<string, string | string[]>; // featureName -> selected option(s)
     spellsSelected?: string[];
+    powersSelected?: string[]; // Mindcraft powers for Mindweavers
     proficienciesSelected?: string[];
 }

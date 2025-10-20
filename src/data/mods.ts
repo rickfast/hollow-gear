@@ -70,8 +70,8 @@ export const WEAPON_MODS: Mod[] = [
         },
         usesPerRest: {
             amount: 1,
-            restType: "short"
-        }
+            restType: "short",
+        },
     },
     {
         id: "steam-vent-array",
@@ -199,8 +199,8 @@ export const ARMOR_MODS: Mod[] = [
         notes: "1/short rest",
         usesPerRest: {
             amount: 1,
-            restType: "short"
-        }
+            restType: "short",
+        },
     },
     {
         id: "reinforced-plating",
@@ -227,8 +227,8 @@ export const ARMOR_MODS: Mod[] = [
         notes: "Consumes sigil charge",
         usesPerRest: {
             amount: 1,
-            restType: "long"
-        }
+            restType: "long",
+        },
     },
     {
         id: "flux-dampener",
@@ -267,8 +267,8 @@ export const ARMOR_MODS: Mod[] = [
         notes: "Cannot stack",
         usesPerRest: {
             amount: 1,
-            restType: "short"
-        }
+            restType: "short",
+        },
     },
     {
         id: "aether-amplifier",
@@ -306,8 +306,8 @@ export const ARMOR_MODS: Mod[] = [
         notes: "Once per short rest",
         usesPerRest: {
             amount: 1,
-            restType: "short"
-        }
+            restType: "short",
+        },
     },
 ];
 
@@ -329,8 +329,8 @@ export const SHIELD_MODS: Mod[] = [
         notes: "Vent-assisted",
         usesPerRest: {
             amount: 1,
-            restType: "short"
-        }
+            restType: "short",
+        },
     },
     {
         id: "resonant-aegis-core",
@@ -357,8 +357,8 @@ export const SHIELD_MODS: Mod[] = [
         notes: "Refills at dawn",
         usesPerRest: {
             amount: 1,
-            restType: "long"
-        }
+            restType: "long",
+        },
     },
     {
         id: "voltaic-pulse-coil",
@@ -389,8 +389,8 @@ export const SHIELD_MODS: Mod[] = [
         notes: "Reaction",
         usesPerRest: {
             amount: 1,
-            restType: "long"
-        }
+            restType: "long",
+        },
     },
 ];
 

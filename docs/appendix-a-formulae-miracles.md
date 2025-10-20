@@ -16,16 +16,18 @@ Templars channel the same Aether through emotion and conviction rather than logi
 Each Miracle is a **resonance of faith**, conducted through living flesh instead of steel.
 
 ## Chapter 15: Aetheric Formulae & Resonant Miracles
-> *“Every spell is an equation. Every prayer, a frequency. The wise learn to balance them before they burn.”*  
+
+> _“Every spell is an equation. Every prayer, a frequency. The wise learn to balance them before they burn.”_  
 > — Thess Moraine, Mindweaver of the Tide Engine
 
 ---
 
 ### ⚙️ Spellcasting Overview
+
 In Hollowgear, spell effects manifest as **Aetheric Resonance** — psionic intention shaped through engineered conductors.  
 Each ability belongs to one of two traditions:
 
-- **Formulae (Arcanist)** — scientific manipulation of Aether through lenses, circuits, and modular foci.  
+- **Formulae (Arcanist)** — scientific manipulation of Aether through lenses, circuits, and modular foci.
 - **Miracles (Templar)** — harmonic resonance conducted through conviction, faith, or emotional focus.
 
 ---
@@ -350,7 +352,7 @@ You tune your mind to foreign frequencies, deciphering spoken, written, or mecha
 
 ---
 
-> *“We no longer pray to the stars for magic. We built our own stars, and called them machines.”*
+> _“We no longer pray to the stars for magic. We built our own stars, and called them machines.”_
 
 ---
 

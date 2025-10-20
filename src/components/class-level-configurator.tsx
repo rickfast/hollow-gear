@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
-import { Card, CardBody, Divider } from "@heroui/react";
-import type { ClassConfiguration, ClassType, SubclassType } from "@/types";
 import {
     classConfigurationService,
     type LevelConfiguration,
     type ValidationResult,
 } from "@/service/class-configuration-service";
+import type { ClassConfiguration, ClassType, SubclassType } from "@/types";
+import { Card, CardBody, Divider } from "@heroui/react";
+import { useEffect, useState } from "react";
 import { FeatureSelector } from "./feature-selector";
-import { SubclassSelector } from "./subclass-selector";
-import { SpellSelector } from "./spell-selector";
+import { PowerSelector } from "./power-selector";
 import { ProficiencySelector } from "./proficiency-selector";
+import { SpellSelector } from "./spell-selector";
+import { SubclassSelector } from "./subclass-selector";
 import { CardTitle, Description, TertiaryText } from "./typography";
 
 interface ClassLevelConfiguratorProps {
@@ -192,6 +193,23 @@ export function ClassLevelConfigurator({
                         availableSpells={levelConfig.spellSelection.availableSpells}
                         selectedSpells={config.spellsSelected || []}
                         onSelect={handleSpellsSelect}
+                    />
+                </>
+            )}
+
+            {/* Mindcraft Power Selection (Mindweavers) */}
+            {classType === "Mindweaver" && (
+                <>
+                    <Divider />
+                    <PowerSelector
+                        selectedPowers={config.powersSelected || []}
+                        maxPowers={level} // Mindweavers get 1 power per level
+                        onPowersChange={(powers) => {
+                            const newConfig = { ...config, powersSelected: powers };
+                            setConfig(newConfig);
+                            onConfigurationChange(newConfig);
+                        }}
+                        level={level}
                     />
                 </>
             )}

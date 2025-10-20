@@ -1,6 +1,6 @@
-import { describe, it, expect } from "vitest";
-import { ClassConfigurationService } from "./class-configuration-service";
 import type { Character, ClassConfiguration, ClassType } from "@/types";
+import { describe, expect, it } from "vitest";
+import { ClassConfigurationService } from "./class-configuration-service";
 
 describe("ClassConfigurationService", () => {
     const service = new ClassConfigurationService();

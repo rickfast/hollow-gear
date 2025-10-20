@@ -16,8 +16,8 @@ This guide explains how to configure GitHub Actions to automatically push Docker
 3. Navigate to **Security** → **Access Tokens**
 4. Click **New Access Token**
 5. Configure the token:
-   - **Description**: `GitHub Actions - Hollow Gear 5E`
-   - **Access permissions**: `Read, Write, Delete`
+    - **Description**: `GitHub Actions - Hollow Gear 5E`
+    - **Access permissions**: `Read, Write, Delete`
 6. Click **Generate**
 7. **Important**: Copy the token immediately - you won't be able to see it again!
 
@@ -29,10 +29,12 @@ This guide explains how to configure GitHub Actions to automatically push Docker
 4. Add the following two secrets:
 
 #### Secret 1: DOCKERHUB_USERNAME
+
 - **Name**: `DOCKERHUB_USERNAME`
 - **Value**: Your Docker Hub username (e.g., `rickfast`)
 
 #### Secret 2: DOCKERHUB_TOKEN
+
 - **Name**: `DOCKERHUB_TOKEN`
 - **Value**: The access token you created in step 1
 
@@ -42,8 +44,8 @@ The workflow is now configured to:
 
 1. **On Pull Requests**: Build and test the Docker image (no push)
 2. **On Push to Main**: Build, test, AND push to Docker Hub with tags:
-   - `rickfast/hollow-gear-5e:latest`
-   - `rickfast/hollow-gear-5e:main-<commit-sha>`
+    - `rickfast/hollow-gear-5e:latest`
+    - `rickfast/hollow-gear-5e:main-<commit-sha>`
 
 ## Testing the Workflow
 
@@ -69,6 +71,7 @@ curl http://localhost:8080/
 ## Workflow Details
 
 ### Build Job
+
 - Runs on all pushes and pull requests
 - Builds the Docker image
 - Starts a test container
@@ -76,6 +79,7 @@ curl http://localhost:8080/
 - Stops the container
 
 ### Push Job
+
 - Only runs on pushes to main branch
 - Requires build job to succeed
 - Logs in to Docker Hub using secrets
@@ -101,16 +105,19 @@ open http://localhost:8080
 ## Troubleshooting
 
 ### Authentication Failed
+
 - Verify `DOCKERHUB_USERNAME` is correct (case-sensitive)
 - Regenerate the access token if needed
 - Ensure the token has `Read, Write, Delete` permissions
 
 ### Build Failed
+
 - Check the GitHub Actions logs
 - Test the build locally first
 - Verify all dependencies are available
 
 ### Push Failed
+
 - Ensure the repository exists on Docker Hub
 - Check that the token hasn't expired
 - Verify network connectivity in GitHub Actions
@@ -118,12 +125,14 @@ open http://localhost:8080
 ## Security Best Practices
 
 ✅ **DO**:
+
 - Use access tokens instead of passwords
 - Limit token permissions to what's needed
 - Rotate tokens periodically
 - Use repository secrets (never commit tokens)
 
 ❌ **DON'T**:
+
 - Share your access token
 - Commit tokens to the repository
 - Use your Docker Hub password in workflows

@@ -1,5 +1,5 @@
 import { AbilityScores } from "@/components/ability-scores";
-import type { AbilityScore, SavingThrow } from "@/model/character-view-model";
+import type { SavingThrow } from "@/model/character-view-model";
 import { useCharacterViewModelContext } from "@/model/character-view-model-context";
 import {
     Avatar,
@@ -163,7 +163,12 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             name={summary.name}
                             size="lg"
                             showFallback
-                            style={{ width: "120px", height: "120px", flexShrink: 0, backgroundColor: 'transparent' }}
+                            style={{
+                                width: "120px",
+                                height: "120px",
+                                flexShrink: 0,
+                                backgroundColor: "transparent",
+                            }}
                         />
 
                         {/* Character Info */}

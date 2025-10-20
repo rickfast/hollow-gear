@@ -1,14 +1,13 @@
+import { CLASSES } from "@/data/classes";
+import { SKILLS } from "@/data/skills";
+import { SPELLS_BY_NAME } from "@/data/spells";
 import type {
     Character,
     ClassConfiguration,
     ClassType,
     ConfigurableFeature,
     Subclass,
-    SubclassType,
 } from "@/types";
-import { CLASSES } from "@/data/classes";
-import { SPELLS_BY_NAME } from "@/data/spells";
-import { SKILLS } from "@/data/skills";
 
 // ============================================================================
 // TYPES
@@ -107,7 +106,11 @@ export class ClassConfigurationService {
             return { valid: false, errors, warnings };
         }
 
-        const availableOptions = this.getAvailableOptions(classType, level, config as ClassConfiguration);
+        const availableOptions = this.getAvailableOptions(
+            classType,
+            level,
+            config as ClassConfiguration
+        );
 
         // Validate subclass selection
         if (availableOptions.requiresSubclass && !config.subclass) {
@@ -134,7 +137,9 @@ export class ClassConfigurationService {
                     const choices = Array.isArray(choice) ? choice : [choice];
                     for (const c of choices) {
                         if (!validIds.includes(c)) {
-                            errors.push(`Invalid option "${c}" selected for ${feature.featureName}`);
+                            errors.push(
+                                `Invalid option "${c}" selected for ${feature.featureName}`
+                            );
                         }
                     }
                 }
@@ -148,6 +153,13 @@ export class ClassConfigurationService {
                 config.spellsSelected
             );
             errors.push(...spellErrors);
+        }
+
+        // Validate Mindweaver power selection
+        if (classType === "Mindweaver") {
+            if (!config.powersSelected || config.powersSelected.length !== level) {
+                errors.push(`Mindweavers must select exactly ${level} power(s) (1 per level)`);
+            }
         }
 
         // Validate proficiency selection
@@ -230,7 +242,7 @@ export class ClassConfigurationService {
                         ...currentSkill,
                         proficient: true,
                     };
-                    
+
                     // Also add to proficiencies.skills array if not already there
                     if (!updatedCharacter.proficiencies.skills.includes(prof as any)) {
                         updatedCharacter.proficiencies.skills.push(prof as any);

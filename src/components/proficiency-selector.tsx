@@ -1,6 +1,6 @@
-import { Card, CardBody, Checkbox, CheckboxGroup, Chip } from "@heroui/react";
-import type { SkillType, Tool } from "@/types";
 import { SKILLS } from "@/data/skills";
+import type { SkillType } from "@/types";
+import { Card, CardBody, Checkbox, CheckboxGroup, Chip } from "@heroui/react";
 import { CardTitle, Description, SecondaryText } from "./typography";
 
 interface ProficiencySelectorProps {
@@ -49,7 +49,8 @@ export function ProficiencySelector({
         return null;
     };
 
-    const defaultTitle = type === "skill" ? "Select Skill Proficiencies" : "Select Tool Proficiencies";
+    const defaultTitle =
+        type === "skill" ? "Select Skill Proficiencies" : "Select Tool Proficiencies";
     const defaultDescription =
         type === "skill"
             ? `Choose ${count} skill${count !== 1 ? "s" : ""} to gain proficiency in`

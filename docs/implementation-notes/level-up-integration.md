@@ -31,28 +31,28 @@ export function LevelUpPage({ characterId }: LevelUpPageProps) {
     const character = useCharacter(characterId);
     const [configuration, setConfiguration] = useState<Partial<ClassConfiguration>>();
     const [isValid, setIsValid] = useState(false);
-    
+
     const currentClass = character.classes[0]?.class;
     const currentLevel = character.level;
     const newLevel = currentLevel + 1;
-    
+
     const handleLevelUp = () => {
         if (!isValid || !configuration) return;
-        
+
         const mutableVM = new MutableCharacterViewModel(character);
         const updatedCharacter = mutableVM.levelUp({
             classConfiguration: configuration as ClassConfiguration,
             // Other options like hitPointRoll, abilityScoreImprovement
         });
-        
+
         // Save updated character
         updateCharacter(characterId, updatedCharacter);
     };
-    
+
     return (
         <div>
             <h1>Level Up to {newLevel}</h1>
-            
+
             <ClassLevelConfigurator
                 classType={currentClass}
                 level={newLevel}
@@ -60,9 +60,9 @@ export function LevelUpPage({ characterId }: LevelUpPageProps) {
                 onConfigurationChange={setConfiguration}
                 onValidationChange={setIsValid}
             />
-            
-            <Button 
-                onClick={handleLevelUp} 
+
+            <Button
+                onClick={handleLevelUp}
                 disabled={!isValid}
             >
                 Complete Level Up
@@ -96,7 +96,7 @@ The ClassLevelConfigurator emits partial configurations as the user makes select
 ```typescript
 const handleConfigurationChange = (config: Partial<ClassConfiguration>) => {
     setConfiguration(config);
-    
+
     // Optionally save draft configuration
     saveDraftConfiguration(characterId, config);
 };
@@ -129,10 +129,13 @@ const mutableVM = new MutableCharacterViewModel(character);
 const updatedCharacter = mutableVM.levelUp({
     classConfiguration: configuration as ClassConfiguration,
     hitPointRoll: rollHitDie(), // Optional: let user roll
-    abilityScoreImprovement: newLevel % 4 === 0 ? {
-        ability1: "strength",
-        ability2: "constitution"
-    } : undefined,
+    abilityScoreImprovement:
+        newLevel % 4 === 0
+            ? {
+                  ability1: "strength",
+                  ability2: "constitution",
+              }
+            : undefined,
 });
 
 updateCharacter(characterId, updatedCharacter);
@@ -143,26 +146,31 @@ updateCharacter(characterId, updatedCharacter);
 Different levels require different configurations:
 
 ### Level 1 (Character Creation)
+
 - Subclass selection (for some classes)
 - Initial feature choices
 - Spell selection
 - Proficiency selection
 
 ### Level 2
+
 - Additional spells (for spellcasters)
 - Class features (no choices typically)
 
 ### Level 3
+
 - Subclass selection (for most classes)
 - Subclass-specific features
 - Additional spells
 
 ### Level 4, 8, 12, 16, 19
+
 - Ability Score Improvement or Feat
 - Additional spells
 - Class features
 
 ### Other Levels
+
 - Additional spells
 - Class features
 - Subclass features
@@ -173,16 +181,16 @@ Different levels require different configurations:
 interface ClassLevelConfiguratorProps {
     /** The class being configured */
     classType: ClassType;
-    
+
     /** The level being configured (new level, not current) */
     level: number;
-    
+
     /** Existing configuration for this level (if editing) */
     existingConfig?: ClassConfiguration;
-    
+
     /** Callback when configuration changes */
     onConfigurationChange: (config: Partial<ClassConfiguration>) => void;
-    
+
     /** Callback when validation status changes */
     onValidationChange: (valid: boolean) => void;
 }
@@ -204,6 +212,7 @@ interface ClassConfiguration {
 ### Example Configurations
 
 **Arcanist Level 1:**
+
 ```typescript
 {
     classType: "Arcanist",
@@ -213,13 +222,14 @@ interface ClassConfiguration {
     },
     spellsSelected: [
         "mage-hand", "prestidigitation", "ray-of-frost", // Cantrips
-        "detect-magic", "identify", "mage-armor", 
+        "detect-magic", "identify", "mage-armor",
         "magic-missile", "shield", "thunderwave" // 1st level
     ]
 }
 ```
 
 **Arcanist Level 3 (Aethermancer):**
+
 ```typescript
 {
     classType: "Arcanist",
@@ -233,6 +243,7 @@ interface ClassConfiguration {
 ```
 
 **Mindweaver Level 1:**
+
 ```typescript
 {
     classType: "Mindweaver",
@@ -248,30 +259,39 @@ interface ClassConfiguration {
 ## UI Flow
 
 ### Step 1: Initiate Level-Up
+
 User clicks "Level Up" button on character sheet
 
 ### Step 2: Show Level-Up Summary
+
 Display:
+
 - Current level → New level
 - HP increase (with optional roll)
 - New features gained
 - Ability Score Improvement (if applicable)
 
 ### Step 3: Class Configuration
+
 Present ClassLevelConfigurator for class-specific choices:
+
 - Subclass selection (if applicable)
 - Feature choices
 - Spell selection
 - Proficiency selection
 
 ### Step 4: Ability Score Improvement
+
 If level 4, 8, 12, 16, or 19:
+
 - Show ability score selector
 - Allow +2 to one ability or +1 to two abilities
 - Alternative: Feat selection (future enhancement)
 
 ### Step 5: Review
+
 Show summary of all changes:
+
 - HP increase
 - New features
 - New spells
@@ -279,6 +299,7 @@ Show summary of all changes:
 - Subclass (if selected)
 
 ### Step 6: Confirm
+
 Apply all changes and update character
 
 ## Error Handling
@@ -288,7 +309,7 @@ Apply all changes and update character
 ```typescript
 try {
     const updatedCharacter = mutableVM.levelUp({
-        classConfiguration: configuration
+        classConfiguration: configuration,
     });
 } catch (error) {
     if (error instanceof ValidationError) {
@@ -299,6 +320,7 @@ try {
 ```
 
 ### Common Validation Errors
+
 - Missing required subclass selection
 - Incorrect number of spells selected
 - Invalid feature choices
@@ -308,27 +330,35 @@ try {
 ## Future Enhancements
 
 ### Multiclassing
+
 When multiclassing is supported:
+
 - Allow selecting which class to level up
 - Show available classes based on ability score requirements
 - Configure the selected class for the new level
 - Track multiple class configurations
 
 ### Feat Selection
+
 Alternative to Ability Score Improvement:
+
 - Present feat options at ASI levels
 - Show feat prerequisites
 - Apply feat benefits
 
 ### Respec/Retraining
+
 Allow changing previous level configurations:
+
 - Load existing configuration for a level
 - Allow modifications
 - Recalculate derived values
 - Validate changes don't break character
 
 ### Configuration Presets
+
 Provide recommended builds:
+
 - "Damage Dealer" preset
 - "Support" preset
 - "Tank" preset
@@ -352,16 +382,19 @@ Provide recommended builds:
 ### Test Cases
 
 **Test Arcanist Level-Up:**
+
 - Level 1 → 2: Add 2 new spells
 - Level 2 → 3: Select subclass, add discipline choice
 - Level 3 → 4: ASI, add 2 new spells
 
 **Test Mindweaver Level-Up:**
+
 - Level 1 → 2: Add psionic powers
 - Level 2 → 3: Add more powers
 - Level 3 → 4: ASI, add powers
 
 **Test Non-Spellcaster Level-Up:**
+
 - Verify no spell selection UI
 - Verify class features are applied
 - Verify subclass selection at level 3
@@ -408,34 +441,34 @@ export function LevelUpModal({ character, onComplete, onCancel }: LevelUpModalPr
     const [configuration, setConfiguration] = useState<Partial<ClassConfiguration>>();
     const [isValid, setIsValid] = useState(false);
     const [hitPointRoll, setHitPointRoll] = useState<number>();
-    
+
     const currentClass = character.classes[0]!;
     const newLevel = character.level + 1;
-    
+
     const handleLevelUp = () => {
         if (!isValid || !configuration) return;
-        
+
         try {
             const mutableVM = new MutableCharacterViewModel(character);
             const updatedCharacter = mutableVM.levelUp({
                 classConfiguration: configuration as ClassConfiguration,
                 hitPointRoll,
             });
-            
+
             onComplete(updatedCharacter);
         } catch (error) {
             console.error("Level up failed:", error);
             alert(`Failed to level up: ${error.message}`);
         }
     };
-    
+
     return (
         <Card className="max-w-4xl mx-auto">
             <CardHeader>
                 <h2>Level Up: {character.name}</h2>
                 <p>Level {character.level} → {newLevel}</p>
             </CardHeader>
-            
+
             <CardBody className="space-y-6">
                 {/* HP Roll Section */}
                 <div>
@@ -443,7 +476,7 @@ export function LevelUpModal({ character, onComplete, onCancel }: LevelUpModalPr
                     <p>Roll your hit die or take the average</p>
                     {/* HP roll UI */}
                 </div>
-                
+
                 {/* Class Configuration */}
                 <div>
                     <h3>Class Configuration</h3>
@@ -454,14 +487,14 @@ export function LevelUpModal({ character, onComplete, onCancel }: LevelUpModalPr
                         onValidationChange={setIsValid}
                     />
                 </div>
-                
+
                 {/* Actions */}
                 <div className="flex gap-2 justify-end">
                     <Button variant="flat" onClick={onCancel}>
                         Cancel
                     </Button>
-                    <Button 
-                        color="primary" 
+                    <Button
+                        color="primary"
                         onClick={handleLevelUp}
                         disabled={!isValid}
                     >

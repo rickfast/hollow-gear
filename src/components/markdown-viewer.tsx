@@ -308,7 +308,7 @@ export function MarkdownViewer({ url }: MarkdownViewerProps) {
                             em: ({ children }) => (
                                 <em style={{ fontStyle: "italic" }}>{children}</em>
                             ),
-                            th: ({children}) => <h2>{children}</h2>,
+                            th: ({ children }) => <h2>{children}</h2>,
                             table: ({ children }) => (
                                 <div
                                     style={{

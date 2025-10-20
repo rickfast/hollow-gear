@@ -1,6 +1,6 @@
-import type { Character, ClassType, InventoryItem, StartingEquipment } from "@/types";
 import { CLASSES } from "@/data/classes";
 import { EQUIPMENT_BY_ID } from "@/data/equipment";
+import type { Character, ClassType, InventoryItem, StartingEquipment } from "@/types";
 
 /**
  * Service for managing starting equipment for character classes.

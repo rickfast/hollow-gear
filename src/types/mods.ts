@@ -3,8 +3,8 @@
 // ============================================================================
 
 import type { DamageInfo, Rollable } from "./combat";
-import type { CraftTier, EquipmentType } from "./equipment";
 import type { PerRestUse } from "./common";
+import type { CraftTier, EquipmentType } from "./equipment";
 
 export interface ModSlot {
     tier: ModTier;

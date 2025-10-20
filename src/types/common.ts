@@ -4,7 +4,7 @@
 
 export interface PerRestUse {
     amount: number;
-    restType: "short" | "long"
+    restType: "short" | "long";
 }
 
 export interface Feature {

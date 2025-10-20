@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Card, CardBody, Checkbox, CheckboxGroup, Chip, Divider } from "@heroui/react";
-import type { ClassType, Spell } from "@/types";
 import { SPELLS_BY_NAME } from "@/data/spells";
+import type { ClassType, Spell } from "@/types";
+import { Card, CardBody, Checkbox, CheckboxGroup, Chip, Divider } from "@heroui/react";
+import { useState } from "react";
 import { CardTitle, Description, SecondaryText, TertiaryText } from "./typography";
 
 interface SpellSelectorProps {
@@ -37,7 +37,10 @@ export function SpellSelector({
 
     const leveledSpells = availableSpells
         .map((name) => SPELLS_BY_NAME[name])
-        .filter((spell): spell is Spell => spell !== undefined && spell.level > 0 && spell.level <= level);
+        .filter(
+            (spell): spell is Spell =>
+                spell !== undefined && spell.level > 0 && spell.level <= level
+        );
 
     // Count selected cantrips and spells
     const selectedCantrips = selectedSpells.filter((name) => {
@@ -127,9 +130,7 @@ export function SpellSelector({
                                                         {spell.hollowgearName || spell.name}
                                                     </div>
                                                     {spell.hollowgearName && (
-                                                        <TertiaryText>
-                                                            ({spell.name})
-                                                        </TertiaryText>
+                                                        <TertiaryText>({spell.name})</TertiaryText>
                                                     )}
                                                 </div>
                                                 <div className="flex gap-1 flex-shrink-0">
@@ -137,7 +138,11 @@ export function SpellSelector({
                                                         {spell.school}
                                                     </Chip>
                                                     {spell.concentration && (
-                                                        <Chip size="sm" color="warning" variant="flat">
+                                                        <Chip
+                                                            size="sm"
+                                                            color="warning"
+                                                            variant="flat"
+                                                        >
                                                             C
                                                         </Chip>
                                                     )}

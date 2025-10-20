@@ -1,7 +1,7 @@
-import { describe, it, expect } from "vitest";
-import { StartingEquipmentService } from "./starting-equipment-service";
-import type { Character, ClassType } from "@/types";
 import { CLASSES } from "@/data/classes";
+import type { Character, ClassType } from "@/types";
+import { describe, expect, it } from "vitest";
+import { StartingEquipmentService } from "./starting-equipment-service";
 
 describe("StartingEquipmentService", () => {
     const service = new StartingEquipmentService();

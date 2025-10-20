@@ -73,18 +73,22 @@ A multi-step character creation wizard that guides users through creating a new 
 #### Class-Specific Configuration Examples
 
 **Arcanist:**
+
 - Arcane Focus choice: Steamstaff or Aether Lens
 - Spell selection: 3 cantrips and 6 spells from Arcanist spell list
 
 **Mindweaver:**
+
 - Primary ability: Intelligence or Wisdom
 - Subclass selection: Path of Echo, Flux, or Eidolon
 - Initial psionic powers based on selected path
 
 **Templar:**
+
 - Spell preparation from Templar spell list
 
 **Tweaker, Shadehand, Vanguard, Artifex:**
+
 - Skill proficiency selections (if applicable)
 - Subclass selection at level 3 (not during initial creation)
 
@@ -108,27 +112,32 @@ The class configuration step presents dynamic options based on the selected clas
 ### Feature Types
 
 **Choice Features:**
+
 - Single selection from a list of options
 - Example: Arcane Focus (Steamstaff or Aether Lens)
 - Rendered as radio buttons or select dropdown
 
 **Multiple Choice Features:**
+
 - Select multiple options from a list
 - Example: Skill proficiencies (choose 2 from list)
 - Rendered as checkboxes with count validation
 
 **Spell Selection:**
+
 - Choose cantrips and spells based on class rules
 - Filtered by class spell list and level
 - Validates correct number of selections
 - Shows spell descriptions and details
 
 **Proficiency Selection:**
+
 - Choose skill or tool proficiencies
 - Enforces selection count limits
 - Shows proficiency descriptions
 
 **Ability Selection:**
+
 - Choose primary ability score (Mindweaver only)
 - Affects spellcasting modifier and save DC
 - Options: Intelligence or Wisdom
@@ -136,25 +145,32 @@ The class configuration step presents dynamic options based on the selected clas
 ### Configurable Features by Class
 
 **Arcanist (Level 1):**
+
 - Arcane Focus: Choose Steamstaff or Aether Lens
 - Spell Selection: 3 cantrips, 6 spells from Arcanist list
 
 **Templar (Level 1):**
+
 - Spell Preparation: Prepare spells from Templar list
 
 **Tweaker (Level 1):**
+
 - Skill Proficiencies: Choose from class skill list (if applicable)
 
 **Shadehand (Level 1):**
+
 - Skill Proficiencies: Choose from class skill list (if applicable)
 
 **Vanguard (Level 1):**
+
 - Fighting Style: Choose combat specialization (if applicable)
 
 **Artifex (Level 1):**
+
 - Tool Proficiencies: Choose from available tools (if applicable)
 
 **Mindweaver (Level 1):**
+
 - Primary Ability: Choose Intelligence or Wisdom
 - Subclass: Choose Path of Echo, Flux, or Eidolon
 - Psionic Powers: Initial powers based on selected path
@@ -174,6 +190,7 @@ Each class receives predefined starting equipment and currency when the characte
 ### Equipment by Class
 
 **Arcanist:**
+
 - Weapons: Brass Dagger
 - Armor: Steamweave Vest (light armor)
 - Tools: Tinker's Tools
@@ -181,6 +198,7 @@ Each class receives predefined starting equipment and currency when the characte
 - Currency: 100 Cogs
 
 **Templar:**
+
 - Weapons: Steamhammer, Brass Shield
 - Armor: Steamplate Armor (heavy armor)
 - Tools: None
@@ -188,6 +206,7 @@ Each class receives predefined starting equipment and currency when the characte
 - Currency: 80 Cogs
 
 **Tweaker:**
+
 - Weapons: Brass Knuckles, Throwing Knives (5)
 - Armor: Leather Jacket (light armor)
 - Tools: Chirurgeon's Tools
@@ -195,6 +214,7 @@ Each class receives predefined starting equipment and currency when the characte
 - Currency: 70 Cogs
 
 **Shadehand:**
+
 - Weapons: Brass Dagger (2), Hand Crossbow
 - Armor: Shadowweave Cloak (light armor)
 - Tools: Thieves' Tools
@@ -202,6 +222,7 @@ Each class receives predefined starting equipment and currency when the characte
 - Currency: 90 Cogs
 
 **Vanguard:**
+
 - Weapons: Steamblade, Brass Shield
 - Armor: Steamplate Armor (heavy armor)
 - Tools: None
@@ -209,6 +230,7 @@ Each class receives predefined starting equipment and currency when the characte
 - Currency: 75 Cogs
 
 **Artifex:**
+
 - Weapons: Light Hammer, Hand Crossbow
 - Armor: Steamweave Vest (light armor)
 - Tools: Tinker's Tools, Mechanist's Tools
@@ -216,6 +238,7 @@ Each class receives predefined starting equipment and currency when the characte
 - Currency: 85 Cogs
 
 **Mindweaver:**
+
 - Weapons: Quarterstaff
 - Armor: Robes (no armor)
 - Tools: None
@@ -287,6 +310,7 @@ const characterId = createCharacter(builder);
 ```
 
 The `build()` method automatically:
+
 - Applies starting equipment based on class
 - Stores class configuration choices
 - Initializes spells and proficiencies from configuration
@@ -401,20 +425,24 @@ To test the builder:
 ### Testing Class-Specific Configuration
 
 **Test Arcanist:**
+
 - Verify Arcane Focus choice appears (Steamstaff or Aether Lens)
 - Verify spell selection interface (3 cantrips, 6 spells)
 - Verify starting equipment includes Tinker's Tools and Aether Cells
 
 **Test Mindweaver:**
+
 - Verify primary ability choice (Intelligence or Wisdom)
 - Verify subclass selection (Path of Echo, Flux, or Eidolon)
 - Verify psionic powers are initialized
 
 **Test Templar:**
+
 - Verify spell preparation interface
 - Verify starting equipment includes Steamhammer and Steamplate Armor
 
 **Test Non-Spellcasters (Tweaker, Shadehand, Vanguard, Artifex):**
+
 - Verify skill proficiency selections if applicable
 - Verify no spell selection interface
 - Verify appropriate starting equipment
