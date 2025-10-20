@@ -59,6 +59,31 @@ export const generatePawns = async () => {
             } else {
                 console.log(`⊘ Skipping ${species} ${cls} (already exists)`);
             }
+
+            const porttraitFile = Bun.file(join(portraits, `${species}-${cls}.portrait.png`));
+
+            if (await porttraitFile.exists()) {
+                console.log(`⊘ Skipping portrait for ${species} ${cls} (already exists)`);
+                continue;
+            }
+            // Use smartcrop to find the best crop for the portrait
+            const pawnImage = await Bun.file(filename).arrayBuffer();
+
+            console.log(`Generating portrait for ${species} ${cls}...`);
+            const cropResult = await Smartcrop.crop(Buffer.from(pawnImage), {
+                width: 240,
+                height: 240,
+            });
+
+            const { x: left, y: top, width, height } = cropResult.topCrop;
+
+            await sharp(Buffer.from(pawnImage))
+                .extract({ left, top, width, height })
+                .toFile(join(portraits, `${species}-${cls}.portrait.png`));
+
+            console.log(
+                `✓ Generated portrait for ${species} ${cls}: left=${left}, top=${top}, width=${width}, height=${height}`
+            );
         }
     }
 
