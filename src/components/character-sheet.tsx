@@ -1,8 +1,11 @@
 import { AbilityScores } from "@/components/ability-scores";
 import type { SavingThrow } from "@/model/character-view-model";
 import { useCharacterViewModelContext } from "@/model/character-view-model-context";
+import { DroneStorageService } from "@/service/drone-storage-service";
+import type { Drone } from "@/types";
 import {
     Avatar,
+    Button,
     Card,
     CardBody,
     CardHeader,
@@ -18,6 +21,7 @@ import {
     useDisclosure,
 } from "@heroui/react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Actions } from "./actions";
 import { Drones } from "./drones";
 import { Features } from "./features";
@@ -28,6 +32,8 @@ import { PointBar } from "./point-bar";
 import { RollButton } from "./roll-button";
 import { Skills } from "./skills";
 import { Spells } from "./spells";
+
+const droneStorageService = new DroneStorageService();
 
 interface CharacterSheetProps {
     id: string;
@@ -44,9 +50,17 @@ type SectionKey =
     | "drones";
 
 export function CharacterSheet({ id }: CharacterSheetProps) {
+    const navigate = useNavigate();
     const [isMobile, setIsMobile] = useState(false);
     const [activeSection, setActiveSection] = useState<SectionKey>("skills");
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const {
+        isOpen: isDroneDetailOpen,
+        onOpen: onDroneDetailOpen,
+        onClose: onDroneDetailClose,
+    } = useDisclosure();
+    const [selectedDroneId, setSelectedDroneId] = useState<string | null>(null);
+    const [deleteConfirmDroneId, setDeleteConfirmDroneId] = useState<string | null>(null);
 
     const { getCharacter, updateCharacter } = useCharacterViewModelContext();
     const { summary, abilityScores, savingThrows, skills } = getCharacter(id);
@@ -54,7 +68,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
     const showSpellsTab = getCharacter(id).spellType !== "None";
     const spellType = getCharacter(id).spellType;
     const isArtifex = summary.class === "Artifex" || summary.fullClass.includes("Artifex");
-    const showDronesTab = isArtifex && getCharacter(id).drones.length > 0;
+    const showDronesTab = isArtifex;
 
     // Detect mobile screen size
     useEffect(() => {
@@ -143,6 +157,61 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
             return vm.updateDroneHeatPoints(droneId, newValue);
         });
     };
+
+    const handleCreateDrone = () => {
+        navigate("/drones/new");
+    };
+
+    const handleViewDroneDetail = (droneId: string) => {
+        setSelectedDroneId(droneId);
+        onDroneDetailOpen();
+    };
+
+    const handleRemoveDrone = (droneId: string) => {
+        setDeleteConfirmDroneId(droneId);
+    };
+
+    const confirmRemoveDrone = () => {
+        if (!deleteConfirmDroneId) return;
+
+        const deletedDrone = droneStorageService.deleteDrone(deleteConfirmDroneId);
+
+        if (deletedDrone) {
+            // Update character's drones array
+            updateCharacter(id, (vm) => {
+                const character = vm.toCharacter();
+                const updatedDrones = (character.drones || []).filter(
+                    (d: Drone) => d.id !== deleteConfirmDroneId
+                );
+
+                return {
+                    ...character,
+                    drones: updatedDrones,
+                    // Clear activeDroneId if this was the active drone
+                    activeDroneId:
+                        character.activeDroneId === deleteConfirmDroneId
+                            ? undefined
+                            : character.activeDroneId,
+                };
+            });
+        }
+
+        setDeleteConfirmDroneId(null);
+    };
+
+    const cancelRemoveDrone = () => {
+        setDeleteConfirmDroneId(null);
+    };
+
+    // Get drone limit (Artifex can have 1 active drone)
+    const droneLimit = 1;
+    const currentDroneCount = getCharacter(id).drones.length;
+    const canAddDrone = currentDroneCount < droneLimit;
+
+    // Get selected drone for detail view
+    const selectedDrone = selectedDroneId
+        ? getCharacter(id).drones.find((d) => d.id === selectedDroneId)
+        : null;
 
     return (
         <div style={{ padding: "2rem", maxWidth: "1400px", margin: "0 auto" }}>
@@ -446,6 +515,69 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                 {showDronesTab && (
                                     <Tab key="drones" title="Drones">
                                         <div style={{ padding: "1rem" }}>
+                                            {/* Drone Management Header */}
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    alignItems: "center",
+                                                    marginBottom: "1rem",
+                                                    flexWrap: "wrap",
+                                                    gap: "0.5rem",
+                                                }}
+                                            >
+                                                <div>
+                                                    <h3
+                                                        style={{
+                                                            fontSize: "1.25rem",
+                                                            fontWeight: 600,
+                                                            margin: 0,
+                                                        }}
+                                                    >
+                                                        Your Drones
+                                                    </h3>
+                                                    <p
+                                                        style={{
+                                                            fontSize: "0.875rem",
+                                                            opacity: 0.7,
+                                                            margin: "0.25rem 0 0 0",
+                                                        }}
+                                                    >
+                                                        {currentDroneCount} / {droneLimit} active
+                                                    </p>
+                                                </div>
+                                                <Button
+                                                    color="primary"
+                                                    onPress={handleCreateDrone}
+                                                    isDisabled={!canAddDrone}
+                                                >
+                                                    Create Drone
+                                                </Button>
+                                            </div>
+
+                                            {!canAddDrone && (
+                                                <Card
+                                                    style={{
+                                                        backgroundColor:
+                                                            "var(--heroui-warning-50)",
+                                                        marginBottom: "1rem",
+                                                    }}
+                                                >
+                                                    <CardBody>
+                                                        <p
+                                                            style={{
+                                                                fontSize: "0.875rem",
+                                                                color: "var(--heroui-warning)",
+                                                                margin: 0,
+                                                            }}
+                                                        >
+                                                            ⚠️ You have reached your drone limit.
+                                                            Remove a drone to create a new one.
+                                                        </p>
+                                                    </CardBody>
+                                                </Card>
+                                            )}
+
                                             <Drones
                                                 drones={getCharacter(id).drones}
                                                 activeDroneId={
@@ -455,6 +587,8 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                                 onDroneHeatPointsChange={
                                                     handleDroneHeatPointsChange
                                                 }
+                                                onViewDetail={handleViewDroneDetail}
+                                                onRemove={handleRemoveDrone}
                                             />
                                         </div>
                                     </Tab>
@@ -474,6 +608,57 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                     </Card>
                 )}
             </div>
+
+            {/* Drone Detail Modal */}
+            <Modal
+                isOpen={isDroneDetailOpen}
+                onClose={onDroneDetailClose}
+                size="2xl"
+                scrollBehavior="inside"
+            >
+                <ModalContent>
+                    <ModalHeader>
+                        <h3 style={{ fontSize: "1.5rem", fontWeight: 600 }}>Drone Details</h3>
+                    </ModalHeader>
+                    <ModalBody>
+                        {selectedDrone && (
+                            <Drones
+                                drones={[selectedDrone]}
+                                activeDroneId={getCharacter(id).summary.activeDroneId}
+                                onDroneHitPointsChange={handleDroneHitPointsChange}
+                                onDroneHeatPointsChange={handleDroneHeatPointsChange}
+                            />
+                        )}
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+
+            {/* Delete Confirmation Modal */}
+            <Modal
+                isOpen={deleteConfirmDroneId !== null}
+                onClose={cancelRemoveDrone}
+                size="md"
+            >
+                <ModalContent>
+                    <ModalHeader>
+                        <h3 style={{ fontSize: "1.5rem", fontWeight: 600 }}>Remove Drone</h3>
+                    </ModalHeader>
+                    <ModalBody>
+                        <p style={{ marginBottom: "1rem" }}>
+                            Are you sure you want to remove this drone? This action cannot be
+                            undone.
+                        </p>
+                        <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
+                            <Button variant="flat" onPress={cancelRemoveDrone}>
+                                Cancel
+                            </Button>
+                            <Button color="danger" onPress={confirmRemoveDrone}>
+                                Remove Drone
+                            </Button>
+                        </div>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
 
             {/* Mobile Modal for Section Content */}
             <Modal
@@ -528,12 +713,78 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             <Mods inventory={getCharacter(id).inventory} />
                         )}
                         {showDronesTab && activeSection === "drones" && (
-                            <Drones
-                                drones={getCharacter(id).drones}
-                                activeDroneId={getCharacter(id).summary.activeDroneId}
-                                onDroneHitPointsChange={handleDroneHitPointsChange}
-                                onDroneHeatPointsChange={handleDroneHeatPointsChange}
-                            />
+                            <>
+                                {/* Drone Management Header */}
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                        marginBottom: "1rem",
+                                        flexWrap: "wrap",
+                                        gap: "0.5rem",
+                                    }}
+                                >
+                                    <div>
+                                        <h3
+                                            style={{
+                                                fontSize: "1.25rem",
+                                                fontWeight: 600,
+                                                margin: 0,
+                                            }}
+                                        >
+                                            Your Drones
+                                        </h3>
+                                        <p
+                                            style={{
+                                                fontSize: "0.875rem",
+                                                opacity: 0.7,
+                                                margin: "0.25rem 0 0 0",
+                                            }}
+                                        >
+                                            {currentDroneCount} / {droneLimit} active
+                                        </p>
+                                    </div>
+                                    <Button
+                                        color="primary"
+                                        onPress={handleCreateDrone}
+                                        isDisabled={!canAddDrone}
+                                    >
+                                        Create Drone
+                                    </Button>
+                                </div>
+
+                                {!canAddDrone && (
+                                    <Card
+                                        style={{
+                                            backgroundColor: "var(--heroui-warning-50)",
+                                            marginBottom: "1rem",
+                                        }}
+                                    >
+                                        <CardBody>
+                                            <p
+                                                style={{
+                                                    fontSize: "0.875rem",
+                                                    color: "var(--heroui-warning)",
+                                                    margin: 0,
+                                                }}
+                                            >
+                                                ⚠️ You have reached your drone limit. Remove a drone
+                                                to create a new one.
+                                            </p>
+                                        </CardBody>
+                                    </Card>
+                                )}
+
+                                <Drones
+                                    drones={getCharacter(id).drones}
+                                    activeDroneId={getCharacter(id).summary.activeDroneId}
+                                    onDroneHitPointsChange={handleDroneHitPointsChange}
+                                    onDroneHeatPointsChange={handleDroneHeatPointsChange}
+                                    onViewDetail={handleViewDroneDetail}
+                                    onRemove={handleRemoveDrone}
+                                />
+                            </>
                         )}
                         {activeSection === "mindcraft" && (
                             <Mindcraft powers={getCharacter(id)!.mindcraftPowers} />

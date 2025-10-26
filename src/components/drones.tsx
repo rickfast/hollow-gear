@@ -1,6 +1,6 @@
 import { DRONE_TEMPLATES_BY_ID } from "@/data";
 import type { Drone } from "@/types";
-import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
+import { Button, Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 import { PointBar } from "./point-bar";
 
 interface DronesProps {
@@ -8,6 +8,8 @@ interface DronesProps {
     activeDroneId?: string;
     onDroneHitPointsChange?: (droneId: string, delta: number) => void;
     onDroneHeatPointsChange?: (droneId: string, delta: number) => void;
+    onViewDetail?: (droneId: string) => void;
+    onRemove?: (droneId: string) => void;
 }
 
 export function Drones({
@@ -15,6 +17,8 @@ export function Drones({
     activeDroneId,
     onDroneHitPointsChange,
     onDroneHeatPointsChange,
+    onViewDetail,
+    onRemove,
 }: DronesProps) {
     if (!drones || drones.length === 0) {
         return (
@@ -77,6 +81,29 @@ export function Drones({
                                     Drone
                                 </p>
                             </div>
+                            {(onViewDetail || onRemove) && (
+                                <div style={{ display: "flex", gap: "0.5rem" }}>
+                                    {onViewDetail && (
+                                        <Button
+                                            size="sm"
+                                            variant="flat"
+                                            onPress={() => onViewDetail(drone.id)}
+                                        >
+                                            View Details
+                                        </Button>
+                                    )}
+                                    {onRemove && (
+                                        <Button
+                                            size="sm"
+                                            color="danger"
+                                            variant="flat"
+                                            onPress={() => onRemove(drone.id)}
+                                        >
+                                            Remove
+                                        </Button>
+                                    )}
+                                </div>
+                            )}
                         </CardHeader>
                         <Divider />
                         <CardBody>

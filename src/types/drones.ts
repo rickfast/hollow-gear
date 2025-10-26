@@ -84,6 +84,7 @@ export interface Drone {
         behavioralQuirk?: string;
     };
     destroyed?: boolean; // Track if drone has been destroyed (can be rebuilt)
+    ownerId?: string; // Character ID of the owner (typically an Artifex)
 }
 
 export interface DroneCommand {

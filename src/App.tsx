@@ -2,6 +2,8 @@ import { CharacterViewModelProvider } from "@/model/character-view-model-context
 import { CharacterBuilderPage } from "@/pages/character-builder-page";
 import { CharacterSheetPage } from "@/pages/character-sheet-page";
 import { CharactersPage } from "@/pages/characters-page";
+import { DroneBuilderPage } from "@/pages/drone-builder-page";
+import { DronesPage } from "@/pages/drones-page";
 import { RulesPage } from "@/pages/rules-page";
 import {
     Link,
@@ -15,6 +17,7 @@ import {
 } from "@heroui/react";
 import { useState } from "react";
 import { BrowserRouter, Route, Link as RouterLink, Routes, useLocation } from "react-router-dom";
+import { Toaster } from "sonner";
 
 function AppContent() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,6 +26,8 @@ function AppContent() {
     const menuItems = [
         { name: "Characters", path: "/", key: "characters" },
         { name: "Build Character", path: "/builder", key: "build" },
+        { name: "Drones", path: "/drones", key: "drones" },
+        { name: "Build Drone", path: "/drones/new", key: "drone-build" },
         { name: "Rules", path: "/rules", key: "rules" },
     ];
 
@@ -118,6 +123,9 @@ function AppContent() {
                     <Route path="/" element={<CharactersPage />} />
                     <Route path="/characters/:id" element={<CharacterSheetPage />} />
                     <Route path="/builder" element={<CharacterBuilderPage />} />
+                    <Route path="/drones" element={<DronesPage />} />
+                    <Route path="/drones/new" element={<DroneBuilderPage />} />
+                    <Route path="/drones/:id/edit" element={<DroneBuilderPage />} />
                     <Route path="/rules" element={<RulesPage />} />
                 </Routes>
             </main>
@@ -130,6 +138,7 @@ function App() {
         <BrowserRouter>
             <CharacterViewModelProvider>
                 <AppContent />
+                <Toaster richColors position="top-right" />
             </CharacterViewModelProvider>
         </BrowserRouter>
     );
