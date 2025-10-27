@@ -118,7 +118,7 @@ export function ReferencePage() {
                     (e.target as HTMLInputElement).select();
                   }}
                   classNames={{
-                    input: "text-sm sm:text-base",
+                    input: "text-base", // 16px to prevent mobile zoom
                     inputWrapper: "h-11 sm:h-12 min-h-[44px]", // Touch-friendly min height
                   }}
                 />
