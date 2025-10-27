@@ -13,6 +13,7 @@ const menuItems: MenuItem[] = [
     { name: "Build Character", path: "/builder", key: "build" },
     { name: "Drones", path: "/drones", key: "drones" },
     { name: "Build Drone", path: "/drones/new", key: "drone-build" },
+    { name: "Reference", path: "/reference", key: "reference" },
     { name: "Rules", path: "/rules", key: "rules" },
 ];
 

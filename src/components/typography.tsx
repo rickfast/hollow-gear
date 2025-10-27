@@ -85,9 +85,13 @@ export const StatRow = ({ children }: { children: ReactNode }) => (
 /**
  * Standard description text
  */
-export const Description = ({ children }: { children: ReactNode }) => (
-    <p className="text-sm text-default-600 mb-2">{children}</p>
-);
+export const Description = ({
+    children,
+    className = "",
+}: {
+    children: ReactNode;
+    className?: string;
+}) => <p className={`text-sm text-default-600 mb-2 ${className}`}>{children}</p>;
 
 /**
  * Secondary/helper text

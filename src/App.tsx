@@ -5,6 +5,7 @@ import { CharacterSheetPage } from "@/pages/character-sheet-page";
 import { CharactersPage } from "@/pages/characters-page";
 import { DroneBuilderPage } from "@/pages/drone-builder-page";
 import { DronesPage } from "@/pages/drones-page";
+import { ReferencePage } from "@/pages/reference-page";
 import { RulesPage } from "@/pages/rules-page";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "sonner";
@@ -22,6 +23,7 @@ function AppContent() {
                     <Route path="/drones" element={<DronesPage />} />
                     <Route path="/drones/new" element={<DroneBuilderPage />} />
                     <Route path="/drones/:id/edit" element={<DroneBuilderPage />} />
+                    <Route path="/reference" element={<ReferencePage />} />
                     <Route path="/rules" element={<RulesPage />} />
                 </Routes>
             </main>
