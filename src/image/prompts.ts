@@ -1,6 +1,8 @@
 export const PROMPTS = {
     overview:
         "Hollowgear is a steampunk-fantasy world of anthropomorphic species, psionic resonance, and clockwork technology. The art should appear hand-drawn with chaotic, expressive lines and watercolor fills. The art style should be playful and chaotic. Colors should softly bleed outside the lines, as if painted on textured paper. Lighting is natural and diffused, with subtle warmth — imagine brass, parchment, and oil-lamp tones accented by cool aetheric glow. Avoid smooth digital gradients; favor watercolor irregularities, pooled pigments, and ink shadows. The world feels tactile, slightly grimy, yet filled with wonder — machinery hums like living creatures and psionic energy glows like stained glass light.",
+    droneOverview:
+        "Drones in Hollowgear are small mechanical companions built by Artifex inventors. They are clockwork constructs with brass gears, copper plating, and glowing aetheric cores. Each drone has a distinct personality and purpose. The art style should match the character art: hand-drawn lines with watercolor fills, slightly chaotic and expressive. Drones should feel like living machines — warm, tactile, and full of character.",
     species: {
         Rendai: "Red panda-like artisans and engineers. Warm reddish or russet fur, masked faces, and bright eyes. Clothing includes aprons, belts, and heavy gloves; coats spattered with oil or soot. They often carry scrolls, blueprints, or small drones. Personality: warm, clever, industrious. Backgrounds can feature warm workshop light or the glow of forge fires.",
         Vulmir: "Foxfolk innovators and risk-takers. Slim, agile, and expressive, with orange, rust, or smoke-gray fur. Wear patchwork steampunk coats and multi-lens goggles. Always cluttered with gadgets, dangling tools, or prototype parts. Expression quick, eyes bright. Lines can be more scribbled and kinetic to suggest energy and movement.",
@@ -29,11 +31,32 @@ export const PROMPTS = {
         Mindweaver:
             "Psionic adepts who manipulate thought itself. Robes or layered garments of thin, flowing material. Crystals or Aetheric halos orbit their head or hands. They emanate calm, composure, and quiet intensity. Backgrounds abstract — waves, fractal light, or circular geometry suggesting mental resonance.",
     },
+    droneTypes: {
+        Utility:
+            "A versatile helper drone with multiple articulated arms, tool attachments, and cargo compartments. Small and compact with a friendly, industrious appearance. Brass and copper construction with visible gears and springs. Glowing blue aetheric core visible through transparent panels.",
+        Combat:
+            "A sturdy combat drone with reinforced plating, weapon mounts, and defensive shields. Angular and aggressive design with sharp edges. Dark steel and brass construction with red or orange aetheric glow. Visible shock prods or energy weapons.",
+        Recon:
+            "A lightweight surveillance drone with large optical sensors, antenna arrays, and silent propulsion. Sleek and aerodynamic with minimal bulk. Silver and brass construction with green or blue aetheric glow. Multiple camera lenses and sensor arrays.",
+    },
+    droneArchetypes: {
+        Coghound:
+            "Quadrupedal drone resembling a mechanical dog. Four articulated legs with spring-loaded joints. Canine-inspired head with optical sensors. Loyal and friendly appearance with wagging tail antenna. Brass and copper construction with warm amber glow.",
+        Gyrfly:
+            "Tiny flying drone with four rotating wings or propellers. Insect-inspired design with delicate construction. Lightweight frame with transparent wing panels. Hovering pose with motion blur on wings. Silver and brass with bright blue or green glow.",
+        "Bulwark Node":
+            "Compact shield-generating drone with heavy armor plating. Spherical or cubic core with deployable barrier projectors. Sturdy and defensive appearance. Dark steel and brass with golden barrier energy effects. Glowing shield symbols on armor plates.",
+        "Scribe Beetle":
+            "Multi-legged recorder drone resembling a mechanical beetle. Six or eight articulated legs for climbing. Stylus appendage for writing and recording. Compact body with data storage compartments. Brass and copper with purple or blue psionic glow.",
+        "Chimera Frame":
+            "Advanced hybrid drone with transformable appendages. Can switch between ground and aerial configurations. Modular design with interchangeable parts. Sleek and sophisticated appearance. Polished brass and silver with multi-colored aetheric glow. Wings that fold into body.",
+    },
     lightingAndComposition: {
         portrait:
             "Bust or upper-torso framing, centered, with natural diffused light. Focus on facial features and small clothing details. Watercolor bleed around the edges. Background simple — off-white, parchment, or faint wash of thematic color (blue for psionic, gold for faith, rust for industrial).",
         fullBody:
             "Dynamic stance showing full silhouette. Include tools, weapons, or gear elements appropriate to class. The linework slightly rougher at feet and background to emphasize watercolor looseness. Soft vignette fade at edges, as if sketched into a notebook or guild logbook.",
         scene: "Wide composition depicting the subject in an environmental context — workshop, forge, temple, laboratory, or battlefield. Lighting directional but soft, with visible brushstrokes defining smoke, steam, or Aether light. Keep background less detailed than character, using watercolor washes and suggestive outlines.",
+        drone: "Full body view of the drone showing all mechanical details. Dynamic pose suggesting movement or action. Transparent background. Watercolor style with hand-drawn lines. Glowing aetheric core visible. Brass, copper, and steel materials with warm lighting. Size appropriate to drone type (Tiny or Small).",
     },
 };
