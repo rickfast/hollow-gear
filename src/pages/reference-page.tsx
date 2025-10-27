@@ -29,6 +29,7 @@ export function ReferencePage() {
   const [selectedItem, setSelectedItem] = useState<ReferenceItem | null>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Debounce search query (300ms)
   useEffect(() => {
@@ -95,6 +96,7 @@ export function ReferencePage() {
               <div className="relative" ref={dropdownRef}>
                 {/* Search Input - Touch-friendly on mobile (min 44px) */}
                 <Input
+                  ref={inputRef}
                   type="search"
                   placeholder="Search spells, equipment, classes..."
                   value={searchQuery}
@@ -104,10 +106,16 @@ export function ReferencePage() {
                     setSearchQuery("");
                     setShowDropdown(false);
                   }}
-                  onFocus={() => {
+                  onFocus={(e) => {
+                    // Select all text when focused
+                    e.target.select();
                     if (searchResults.length > 0) {
                       setShowDropdown(true);
                     }
+                  }}
+                  onClick={(e) => {
+                    // Select all text when clicked
+                    (e.target as HTMLInputElement).select();
                   }}
                   classNames={{
                     input: "text-sm sm:text-base",
