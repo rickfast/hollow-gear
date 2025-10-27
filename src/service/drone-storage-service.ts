@@ -1,3 +1,4 @@
+import { EXAMPLE_DRONES } from "@/data/drones";
 import type { Drone } from "@/types";
 
 /**
@@ -52,12 +53,23 @@ export class DroneStorageService {
 
     /**
      * Load drones from localStorage into memory.
+     * If no drones exist, initialize with example drones.
      */
     private loadFromStorage(): void {
         const drones = this.loadDrones();
         this.drones.clear();
-        for (const drone of drones) {
-            this.drones.set(drone.id, drone);
+
+        // If no drones exist, initialize with example drones
+        if (drones.length === 0) {
+            for (const drone of EXAMPLE_DRONES) {
+                this.drones.set(drone.id, drone);
+            }
+            // Save the example drones to localStorage
+            this.saveDrones(EXAMPLE_DRONES);
+        } else {
+            for (const drone of drones) {
+                this.drones.set(drone.id, drone);
+            }
         }
     }
 
