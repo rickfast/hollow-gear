@@ -92,11 +92,11 @@ export function DroneEquipmentSelector({
                 isPressable
                 onPress={() => setExpandedItem(isExpanded ? null : item.id)}
                 className="border border-default-200"
-                style={{ 
+                style={{
                     opacity: canSelect ? 1 : 0.5,
                     transition: "all 0.2s ease",
                 }}
-                aria-label={`${item.name} - ${isWeapon ? 'Weapon' : 'Mod'}`}
+                aria-label={`${item.name} - ${isWeapon ? "Weapon" : "Mod"}`}
                 aria-expanded={isExpanded}
             >
                 <CardBody className="gap-2 py-2">
@@ -217,7 +217,7 @@ export function DroneEquipmentSelector({
                 {/* Slot Counter */}
                 <div className="flex items-center justify-between flex-wrap gap-2">
                     <SecondaryText className="font-semibold">Equipment Slots</SecondaryText>
-                    <Tooltip 
+                    <Tooltip
                         content={`Your ${droneType} drone can equip up to ${maxSlots} items. Each weapon or mod takes one slot.`}
                         placement="left"
                     >

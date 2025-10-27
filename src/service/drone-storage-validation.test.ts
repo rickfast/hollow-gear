@@ -1,6 +1,6 @@
-import { describe, expect, it, beforeEach } from "vitest";
-import { DroneStorageService } from "./drone-storage-service";
 import type { Drone } from "@/types/drones";
+import { beforeEach, describe, expect, it } from "vitest";
+import { DroneStorageService } from "./drone-storage-service";
 
 // Mock localStorage for testing
 const localStorageMock = (() => {
@@ -87,9 +87,7 @@ describe("DroneStorageService Validation", () => {
             const drone1 = createTestDrone("drone-001", "Sparky");
             service.saveDrone(drone1);
 
-            expect(() => service.validateNameUniqueness("Sparky")).toThrow(
-                /already exists/
-            );
+            expect(() => service.validateNameUniqueness("Sparky")).toThrow(/already exists/);
         });
 
         it("should not throw error for unique names", () => {
@@ -103,9 +101,7 @@ describe("DroneStorageService Validation", () => {
             const drone1 = createTestDrone("drone-001", "Sparky");
             service.saveDrone(drone1);
 
-            expect(() =>
-                service.validateNameUniqueness("Sparky", "drone-001")
-            ).not.toThrow();
+            expect(() => service.validateNameUniqueness("Sparky", "drone-001")).not.toThrow();
         });
     });
 
@@ -135,9 +131,7 @@ describe("DroneStorageService Validation", () => {
             service.saveDrone(drone1);
 
             // Should be able to update with same name
-            expect(() =>
-                service.validateNameUniqueness("Sparky", "drone-001")
-            ).not.toThrow();
+            expect(() => service.validateNameUniqueness("Sparky", "drone-001")).not.toThrow();
 
             const updatedDrone = { ...drone1, level: 2 };
             service.updateDrone("drone-001", updatedDrone);

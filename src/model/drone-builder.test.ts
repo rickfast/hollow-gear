@@ -3,18 +3,14 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { DroneBuilder } from "./drone-builder";
 import { ValidationError } from "./character-utils";
+import { DroneBuilder } from "./drone-builder";
 
 describe("DroneBuilder", () => {
     describe("Valid Drone Creation", () => {
         it("should create a valid drone with all required fields", () => {
             const builder = new DroneBuilder();
-            const drone = builder
-                .setName("Sparky")
-                .setType("Combat")
-                .setLevel(1)
-                .build();
+            const drone = builder.setName("Sparky").setType("Combat").setLevel(1).build();
 
             expect(drone.name).toBe("Sparky");
             expect(drone.templateId).toBe("combat-drone");
@@ -33,11 +29,7 @@ describe("DroneBuilder", () => {
 
         it("should create a utility drone", () => {
             const builder = new DroneBuilder();
-            const drone = builder
-                .setName("Helper")
-                .setType("Utility")
-                .setLevel(1)
-                .build();
+            const drone = builder.setName("Helper").setType("Utility").setLevel(1).build();
 
             expect(drone.templateId).toBe("utility-drone");
             expect(drone.hitPoints.maximum).toBe(8);
@@ -45,11 +37,7 @@ describe("DroneBuilder", () => {
 
         it("should create a recon drone", () => {
             const builder = new DroneBuilder();
-            const drone = builder
-                .setName("Scout")
-                .setType("Recon")
-                .setLevel(1)
-                .build();
+            const drone = builder.setName("Scout").setType("Recon").setLevel(1).build();
 
             expect(drone.templateId).toBe("recon-drone");
             expect(drone.hitPoints.maximum).toBe(7);
@@ -159,55 +147,35 @@ describe("DroneBuilder", () => {
     describe("Mod Slot Calculation", () => {
         it("should have 1 mod slot at level 1", () => {
             const builder = new DroneBuilder();
-            const drone = builder
-                .setName("Sparky")
-                .setType("Combat")
-                .setLevel(1)
-                .build();
+            const drone = builder.setName("Sparky").setType("Combat").setLevel(1).build();
 
             expect(drone.modSlots).toBe(1);
         });
 
         it("should have 2 mod slots at level 5", () => {
             const builder = new DroneBuilder();
-            const drone = builder
-                .setName("Sparky")
-                .setType("Combat")
-                .setLevel(5)
-                .build();
+            const drone = builder.setName("Sparky").setType("Combat").setLevel(5).build();
 
             expect(drone.modSlots).toBe(2);
         });
 
         it("should have 3 mod slots at level 9", () => {
             const builder = new DroneBuilder();
-            const drone = builder
-                .setName("Sparky")
-                .setType("Combat")
-                .setLevel(9)
-                .build();
+            const drone = builder.setName("Sparky").setType("Combat").setLevel(9).build();
 
             expect(drone.modSlots).toBe(3);
         });
 
         it("should have 4 mod slots at level 13", () => {
             const builder = new DroneBuilder();
-            const drone = builder
-                .setName("Sparky")
-                .setType("Combat")
-                .setLevel(13)
-                .build();
+            const drone = builder.setName("Sparky").setType("Combat").setLevel(13).build();
 
             expect(drone.modSlots).toBe(4);
         });
 
         it("should have 5 mod slots at level 17", () => {
             const builder = new DroneBuilder();
-            const drone = builder
-                .setName("Sparky")
-                .setType("Combat")
-                .setLevel(17)
-                .build();
+            const drone = builder.setName("Sparky").setType("Combat").setLevel(17).build();
 
             expect(drone.modSlots).toBe(5);
         });
@@ -217,10 +185,7 @@ describe("DroneBuilder", () => {
         it("should throw error when name is missing", () => {
             const builder = new DroneBuilder();
             expect(() => {
-                builder
-                    .setType("Combat")
-                    .setLevel(1)
-                    .build();
+                builder.setType("Combat").setLevel(1).build();
             }).toThrow(ValidationError);
         });
 
@@ -241,20 +206,14 @@ describe("DroneBuilder", () => {
         it("should throw error when type is missing", () => {
             const builder = new DroneBuilder();
             expect(() => {
-                builder
-                    .setName("Sparky")
-                    .setLevel(1)
-                    .build();
+                builder.setName("Sparky").setLevel(1).build();
             }).toThrow(ValidationError);
         });
 
         it("should throw error when level is missing", () => {
             const builder = new DroneBuilder();
             expect(() => {
-                builder
-                    .setName("Sparky")
-                    .setType("Combat")
-                    .build();
+                builder.setName("Sparky").setType("Combat").build();
             }).toThrow(ValidationError);
         });
 

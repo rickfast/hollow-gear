@@ -1,29 +1,106 @@
-import { DRONE_TEMPLATES } from "@/data/drones";
+import { DRONE_ARCHETYPES } from "@/data/drones";
 import { Card, CardBody, Chip } from "@heroui/react";
-import { CardTitle, Stat, StatRow } from "./typography";
+import { CardTitle } from "./typography";
 
-interface DroneTypeSelectorProps {
-    selectedTemplateId: string;
-    onTemplateChange: (templateId: string) => void;
+interface DroneArchetypeSelectorProps {
+    selectedArchetypeId: string;
+    onArchetypeChange: (archetypeId: string) => void;
 }
 
-export function DroneTypeSelector({
-    selectedTemplateId,
-    onTemplateChange,
-}: DroneTypeSelectorProps) {
+export function DroneArchetypeSelector({
+    selectedArchetypeId,
+    onArchetypeChange,
+}: DroneArchetypeSelectorProps) {
     return (
         <Card>
             <CardBody>
                 <div style={{ marginBottom: "1rem" }}>
                     <h3 style={{ fontSize: "1.25rem", fontWeight: 600, marginBottom: "0.5rem" }}>
-                        Select Drone Template
+                        Select Drone Archetype (Optional)
                     </h3>
                     <p style={{ fontSize: "0.875rem", opacity: 0.8 }}>
-                        Choose a template for your drone. Each template has different capabilities
-                        and base statistics.
+                        Choose an archetype to give your drone unique characteristics and abilities.
+                        You can skip this step to create a standard drone.
                     </p>
                 </div>
 
+                {/* None Option */}
+                <div style={{ marginBottom: "1rem" }}>
+                    <Card
+                        isPressable
+                        onPress={() => onArchetypeChange("")}
+                        style={{
+                            border:
+                                selectedArchetypeId === ""
+                                    ? "3px solid hsl(var(--heroui-primary))"
+                                    : "2px solid hsl(var(--heroui-default-200))",
+                            backgroundColor:
+                                selectedArchetypeId === ""
+                                    ? "hsl(var(--heroui-primary) / 0.1)"
+                                    : "hsl(var(--heroui-default-50))",
+                            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                            transform: selectedArchetypeId === "" ? "scale(1.02)" : "scale(1)",
+                            boxShadow:
+                                selectedArchetypeId === ""
+                                    ? "0 0 0 2px hsl(var(--heroui-primary) / 0.3)"
+                                    : "none",
+                            cursor: "pointer",
+                        }}
+                        role="radio"
+                        aria-checked={selectedArchetypeId === ""}
+                        aria-label="No archetype - standard drone"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                onArchetypeChange("");
+                            }
+                        }}
+                    >
+                        <CardBody style={{ padding: "1rem" }}>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <div>
+                                    <CardTitle>Standard Drone</CardTitle>
+                                    <p
+                                        style={{
+                                            fontSize: "0.875rem",
+                                            opacity: 0.8,
+                                            marginTop: "0.25rem",
+                                        }}
+                                    >
+                                        No archetype - uses base template stats only
+                                    </p>
+                                </div>
+                                {selectedArchetypeId === "" && (
+                                    <div
+                                        style={{
+                                            backgroundColor: "hsl(var(--heroui-primary))",
+                                            color: "white",
+                                            borderRadius: "50%",
+                                            width: "24px",
+                                            height: "24px",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            fontSize: "14px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        ✓
+                                    </div>
+                                )}
+                            </div>
+                        </CardBody>
+                    </Card>
+                </div>
+
+                {/* Archetype Options */}
                 <div
                     style={{
                         display: "grid",
@@ -31,16 +108,16 @@ export function DroneTypeSelector({
                         gap: "1rem",
                     }}
                     role="radiogroup"
-                    aria-label="Drone template selection"
+                    aria-label="Drone archetype selection"
                 >
-                    {DRONE_TEMPLATES.map((template) => {
-                        const isSelected = selectedTemplateId === template.id;
+                    {DRONE_ARCHETYPES.map((archetype) => {
+                        const isSelected = selectedArchetypeId === archetype.id;
 
                         return (
                             <Card
-                                key={template.id}
+                                key={archetype.id}
                                 isPressable
-                                onPress={() => onTemplateChange(template.id)}
+                                onPress={() => onArchetypeChange(archetype.id)}
                                 style={{
                                     border: isSelected
                                         ? "3px solid hsl(var(--heroui-primary))"
@@ -57,12 +134,12 @@ export function DroneTypeSelector({
                                 }}
                                 role="radio"
                                 aria-checked={isSelected}
-                                aria-label={`${template.name} drone template`}
+                                aria-label={`${archetype.name} archetype`}
                                 tabIndex={0}
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter" || e.key === " ") {
                                         e.preventDefault();
-                                        onTemplateChange(template.id);
+                                        onArchetypeChange(archetype.id);
                                     }
                                 }}
                             >
@@ -75,7 +152,7 @@ export function DroneTypeSelector({
                                             marginBottom: "0.75rem",
                                         }}
                                     >
-                                        <CardTitle>{template.name}</CardTitle>
+                                        <CardTitle>{archetype.name}</CardTitle>
                                         {isSelected && (
                                             <div
                                                 style={{
@@ -105,15 +182,13 @@ export function DroneTypeSelector({
                                         }}
                                     >
                                         <Chip size="sm" variant="flat" color="secondary">
-                                            {template.type}
+                                            {archetype.archetype}
                                         </Chip>
-                                        <Chip size="sm" variant="flat" color="default">
-                                            {template.stats.size}
-                                        </Chip>
-                                        <Chip size="sm" variant="flat" color="primary">
-                                            {template.modSlots} Mod Slot
-                                            {template.modSlots !== 1 ? "s" : ""}
-                                        </Chip>
+                                        {archetype.baseStats.size && (
+                                            <Chip size="sm" variant="flat" color="default">
+                                                {archetype.baseStats.size}
+                                            </Chip>
+                                        )}
                                     </div>
 
                                     <p
@@ -124,30 +199,12 @@ export function DroneTypeSelector({
                                             minHeight: "2.5rem",
                                         }}
                                     >
-                                        {template.description}
+                                        {archetype.description}
                                     </p>
 
-                                    <div style={{ marginBottom: "0.75rem" }}>
-                                        <StatRow>
-                                            <Stat
-                                                label="HP"
-                                                value={template.stats.hitPoints.average}
-                                            />
-                                            <Stat label="AC" value={template.stats.armorClass} />
-                                            <Stat
-                                                label="Speed"
-                                                value={`${template.stats.speed.walk} ft`}
-                                            />
-                                            {template.stats.speed.fly && (
-                                                <Stat
-                                                    label="Fly"
-                                                    value={`${template.stats.speed.fly} ft`}
-                                                />
-                                            )}
-                                        </StatRow>
-                                    </div>
-
-                                    {template.stats.attack && (
+                                    {/* Stat Modifications */}
+                                    {(archetype.baseStats.armorClass ||
+                                        archetype.baseStats.speed) && (
                                         <div
                                             style={{
                                                 marginBottom: "0.75rem",
@@ -163,22 +220,28 @@ export function DroneTypeSelector({
                                                     marginBottom: "0.25rem",
                                                 }}
                                             >
-                                                {template.stats.attack.name}
+                                                Stat Modifications
                                             </div>
-                                            <StatRow>
-                                                <Stat
-                                                    label="Attack"
-                                                    value={`+${template.stats.attack.bonus}`}
-                                                />
-                                                <Stat
-                                                    label="Damage"
-                                                    value={`${template.stats.attack.damage.count}d${template.stats.attack.damage.die} ${template.stats.attack.damage.damageType}`}
-                                                />
-                                            </StatRow>
+                                            <div style={{ fontSize: "0.75rem", opacity: 0.8 }}>
+                                                {archetype.baseStats.armorClass && (
+                                                    <div>AC: {archetype.baseStats.armorClass}</div>
+                                                )}
+                                                {archetype.baseStats.speed?.walk && (
+                                                    <div>
+                                                        Speed: {archetype.baseStats.speed.walk} ft
+                                                    </div>
+                                                )}
+                                                {archetype.baseStats.speed?.fly && (
+                                                    <div>
+                                                        Fly: {archetype.baseStats.speed.fly} ft
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                     )}
 
-                                    {template.features.length > 0 && (
+                                    {/* Features */}
+                                    {archetype.features.length > 0 && (
                                         <div>
                                             <div
                                                 style={{
@@ -188,7 +251,7 @@ export function DroneTypeSelector({
                                                     opacity: 0.9,
                                                 }}
                                             >
-                                                Features:
+                                                Special Features:
                                             </div>
                                             <ul
                                                 style={{
@@ -198,12 +261,13 @@ export function DroneTypeSelector({
                                                     margin: 0,
                                                 }}
                                             >
-                                                {template.features.map((feature, idx) => (
+                                                {archetype.features.map((feature, idx) => (
                                                     <li
                                                         key={idx}
                                                         style={{ marginBottom: "0.25rem" }}
                                                     >
-                                                        {feature}
+                                                        <strong>{feature.name}:</strong>{" "}
+                                                        {feature.description}
                                                     </li>
                                                 ))}
                                             </ul>

@@ -229,9 +229,7 @@ export class DroneStorageService {
      * @returns Array of drones owned by the character
      */
     getDronesByOwner(characterId: string): Drone[] {
-        return Array.from(this.drones.values()).filter(
-            (drone) => drone.ownerId === characterId
-        );
+        return Array.from(this.drones.values()).filter((drone) => drone.ownerId === characterId);
     }
 
     /**
@@ -251,8 +249,7 @@ export class DroneStorageService {
     isNameUnique(name: string, excludeId?: string): boolean {
         const normalizedName = name.toLowerCase().trim();
         return !Array.from(this.drones.values()).some(
-            (drone) =>
-                drone.name.toLowerCase().trim() === normalizedName && drone.id !== excludeId
+            (drone) => drone.name.toLowerCase().trim() === normalizedName && drone.id !== excludeId
         );
     }
 
@@ -264,9 +261,7 @@ export class DroneStorageService {
      */
     validateNameUniqueness(name: string, excludeId?: string): void {
         if (!this.isNameUnique(name, excludeId)) {
-            throw new Error(
-                `A drone named "${name}" already exists. Please choose a unique name.`
-            );
+            throw new Error(`A drone named "${name}" already exists. Please choose a unique name.`);
         }
     }
 

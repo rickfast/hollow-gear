@@ -1,13 +1,6 @@
 import type { Species } from "@/types";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
-import {
-    CardTitle,
-    Description,
-    SecondaryText,
-    Stat,
-    StatRow,
-    TertiaryText,
-} from "./typography";
+import { CardTitle, Description, SecondaryText, Stat, StatRow, TertiaryText } from "./typography";
 
 interface SpeciesDetailProps {
     species: Species;
@@ -54,10 +47,17 @@ export function SpeciesDetail({ species }: SpeciesDetailProps) {
         <Card className="w-full">
             <CardHeader className="flex-col items-start gap-2 pb-2 p-3 sm:p-4">
                 <div className="w-full">
-                    <CardTitle className="text-base sm:text-lg break-words">{species.type}</CardTitle>
+                    <CardTitle className="text-base sm:text-lg break-words">
+                        {species.type}
+                    </CardTitle>
                 </div>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                    <Chip size="sm" variant="flat" color="primary" classNames={{ base: "min-h-[32px]" }}>
+                    <Chip
+                        size="sm"
+                        variant="flat"
+                        color="primary"
+                        classNames={{ base: "min-h-[32px]" }}
+                    >
                         {formatAbilityScoreIncrease()}
                     </Chip>
                 </div>
@@ -95,7 +95,12 @@ export function SpeciesDetail({ species }: SpeciesDetailProps) {
                                         {trait.name}
                                     </TertiaryText>
                                     {trait.usesPerRest && (
-                                        <Chip size="sm" variant="flat" color="success" classNames={{ base: "min-h-[32px]" }}>
+                                        <Chip
+                                            size="sm"
+                                            variant="flat"
+                                            color="success"
+                                            classNames={{ base: "min-h-[32px]" }}
+                                        >
                                             {formatUsesPerRest(
                                                 trait.usesPerRest.amount,
                                                 trait.usesPerRest.restType
@@ -103,7 +108,9 @@ export function SpeciesDetail({ species }: SpeciesDetailProps) {
                                         </Chip>
                                     )}
                                 </div>
-                                <Description className="text-sm sm:text-base leading-relaxed break-words">{trait.description}</Description>
+                                <Description className="text-sm sm:text-base leading-relaxed break-words">
+                                    {trait.description}
+                                </Description>
                             </div>
                         ))}
                     </div>
@@ -118,7 +125,12 @@ export function SpeciesDetail({ species }: SpeciesDetailProps) {
                     </SecondaryText>
                     <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {species.languages.map((language) => (
-                            <Chip key={language} size="sm" variant="bordered" classNames={{ base: "min-h-[32px]" }}>
+                            <Chip
+                                key={language}
+                                size="sm"
+                                variant="bordered"
+                                classNames={{ base: "min-h-[32px]" }}
+                            >
                                 {language}
                             </Chip>
                         ))}

@@ -1,13 +1,6 @@
 import type { Class } from "@/types";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
-import {
-    CardTitle,
-    Description,
-    SecondaryText,
-    Stat,
-    StatRow,
-    TertiaryText,
-} from "./typography";
+import { CardTitle, Description, SecondaryText, Stat, StatRow, TertiaryText } from "./typography";
 
 interface ClassDetailProps {
     classData: Class;
@@ -51,19 +44,31 @@ export function ClassDetail({ classData }: ClassDetailProps) {
         <Card className="w-full">
             <CardHeader className="flex-col items-start gap-2 pb-2 p-3 sm:p-4">
                 <div className="w-full">
-                    <CardTitle className="text-base sm:text-lg break-words">{classData.type}</CardTitle>
+                    <CardTitle className="text-base sm:text-lg break-words">
+                        {classData.type}
+                    </CardTitle>
                     <TertiaryText className="text-xs sm:text-sm break-words">
                         {classData.description.role}
                     </TertiaryText>
                 </div>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                    <Chip size="sm" variant="flat" color="primary" classNames={{ base: "min-h-[32px]" }}>
+                    <Chip
+                        size="sm"
+                        variant="flat"
+                        color="primary"
+                        classNames={{ base: "min-h-[32px]" }}
+                    >
                         {formatAbility(classData.primaryAbility)}
                     </Chip>
                     <Chip size="sm" variant="flat" classNames={{ base: "min-h-[32px]" }}>
                         {classData.hitDie} Hit Die
                     </Chip>
-                    <Chip size="sm" variant="flat" color="secondary" classNames={{ base: "min-h-[32px]" }}>
+                    <Chip
+                        size="sm"
+                        variant="flat"
+                        color="secondary"
+                        classNames={{ base: "min-h-[32px]" }}
+                    >
                         {classData.primaryResource}
                     </Chip>
                 </div>
@@ -75,7 +80,9 @@ export function ClassDetail({ classData }: ClassDetailProps) {
                     <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
                         Description
                     </SecondaryText>
-                    <Description className="text-sm sm:text-base leading-relaxed break-words">{classData.description.description}</Description>
+                    <Description className="text-sm sm:text-base leading-relaxed break-words">
+                        {classData.description.description}
+                    </Description>
                 </div>
 
                 <Divider />
@@ -87,7 +94,12 @@ export function ClassDetail({ classData }: ClassDetailProps) {
                     </SecondaryText>
                     <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {classData.description.archetypes.map((archetype) => (
-                            <Chip key={archetype} size="sm" variant="bordered" classNames={{ base: "min-h-[32px]" }}>
+                            <Chip
+                                key={archetype}
+                                size="sm"
+                                variant="bordered"
+                                classNames={{ base: "min-h-[32px]" }}
+                            >
                                 {archetype}
                             </Chip>
                         ))}
@@ -141,7 +153,12 @@ export function ClassDetail({ classData }: ClassDetailProps) {
                                 </TertiaryText>
                                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                     {classData.spellcasting.spellLists.map((list) => (
-                                        <Chip key={list} size="sm" variant="flat" classNames={{ base: "min-h-[32px]" }}>
+                                        <Chip
+                                            key={list}
+                                            size="sm"
+                                            variant="flat"
+                                            classNames={{ base: "min-h-[32px]" }}
+                                        >
                                             {list}
                                         </Chip>
                                     ))}
@@ -164,11 +181,21 @@ export function ClassDetail({ classData }: ClassDetailProps) {
                                     <TertiaryText className="font-semibold text-sm sm:text-base break-words">
                                         {feature.name}
                                     </TertiaryText>
-                                    <Chip size="sm" variant="flat" color="primary" classNames={{ base: "min-h-[32px]" }}>
+                                    <Chip
+                                        size="sm"
+                                        variant="flat"
+                                        color="primary"
+                                        classNames={{ base: "min-h-[32px]" }}
+                                    >
                                         Level {feature.level}
                                     </Chip>
                                     {feature.usesPerRest && (
-                                        <Chip size="sm" variant="flat" color="success" classNames={{ base: "min-h-[32px]" }}>
+                                        <Chip
+                                            size="sm"
+                                            variant="flat"
+                                            color="success"
+                                            classNames={{ base: "min-h-[32px]" }}
+                                        >
                                             {formatUsesPerRest(
                                                 feature.usesPerRest.amount,
                                                 feature.usesPerRest.restType
@@ -176,7 +203,9 @@ export function ClassDetail({ classData }: ClassDetailProps) {
                                         </Chip>
                                     )}
                                 </div>
-                                <Description className="text-sm sm:text-base leading-relaxed break-words">{feature.description}</Description>
+                                <Description className="text-sm sm:text-base leading-relaxed break-words">
+                                    {feature.description}
+                                </Description>
                             </div>
                         ))}
                     </div>
@@ -193,7 +222,9 @@ export function ClassDetail({ classData }: ClassDetailProps) {
                         {/* Weapons */}
                         {classData.startingEquipment.weapons.length > 0 && (
                             <div>
-                                <TertiaryText className="font-semibold text-xs sm:text-sm">Weapons</TertiaryText>
+                                <TertiaryText className="font-semibold text-xs sm:text-sm">
+                                    Weapons
+                                </TertiaryText>
                                 <Description className="text-sm sm:text-base break-words">
                                     {classData.startingEquipment.weapons.join(", ")}
                                 </Description>
@@ -203,15 +234,21 @@ export function ClassDetail({ classData }: ClassDetailProps) {
                         {/* Armor */}
                         {classData.startingEquipment.armor && (
                             <div>
-                                <TertiaryText className="font-semibold text-xs sm:text-sm">Armor</TertiaryText>
-                                <Description className="text-sm sm:text-base break-words">{classData.startingEquipment.armor}</Description>
+                                <TertiaryText className="font-semibold text-xs sm:text-sm">
+                                    Armor
+                                </TertiaryText>
+                                <Description className="text-sm sm:text-base break-words">
+                                    {classData.startingEquipment.armor}
+                                </Description>
                             </div>
                         )}
 
                         {/* Tools */}
                         {classData.startingEquipment.tools.length > 0 && (
                             <div>
-                                <TertiaryText className="font-semibold text-xs sm:text-sm">Tools</TertiaryText>
+                                <TertiaryText className="font-semibold text-xs sm:text-sm">
+                                    Tools
+                                </TertiaryText>
                                 <Description className="text-sm sm:text-base break-words">
                                     {classData.startingEquipment.tools.join(", ")}
                                 </Description>
@@ -221,7 +258,9 @@ export function ClassDetail({ classData }: ClassDetailProps) {
                         {/* Items */}
                         {classData.startingEquipment.items.length > 0 && (
                             <div>
-                                <TertiaryText className="font-semibold text-xs sm:text-sm">Items</TertiaryText>
+                                <TertiaryText className="font-semibold text-xs sm:text-sm">
+                                    Items
+                                </TertiaryText>
                                 <Description className="text-sm sm:text-base break-words">
                                     {classData.startingEquipment.items.join(", ")}
                                 </Description>
@@ -230,8 +269,12 @@ export function ClassDetail({ classData }: ClassDetailProps) {
 
                         {/* Currency */}
                         <div>
-                            <TertiaryText className="font-semibold text-xs sm:text-sm">Currency</TertiaryText>
-                            <Description className="text-sm sm:text-base">{formatCurrency()}</Description>
+                            <TertiaryText className="font-semibold text-xs sm:text-sm">
+                                Currency
+                            </TertiaryText>
+                            <Description className="text-sm sm:text-base">
+                                {formatCurrency()}
+                            </Description>
                         </div>
                     </div>
                 </div>

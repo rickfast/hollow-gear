@@ -1,6 +1,6 @@
 /**
  * Integration test for drone-character association
- * 
+ *
  * This test verifies that:
  * 1. Drones can be associated with Artifex characters
  * 2. Character drone limits are enforced
@@ -9,7 +9,6 @@
  */
 
 import { DroneBuilder } from "@/model/drone-builder";
-import { DroneStorageService } from "@/service/drone-storage-service";
 import type { Character, Drone } from "@/types";
 import { describe, expect, it } from "vitest";
 

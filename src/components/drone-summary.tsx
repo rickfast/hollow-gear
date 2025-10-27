@@ -262,7 +262,7 @@ export function DroneSummary({
                                     {template.stats.attack.name}
                                 </div>
                                 <div style={{ fontSize: "0.875rem", opacity: 0.8 }}>
-                                    +{template.stats.attack.bonus} to hit, {" "}
+                                    +{template.stats.attack.bonus} to hit,{" "}
                                     {template.stats.attack.damage.count}d
                                     {template.stats.attack.damage.die}{" "}
                                     {template.stats.attack.damage.damageType.toLowerCase()} damage

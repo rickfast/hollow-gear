@@ -1,3 +1,4 @@
+import { DRONE_TEMPLATES_BY_ID } from "@/data/drones";
 import { useCharacterViewModelContext } from "@/model/character-view-model-context";
 import { DroneStorageService } from "@/service/drone-storage-service";
 import type { Drone } from "@/types";
@@ -6,18 +7,17 @@ import {
     Card,
     CardBody,
     Chip,
-    Tabs,
-    Tab,
     Modal,
-    ModalContent,
-    ModalHeader,
     ModalBody,
+    ModalContent,
     ModalFooter,
+    ModalHeader,
+    Tab,
+    Tabs,
     useDisclosure,
 } from "@heroui/react";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DRONE_TEMPLATES_BY_ID } from "@/data/drones";
 import { toast } from "sonner";
 
 const droneStorageService = new DroneStorageService();
@@ -61,10 +61,10 @@ export function DronesPage() {
 
         try {
             setIsDeleting(true);
-            
+
             // Simulate async delete for better UX
-            await new Promise(resolve => setTimeout(resolve, 300));
-            
+            await new Promise((resolve) => setTimeout(resolve, 300));
+
             // Delete the drone from storage
             droneStorageService.deleteDrone(droneToDelete.id);
 
@@ -139,12 +139,13 @@ export function DronesPage() {
                     flexWrap: "wrap",
                 }}
             >
-                <h1 style={{ fontSize: "1.5rem", fontWeight: 700, margin: 0 }} className="sm:text-3xl">Drones</h1>
-                <Button 
-                    color="primary" 
-                    onPress={handleCreateNew}
-                    aria-label="Create new drone"
+                <h1
+                    style={{ fontSize: "1.5rem", fontWeight: 700, margin: 0 }}
+                    className="sm:text-3xl"
                 >
+                    Drones
+                </h1>
+                <Button color="primary" onPress={handleCreateNew} aria-label="Create new drone">
                     <span className="hidden sm:inline">Create New Drone</span>
                     <span className="sm:hidden">Create</span>
                 </Button>
@@ -174,9 +175,7 @@ export function DronesPage() {
                         opacity: 0.6,
                     }}
                 >
-                    <p style={{ fontSize: "1.125rem", marginBottom: "1rem" }}>
-                        No drones found
-                    </p>
+                    <p style={{ fontSize: "1.125rem", marginBottom: "1rem" }}>No drones found</p>
                     <p style={{ fontSize: "0.875rem" }}>
                         {selectedOwnerId === "all"
                             ? "Create your first drone to get started"
@@ -196,7 +195,7 @@ export function DronesPage() {
                         const ownerName = getOwnerName(drone.ownerId);
 
                         return (
-                            <Card 
+                            <Card
                                 key={drone.id}
                                 style={{
                                     transition: "all 0.2s ease",
@@ -276,7 +275,8 @@ export function DronesPage() {
                                         <div>
                                             <div style={{ opacity: 0.6 }}>Heat</div>
                                             <div style={{ fontWeight: 500 }}>
-                                                {drone.heatPoints.current}/{drone.heatPoints.maximum}
+                                                {drone.heatPoints.current}/
+                                                {drone.heatPoints.maximum}
                                             </div>
                                         </div>
                                         <div>
@@ -355,20 +355,16 @@ export function DronesPage() {
                         )}
                     </ModalBody>
                     <ModalFooter>
-                        <Button 
-                            variant="flat" 
-                            onPress={handleCancelDelete}
-                            isDisabled={isDeleting}
-                        >
+                        <Button variant="flat" onPress={handleCancelDelete} isDisabled={isDeleting}>
                             Cancel
                         </Button>
-                        <Button 
-                            color="danger" 
+                        <Button
+                            color="danger"
                             onPress={handleConfirmDelete}
                             isLoading={isDeleting}
                             isDisabled={isDeleting}
                         >
-                            {isDeleting ? 'Deleting...' : 'Delete Drone'}
+                            {isDeleting ? "Deleting..." : "Delete Drone"}
                         </Button>
                     </ModalFooter>
                 </ModalContent>

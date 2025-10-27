@@ -1,6 +1,6 @@
 import type { Drone } from "@/types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { DroneStorageService, StorageError } from "./drone-storage-service";
+import { DroneStorageService } from "./drone-storage-service";
 
 // Mock drone data for testing
 const mockDrone: Drone = {

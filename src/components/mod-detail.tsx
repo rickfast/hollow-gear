@@ -48,10 +48,20 @@ export function ModDetail({ mod }: ModDetailProps) {
                     <CardTitle className="text-base sm:text-lg break-words">{mod.name}</CardTitle>
                 </div>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                    <Chip size="sm" variant="flat" color="primary" classNames={{ base: "min-h-[32px]" }}>
+                    <Chip
+                        size="sm"
+                        variant="flat"
+                        color="primary"
+                        classNames={{ base: "min-h-[32px]" }}
+                    >
                         {mod.tier}
                     </Chip>
-                    <Chip size="sm" variant="flat" color="secondary" classNames={{ base: "min-h-[32px]" }}>
+                    <Chip
+                        size="sm"
+                        variant="flat"
+                        color="secondary"
+                        classNames={{ base: "min-h-[32px]" }}
+                    >
                         {mod.modType}
                     </Chip>
                     {mod.equipmentType && (
@@ -60,7 +70,12 @@ export function ModDetail({ mod }: ModDetailProps) {
                         </Chip>
                     )}
                     {mod.malfunctionChance && (
-                        <Chip size="sm" variant="flat" color="danger" classNames={{ base: "min-h-[32px]" }}>
+                        <Chip
+                            size="sm"
+                            variant="flat"
+                            color="danger"
+                            classNames={{ base: "min-h-[32px]" }}
+                        >
                             Malfunction Risk
                         </Chip>
                     )}
@@ -75,7 +90,9 @@ export function ModDetail({ mod }: ModDetailProps) {
                             <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
                                 Applies To
                             </SecondaryText>
-                            <Description className="text-sm sm:text-base">{mod.equipmentType}</Description>
+                            <Description className="text-sm sm:text-base">
+                                {mod.equipmentType}
+                            </Description>
                         </div>
                         <Divider />
                     </>
@@ -86,10 +103,17 @@ export function ModDetail({ mod }: ModDetailProps) {
                     <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
                         Effect
                     </SecondaryText>
-                    <Description className="text-sm sm:text-base leading-relaxed break-words">{mod.effect}</Description>
+                    <Description className="text-sm sm:text-base leading-relaxed break-words">
+                        {mod.effect}
+                    </Description>
                     {usesPerRest && (
                         <div className="mt-2">
-                            <Chip size="sm" variant="flat" color="success" classNames={{ base: "min-h-[32px]" }}>
+                            <Chip
+                                size="sm"
+                                variant="flat"
+                                color="success"
+                                classNames={{ base: "min-h-[32px]" }}
+                            >
                                 {usesPerRest}
                             </Chip>
                         </div>
@@ -121,10 +145,7 @@ export function ModDetail({ mod }: ModDetailProps) {
                                 Malfunction Risk
                             </SecondaryText>
                             <StatRow>
-                                <PrimaryStat
-                                    label="Chance"
-                                    value={`${mod.malfunctionChance}%`}
-                                />
+                                <PrimaryStat label="Chance" value={`${mod.malfunctionChance}%`} />
                             </StatRow>
                             <TertiaryText className="mt-2 text-xs sm:text-sm">
                                 This mod has a chance to malfunction when used
@@ -159,7 +180,9 @@ export function ModDetail({ mod }: ModDetailProps) {
                             <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
                                 Notes
                             </SecondaryText>
-                            <Description className="text-sm sm:text-base leading-relaxed break-words">{mod.notes}</Description>
+                            <Description className="text-sm sm:text-base leading-relaxed break-words">
+                                {mod.notes}
+                            </Description>
                         </div>
                     </>
                 )}

@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach } from "vitest";
 import { DroneBuilder } from "@/model/drone-builder";
 import type { Drone } from "@/types";
+import { beforeEach, describe, expect, it } from "vitest";
 
 describe("Drone Edit Functionality", () => {
     let existingDrone: Drone;

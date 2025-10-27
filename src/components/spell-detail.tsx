@@ -44,26 +44,48 @@ export function SpellDetail({ spell }: SpellDetailProps) {
                         {spell.hollowgearName || spell.name}
                     </CardTitle>
                     {spell.hollowgearName && (
-                        <TertiaryText className="text-xs sm:text-sm break-words">({spell.name})</TertiaryText>
+                        <TertiaryText className="text-xs sm:text-sm break-words">
+                            ({spell.name})
+                        </TertiaryText>
                     )}
                 </div>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                    <Chip size="sm" variant="flat" color="primary" classNames={{ base: "min-h-[32px]" }}>
+                    <Chip
+                        size="sm"
+                        variant="flat"
+                        color="primary"
+                        classNames={{ base: "min-h-[32px]" }}
+                    >
                         {levelText}
                     </Chip>
                     <Chip size="sm" variant="flat" classNames={{ base: "min-h-[32px]" }}>
                         {spell.school}
                     </Chip>
-                    <Chip size="sm" variant="flat" color="secondary" classNames={{ base: "min-h-[32px]" }}>
+                    <Chip
+                        size="sm"
+                        variant="flat"
+                        color="secondary"
+                        classNames={{ base: "min-h-[32px]" }}
+                    >
                         {spell.type}
                     </Chip>
                     {spell.concentration && (
-                        <Chip size="sm" variant="flat" color="warning" classNames={{ base: "min-h-[32px]" }}>
+                        <Chip
+                            size="sm"
+                            variant="flat"
+                            color="warning"
+                            classNames={{ base: "min-h-[32px]" }}
+                        >
                             Concentration
                         </Chip>
                     )}
                     {spell.overclockable && (
-                        <Chip size="sm" variant="flat" color="success" classNames={{ base: "min-h-[32px]" }}>
+                        <Chip
+                            size="sm"
+                            variant="flat"
+                            color="success"
+                            classNames={{ base: "min-h-[32px]" }}
+                        >
                             Overclockable
                         </Chip>
                     )}
@@ -123,8 +145,12 @@ export function SpellDetail({ spell }: SpellDetailProps) {
 
                 {/* Description */}
                 <div>
-                    <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">Effect</SecondaryText>
-                    <Description className="text-sm sm:text-base leading-relaxed break-words">{spell.description}</Description>
+                    <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
+                        Effect
+                    </SecondaryText>
+                    <Description className="text-sm sm:text-base leading-relaxed break-words">
+                        {spell.description}
+                    </Description>
                 </div>
 
                 {/* Higher Levels */}
@@ -133,7 +159,9 @@ export function SpellDetail({ spell }: SpellDetailProps) {
                         <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
                             At Higher Levels
                         </SecondaryText>
-                        <Description className="text-sm sm:text-base leading-relaxed break-words">{spell.higherLevels}</Description>
+                        <Description className="text-sm sm:text-base leading-relaxed break-words">
+                            {spell.higherLevels}
+                        </Description>
                     </div>
                 )}
 
@@ -146,7 +174,12 @@ export function SpellDetail({ spell }: SpellDetailProps) {
                     </SecondaryText>
                     <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {spell.classes.map((classType) => (
-                            <Chip key={classType} size="sm" variant="bordered" classNames={{ base: "min-h-[32px]" }}>
+                            <Chip
+                                key={classType}
+                                size="sm"
+                                variant="bordered"
+                                classNames={{ base: "min-h-[32px]" }}
+                            >
                                 {classType}
                             </Chip>
                         ))}

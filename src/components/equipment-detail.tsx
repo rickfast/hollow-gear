@@ -53,22 +53,39 @@ export function EquipmentDetail({ equipment }: EquipmentDetailProps) {
         <Card className="w-full">
             <CardHeader className="flex-col items-start gap-2 pb-2 p-3 sm:p-4">
                 <div className="w-full">
-                    <CardTitle className="text-base sm:text-lg break-words">{equipment.name}</CardTitle>
+                    <CardTitle className="text-base sm:text-lg break-words">
+                        {equipment.name}
+                    </CardTitle>
                 </div>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                    <Chip size="sm" variant="flat" color="primary" classNames={{ base: "min-h-[32px]" }}>
+                    <Chip
+                        size="sm"
+                        variant="flat"
+                        color="primary"
+                        classNames={{ base: "min-h-[32px]" }}
+                    >
                         {equipment.type}
                     </Chip>
                     <Chip size="sm" variant="flat" classNames={{ base: "min-h-[32px]" }}>
                         {equipment.tier}
                     </Chip>
                     {weapon?.powered && (
-                        <Chip size="sm" variant="flat" color="warning" classNames={{ base: "min-h-[32px]" }}>
+                        <Chip
+                            size="sm"
+                            variant="flat"
+                            color="warning"
+                            classNames={{ base: "min-h-[32px]" }}
+                        >
                             Powered
                         </Chip>
                     )}
                     {armor?.powered && (
-                        <Chip size="sm" variant="flat" color="warning" classNames={{ base: "min-h-[32px]" }}>
+                        <Chip
+                            size="sm"
+                            variant="flat"
+                            color="warning"
+                            classNames={{ base: "min-h-[32px]" }}
+                        >
                             Powered
                         </Chip>
                     )}
@@ -124,20 +141,13 @@ export function EquipmentDetail({ equipment }: EquipmentDetailProps) {
                             </StatRow>
                             {armor.strengthRequirement && (
                                 <StatRow>
-                                    <Stat
-                                        label="Strength Req"
-                                        value={armor.strengthRequirement}
-                                    />
+                                    <Stat label="Strength Req" value={armor.strengthRequirement} />
                                 </StatRow>
                             )}
                             <StatRow>
                                 <Stat
                                     label="Stealth"
-                                    value={
-                                        armor.stealthDisadvantage
-                                            ? "Disadvantage"
-                                            : "Normal"
-                                    }
+                                    value={armor.stealthDisadvantage ? "Disadvantage" : "Normal"}
                                 />
                             </StatRow>
                         </div>
@@ -182,7 +192,9 @@ export function EquipmentDetail({ equipment }: EquipmentDetailProps) {
                             <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
                                 Description
                             </SecondaryText>
-                            <Description className="text-sm sm:text-base leading-relaxed break-words">{equipment.description}</Description>
+                            <Description className="text-sm sm:text-base leading-relaxed break-words">
+                                {equipment.description}
+                            </Description>
                         </div>
                     </>
                 )}

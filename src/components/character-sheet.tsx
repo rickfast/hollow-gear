@@ -558,8 +558,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                             {!canAddDrone && (
                                                 <Card
                                                     style={{
-                                                        backgroundColor:
-                                                            "var(--heroui-warning-50)",
+                                                        backgroundColor: "var(--heroui-warning-50)",
                                                         marginBottom: "1rem",
                                                     }}
                                                 >
@@ -634,11 +633,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
             </Modal>
 
             {/* Delete Confirmation Modal */}
-            <Modal
-                isOpen={deleteConfirmDroneId !== null}
-                onClose={cancelRemoveDrone}
-                size="md"
-            >
+            <Modal isOpen={deleteConfirmDroneId !== null} onClose={cancelRemoveDrone} size="md">
                 <ModalContent>
                     <ModalHeader>
                         <h3 style={{ fontSize: "1.5rem", fontWeight: 600 }}>Remove Drone</h3>

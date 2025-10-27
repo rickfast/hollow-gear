@@ -1,6 +1,6 @@
+import type { Drone } from "@/types/drones";
 import { describe, expect, it } from "vitest";
 import { DroneBuilder, type DroneValidationContext } from "./drone-builder";
-import type { Drone } from "@/types/drones";
 
 describe("DroneBuilder Validation", () => {
     describe("Name Uniqueness Validation", () => {
@@ -24,11 +24,7 @@ describe("DroneBuilder Validation", () => {
             };
 
             const builder = new DroneBuilder();
-            builder
-                .setValidationContext(context)
-                .setName("Whisper")
-                .setType("Recon")
-                .setLevel(1);
+            builder.setValidationContext(context).setName("Whisper").setType("Recon").setLevel(1);
 
             const drone = builder.build();
             expect(drone.name).toBe("Whisper");
@@ -84,11 +80,7 @@ describe("DroneBuilder Validation", () => {
 
             const builder = new DroneBuilder();
             // Simulate editing by setting the drone id to match existing
-            builder
-                .setValidationContext(context)
-                .setName("Sparky")
-                .setType("Combat")
-                .setLevel(1);
+            builder.setValidationContext(context).setName("Sparky").setType("Combat").setLevel(1);
 
             // Manually set the id to simulate editing
             (builder as any).drone.id = "drone-001";
@@ -163,9 +155,7 @@ describe("DroneBuilder Validation", () => {
             const builder = new DroneBuilder();
             builder.setName("TestDrone").setType("Combat").setLevel(1); // Level 1 = 1 slot
 
-            expect(() => builder.setMods(["mod-1", "mod-2"])).toThrow(
-                /You have selected 2 items/
-            );
+            expect(() => builder.setMods(["mod-1", "mod-2"])).toThrow(/You have selected 2 items/);
         });
     });
 

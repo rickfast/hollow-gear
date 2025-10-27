@@ -34,19 +34,34 @@ export function MindcraftDetail({ power }: MindcraftDetailProps) {
                     <CardTitle className="text-base sm:text-lg break-words">{power.name}</CardTitle>
                 </div>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                    <Chip size="sm" variant="flat" color="primary" classNames={{ base: "min-h-[32px]" }}>
+                    <Chip
+                        size="sm"
+                        variant="flat"
+                        color="primary"
+                        classNames={{ base: "min-h-[32px]" }}
+                    >
                         {tierText}
                     </Chip>
                     <Chip size="sm" variant="flat" classNames={{ base: "min-h-[32px]" }}>
                         {power.discipline}
                     </Chip>
                     {power.concentration && (
-                        <Chip size="sm" variant="flat" color="warning" classNames={{ base: "min-h-[32px]" }}>
+                        <Chip
+                            size="sm"
+                            variant="flat"
+                            color="warning"
+                            classNames={{ base: "min-h-[32px]" }}
+                        >
                             Concentration
                         </Chip>
                     )}
                     {power.amplifiable && (
-                        <Chip size="sm" variant="flat" color="success" classNames={{ base: "min-h-[32px]" }}>
+                        <Chip
+                            size="sm"
+                            variant="flat"
+                            color="success"
+                            classNames={{ base: "min-h-[32px]" }}
+                        >
                             Amplifiable
                         </Chip>
                     )}
@@ -70,8 +85,12 @@ export function MindcraftDetail({ power }: MindcraftDetailProps) {
 
                 {/* Effect */}
                 <div>
-                    <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">Effect</SecondaryText>
-                    <Description className="text-sm sm:text-base leading-relaxed break-words">{power.effect}</Description>
+                    <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
+                        Effect
+                    </SecondaryText>
+                    <Description className="text-sm sm:text-base leading-relaxed break-words">
+                        {power.effect}
+                    </Description>
                 </div>
 
                 {/* Saving Throw */}
@@ -82,7 +101,9 @@ export function MindcraftDetail({ power }: MindcraftDetailProps) {
                             <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
                                 Saving Throw
                             </SecondaryText>
-                            <TertiaryText className="text-xs sm:text-sm">{savingThrowText}</TertiaryText>
+                            <TertiaryText className="text-xs sm:text-sm">
+                                {savingThrowText}
+                            </TertiaryText>
                         </div>
                     </>
                 )}
@@ -93,8 +114,8 @@ export function MindcraftDetail({ power }: MindcraftDetailProps) {
                         <Divider />
                         <div>
                             <TertiaryText className="text-xs sm:text-sm">
-                                This power can be amplified by spending additional AFP for
-                                enhanced effects
+                                This power can be amplified by spending additional AFP for enhanced
+                                effects
                             </TertiaryText>
                         </div>
                     </>
