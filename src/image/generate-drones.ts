@@ -23,7 +23,7 @@ export const generateDronePawns = async () => {
     );
 
     const finalPrompt = `
-    The image should only include the drone and have a completely transparent background.
+    The image should only include the drone and have a completely transparent background. The image must be square, not a rectangle.
     The drone should be shown in full body view with all mechanical details visible.
     `;
 
