@@ -1,5 +1,11 @@
 import type { MindcraftPower } from "@/types";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
+import { Link } from "react-router-dom";
+import { MINDCRAFT_POWERS } from "@/data/mindcraft";
+import {
+    buildReferencePath,
+    getMindcraftReferenceTarget,
+} from "@/utils/reference-links";
 import {
     CardTitle,
     Description,
@@ -26,6 +32,12 @@ export function MindcraftDetail({ power }: MindcraftDetailProps) {
     const savingThrowText = power.savingThrow
         ? `${power.savingThrow.ability.toUpperCase()} DC ${power.savingThrow.dc}`
         : null;
+
+    const relatedPowers = MINDCRAFT_POWERS.filter(
+        (other) => other.id !== power.id && other.discipline === power.discipline
+    )
+        .sort((a, b) => a.tier - b.tier || a.name.localeCompare(b.name))
+        .slice(0, 6);
 
     return (
         <Card className="w-full">
@@ -117,6 +129,36 @@ export function MindcraftDetail({ power }: MindcraftDetailProps) {
                                 This power can be amplified by spending additional AFP for enhanced
                                 effects
                             </TertiaryText>
+                        </div>
+                    </>
+                )}
+
+                {relatedPowers.length > 0 && (
+                    <>
+                        <Divider />
+                        <div>
+                            <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
+                                Related Powers
+                            </SecondaryText>
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                {relatedPowers.map((related) => (
+                                    <Link
+                                        key={related.id}
+                                        to={buildReferencePath(
+                                            getMindcraftReferenceTarget(related)
+                                        )}
+                                        className="inline-flex"
+                                    >
+                                        <Chip
+                                            size="sm"
+                                            variant="bordered"
+                                            classNames={{ base: "min-h-[32px]" }}
+                                        >
+                                            {related.name}
+                                        </Chip>
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
                     </>
                 )}

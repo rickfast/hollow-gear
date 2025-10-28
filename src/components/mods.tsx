@@ -1,5 +1,10 @@
 import type { InventoryViewModel } from "@/model/character-view-model";
 import { Card, CardBody, Chip } from "@heroui/react";
+import { Link } from "react-router-dom";
+import {
+    buildReferencePath,
+    getModReferenceTarget,
+} from "@/utils/reference-links";
 import { CardTitle, Description, EmptyState, Stat, StatRow } from "./typography";
 
 interface ModsProps {
@@ -49,7 +54,16 @@ export const Mods = ({ inventory }: ModsProps) => {
                     <CardBody className="p-3">
                         {/* Mod Name and Badges */}
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
-                            <CardTitle>{mod.mod.name}</CardTitle>
+                            <CardTitle>
+                                <Link
+                                    to={buildReferencePath(
+                                        getModReferenceTarget(mod.mod)
+                                    )}
+                                    className="text-primary hover:underline"
+                                >
+                                    {mod.mod.name}
+                                </Link>
+                            </CardTitle>
                             <Chip size="sm" variant="flat" color={getTierColor(mod.mod.tier)}>
                                 {mod.mod.tier}
                             </Chip>

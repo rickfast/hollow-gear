@@ -1,5 +1,12 @@
 import type { Spell } from "@/types";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
+import { Link } from "react-router-dom";
+import { SPELLS } from "@/data/spells";
+import {
+    buildReferencePath,
+    getClassReferenceTarget,
+    getSpellReferenceTarget,
+} from "@/utils/reference-links";
 import {
     CardTitle,
     DangerStat,
@@ -35,6 +42,12 @@ export function SpellDetail({ spell }: SpellDetailProps) {
 
     // Format spell level
     const levelText = spell.level === 0 ? "Cantrip" : `Level ${spell.level}`;
+
+    const relatedSpells = SPELLS.filter(
+        (other) => other.name !== spell.name && other.school === spell.school
+    )
+        .sort((a, b) => a.level - b.level || a.name.localeCompare(b.name))
+        .slice(0, 8);
 
     return (
         <Card className="w-full">
@@ -174,17 +187,52 @@ export function SpellDetail({ spell }: SpellDetailProps) {
                     </SecondaryText>
                     <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {spell.classes.map((classType) => (
-                            <Chip
+                            <Link
                                 key={classType}
-                                size="sm"
-                                variant="bordered"
-                                classNames={{ base: "min-h-[32px]" }}
+                                to={buildReferencePath(getClassReferenceTarget(classType))}
+                                className="inline-flex"
                             >
-                                {classType}
-                            </Chip>
+                                <Chip
+                                    size="sm"
+                                    variant="bordered"
+                                    classNames={{ base: "min-h-[32px]" }}
+                                >
+                                    {classType}
+                                </Chip>
+                            </Link>
                         ))}
                     </div>
                 </div>
+
+                {relatedSpells.length > 0 && (
+                    <>
+                        <Divider />
+                        <div>
+                            <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
+                                Related Spells
+                            </SecondaryText>
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                {relatedSpells.map((related) => (
+                                    <Link
+                                        key={related.name}
+                                        to={buildReferencePath(
+                                            getSpellReferenceTarget(related)
+                                        )}
+                                        className="inline-flex"
+                                    >
+                                        <Chip
+                                            size="sm"
+                                            variant="bordered"
+                                            classNames={{ base: "min-h-[32px]" }}
+                                        >
+                                            {related.hollowgearName || related.name}
+                                        </Chip>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    </>
+                )}
             </CardBody>
         </Card>
     );

@@ -21,7 +21,7 @@ import {
     useDisclosure,
 } from "@heroui/react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Actions } from "./actions";
 import { Drones } from "./drones";
 import { Features } from "./features";
@@ -32,6 +32,11 @@ import { PointBar } from "./point-bar";
 import { RollButton } from "./roll-button";
 import { Skills } from "./skills";
 import { Spells } from "./spells";
+import {
+    buildReferencePath,
+    getClassReferenceTarget,
+    getSpeciesReferenceTarget,
+} from "@/utils/reference-links";
 
 const droneStorageService = new DroneStorageService();
 
@@ -64,6 +69,9 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
 
     const { getCharacter, updateCharacter } = useCharacterViewModelContext();
     const { summary, abilityScores, savingThrows, skills } = getCharacter(id);
+
+    const classReferencePath = buildReferencePath(getClassReferenceTarget(summary.class));
+    const speciesReferencePath = buildReferencePath(getSpeciesReferenceTarget(summary.species));
 
     const showSpellsTab = getCharacter(id).spellType !== "None";
     const spellType = getCharacter(id).spellType;
@@ -246,10 +254,27 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                 {summary.name}
                             </h1>
                             <p style={{ fontSize: "1.125rem", margin: "0.5rem 0", opacity: 0.8 }}>
-                                Level {summary.level} {summary.species} {summary.class}
+                                Level {summary.level}{" "}
+                                <Link
+                                    to={speciesReferencePath}
+                                    className="text-primary hover:underline font-semibold"
+                                >
+                                    {summary.species}
+                                </Link>{" "}
+                                <Link
+                                    to={classReferencePath}
+                                    className="text-primary hover:underline font-semibold"
+                                >
+                                    {summary.class}
+                                </Link>
                             </p>
                             <p style={{ fontSize: "0.875rem", opacity: 0.7 }}>
-                                {summary.fullClass}
+                                <Link
+                                    to={classReferencePath}
+                                    className="text-primary hover:underline font-medium"
+                                >
+                                    {summary.fullClass}
+                                </Link>
                             </p>
                             {summary.background && (
                                 <Chip size="sm" variant="flat" style={{ marginTop: "0.5rem" }}>

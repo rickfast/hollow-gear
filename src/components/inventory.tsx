@@ -1,6 +1,11 @@
 import type { InventoryViewModel } from "@/model/character-view-model";
 import { useCharacterViewModelContext } from "@/model/character-view-model-context";
 import {
+    buildReferencePath,
+    getEquipmentReferenceTarget,
+    getModReferenceTarget,
+} from "@/utils/reference-links";
+import {
     Button,
     Card,
     CardBody,
@@ -12,6 +17,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@heroui/react";
+import { Link } from "react-router-dom";
 import { CardTitle, EmptyState, SecondaryText, TertiaryText } from "./typography";
 
 export const Inventory = ({
@@ -98,7 +104,16 @@ export const Inventory = ({
                                 {/* Item Details */}
                                 <div className="flex-1 min-w-0">
                                     {/* Item Name */}
-                                    <CardTitle className="mb-1">{item.name}</CardTitle>
+                                    <CardTitle className="mb-1">
+                                        <Link
+                                            to={buildReferencePath(
+                                                getEquipmentReferenceTarget(item.equipmentId)
+                                            )}
+                                            className="text-primary hover:underline"
+                                        >
+                                            {item.name}
+                                        </Link>
+                                    </CardTitle>
 
                                     {/* Tags */}
                                     {item.tags && item.tags.length > 0 && (
@@ -126,15 +141,22 @@ export const Inventory = ({
                                                 )?.mod;
                                                 if (!modData) return null;
                                                 return (
-                                                    <Chip
+                                                    <Link
                                                         key={modId}
-                                                        size="sm"
-                                                        variant="flat"
-                                                        color="primary"
-                                                        className="text-xs"
+                                                        to={buildReferencePath(
+                                                            getModReferenceTarget(modData)
+                                                        )}
+                                                        className="inline-flex"
                                                     >
-                                                        {modData.name}
-                                                    </Chip>
+                                                        <Chip
+                                                            size="sm"
+                                                            variant="flat"
+                                                            color="primary"
+                                                            className="text-xs"
+                                                        >
+                                                            {modData.name}
+                                                        </Chip>
+                                                    </Link>
                                                 );
                                             })}
                                         </div>

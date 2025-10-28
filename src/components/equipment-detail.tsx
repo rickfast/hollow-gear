@@ -1,5 +1,13 @@
 import type { Armor, Equipment, Shield, Weapon } from "@/types";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
+import { Link } from "react-router-dom";
+import { ALL_EQUIPMENT } from "@/data/equipment";
+import { MODS } from "@/data/mods";
+import {
+    buildReferencePath,
+    getEquipmentReferenceTarget,
+    getModReferenceTarget,
+} from "@/utils/reference-links";
 import {
     CardTitle,
     Description,
@@ -48,6 +56,18 @@ export function EquipmentDetail({ equipment }: EquipmentDetailProps) {
     const formatProperties = (properties: string[]): string => {
         return properties.join(", ");
     };
+
+    const compatibleMods = MODS.filter(
+        (mod) => !mod.equipmentType || mod.equipmentType === equipment.type
+    )
+        .sort((a, b) => a.tier.localeCompare(b.tier) || a.name.localeCompare(b.name))
+        .slice(0, 8);
+
+    const relatedEquipment = ALL_EQUIPMENT.filter(
+        (item) => item.id !== equipment.id && item.type === equipment.type
+    )
+        .sort((a, b) => a.tier.localeCompare(b.tier) || a.name.localeCompare(b.name))
+        .slice(0, 6);
 
     return (
         <Card className="w-full">
@@ -195,6 +215,62 @@ export function EquipmentDetail({ equipment }: EquipmentDetailProps) {
                             <Description className="text-sm sm:text-base leading-relaxed break-words">
                                 {equipment.description}
                             </Description>
+                        </div>
+                    </>
+                )}
+
+                {compatibleMods.length > 0 && (
+                    <>
+                        <Divider />
+                        <div>
+                            <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
+                                Compatible Mods
+                            </SecondaryText>
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                {compatibleMods.map((mod) => (
+                                    <Link
+                                        key={mod.id}
+                                        to={buildReferencePath(getModReferenceTarget(mod))}
+                                        className="inline-flex"
+                                    >
+                                        <Chip
+                                            size="sm"
+                                            variant="bordered"
+                                            classNames={{ base: "min-h-[32px]" }}
+                                        >
+                                            {mod.name}
+                                        </Chip>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    </>
+                )}
+
+                {relatedEquipment.length > 0 && (
+                    <>
+                        <Divider />
+                        <div>
+                            <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
+                                Related Equipment
+                            </SecondaryText>
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                {relatedEquipment.map((item) => (
+                                    <Link
+                                        key={item.id}
+                                        to={buildReferencePath(getEquipmentReferenceTarget(item.id))}
+                                        className="inline-flex"
+                                    >
+                                        <Chip
+                                            size="sm"
+                                            variant="bordered"
+                                            classNames={{ base: "min-h-[32px]" }}
+                                        >
+                                            {item.name}
+                                        </Chip>
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
                     </>
                 )}

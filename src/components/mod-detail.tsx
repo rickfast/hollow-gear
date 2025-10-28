@@ -1,5 +1,13 @@
-import type { Mod } from "@/types";
+import type { Equipment, Mod } from "@/types";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
+import { Link } from "react-router-dom";
+import { ALL_EQUIPMENT } from "@/data/equipment";
+import { MODS } from "@/data/mods";
+import {
+    buildReferencePath,
+    getEquipmentReferenceTarget,
+    getModReferenceTarget,
+} from "@/utils/reference-links";
 import {
     CardTitle,
     Description,
@@ -40,6 +48,16 @@ export function ModDetail({ mod }: ModDetailProps) {
     };
 
     const usesPerRest = formatUsesPerRest();
+
+    const compatibleEquipment: Equipment[] = mod.equipmentType
+        ? ALL_EQUIPMENT.filter((item) => item.type === mod.equipmentType).slice(0, 8)
+        : [];
+
+    const relatedMods = MODS.filter(
+        (other) => other.id !== mod.id && other.modType === mod.modType
+    )
+        .sort((a, b) => a.tier.localeCompare(b.tier) || a.name.localeCompare(b.name))
+        .slice(0, 6);
 
     return (
         <Card className="w-full">
@@ -168,6 +186,62 @@ export function ModDetail({ mod }: ModDetailProps) {
                                     value={`${mod.additionalDamage.count}d${mod.additionalDamage.die} ${mod.additionalDamage.damageType}`}
                                 />
                             </StatRow>
+                        </div>
+                    </>
+                )}
+
+                {compatibleEquipment.length > 0 && (
+                    <>
+                        <Divider />
+                        <div>
+                            <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
+                                Compatible Equipment
+                            </SecondaryText>
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                {compatibleEquipment.map((item) => (
+                                    <Link
+                                        key={item.id}
+                                        to={buildReferencePath(getEquipmentReferenceTarget(item.id))}
+                                        className="inline-flex"
+                                    >
+                                        <Chip
+                                            size="sm"
+                                            variant="bordered"
+                                            classNames={{ base: "min-h-[32px]" }}
+                                        >
+                                            {item.name}
+                                        </Chip>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    </>
+                )}
+
+                {relatedMods.length > 0 && (
+                    <>
+                        <Divider />
+                        <div>
+                            <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
+                                Related Mods
+                            </SecondaryText>
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                {relatedMods.map((related) => (
+                                    <Link
+                                        key={related.id}
+                                        to={buildReferencePath(getModReferenceTarget(related))}
+                                        className="inline-flex"
+                                    >
+                                        <Chip
+                                            size="sm"
+                                            variant="bordered"
+                                            classNames={{ base: "min-h-[32px]" }}
+                                        >
+                                            {related.name}
+                                        </Chip>
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
                     </>
                 )}

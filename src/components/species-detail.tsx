@@ -1,5 +1,8 @@
 import type { Species } from "@/types";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
+import { Link } from "react-router-dom";
+import { SPECIES } from "@/data/species";
+import { buildReferencePath, getSpeciesReferenceTarget } from "@/utils/reference-links";
 import { CardTitle, Description, SecondaryText, Stat, StatRow, TertiaryText } from "./typography";
 
 interface SpeciesDetailProps {
@@ -42,6 +45,21 @@ export function SpeciesDetail({ species }: SpeciesDetailProps) {
     const formatUsesPerRest = (amount: number, restType: string): string => {
         return `${amount}/${restType} rest`;
     };
+
+    const abilityKeys = Object.keys(species.abilityScoreIncrease) as Array<
+        keyof typeof species.abilityScoreIncrease
+    >;
+    const primaryAbilities = abilityKeys.filter(
+        (ability) => (species.abilityScoreIncrease[ability] ?? 0) > 0
+    );
+
+    const relatedSpecies = SPECIES.filter(
+        (other) =>
+            other.type !== species.type &&
+            primaryAbilities.some((ability) => (other.abilityScoreIncrease[ability] ?? 0) > 0)
+    )
+        .sort((a, b) => a.type.localeCompare(b.type))
+        .slice(0, 6);
 
     return (
         <Card className="w-full">
@@ -136,6 +154,36 @@ export function SpeciesDetail({ species }: SpeciesDetailProps) {
                         ))}
                     </div>
                 </div>
+
+                {relatedSpecies.length > 0 && (
+                    <>
+                        <Divider />
+                        <div>
+                            <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
+                                Related Species
+                            </SecondaryText>
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                {relatedSpecies.map((other) => (
+                                    <Link
+                                        key={other.type}
+                                        to={buildReferencePath(
+                                            getSpeciesReferenceTarget(other.type)
+                                        )}
+                                        className="inline-flex"
+                                    >
+                                        <Chip
+                                            size="sm"
+                                            variant="bordered"
+                                            classNames={{ base: "min-h-[32px]" }}
+                                        >
+                                            {other.type}
+                                        </Chip>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    </>
+                )}
             </CardBody>
         </Card>
     );

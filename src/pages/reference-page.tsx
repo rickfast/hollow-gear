@@ -1,8 +1,22 @@
 import { ReferenceDetailView } from "@/components/reference-detail-view";
 import { referenceSearchService } from "@/service/reference-search-service";
-import type { ReferenceItem } from "@/types";
+import type { ReferenceCategory, ReferenceItem } from "@/types";
 import { Card, CardBody, CardHeader, Input, Listbox, ListboxItem } from "@heroui/react";
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+
+const REFERENCE_CATEGORIES: ReferenceCategory[] = [
+    "Spell",
+    "Mindcraft",
+    "Equipment",
+    "Mod",
+    "Species",
+    "Class",
+];
+
+const isReferenceCategory = (value: string): value is ReferenceCategory => {
+    return REFERENCE_CATEGORIES.includes(value as ReferenceCategory);
+};
 
 /**
  * Reference Page
@@ -23,6 +37,7 @@ export function ReferencePage() {
     const [showDropdown, setShowDropdown] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     // Debounce search query (300ms)
     useEffect(() => {
@@ -62,12 +77,34 @@ export function ReferencePage() {
         };
     }, [showDropdown]);
 
+    // Sync selected item with URL query parameters
+    useEffect(() => {
+        const categoryParam = searchParams.get("category");
+        const itemIdParam = searchParams.get("itemId");
+
+        if (categoryParam && itemIdParam && isReferenceCategory(categoryParam)) {
+            const item = referenceSearchService.getItemById(itemIdParam, categoryParam);
+            setSelectedItem(item);
+            if (item) {
+                setSearchQuery(item.name);
+                setShowDropdown(false);
+            }
+        } else if (!categoryParam && !itemIdParam) {
+            setSelectedItem(null);
+        }
+    }, [searchParams]);
+
     // Handle result selection
     const handleSelectItem = (key: string | number) => {
         const item = searchResults.find((item) => item.id === key);
         if (item) {
             setSelectedItem(item);
+            setSearchQuery(item.name);
             setShowDropdown(false); // Dismiss dropdown after selection
+            setSearchParams({
+                category: item.category,
+                itemId: item.id,
+            });
         }
     };
 
@@ -95,6 +132,8 @@ export function ReferencePage() {
                                     onClear={() => {
                                         setSearchQuery("");
                                         setShowDropdown(false);
+                                        setSelectedItem(null);
+                                        setSearchParams({});
                                     }}
                                     onFocus={(e) => {
                                         // Select all text when focused

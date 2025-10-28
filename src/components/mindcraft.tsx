@@ -1,5 +1,10 @@
 import type { MindcraftPower } from "@/types";
 import { Card, CardBody, Chip } from "@heroui/react";
+import { Link } from "react-router-dom";
+import {
+    buildReferencePath,
+    getMindcraftReferenceTarget,
+} from "@/utils/reference-links";
 import { CardTitle, Description, EmptyState, PrimaryStat, Stat, StatRow } from "./typography";
 
 export const Mindcraft = ({ powers }: { powers: MindcraftPower[] }) => {
@@ -62,7 +67,16 @@ export const Mindcraft = ({ powers }: { powers: MindcraftPower[] }) => {
                             <div className="flex-1 min-w-0">
                                 {/* Name and Badges */}
                                 <div className="flex items-center gap-2 mb-1 flex-wrap">
-                                    <CardTitle>{power.name}</CardTitle>
+                                    <CardTitle>
+                                        <Link
+                                            to={buildReferencePath(
+                                                getMindcraftReferenceTarget(power)
+                                            )}
+                                            className="text-primary hover:underline"
+                                        >
+                                            {power.name}
+                                        </Link>
+                                    </CardTitle>
                                     <Chip size="sm" variant="flat" color="default">
                                         Tier {power.tier}
                                     </Chip>

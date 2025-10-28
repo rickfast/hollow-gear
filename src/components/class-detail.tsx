@@ -1,5 +1,15 @@
-import type { Class } from "@/types";
+import type { Class, Equipment } from "@/types";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
+import { Link } from "react-router-dom";
+import { CLASSES } from "@/data/classes";
+import { EQUIPMENT_BY_ID } from "@/data/equipment";
+import { SPELLS } from "@/data/spells";
+import {
+    buildReferencePath,
+    getClassReferenceTarget,
+    getEquipmentReferenceTarget,
+    getSpellReferenceTarget,
+} from "@/utils/reference-links";
 import { CardTitle, Description, SecondaryText, Stat, StatRow, TertiaryText } from "./typography";
 
 interface ClassDetailProps {
@@ -29,6 +39,75 @@ export function ClassDetail({ classData }: ClassDetailProps) {
         if (gears > 0) parts.push(`${gears}🔧`);
         if (cores > 0) parts.push(`${cores}💎`);
         return parts.join(", ");
+    };
+
+    // Build starting equipment lookup with quantities
+    const summarizeEquipment = (ids: string[]): { equipment: Equipment; quantity: number }[] => {
+        const counts = new Map<string, number>();
+        ids.forEach((id) => {
+            if (EQUIPMENT_BY_ID[id]) {
+                counts.set(id, (counts.get(id) ?? 0) + 1);
+            }
+        });
+        return Array.from(counts.entries()).map(([id, quantity]) => ({
+            equipment: EQUIPMENT_BY_ID[id]!,
+            quantity,
+        }));
+    };
+
+    const startingWeapons = summarizeEquipment(classData.startingEquipment.weapons);
+    const startingTools = summarizeEquipment(classData.startingEquipment.tools);
+    const startingItems = summarizeEquipment(classData.startingEquipment.items);
+    const startingArmor = classData.startingEquipment.armor
+        ? EQUIPMENT_BY_ID[classData.startingEquipment.armor]
+        : null;
+
+    const classSpells = SPELLS.filter((spell) => spell.classes.includes(classData.type))
+        .sort((a, b) => a.level - b.level || a.name.localeCompare(b.name))
+        .slice(0, 10);
+
+    const relatedClasses = CLASSES.filter(
+        (cls) =>
+            cls.type !== classData.type &&
+            (cls.primaryAbility === classData.primaryAbility ||
+                cls.primaryResource === classData.primaryResource)
+    )
+        .sort((a, b) => a.type.localeCompare(b.type))
+        .slice(0, 4);
+
+    const renderEquipmentChips = (entries: { equipment: Equipment; quantity: number }[]) => {
+        if (entries.length === 0) {
+            return null;
+        }
+        return (
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                {entries.map(({ equipment, quantity }) => (
+                    <Link
+                        key={equipment.id}
+                        to={buildReferencePath(getEquipmentReferenceTarget(equipment.id))}
+                        className="inline-flex"
+                    >
+                        <Chip size="sm" variant="bordered" classNames={{ base: "min-h-[32px]" }}>
+                            {quantity > 1 ? `${equipment.name} ×${quantity}` : equipment.name}
+                        </Chip>
+                    </Link>
+                ))}
+            </div>
+        );
+    };
+
+    const renderEquipmentItem = (equipment: Equipment | null) => {
+        if (!equipment) return null;
+        return (
+            <Link
+                to={buildReferencePath(getEquipmentReferenceTarget(equipment.id))}
+                className="inline-flex"
+            >
+                <Chip size="sm" variant="bordered" classNames={{ base: "min-h-[32px]" }}>
+                    {equipment.name}
+                </Chip>
+            </Link>
+        );
     };
 
     // Get all features including subclass features
@@ -169,6 +248,35 @@ export function ClassDetail({ classData }: ClassDetailProps) {
                     </>
                 )}
 
+                {/* Signature Spells */}
+                {classSpells.length > 0 && (
+                    <>
+                        <div>
+                            <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
+                                Signature Spells
+                            </SecondaryText>
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                {classSpells.map((spell) => (
+                                    <Link
+                                        key={spell.name}
+                                        to={buildReferencePath(getSpellReferenceTarget(spell))}
+                                        className="inline-flex"
+                                    >
+                                        <Chip
+                                            size="sm"
+                                            variant="bordered"
+                                            classNames={{ base: "min-h-[32px]" }}
+                                        >
+                                            {spell.hollowgearName || spell.name}
+                                        </Chip>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                        <Divider />
+                    </>
+                )}
+
                 {/* Class Features */}
                 <div>
                     <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
@@ -220,50 +328,42 @@ export function ClassDetail({ classData }: ClassDetailProps) {
                     </SecondaryText>
                     <div className="flex flex-col gap-1.5 sm:gap-2">
                         {/* Weapons */}
-                        {classData.startingEquipment.weapons.length > 0 && (
+                        {startingWeapons.length > 0 && (
                             <div>
                                 <TertiaryText className="font-semibold text-xs sm:text-sm">
                                     Weapons
                                 </TertiaryText>
-                                <Description className="text-sm sm:text-base break-words">
-                                    {classData.startingEquipment.weapons.join(", ")}
-                                </Description>
+                                {renderEquipmentChips(startingWeapons)}
                             </div>
                         )}
 
                         {/* Armor */}
-                        {classData.startingEquipment.armor && (
+                        {startingArmor && (
                             <div>
                                 <TertiaryText className="font-semibold text-xs sm:text-sm">
                                     Armor
                                 </TertiaryText>
-                                <Description className="text-sm sm:text-base break-words">
-                                    {classData.startingEquipment.armor}
-                                </Description>
+                                {renderEquipmentItem(startingArmor)}
                             </div>
                         )}
 
                         {/* Tools */}
-                        {classData.startingEquipment.tools.length > 0 && (
+                        {startingTools.length > 0 && (
                             <div>
                                 <TertiaryText className="font-semibold text-xs sm:text-sm">
                                     Tools
                                 </TertiaryText>
-                                <Description className="text-sm sm:text-base break-words">
-                                    {classData.startingEquipment.tools.join(", ")}
-                                </Description>
+                                {renderEquipmentChips(startingTools)}
                             </div>
                         )}
 
                         {/* Items */}
-                        {classData.startingEquipment.items.length > 0 && (
+                        {startingItems.length > 0 && (
                             <div>
                                 <TertiaryText className="font-semibold text-xs sm:text-sm">
                                     Items
                                 </TertiaryText>
-                                <Description className="text-sm sm:text-base break-words">
-                                    {classData.startingEquipment.items.join(", ")}
-                                </Description>
+                                {renderEquipmentChips(startingItems)}
                             </div>
                         )}
 
@@ -278,6 +378,34 @@ export function ClassDetail({ classData }: ClassDetailProps) {
                         </div>
                     </div>
                 </div>
+
+                {relatedClasses.length > 0 && (
+                    <>
+                        <Divider />
+                        <div>
+                            <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
+                                Related Classes
+                            </SecondaryText>
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                {relatedClasses.map((cls) => (
+                                    <Link
+                                        key={cls.type}
+                                        to={buildReferencePath(getClassReferenceTarget(cls.type))}
+                                        className="inline-flex"
+                                    >
+                                        <Chip
+                                            size="sm"
+                                            variant="bordered"
+                                            classNames={{ base: "min-h-[32px]" }}
+                                        >
+                                            {cls.type}
+                                        </Chip>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    </>
+                )}
             </CardBody>
         </Card>
     );
