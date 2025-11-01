@@ -12,6 +12,7 @@ const REFERENCE_CATEGORIES: ReferenceCategory[] = [
     "Mod",
     "Species",
     "Class",
+    "Monster",
 ];
 
 const isReferenceCategory = (value: string): value is ReferenceCategory => {
@@ -28,6 +29,7 @@ const isReferenceCategory = (value: string): value is ReferenceCategory => {
  * - Mods (Equipment modifications)
  * - Species (Playable races)
  * - Classes (Character classes)
+ * - Monsters (Bestiary creatures)
  */
 export function ReferencePage() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -125,7 +127,7 @@ export function ReferencePage() {
                                 <Input
                                     ref={inputRef}
                                     type="search"
-                                    placeholder="Search spells, equipment, classes..."
+                                    placeholder="Search spells, monsters, equipment..."
                                     value={searchQuery}
                                     onValueChange={setSearchQuery}
                                     isClearable
@@ -202,7 +204,7 @@ export function ReferencePage() {
                                 <div className="text-center py-6 sm:py-8 text-default-500 px-2">
                                     <p className="text-xs sm:text-sm leading-relaxed">
                                         Search for spells, mindcraft powers, equipment, mods,
-                                        species, or classes
+                                        species, classes, or monsters
                                     </p>
                                 </div>
                             )}

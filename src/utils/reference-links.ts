@@ -1,4 +1,5 @@
 import type {
+    BestiaryEntry,
     ClassType,
     MindcraftPower,
     Mod,
@@ -58,4 +59,11 @@ export const getEquipmentReferenceTarget = (equipmentId: string): ReferenceLinkT
 export const getModReferenceTarget = (mod: Mod): ReferenceLinkTarget => ({
     category: "Mod",
     itemId: `mod-${mod.id}`,
+});
+
+export const getMonsterReferenceTarget = (
+    monster: BestiaryEntry | string
+): ReferenceLinkTarget => ({
+    category: "Monster",
+    itemId: typeof monster === "string" ? `monster-${monster}` : `monster-${monster.id}`,
 });

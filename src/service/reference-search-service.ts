@@ -3,6 +3,7 @@
 // ============================================================================
 
 import { CLASSES } from "@/data/classes";
+import { BESTIARY_CREATURES } from "@/data/bestiary";
 import { ALL_EQUIPMENT, MODS } from "@/data/equipment";
 import { MINDCRAFT_POWERS } from "@/data/mindcraft";
 import { SPECIES } from "@/data/species";
@@ -90,6 +91,16 @@ class ReferenceSearchService {
                 name: classData.type,
                 category: "Class",
                 data: classData,
+            });
+        });
+
+        // Add monsters (bestiary entries)
+        BESTIARY_CREATURES.forEach((creature) => {
+            items.push({
+                id: `monster-${creature.id}`,
+                name: creature.name,
+                category: "Monster",
+                data: creature,
             });
         });
 

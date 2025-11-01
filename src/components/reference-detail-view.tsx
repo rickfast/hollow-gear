@@ -2,6 +2,7 @@ import type { ReferenceItem } from "@/types/reference";
 import { Card, CardBody } from "@heroui/react";
 import { ClassDetail } from "./class-detail";
 import { EquipmentDetail } from "./equipment-detail";
+import { MonsterDetail } from "./monster-detail";
 import { MindcraftDetail } from "./mindcraft-detail";
 import { ModDetail } from "./mod-detail";
 import { SpeciesDetail } from "./species-detail";
@@ -49,6 +50,9 @@ export function ReferenceDetailView({ item }: ReferenceDetailViewProps) {
 
         case "Class":
             return <ClassDetail classData={item.data as any} />;
+
+        case "Monster":
+            return <MonsterDetail monster={item.data as any} />;
 
         default:
             // Fallback for unknown category

@@ -9,6 +9,7 @@ export * from "./character";
 export * from "./common";
 
 // Game Systems
+export * from "./bestiary";
 export * from "./classes";
 export * from "./combat";
 export * from "./drones";
