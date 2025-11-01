@@ -1,13 +1,13 @@
-import type { Armor, Equipment, Shield, Weapon } from "@/types";
-import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
-import { Link } from "react-router-dom";
 import { ALL_EQUIPMENT } from "@/data/equipment";
 import { MODS } from "@/data/mods";
+import type { Armor, Equipment, Shield, Weapon } from "@/types";
 import {
     buildReferencePath,
     getEquipmentReferenceTarget,
     getModReferenceTarget,
 } from "@/utils/reference-links";
+import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
+import { Link } from "react-router-dom";
 import {
     CardTitle,
     Description,
@@ -258,7 +258,9 @@ export function EquipmentDetail({ equipment }: EquipmentDetailProps) {
                                 {relatedEquipment.map((item) => (
                                     <Link
                                         key={item.id}
-                                        to={buildReferencePath(getEquipmentReferenceTarget(item.id))}
+                                        to={buildReferencePath(
+                                            getEquipmentReferenceTarget(item.id)
+                                        )}
                                         className="inline-flex"
                                     >
                                         <Chip

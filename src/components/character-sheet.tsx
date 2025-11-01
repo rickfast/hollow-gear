@@ -4,6 +4,11 @@ import { useCharacterViewModelContext } from "@/model/character-view-model-conte
 import { DroneStorageService } from "@/service/drone-storage-service";
 import type { Drone } from "@/types";
 import {
+    buildReferencePath,
+    getClassReferenceTarget,
+    getSpeciesReferenceTarget,
+} from "@/utils/reference-links";
+import {
     Avatar,
     Button,
     Card,
@@ -32,11 +37,6 @@ import { PointBar } from "./point-bar";
 import { RollButton } from "./roll-button";
 import { Skills } from "./skills";
 import { Spells } from "./spells";
-import {
-    buildReferencePath,
-    getClassReferenceTarget,
-    getSpeciesReferenceTarget,
-} from "@/utils/reference-links";
 
 const droneStorageService = new DroneStorageService();
 

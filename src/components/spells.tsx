@@ -1,7 +1,7 @@
 import type { Rollable, Spell } from "@/types";
+import { buildReferencePath, getSpellReferenceTarget } from "@/utils/reference-links";
 import { Card, CardBody, Chip } from "@heroui/react";
 import { Link } from "react-router-dom";
-import { buildReferencePath, getSpellReferenceTarget } from "@/utils/reference-links";
 import { showRollToast } from "./roll";
 import {
     CardTitle,
@@ -69,9 +69,7 @@ export const Spells = ({
                                 <div className="flex items-center gap-2 mb-1">
                                     <CardTitle>
                                         <Link
-                                            to={buildReferencePath(
-                                                getSpellReferenceTarget(spell)
-                                            )}
+                                            to={buildReferencePath(getSpellReferenceTarget(spell))}
                                             className="text-primary hover:underline"
                                         >
                                             {spell.hollowgearName || spell.name}

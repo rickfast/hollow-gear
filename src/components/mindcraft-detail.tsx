@@ -1,11 +1,8 @@
+import { MINDCRAFT_POWERS } from "@/data/mindcraft";
 import type { MindcraftPower } from "@/types";
+import { buildReferencePath, getMindcraftReferenceTarget } from "@/utils/reference-links";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 import { Link } from "react-router-dom";
-import { MINDCRAFT_POWERS } from "@/data/mindcraft";
-import {
-    buildReferencePath,
-    getMindcraftReferenceTarget,
-} from "@/utils/reference-links";
 import {
     CardTitle,
     Description,

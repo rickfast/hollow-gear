@@ -18,9 +18,7 @@ export const generateDronePawns = async () => {
     await Bun.write(join(portraitsDir, ".gitkeep"), "");
 
     console.log(`Output directory: ${outputDir}`);
-    console.log(
-        `Generating ${droneTypes.length * droneArchetypes.length} drone pawns...`
-    );
+    console.log(`Generating ${droneTypes.length * droneArchetypes.length} drone pawns...`);
 
     const finalPrompt = `
     The image should only include the drone and have a completely transparent background. The image must be square, not a rectangle.
@@ -59,16 +57,11 @@ export const generateDronePawns = async () => {
                     await Bun.write(filename, result.image.uint8Array);
                     console.log(`✓ Generated ${droneType} ${archetype} drone`);
                 } catch (error) {
-                    console.error(
-                        `✗ Failed to generate ${droneType} ${archetype} drone:`,
-                        error
-                    );
+                    console.error(`✗ Failed to generate ${droneType} ${archetype} drone:`, error);
                     return;
                 }
             } else {
-                console.log(
-                    `⊘ Skipping ${droneType} ${archetype} drone (already exists)`
-                );
+                console.log(`⊘ Skipping ${droneType} ${archetype} drone (already exists)`);
             }
 
             // Generate portrait using smartcrop

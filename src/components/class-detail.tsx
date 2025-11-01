@@ -1,15 +1,15 @@
-import type { Class, Equipment } from "@/types";
-import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
-import { Link } from "react-router-dom";
 import { CLASSES } from "@/data/classes";
 import { EQUIPMENT_BY_ID } from "@/data/equipment";
 import { SPELLS } from "@/data/spells";
+import type { Class, Equipment } from "@/types";
 import {
     buildReferencePath,
     getClassReferenceTarget,
     getEquipmentReferenceTarget,
     getSpellReferenceTarget,
 } from "@/utils/reference-links";
+import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
+import { Link } from "react-router-dom";
 import { CardTitle, Description, SecondaryText, Stat, StatRow, TertiaryText } from "./typography";
 
 interface ClassDetailProps {

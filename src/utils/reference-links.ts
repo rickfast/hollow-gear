@@ -1,11 +1,4 @@
-import type {
-    BestiaryEntry,
-    ClassType,
-    MindcraftPower,
-    Mod,
-    Spell,
-    SpeciesType,
-} from "@/types";
+import type { BestiaryEntry, ClassType, MindcraftPower, Mod, SpeciesType, Spell } from "@/types";
 import type { ReferenceCategory } from "@/types/reference";
 
 export interface ReferenceLinkTarget {
@@ -44,9 +37,7 @@ export const getSpellReferenceTarget = (spell: Spell): ReferenceLinkTarget => ({
     itemId: `spell-${spell.name}`,
 });
 
-export const getMindcraftReferenceTarget = (
-    power: MindcraftPower
-): ReferenceLinkTarget => ({
+export const getMindcraftReferenceTarget = (power: MindcraftPower): ReferenceLinkTarget => ({
     category: "Mindcraft",
     itemId: `mindcraft-${power.id}`,
 });

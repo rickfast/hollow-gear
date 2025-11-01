@@ -22,13 +22,7 @@ export type CreatureType =
     | "Plant"
     | "Undead";
 
-export type CreatureSize =
-    | "Tiny"
-    | "Small"
-    | "Medium"
-    | "Large"
-    | "Huge"
-    | "Gargantuan";
+export type CreatureSize = "Tiny" | "Small" | "Medium" | "Large" | "Huge" | "Gargantuan";
 
 export type Alignment =
     | "Lawful Good"
@@ -42,11 +36,7 @@ export type Alignment =
     | "Chaotic Evil"
     | "Unaligned";
 
-export type SenseType =
-    | "Blindsight"
-    | "Darkvision"
-    | "Tremorsense"
-    | "Truesight";
+export type SenseType = "Blindsight" | "Darkvision" | "Tremorsense" | "Truesight";
 
 export type LanguageType =
     | "Common"
@@ -164,36 +154,36 @@ export interface Statblock {
     type: CreatureType;
     subtype?: string; // e.g., "Former Humanoid", "Part Construct"
     alignment: Alignment;
-    
+
     // Core stats
     armorClass: ArmorClass;
     hitPoints: CreatureHitPoints;
     speed: Speed;
     abilities: AbilityScores;
-    
+
     // Optional defensive stats
     savingThrows?: SavingThrow[];
     skills?: CreatureSkill[];
     resistances?: Resistance;
     immunities?: Immunity;
     vulnerabilities?: Vulnerability;
-    
+
     // Senses and communication
     senses: {
         special?: Sense[];
         passivePerception: number;
     };
     languages: LanguageType[] | "—" | string; // string for custom descriptions
-    
+
     // Challenge
     challengeRating: ChallengeRating;
-    
+
     // Special abilities and actions
     features?: CreatureFeature[]; // Passive abilities
     actions?: CreatureAction[]; // Active abilities/attacks
     reactions?: CreatureAction[]; // Reaction abilities
     legendaryActions?: CreatureAction[]; // For powerful creatures
-    
+
     // Flavor
     description?: string;
     lore?: string;

@@ -34,16 +34,13 @@ export const PROMPTS = {
     droneTypes: {
         Utility:
             "A versatile helper drone with multiple articulated arms, tool attachments, and cargo compartments. Small and compact with a friendly, industrious appearance. Brass and copper construction with visible gears and springs. Glowing blue aetheric core visible through transparent panels.",
-        Combat:
-            "A sturdy combat drone with reinforced plating, weapon mounts, and defensive shields. Angular and aggressive design with sharp edges. Dark steel and brass construction with red or orange aetheric glow. Visible shock prods or energy weapons.",
-        Recon:
-            "A lightweight surveillance drone with large optical sensors, antenna arrays, and silent propulsion. Sleek and aerodynamic with minimal bulk. Silver and brass construction with green or blue aetheric glow. Multiple camera lenses and sensor arrays.",
+        Combat: "A sturdy combat drone with reinforced plating, weapon mounts, and defensive shields. Angular and aggressive design with sharp edges. Dark steel and brass construction with red or orange aetheric glow. Visible shock prods or energy weapons.",
+        Recon: "A lightweight surveillance drone with large optical sensors, antenna arrays, and silent propulsion. Sleek and aerodynamic with minimal bulk. Silver and brass construction with green or blue aetheric glow. Multiple camera lenses and sensor arrays.",
     },
     droneArchetypes: {
         Coghound:
             "Quadrupedal drone resembling a mechanical dog. Four articulated legs with spring-loaded joints. Canine-inspired head with optical sensors. Loyal and friendly appearance with wagging tail antenna. Brass and copper construction with warm amber glow.",
-        Gyrfly:
-            "Tiny flying drone with four rotating wings or propellers. Insect-inspired design with delicate construction. Lightweight frame with transparent wing panels. Hovering pose with motion blur on wings. Silver and brass with bright blue or green glow.",
+        Gyrfly: "Tiny flying drone with four rotating wings or propellers. Insect-inspired design with delicate construction. Lightweight frame with transparent wing panels. Hovering pose with motion blur on wings. Silver and brass with bright blue or green glow.",
         "Bulwark Node":
             "Compact shield-generating drone with heavy armor plating. Spherical or cubic core with deployable barrier projectors. Sturdy and defensive appearance. Dark steel and brass with golden barrier energy effects. Glowing shield symbols on armor plates.",
         "Scribe Beetle":

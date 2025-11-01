@@ -1,6 +1,5 @@
 import { generateDronePawns } from "./src/image/generate-drones";
 import { generatePawns } from "./src/image/generate-pawns";
-import { generatePortraits } from "./src/image/generate-portraits";
 
 console.log("=".repeat(60));
 console.log("HOLLOW GEAR 5E - IMAGE GENERATION");

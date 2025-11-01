@@ -2,8 +2,8 @@
 // REFERENCE SEARCH SERVICE
 // ============================================================================
 
-import { CLASSES } from "@/data/classes";
 import { BESTIARY_CREATURES } from "@/data/bestiary";
+import { CLASSES } from "@/data/classes";
 import { ALL_EQUIPMENT, MODS } from "@/data/equipment";
 import { MINDCRAFT_POWERS } from "@/data/mindcraft";
 import { SPECIES } from "@/data/species";

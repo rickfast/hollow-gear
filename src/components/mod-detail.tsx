@@ -1,13 +1,13 @@
-import type { Equipment, Mod } from "@/types";
-import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
-import { Link } from "react-router-dom";
 import { ALL_EQUIPMENT } from "@/data/equipment";
 import { MODS } from "@/data/mods";
+import type { Equipment, Mod } from "@/types";
 import {
     buildReferencePath,
     getEquipmentReferenceTarget,
     getModReferenceTarget,
 } from "@/utils/reference-links";
+import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
+import { Link } from "react-router-dom";
 import {
     CardTitle,
     Description,
@@ -53,9 +53,7 @@ export function ModDetail({ mod }: ModDetailProps) {
         ? ALL_EQUIPMENT.filter((item) => item.type === mod.equipmentType).slice(0, 8)
         : [];
 
-    const relatedMods = MODS.filter(
-        (other) => other.id !== mod.id && other.modType === mod.modType
-    )
+    const relatedMods = MODS.filter((other) => other.id !== mod.id && other.modType === mod.modType)
         .sort((a, b) => a.tier.localeCompare(b.tier) || a.name.localeCompare(b.name))
         .slice(0, 6);
 
@@ -201,7 +199,9 @@ export function ModDetail({ mod }: ModDetailProps) {
                                 {compatibleEquipment.map((item) => (
                                     <Link
                                         key={item.id}
-                                        to={buildReferencePath(getEquipmentReferenceTarget(item.id))}
+                                        to={buildReferencePath(
+                                            getEquipmentReferenceTarget(item.id)
+                                        )}
                                         className="inline-flex"
                                     >
                                         <Chip

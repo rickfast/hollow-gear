@@ -1,8 +1,8 @@
+import { SPECIES } from "@/data/species";
 import type { Species } from "@/types";
+import { buildReferencePath, getSpeciesReferenceTarget } from "@/utils/reference-links";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 import { Link } from "react-router-dom";
-import { SPECIES } from "@/data/species";
-import { buildReferencePath, getSpeciesReferenceTarget } from "@/utils/reference-links";
 import { CardTitle, Description, SecondaryText, Stat, StatRow, TertiaryText } from "./typography";
 
 interface SpeciesDetailProps {

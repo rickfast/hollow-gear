@@ -1,12 +1,12 @@
-import type { Spell } from "@/types";
-import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
-import { Link } from "react-router-dom";
 import { SPELLS } from "@/data/spells";
+import type { Spell } from "@/types";
 import {
     buildReferencePath,
     getClassReferenceTarget,
     getSpellReferenceTarget,
 } from "@/utils/reference-links";
+import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
+import { Link } from "react-router-dom";
 import {
     CardTitle,
     DangerStat,
@@ -215,9 +215,7 @@ export function SpellDetail({ spell }: SpellDetailProps) {
                                 {relatedSpells.map((related) => (
                                     <Link
                                         key={related.name}
-                                        to={buildReferencePath(
-                                            getSpellReferenceTarget(related)
-                                        )}
+                                        to={buildReferencePath(getSpellReferenceTarget(related))}
                                         className="inline-flex"
                                     >
                                         <Chip

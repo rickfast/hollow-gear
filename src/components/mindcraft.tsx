@@ -1,10 +1,7 @@
 import type { MindcraftPower } from "@/types";
+import { buildReferencePath, getMindcraftReferenceTarget } from "@/utils/reference-links";
 import { Card, CardBody, Chip } from "@heroui/react";
 import { Link } from "react-router-dom";
-import {
-    buildReferencePath,
-    getMindcraftReferenceTarget,
-} from "@/utils/reference-links";
 import { CardTitle, Description, EmptyState, PrimaryStat, Stat, StatRow } from "./typography";
 
 export const Mindcraft = ({ powers }: { powers: MindcraftPower[] }) => {

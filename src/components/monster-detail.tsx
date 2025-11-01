@@ -1,14 +1,7 @@
 import type { BestiaryEntry, CreatureAction, CreatureDamage } from "@/types";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 import { Fragment } from "react";
-import {
-    CardTitle,
-    Description,
-    SecondaryText,
-    Stat,
-    StatRow,
-    TertiaryText,
-} from "./typography";
+import { CardTitle, Description, SecondaryText, Stat, StatRow, TertiaryText } from "./typography";
 
 const ABILITY_ORDER: (keyof BestiaryEntry["abilities"])[] = [
     "strength",
@@ -56,7 +49,10 @@ const formatSpeed = (monster: BestiaryEntry): string => {
 
 const formatDamage = (damage: CreatureDamage): string => {
     const dice = `${damage.count}d${damage.die}`;
-    const bonus = damage.bonus && damage.bonus !== 0 ? ` ${damage.bonus > 0 ? "+" : "-"} ${Math.abs(damage.bonus)}` : "";
+    const bonus =
+        damage.bonus && damage.bonus !== 0
+            ? ` ${damage.bonus > 0 ? "+" : "-"} ${Math.abs(damage.bonus)}`
+            : "";
     return `${damage.average} (${dice}${bonus}) ${damage.damageType.toLowerCase()}`;
 };
 
@@ -126,7 +122,11 @@ export function MonsterDetail({ monster }: MonsterDetailProps) {
         <Card className="w-full">
             <CardHeader className="flex-col items-start gap-3 pb-2 p-3 sm:p-4">
                 <div className="flex items-center gap-2 w-full">
-                    {monster.emoji && <span className="text-2xl" aria-hidden>{monster.emoji}</span>}
+                    {monster.emoji && (
+                        <span className="text-2xl" aria-hidden>
+                            {monster.emoji}
+                        </span>
+                    )}
                     <CardTitle className="text-base sm:text-lg break-words">
                         {monster.name}
                     </CardTitle>
@@ -142,10 +142,20 @@ export function MonsterDetail({ monster }: MonsterDetailProps) {
                     <Chip size="sm" variant="flat" classNames={{ base: "min-h-[28px]" }}>
                         {monster.alignment}
                     </Chip>
-                    <Chip size="sm" variant="flat" color="primary" classNames={{ base: "min-h-[28px]" }}>
+                    <Chip
+                        size="sm"
+                        variant="flat"
+                        color="primary"
+                        classNames={{ base: "min-h-[28px]" }}
+                    >
                         CR {monster.challengeRating.rating}
                     </Chip>
-                    <Chip size="sm" variant="flat" color="secondary" classNames={{ base: "min-h-[28px]" }}>
+                    <Chip
+                        size="sm"
+                        variant="flat"
+                        color="secondary"
+                        classNames={{ base: "min-h-[28px]" }}
+                    >
                         {monster.challengeRating.xp} XP
                     </Chip>
                 </div>
@@ -163,7 +173,10 @@ export function MonsterDetail({ monster }: MonsterDetailProps) {
                         Defenses & Vital Stats
                     </SecondaryText>
                     <StatRow>
-                        <Stat label="Armor Class" value={`${monster.armorClass.value}${monster.armorClass.source ? ` (${monster.armorClass.source})` : ""}`} />
+                        <Stat
+                            label="Armor Class"
+                            value={`${monster.armorClass.value}${monster.armorClass.source ? ` (${monster.armorClass.source})` : ""}`}
+                        />
                         <Stat label="Hit Points" value={formatHitPoints(monster)} />
                         <Stat label="Speed" value={formatSpeed(monster) || "—"} />
                     </StatRow>
@@ -190,7 +203,11 @@ export function MonsterDetail({ monster }: MonsterDetailProps) {
                     {defenses.length > 0 && (
                         <div className="mt-1 space-y-1.5">
                             {defenses.map((entry) => (
-                                <Stat key={entry.label} label={entry.label} value={entry.value ?? "—"} />
+                                <Stat
+                                    key={entry.label}
+                                    label={entry.label}
+                                    value={entry.value ?? "—"}
+                                />
                             ))}
                         </div>
                     )}
@@ -272,7 +289,10 @@ export function MonsterDetail({ monster }: MonsterDetailProps) {
                 {monster.legendaryActions && monster.legendaryActions.length > 0 && (
                     <>
                         <Divider />
-                        <ActionSection title="Legendary Actions" actions={monster.legendaryActions} />
+                        <ActionSection
+                            title="Legendary Actions"
+                            actions={monster.legendaryActions}
+                        />
                     </>
                 )}
 
@@ -296,24 +316,29 @@ interface ActionSectionProps {
 
 const ActionSection = ({ title, actions }: ActionSectionProps) => (
     <div className="space-y-3">
-        <SecondaryText className="font-semibold block text-sm sm:text-base">
-            {title}
-        </SecondaryText>
+        <SecondaryText className="font-semibold block text-sm sm:text-base">{title}</SecondaryText>
         <div className="space-y-3">
             {actions.map((action) => (
                 <Fragment key={action.name}>
                     <div className="space-y-1">
                         <div className="flex flex-wrap gap-2 items-center">
-                            <span className="text-sm font-semibold break-words">
-                                {action.name}
-                            </span>
+                            <span className="text-sm font-semibold break-words">{action.name}</span>
                             {action.actionType && (
-                                <Chip size="sm" variant="bordered" classNames={{ base: "min-h-[26px]" }}>
+                                <Chip
+                                    size="sm"
+                                    variant="bordered"
+                                    classNames={{ base: "min-h-[26px]" }}
+                                >
                                     {action.actionType}
                                 </Chip>
                             )}
                             {action.recharge && (
-                                <Chip size="sm" color="warning" variant="flat" classNames={{ base: "min-h-[26px]" }}>
+                                <Chip
+                                    size="sm"
+                                    color="warning"
+                                    variant="flat"
+                                    classNames={{ base: "min-h-[26px]" }}
+                                >
                                     Recharge {action.recharge}
                                 </Chip>
                             )}
