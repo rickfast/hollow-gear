@@ -40,6 +40,7 @@ export interface Class {
     subclasses: Subclass[];
     startingEquipment: StartingEquipment;
     configurableFeatures: ConfigurableFeature[];
+    levelProgression?: ClassLevelProgression[]; // Detailed 1-20 progression
 }
 
 export type ResourceType =
@@ -88,6 +89,37 @@ export interface Subclass {
 export interface ClassFeature extends Feature {
     level: number;
     damage?: DamageInfo; // for features that deal damage
+}
+
+// ============================================================================
+// LEVEL PROGRESSION TYPES
+// ============================================================================
+
+export interface ClassLevelProgression {
+    level: number;
+    proficiencyBonus: number;
+    featuresGranted: string[]; // names of features gained at this level
+    abilityScoreImprovement?: boolean; // ASI/Feat opportunity
+    // Spellcasting slots by level (for casters) - undefined if not applicable
+    spellSlots?: {
+        1?: number;
+        2?: number;
+        3?: number;
+        4?: number;
+        5?: number;
+        6?: number;
+        7?: number;
+        8?: number;
+        9?: number;
+    };
+    // Psionic / custom resource scaling
+    aetherFluxPointsFormula?: string; // e.g., "level + abilityMod"
+    resonanceChargesFormula?: string; // e.g., "level + Cha mod"
+    adrenalSurges?: number; // Tweaker surges per long rest
+    droneCapacity?: number; // Artifex active drones capacity
+    repairPulseDie?: string; // Artifex repair pulse die at this level
+    focusLimit?: number; // Mindweaver maximum concurrent maintained effects
+    notes?: string; // any clarifying note
 }
 
 // ============================================================================
