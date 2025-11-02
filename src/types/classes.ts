@@ -89,6 +89,8 @@ export interface Subclass {
 export interface ClassFeature extends Feature {
     level: number;
     damage?: DamageInfo; // for features that deal damage
+    origin?: "class" | "subclass" | "progression" | "species" | "other"; // provenance for UI/filters
+    ephemeral?: boolean; // true if generated from progression featuresGranted without full definition
 }
 
 // ============================================================================

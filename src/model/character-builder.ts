@@ -285,6 +285,54 @@ export class CharacterBuilder {
                 skills: [],
             };
         }
+
+        // Initialize features array
+        const grantedFeatures: import("@/types").ClassFeature[] = [];
+        // Base class level 1 features
+        grantedFeatures.push(
+            ...classData.features
+                .filter((f) => f.level === 1)
+                .map((f) => ({ ...f, origin: "class" as const }))
+        );
+        // Subclass features at level 1 (only for classes whose subclass chosen at 1)
+        if (this.classConfiguration?.subclass) {
+            const subclass = classData.subclasses.find(
+                (s) => s.type === this.classConfiguration!.subclass
+            );
+            if (subclass) {
+                grantedFeatures.push(
+                    ...subclass.features
+                        .filter((f) => f.level === 1)
+                        .map((f) => ({ ...f, origin: "subclass" as const }))
+                );
+            }
+        }
+        // Progression featuresGranted entries at level 1
+        const progressionRow = classData.levelProgression?.find((p) => p.level === 1);
+        if (progressionRow?.featuresGranted) {
+            for (const featureName of progressionRow.featuresGranted) {
+                // Try to reference existing feature definitions by name & level
+                const matchInClass = classData.features.find(
+                    (f) => f.name === featureName && f.level === 1
+                );
+                if (matchInClass) {
+                    grantedFeatures.push({
+                        ...matchInClass,
+                        origin: matchInClass.origin ?? "class",
+                    });
+                } else {
+                    // Create ephemeral feature entry if not defined yet
+                    grantedFeatures.push({
+                        name: featureName,
+                        level: 1,
+                        description: featureName,
+                        origin: "progression",
+                        ephemeral: true,
+                    });
+                }
+            }
+        }
+        this.character.features = grantedFeatures;
     }
 
     /**
@@ -383,28 +431,31 @@ export class CharacterBuilder {
             maximum: 10,
         };
 
-        // Initialize spell slots for spellcasters
+        // Initialize spell slots using levelProgression table if present
         if (classData.spellcasting) {
+            const progressionRow = classData.levelProgression?.find((p) => p.level === 1);
+            const slots = progressionRow?.spellSlots;
             this.character.spellSlots = {
-                level1: { current: 2, maximum: 2 }, // Level 1 spellcasters get 2 slots
-                level2: { current: 0, maximum: 0 },
-                level3: { current: 0, maximum: 0 },
-                level4: { current: 0, maximum: 0 },
-                level5: { current: 0, maximum: 0 },
-                level6: { current: 0, maximum: 0 },
-                level7: { current: 0, maximum: 0 },
-                level8: { current: 0, maximum: 0 },
-                level9: { current: 0, maximum: 0 },
+                level1: { current: slots?.[1] ?? 0, maximum: slots?.[1] ?? 0 },
+                level2: { current: slots?.[2] ?? 0, maximum: slots?.[2] ?? 0 },
+                level3: { current: slots?.[3] ?? 0, maximum: slots?.[3] ?? 0 },
+                level4: { current: slots?.[4] ?? 0, maximum: slots?.[4] ?? 0 },
+                level5: { current: slots?.[5] ?? 0, maximum: slots?.[5] ?? 0 },
+                level6: { current: slots?.[6] ?? 0, maximum: slots?.[6] ?? 0 },
+                level7: { current: slots?.[7] ?? 0, maximum: slots?.[7] ?? 0 },
+                level8: { current: slots?.[8] ?? 0, maximum: slots?.[8] ?? 0 },
+                level9: { current: slots?.[9] ?? 0, maximum: slots?.[9] ?? 0 },
             };
         }
 
-        // Initialize Aether Flux Points for classes that use them
+        // Initialize Aether Flux Points using formula if progression provides one
         if (classData.primaryResource === "AetherFluxPoints") {
+            const progressionRow = classData.levelProgression?.find((p) => p.level === 1);
             const abilityMod = calculateAbilityModifier(
                 this.character.abilityScores![classData.primaryAbility]
             );
+            // Currently AFP formula standardized as level + abilityMod; retain compatibility
             const maxAFP = this.character.level! + abilityMod;
-
             this.character.aetherFluxPoints = {
                 current: maxAFP,
                 maximum: maxAFP,
@@ -413,13 +464,16 @@ export class CharacterBuilder {
                     longRest: maxAFP,
                 },
             };
+            if (progressionRow?.focusLimit !== undefined) {
+                this.character.focusLimit = progressionRow.focusLimit;
+            }
         }
 
-        // Initialize Resonance Charges for Templars
+        // Initialize Resonance Charges for Templars using formula (level + Cha/Wis? docs say Cha mod for pool, but code used wisdom earlier)
         if (classData.primaryResource === "ResonanceCharges") {
-            const wisMod = calculateAbilityModifier(this.character.abilityScores!.wisdom);
-            const maxRC = this.character.level! + wisMod;
-
+            // Adjust to charisma modifier per docs (Templar primary ability is charisma)
+            const chaMod = calculateAbilityModifier(this.character.abilityScores!.charisma);
+            const maxRC = this.character.level! + chaMod;
             this.character.resonanceCharges = {
                 current: maxRC,
                 maximum: maxRC,

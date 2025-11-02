@@ -321,6 +321,104 @@ export function ClassDetail({ classData }: ClassDetailProps) {
 
                 <Divider />
 
+                {/* Level Progression */}
+                {classData.levelProgression && classData.levelProgression.length > 0 && (
+                    <div className="w-full overflow-x-auto">
+                        <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
+                            Progression (Levels 1–20)
+                        </SecondaryText>
+                        <table className="min-w-full border-collapse text-xs sm:text-sm">
+                            <thead>
+                                <tr className="bg-content2 text-left">
+                                    <th className="p-2 font-semibold sticky left-0 bg-content2">
+                                        Lvl
+                                    </th>
+                                    <th className="p-2 font-semibold">PB</th>
+                                    <th className="p-2 font-semibold">Features / ASI</th>
+                                    <th className="p-2 font-semibold whitespace-nowrap">Slots</th>
+                                    <th className="p-2 font-semibold">Resources</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {classData.levelProgression.map((row) => {
+                                    const slotString = row.spellSlots
+                                        ? Object.entries(row.spellSlots)
+                                              .filter(([, v]) => v && v > 0)
+                                              .map(([lvl, ct]) => `${lvl}:${ct}`)
+                                              .join(" ")
+                                        : "";
+                                    const resourceBits: string[] = [];
+                                    if (row.aetherFluxPointsFormula)
+                                        resourceBits.push(`AFP=${row.aetherFluxPointsFormula}`);
+                                    if (row.resonanceChargesFormula)
+                                        resourceBits.push(`RC=${row.resonanceChargesFormula}`);
+                                    if (row.adrenalSurges !== undefined)
+                                        resourceBits.push(`Surges=${row.adrenalSurges}`);
+                                    if (row.droneCapacity !== undefined)
+                                        resourceBits.push(`Drones=${row.droneCapacity}`);
+                                    if (row.repairPulseDie)
+                                        resourceBits.push(`Repair=${row.repairPulseDie}`);
+                                    if (row.focusLimit !== undefined)
+                                        resourceBits.push(`Focus=${row.focusLimit}`);
+                                    if (row.notes) resourceBits.push(row.notes);
+                                    const features = [...row.featuresGranted];
+                                    if (row.abilityScoreImprovement) features.push("ASI/Feat");
+                                    return (
+                                        <tr
+                                            key={row.level}
+                                            className="even:bg-content1 hover:bg-content2/60"
+                                        >
+                                            <td className="p-2 font-medium sticky left-0 bg-background">
+                                                {row.level}
+                                            </td>
+                                            <td className="p-2">+{row.proficiencyBonus}</td>
+                                            <td className="p-2 align-top">
+                                                {features.length > 0 ? (
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {features.map((f, i) => (
+                                                            <span
+                                                                key={i}
+                                                                className="px-1.5 py-0.5 rounded bg-content3 text-foreground-600"
+                                                            >
+                                                                {f}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-foreground-500">—</span>
+                                                )}
+                                            </td>
+                                            <td className="p-2 whitespace-nowrap">
+                                                {slotString || (
+                                                    <span className="text-foreground-500">—</span>
+                                                )}
+                                            </td>
+                                            <td className="p-2">
+                                                {resourceBits.length > 0 ? (
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {resourceBits.map((r, i) => (
+                                                            <span
+                                                                key={i}
+                                                                className="px-1.5 py-0.5 rounded bg-content3 text-foreground-600"
+                                                            >
+                                                                {r}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-foreground-500">—</span>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+
+                {classData.levelProgression && classData.levelProgression.length > 0 && <Divider />}
+
                 {/* Starting Equipment */}
                 <div>
                     <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">

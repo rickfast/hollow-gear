@@ -3,7 +3,7 @@
 // ============================================================================
 
 import type { AbilityScores } from "./abilities";
-import type { CharacterClass, ClassType, SubclassType } from "./classes";
+import type { CharacterClass, ClassFeature, ClassType, SubclassType } from "./classes";
 import type { Condition } from "./conditions";
 import type { Currency } from "./currency";
 import type { Drone } from "./drones";
@@ -44,6 +44,8 @@ export interface Character {
     aetherFluxPoints?: AetherFluxPoints; // For Mindweaver/Arcanist
     resonanceCharges?: ResonanceCharges; // For Templar
     mindcraftPowers: string[];
+    // Psionic Focus maintenance limit (Mindweaver progression)
+    focusLimit?: number;
 
     // Drones (Artifex only)
     drones?: Drone[]; // All drones the Artifex has built
@@ -72,6 +74,8 @@ export interface Character {
 
     // Class Configuration
     classConfigurations?: ClassConfiguration[]; // Track choices made at each level
+    // Granted features (species + class + subclass + progression). Future: feats.
+    features?: ClassFeature[];
 }
 
 // ============================================================================

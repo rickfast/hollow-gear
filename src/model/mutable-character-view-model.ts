@@ -651,9 +651,76 @@ export class MutableCharacterViewModel extends CharacterViewModel {
             //     ...(this._mutableCharacter.classConfigurations || []),
             //     options.classConfiguration
             // ].filter(Boolean)
+            features: this._collectFeaturesForLevel(
+                newLevel,
+                options.subclass ?? primaryClass.subclass
+            ),
         };
 
+        // Apply focusLimit progression (Mindweaver) if defined
+        const progressionRow = classData.levelProgression?.find((p) => p.level === newLevel);
+        if (progressionRow?.focusLimit !== undefined) {
+            this._mutableCharacter.focusLimit = progressionRow.focusLimit;
+        }
+
         return this.toCharacter();
+    }
+
+    /**
+     * Collect cumulative features up to a given level, including class, subclass, and granted progression names.
+     */
+    private _collectFeaturesForLevel(level: number, subclass?: SubclassType) {
+        const primaryClass = this._mutableCharacter.classes[0];
+        if (!primaryClass) return this._mutableCharacter.features || [];
+        const classData = CLASSES.find((c) => c.type === primaryClass.class);
+        if (!classData) return this._mutableCharacter.features || [];
+
+        const all: import("@/types").ClassFeature[] = [];
+        // Class features up to level
+        all.push(
+            ...classData.features
+                .filter((f) => f.level <= level)
+                .map((f) => ({ ...f, origin: f.origin ?? "class" }))
+        );
+        // Subclass features if subclass chosen and level threshold met
+        if (subclass) {
+            const subclassData = classData.subclasses.find((s) => s.type === subclass);
+            if (subclassData) {
+                all.push(
+                    ...subclassData.features
+                        .filter((f) => f.level <= level)
+                        .map((f) => ({ ...f, origin: f.origin ?? "subclass" }))
+                );
+            }
+        }
+        // Progression featuresGranted creation (avoid duplicates by name+level)
+        const existingKey = new Set(all.map((f) => `${f.name}|${f.level}`));
+        for (const row of classData.levelProgression || []) {
+            if (row.level <= level && row.featuresGranted) {
+                for (const featureName of row.featuresGranted) {
+                    const key = `${featureName}|${row.level}`;
+                    if (!existingKey.has(key)) {
+                        // Attempt to match existing feature definition by name and level
+                        const match = all.find(
+                            (f) => f.name === featureName && f.level === row.level
+                        );
+                        if (!match) {
+                            all.push({
+                                name: featureName,
+                                level: row.level,
+                                description: featureName,
+                                origin: "progression",
+                                ephemeral: true,
+                            });
+                            existingKey.add(key);
+                        }
+                    }
+                }
+            }
+        }
+        // Sort deterministically by level then name
+        all.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
+        return all;
     }
 
     /**
@@ -710,35 +777,22 @@ export class MutableCharacterViewModel extends CharacterViewModel {
      * @returns Updated spell slots or undefined
      */
     private _updateSpellSlotsForLevel(level: number): SpellSlots | undefined {
-        if (!this._mutableCharacter.spellSlots) {
-            return undefined;
-        }
-
-        // Spell slot progression table (simplified - would need full table for production)
-        // This is a basic implementation - full implementation would reference spell slot tables
-        const spellSlotsByLevel: Record<number, Partial<Record<keyof SpellSlots, number>>> = {
-            1: { level1: 2 },
-            2: { level1: 3 },
-            3: { level1: 4, level2: 2 },
-            4: { level1: 4, level2: 3 },
-            5: { level1: 4, level2: 3, level3: 2 },
-            // ... would continue for all levels
+        if (!this._mutableCharacter.spellSlots) return undefined;
+        const primaryClass = this._mutableCharacter.classes[0];
+        if (!primaryClass) return undefined;
+        const classData = CLASSES.find((c) => c.type === primaryClass.class);
+        if (!classData) return undefined;
+        const progressionRow = classData.levelProgression?.find((p) => p.level === level);
+        if (!progressionRow?.spellSlots) return this._mutableCharacter.spellSlots;
+        const slots = progressionRow.spellSlots;
+        const updated: SpellSlots = { ...this._mutableCharacter.spellSlots };
+        const apply = (lvl: number) => {
+            const key = `level${lvl}` as keyof SpellSlots;
+            const max = slots[lvl as keyof typeof slots] ?? 0;
+            updated[key] = { current: max, maximum: max };
         };
-
-        const newSlots = spellSlotsByLevel[level] || {};
-        const updatedSpellSlots = { ...this._mutableCharacter.spellSlots };
-
-        for (const [slotLevel, maxSlots] of Object.entries(newSlots)) {
-            const key = slotLevel as keyof SpellSlots;
-            if (maxSlots !== undefined) {
-                updatedSpellSlots[key] = {
-                    current: maxSlots,
-                    maximum: maxSlots,
-                };
-            }
-        }
-
-        return updatedSpellSlots;
+        for (let i = 1; i <= 9; i++) apply(i);
+        return updated;
     }
 
     /**
@@ -747,17 +801,15 @@ export class MutableCharacterViewModel extends CharacterViewModel {
      * @returns AFP maximum
      */
     private _calculateAFPMaximum(level: number): number {
-        // AFP = Level + Ability Modifier (INT or WIS depending on class)
         const primaryClass = this._mutableCharacter.classes[0];
         if (!primaryClass) return 0;
-
         const classData = CLASSES.find((c) => c.type === primaryClass.class);
-        const abilityMod = classData
-            ? calculateAbilityModifier(
-                  this._mutableCharacter.abilityScores[classData.primaryAbility]
-              )
-            : 0;
-
+        if (!classData) return 0;
+        const row = classData.levelProgression?.find((p) => p.level === level);
+        // For now formula standardized; could parse row.aetherFluxPointsFormula in future
+        const abilityMod = calculateAbilityModifier(
+            this._mutableCharacter.abilityScores[classData.primaryAbility]
+        );
         return level + abilityMod;
     }
 
@@ -767,9 +819,9 @@ export class MutableCharacterViewModel extends CharacterViewModel {
      * @returns RC maximum
      */
     private _calculateRCMaximum(level: number): number {
-        // RC = Templar Level + Wisdom modifier
-        const wisMod = calculateAbilityModifier(this._mutableCharacter.abilityScores.wisdom);
-        return level + wisMod;
+        // RC = Level + Charisma modifier (updated to match docs)
+        const chaMod = calculateAbilityModifier(this._mutableCharacter.abilityScores.charisma);
+        return level + chaMod;
     }
 
     // ========================================================================

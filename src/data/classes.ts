@@ -5,40 +5,70 @@ import type { Class, ClassFeature } from "../types";
 // ============================================================================
 
 const SUBCLASS_FEATURES: Record<string, ClassFeature[]> = {
-    // Arcanist Subclasses
+    // Arcanist Subclasses (features at 3 / 6 / 10 / 14 / 18)
     Aethermancer: [
         {
             name: "Spell Slot Conversion",
-            level: 1,
-            description: "Convert spell slots into Aether Flux Points (AFP).",
+            level: 3,
+            description: "Trade a spell slot for AFP equal to slot level (once per short rest).",
         },
         {
             name: "Psionic Discipline",
-            level: 1,
-            description: "Learn 1 psionic Discipline.",
+            level: 3,
+            description: "Learn 1 psionic discipline (power).",
         },
         {
             name: "Resonant Pulse",
             level: 6,
-            description: "Gain Resonant Pulse as a bonus action once per short rest.",
+            description: "Bonus action: 10 ft psychic pulse (2d6 + Int) PB/day.",
             usesPerRest: { amount: 1, restType: "short" },
+        },
+        {
+            name: "Synergized Overchannel",
+            level: 10,
+            description: "Spend AFP to add Int modifier to spell damage (1/turn).",
+        },
+        {
+            name: "Mind-Arc Relay",
+            level: 14,
+            description: "Maintain a spell and a psionic power concentration simultaneously.",
+        },
+        {
+            name: "Psionic Convergence",
+            level: 18,
+            description: "Once per long rest cast a spell and manifest a power in the same action.",
         },
     ],
     Gearwright: [
         {
             name: "Aether Familiar",
-            level: 1,
-            description: "Build a mechanical companion (HP = 5 × your proficiency bonus).",
+            level: 3,
+            description: "Mechanical companion (HP = 5 × PB, obeys commands).",
         },
         {
             name: "Device Infusion",
-            level: 1,
-            description: "Infuse devices with low-level spell effects.",
+            level: 3,
+            description: "Infuse a device to reproduce a 1st‑level utility spell (ritual capable).",
         },
         {
             name: "Construct Creation",
+            level: 6,
+            description: "Action: create temporary CR 1/2 construct (Int mod / long rest).",
+        },
+        {
+            name: "Integrated Armor Plating",
             level: 10,
-            description: "Create temporary constructs as action (CR ½ or lower).",
+            description: "+1 AC to familiar; upgrade its damage die.",
+        },
+        {
+            name: "Autonomous Routine",
+            level: 14,
+            description: "Familiar can take the Help action as a bonus action.",
+        },
+        {
+            name: "Mass Fabrication",
+            level: 18,
+            description: "Create two temporary infused devices at once.",
         },
     ],
 
@@ -46,36 +76,62 @@ const SUBCLASS_FEATURES: Record<string, ClassFeature[]> = {
     "Relic Knight": [
         {
             name: "Aura of Focus",
-            level: 1,
-            description: "Allies in 10 ft gain +1 to saving throws vs psionic effects.",
+            level: 3,
+            description: "Allies within 10 ft gain +1 to saves vs psionic effects.",
         },
         {
             name: "Channel Healing",
-            level: 1,
-            description: "Can channel healing energy through armor or shield.",
+            level: 3,
+            description: "Channel healing energy through armor or shield (1d6 + Cha).",
         },
         {
             name: "Faith Barrier",
-            level: 7,
-            description: "Project a Faith Barrier once per long rest (temporary HP = 2 × level).",
+            level: 6,
+            description: "Project barrier: temp HP = 2 × level (1/long rest).",
             usesPerRest: { amount: 1, restType: "long" },
+        },
+        {
+            name: "Relic Empowerment",
+            level: 10,
+            description: "Add Cha mod to ally saving throws while in aura.",
+        },
+        {
+            name: "Resonant Beacon",
+            level: 14,
+            description: "Bonus action reposition relic aura 30 ft.",
+        },
+        {
+            name: "Guardian Convergence",
+            level: 18,
+            description: "Aura grants resistance to elemental damage.",
         },
     ],
     "Iron Saint": [
-        {
-            name: "Runed Armor",
-            level: 1,
-            description: "Your armor gains +1 AC and glows with runes of faith.",
-        },
+        { name: "Runed Armor", level: 3, description: "+1 AC runed sanctified armor." },
         {
             name: "Divine Advantage",
-            level: 1,
-            description: "Spend 1 Charge to gain advantage on a saving throw.",
+            level: 3,
+            description: "Spend 1 Resonance Charge to gain advantage on a saving throw.",
         },
         {
             name: "Psychic Immunity",
+            level: 6,
+            description: "1 minute immunity to fear & psychic (1/long rest).",
+        },
+        {
+            name: "Sanctified Strikes",
             level: 10,
-            description: "Become immune to fear and psychic damage for 1 minute.",
+            description: "+1d4 radiant damage to weapon hits.",
+        },
+        {
+            name: "Iron Resolve",
+            level: 14,
+            description: "Reduce incoming damage by Cha mod while RC ≥ 1.",
+        },
+        {
+            name: "Saint Ascendant",
+            level: 18,
+            description: "Advantage on all saves while wearing armor.",
         },
     ],
 
@@ -83,36 +139,64 @@ const SUBCLASS_FEATURES: Record<string, ClassFeature[]> = {
     Boilerheart: [
         {
             name: "Bloodied Fury",
-            level: 1,
-            description: "When reduced to half HP, gain +1 attack each turn.",
+            level: 3,
+            description: "Below half HP: gain +1 extra attack (once/turn).",
         },
         {
             name: "Explosion Death Throes",
-            level: 1,
-            description: "If reduced to 0 HP, emit 10-ft burst (2d6 fire).",
+            level: 3,
+            description: "At 0 HP emit 10 ft burst (2d6 fire).",
+        },
+        { name: "Heat Immunity", level: 3, description: "Immune to heat‑caused exhaustion." },
+        {
+            name: "Furnace Core",
+            level: 6,
+            description: "+1 fire damage die once per turn while surged.",
         },
         {
-            name: "Heat Immunity",
-            level: 1,
-            description: "Immune to exhaustion effects caused by heat.",
+            name: "Volcanic Overpressure",
+            level: 10,
+            description: "Add fire damage when Surge starts.",
+        },
+        {
+            name: "Molten Recovery",
+            level: 14,
+            description: "Heal 2d6 when ending Surge at ≤ half HP.",
+        },
+        {
+            name: "Cataclysm Vent",
+            level: 18,
+            description: "20 ft explosion 4d10 fire (1/long rest).",
+            usesPerRest: { amount: 1, restType: "long" },
         },
     ],
     Neurospike: [
-        {
-            name: "CON to Attack",
-            level: 1,
-            description: "Add CON to attack rolls for unarmed strikes.",
-        },
+        { name: "CON to Attack", level: 3, description: "Add CON mod to unarmed attack rolls." },
         {
             name: "Defensive Reflex",
-            level: 1,
-            description: "Reaction: Gain +2 AC when attacked once per round.",
+            level: 3,
+            description: "Reaction: +2 AC vs one attack (1/round).",
         },
         {
             name: "Hyperfocus",
-            level: 7,
-            description: "Take two bonus actions per turn for 3 rounds (1/long rest).",
+            level: 6,
+            description: "Two bonus actions per turn for 3 rounds (1/long).",
             usesPerRest: { amount: 1, restType: "long" },
+        },
+        {
+            name: "Neural Precision",
+            level: 10,
+            description: "+2 initiative; improved reaction attack.",
+        },
+        {
+            name: "Cerebral Shield",
+            level: 14,
+            description: "Add CON mod to AC vs one attack each round.",
+        },
+        {
+            name: "Synaptic Cascade",
+            level: 18,
+            description: "Treat natural 1 on d20 as 2 while surged.",
         },
     ],
 
@@ -120,149 +204,236 @@ const SUBCLASS_FEATURES: Record<string, ClassFeature[]> = {
     Circuitbreaker: [
         {
             name: "Disable Device",
-            level: 1,
-            description: "Once per turn, disable a mod or device within 5 ft as a bonus action.",
+            level: 3,
+            description: "Bonus action disable a mod/device within 5 ft (1/turn).",
         },
         {
             name: "Construct Bane",
-            level: 1,
-            description: "Critical hits against constructs deal double damage.",
+            level: 3,
+            description: "Critical hits vs constructs deal double damage.",
         },
         {
             name: "Trap Expertise",
-            level: 9,
-            description: "Gain advantage on Dex saves vs traps and Aether pulses.",
+            level: 6,
+            description: "Advantage on DEX saves vs traps & Aether pulses.",
+        },
+        { name: "Overload Spike", level: 10, description: "Once/short: disable device at 30 ft." },
+        {
+            name: "Adaptive Scrambler",
+            level: 14,
+            description: "Resist lightning & thunder; ignore construct resist on Sneak dmg.",
+        },
+        {
+            name: "System Collapse",
+            level: 18,
+            description: "Action: 20 ft device shutdown field (1/day).",
         },
     ],
     "Mirage Operative": [
         {
             name: "Blur",
-            level: 1,
-            description: "Cast Blur once per long rest using goggles or focus.",
+            level: 3,
+            description: "Cast Blur (1/long rest) via goggles or focus.",
             usesPerRest: { amount: 1, restType: "long" },
         },
         {
             name: "Deception Master",
-            level: 1,
-            description: "Gain proficiency in Deception and Sleight of Hand.",
+            level: 3,
+            description: "Gain Deception & Sleight of Hand proficiency.",
+        },
+        { name: "Mirror Image", level: 6, description: "Cast Mirror Image (1/long rest)." },
+        {
+            name: "Hallucinatory Field",
+            level: 10,
+            description: "Create 10 ft illusory cover zone.",
         },
         {
-            name: "Mirror Image",
-            level: 7,
-            description: "Create illusory duplicates for 1 minute (mirror image effect).",
+            name: "Veiled Persona",
+            level: 14,
+            description: "Advantage vs Insight checks against you.",
+        },
+        {
+            name: "Perfect Mirage",
+            level: 18,
+            description: "Remain invisible while attacking (1/long rest).",
+            usesPerRest: { amount: 1, restType: "long" },
         },
     ],
 
     // Vanguard Subclasses
     "Bulwark Sentinel": [
-        {
-            name: "Guardian Aura",
-            level: 1,
-            description: "Allies within 5 ft gain +1 AC.",
-        },
+        { name: "Guardian Aura", level: 3, description: "+1 AC to allies within 5 ft." },
         {
             name: "Protective Reaction",
-            level: 1,
-            description: "Reaction: Impose disadvantage on attack against an ally (1/round).",
+            level: 3,
+            description: "Reaction: impose disadvantage on attack vs ally.",
+        },
+        { name: "Expanded Guard", level: 6, description: "Aura radius increases to 10 ft." },
+        {
+            name: "Intercept Momentum",
+            level: 10,
+            description: "Reduce ally damage by PB × 2 (reaction).",
         },
         {
-            name: "Expanded Guard",
-            level: 10,
-            description: "Can guard 10-ft radius instead of 5 ft.",
+            name: "Shield Web",
+            level: 14,
+            description: "Extend aura to a visible ally within 30 ft.",
         },
+        { name: "Bastion Pivot", level: 18, description: "Bonus action move aura 15 ft." },
     ],
     Shockbreaker: [
         {
             name: "Lightning Strikes",
-            level: 1,
-            description: "Melee attacks deal +1d4 lightning damage.",
+            level: 3,
+            description: "+1d4 lightning damage on melee attacks.",
         },
         {
             name: "Static Burst",
-            level: 1,
-            description: "Once per long rest, unleash Static Burst (15-ft cone, 2d8 lightning).",
+            level: 3,
+            description: "15 ft cone 2d8 lightning (1/long rest).",
             usesPerRest: { amount: 1, restType: "long" },
         },
         {
             name: "Storm Resistance",
-            level: 1,
-            description: "Resistant to lightning and thunder damage.",
+            level: 6,
+            description: "Resistance to lightning & thunder damage.",
+        },
+        {
+            name: "Charged Riposte",
+            level: 10,
+            description: "Reaction: deal lightning damage = PB.",
+        },
+        { name: "Supercharge", level: 14, description: "Steam Charge grants +10 ft movement." },
+        {
+            name: "Tempest Core",
+            level: 18,
+            description: "Immunity to lightning for 1 min (1/day).",
+            usesPerRest: { amount: 1, restType: "long" },
         },
     ],
 
     // Artifex Subclasses
     Fieldwright: [
-        {
-            name: "Quick Repair",
-            level: 1,
-            description: "Repair ally's mod as bonus action.",
-        },
+        { name: "Quick Repair", level: 3, description: "Repair a mod as a bonus action." },
         {
             name: "Damage Boost",
-            level: 1,
-            description: "Ally's next attack deals +1d6 damage if assisted.",
+            level: 3,
+            description: "Ally's next attack +1d6 damage if assisted.",
+        },
+        {
+            name: "Tactical Patch",
+            level: 6,
+            description: "Bonus action repair also grants +PB temp HP.",
         },
         {
             name: "Deploy Turrets",
             level: 10,
-            description: "Deploy temporary drone turrets (AC 15, HP 15, dmg 1d10).",
+            description: "Deploy temporary drone turret (AC 15 HP 15 1d10).",
+        },
+        { name: "Network Relay", level: 14, description: "Drones share senses within 60 ft." },
+        {
+            name: "Mass Patch",
+            level: 18,
+            description: "Affect two mods with a single repair action.",
         },
     ],
     Aetherforger: [
         {
             name: "Weapon Imbue",
-            level: 1,
-            description: "Spend 1 ⚙️ worth of Aether Dust to imbue weapon with energy (1 minute).",
+            level: 3,
+            description: "Imbue weapon (1 minute) spending Aether Dust.",
         },
+        { name: "Create Aether Cores", level: 3, description: "Create 3 Aether Cores per day." },
         {
-            name: "Create Aether Cores",
-            level: 1,
-            description: "Create Aether Cores to power other devices (3 uses/day).",
+            name: "Feedback Shield",
+            level: 6,
+            description: "Reduce self‑inflicted arcane backlash damage.",
         },
         {
             name: "Arcane Feedback Immunity",
-            level: 1,
-            description: "Immune to arcane feedback.",
+            level: 10,
+            description: "Immune to arcane feedback; +1 core use/day.",
+        },
+        { name: "Persistent Imbue", level: 14, description: "Weapon imbue lasts 10 minutes." },
+        {
+            name: "Core Overdrive",
+            level: 18,
+            description: "Once/day double core effects for 1 minute.",
         },
     ],
 
-    // Mindweaver Subclasses
+    // Mindweaver Paths (features at 1 / 6 / 10 / 14 / 18)
     "Path of the Echo": [
         {
-            name: "Echo Powers",
+            name: "Resonant Pulse",
             level: 1,
-            description: "Gain Resonant Pulse and Echo Step.",
+            description: "Pulse psychic energy (scales with level).",
+        },
+        { name: "Echo Step", level: 1, description: "Short teleport / reposition ability." },
+        {
+            name: "Resonant Damage Aura",
+            level: 6,
+            description: "Psychic splash damage = PB to nearby enemies.",
         },
         {
-            name: "Resonant Damage",
-            level: 1,
-            description:
-                "When you manifest a power, nearby enemies take psychic damage equal to your mod.",
+            name: "Frequency Shift",
+            level: 10,
+            description: "Change a manifested power's damage type.",
+        },
+        { name: "Echo Overlay", level: 14, description: "Advantage on first attack each round." },
+        {
+            name: "Harmonic Unity",
+            level: 18,
+            description: "Chain a 1 AFP power to second target (1/turn).",
         },
     ],
     "Path of Flux": [
+        { name: "Entropy Lash", level: 1, description: "Ranged degrading psionic lash power." },
         {
-            name: "Flux Powers",
+            name: "Aether Drain",
             level: 1,
-            description: "Learn Entropy Lash and Aether Drain.",
+            description: "Drain Aether from target to self (temp AFP).",
         },
         {
             name: "AFP Recovery",
-            level: 1,
-            description: "Recover 1 AFP when damaging psionic or magical foes.",
+            level: 6,
+            description: "Recover 1 AFP when damaging psionic/magical foe (1/turn).",
+        },
+        {
+            name: "Entropic Surge",
+            level: 10,
+            description: "+1 damage die on a power once per turn.",
+        },
+        { name: "Flux Barrier", level: 14, description: "Reaction: reduce damage by AFP spent." },
+        {
+            name: "Void Well",
+            level: 18,
+            description: "Create 10 ft difficult terrain entropic zone.",
         },
     ],
     "Path of Eidolon": [
         {
-            name: "Eidolon Powers",
+            name: "Spectral Hand",
             level: 1,
-            description: "Gain Spectral Hand and Soul Anchor.",
+            description: "Manifest spectral hand for manipulations.",
         },
+        { name: "Soul Anchor", level: 1, description: "Anchor spirit to resist forced movement." },
         {
             name: "Astral Duplicate",
-            level: 1,
-            description: "Project an astral duplicate once per short rest for 1 minute.",
+            level: 6,
+            description: "Project duplicate (1/short rest, 1 min).",
             usesPerRest: { amount: 1, restType: "short" },
+        },
+        { name: "Soul Tether", level: 10, description: "Share damage between you and duplicate." },
+        {
+            name: "Eidolic Fusion",
+            level: 14,
+            description: "You and duplicate share actions more fluidly.",
+        },
+        {
+            name: "Permanent Anchor",
+            level: 18,
+            description: "Maintain duplicate indefinitely while stationary.",
         },
     ],
 } as const;
