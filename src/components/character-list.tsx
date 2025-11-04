@@ -1,11 +1,12 @@
 import { useCharacterViewModelContext } from "@/model/character-view-model-context";
-import { Avatar, Card, CardBody, Chip } from "@heroui/react";
+import { Avatar, Button, Card, CardBody, CardFooter, Chip } from "@heroui/react";
 
 interface CharacterListProps {
     onSelectCharacter?: (characterId: string) => void;
+    onEditCharacter?: (characterId: string) => void;
 }
 
-export function CharacterList({ onSelectCharacter }: CharacterListProps) {
+export function CharacterList({ onSelectCharacter, onEditCharacter }: CharacterListProps) {
     const { getAllCharacters } = useCharacterViewModelContext();
     const characters = getAllCharacters();
 
@@ -19,12 +20,11 @@ export function CharacterList({ onSelectCharacter }: CharacterListProps) {
         >
             {characters.map(({ summary }) => {
                 return (
-                    <Card
-                        key={summary.id}
-                        isPressable
-                        onPress={() => onSelectCharacter?.(summary.id)}
-                    >
-                        <CardBody>
+                    <Card key={summary.id}>
+                        <CardBody
+                            className="cursor-pointer"
+                            onClick={() => onSelectCharacter?.(summary.id)}
+                        >
                             <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
                                 <Avatar
                                     src={summary.avatarUrl}
@@ -87,6 +87,34 @@ export function CharacterList({ onSelectCharacter }: CharacterListProps) {
                                 </div>
                             </div>
                         </CardBody>
+                        <CardFooter style={{ paddingTop: 0 }}>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    gap: "0.5rem",
+                                    width: "100%",
+                                }}
+                            >
+                                <Button
+                                    color="primary"
+                                    variant="flat"
+                                    size="sm"
+                                    style={{ flex: 1 }}
+                                    onPress={() => onEditCharacter?.(summary.id)}
+                                >
+                                    Edit
+                                </Button>
+                                <Button
+                                    color="default"
+                                    variant="flat"
+                                    size="sm"
+                                    style={{ flex: 1 }}
+                                    onPress={() => onSelectCharacter?.(summary.id)}
+                                >
+                                    View
+                                </Button>
+                            </div>
+                        </CardFooter>
                     </Card>
                 );
             })}

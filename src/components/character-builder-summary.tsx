@@ -1,13 +1,19 @@
 import { AbilityScores as AbilityScoresComponent } from "@/components/ability-scores";
 import { CLASSES, SPECIES } from "@/data";
-import type { AbilityScores, ClassConfiguration, ClassType, SpeciesType } from "@/types";
+import type {
+    AbilityScores,
+    CharacterClass,
+    ClassConfiguration,
+    ClassType,
+    SpeciesType,
+} from "@/types";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 
 interface CharacterBuilderSummaryProps {
     name: string;
     species: SpeciesType | "";
-    classType: ClassType | "";
-    classConfiguration: Partial<ClassConfiguration>;
+    classes: CharacterClass[];
+    classConfigurations: ClassConfiguration[];
     abilityScores: AbilityScores;
     background: string;
 }
@@ -15,13 +21,13 @@ interface CharacterBuilderSummaryProps {
 export function CharacterBuilderSummary({
     name,
     species,
-    classType,
-    classConfiguration,
+    classes,
+    classConfigurations,
     abilityScores,
     background,
 }: CharacterBuilderSummaryProps) {
     const selectedSpecies = SPECIES.find((s) => s.type === species);
-    const selectedClass = CLASSES.find((c) => c.type === classType);
+    const totalLevel = classes.reduce((sum, c) => sum + c.level, 0);
 
     // Calculate final ability scores with species bonuses
     const finalAbilityScores = { ...abilityScores };
@@ -78,30 +84,51 @@ export function CharacterBuilderSummary({
 
                     <Divider />
 
-                    {/* Class */}
+                    {/* Classes */}
                     <div>
                         <div style={{ fontSize: "0.75rem", opacity: 0.6, marginBottom: "0.25rem" }}>
-                            CLASS
+                            {classes.length > 1 ? "CLASSES" : "CLASS"}
                         </div>
-                        {classType ? (
-                            <div>
-                                <div style={{ fontWeight: 600, marginBottom: "0.25rem" }}>
-                                    {classType} 1
-                                </div>
-                                {classConfiguration.subclass && (
-                                    <div style={{ fontSize: "0.875rem", opacity: 0.8 }}>
-                                        {classConfiguration.subclass}
-                                    </div>
-                                )}
-                                {selectedClass && (
+                        {classes.length > 0 ? (
+                            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                                {classes.map((charClass) => {
+                                    const classData = CLASSES.find(
+                                        (c) => c.type === charClass.class
+                                    );
+                                    return (
+                                        <div key={charClass.class}>
+                                            <div style={{ fontWeight: 600, marginBottom: "0.25rem" }}>
+                                                {charClass.class} {charClass.level}
+                                            </div>
+                                            {charClass.subclass && (
+                                                <div style={{ fontSize: "0.875rem", opacity: 0.8 }}>
+                                                    {charClass.subclass}
+                                                </div>
+                                            )}
+                                            {classData && (
+                                                <div
+                                                    style={{
+                                                        fontSize: "0.875rem",
+                                                        opacity: 0.8,
+                                                        marginTop: "0.25rem",
+                                                    }}
+                                                >
+                                                    Hit Die: {classData.hitDie}
+                                                </div>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                                {totalLevel > 0 && (
                                     <div
                                         style={{
                                             fontSize: "0.875rem",
                                             opacity: 0.8,
                                             marginTop: "0.25rem",
+                                            fontWeight: 600,
                                         }}
                                     >
-                                        Hit Die: {selectedClass.hitDie}
+                                        Total Level: {totalLevel}
                                     </div>
                                 )}
                             </div>
@@ -179,68 +206,82 @@ export function CharacterBuilderSummary({
                     )}
 
                     {/* Spells */}
-                    {classConfiguration.spellsSelected &&
-                        classConfiguration.spellsSelected.length > 0 && (
-                            <>
-                                <Divider />
-                                <div>
-                                    <div
-                                        style={{
-                                            fontSize: "0.75rem",
-                                            opacity: 0.6,
-                                            marginBottom: "0.5rem",
-                                        }}
-                                    >
-                                        SPELLS
-                                    </div>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            flexWrap: "wrap",
-                                            gap: "0.25rem",
-                                        }}
-                                    >
-                                        {classConfiguration.spellsSelected.map((spell) => (
-                                            <Chip key={spell} size="sm" variant="flat">
-                                                {spell}
-                                            </Chip>
-                                        ))}
-                                    </div>
+                    {classConfigurations.some(
+                        (c) => c.spellsSelected && c.spellsSelected.length > 0
+                    ) && (
+                        <>
+                            <Divider />
+                            <div>
+                                <div
+                                    style={{
+                                        fontSize: "0.75rem",
+                                        opacity: 0.6,
+                                        marginBottom: "0.5rem",
+                                    }}
+                                >
+                                    SPELLS
                                 </div>
-                            </>
-                        )}
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        gap: "0.25rem",
+                                    }}
+                                >
+                                    {Array.from(
+                                        new Set(
+                                            classConfigurations.flatMap(
+                                                (c) => c.spellsSelected || []
+                                            )
+                                        )
+                                    ).map((spell) => (
+                                        <Chip key={spell} size="sm" variant="flat">
+                                            {spell}
+                                        </Chip>
+                                    ))}
+                                </div>
+                            </div>
+                        </>
+                    )}
 
                     {/* Proficiencies */}
-                    {classConfiguration.proficienciesSelected &&
-                        classConfiguration.proficienciesSelected.length > 0 && (
-                            <>
-                                <Divider />
-                                <div>
-                                    <div
-                                        style={{
-                                            fontSize: "0.75rem",
-                                            opacity: 0.6,
-                                            marginBottom: "0.5rem",
-                                        }}
-                                    >
-                                        SKILL PROFICIENCIES
-                                    </div>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            flexWrap: "wrap",
-                                            gap: "0.25rem",
-                                        }}
-                                    >
-                                        {classConfiguration.proficienciesSelected.map((prof) => (
-                                            <Chip key={prof} size="sm" variant="flat">
-                                                {prof}
-                                            </Chip>
-                                        ))}
-                                    </div>
+                    {classConfigurations.some(
+                        (c) => c.proficienciesSelected && c.proficienciesSelected.length > 0
+                    ) && (
+                        <>
+                            <Divider />
+                            <div>
+                                <div
+                                    style={{
+                                        fontSize: "0.75rem",
+                                        opacity: 0.6,
+                                        marginBottom: "0.5rem",
+                                    }}
+                                >
+                                    SKILL PROFICIENCIES
                                 </div>
-                            </>
-                        )}
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        gap: "0.25rem",
+                                    }}
+                                >
+                                    {Array.from(
+                                        new Set(
+                                            classConfigurations.flatMap(
+                                                (c) => c.proficienciesSelected || []
+                                            )
+                                        )
+                                    ).map((prof) => (
+                                        <Chip key={prof} size="sm" variant="flat">
+                                            {prof}
+                                        </Chip>
+                                    ))}
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
             </CardBody>
         </Card>

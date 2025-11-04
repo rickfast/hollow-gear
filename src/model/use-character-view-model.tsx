@@ -7,6 +7,7 @@ import { MutableCharacterViewModel } from "./mutable-character-view-model";
 
 /**
  * Initialize characters from localStorage or fall back to PREGENS
+ * Uses getCurrentCharacter() to get the latest version of each character
  */
 function initializeCharacters(storageService: CharacterStorageService): Map<string, Character> {
     try {
@@ -27,8 +28,10 @@ function initializeCharacters(storageService: CharacterStorageService): Map<stri
             return map;
         }, new Map<string, Character>());
 
-        // Save PREGENS to localStorage for future use
-        storageService.saveCharacters(Array.from(pregenMap.values()));
+        // Save PREGENS to localStorage as version 1 for each character
+        Array.from(pregenMap.values()).forEach((char) => {
+            storageService.saveCharacterVersion(char, "Initial creation");
+        });
 
         return pregenMap;
     } catch (error) {
@@ -60,13 +63,17 @@ export function useCharacterViewModel() {
 
     /**
      * Get a single character as a MutableCharacterViewModel
+     * Uses getCurrentCharacter() to ensure we get the latest version
      * @param id - Character ID
      * @returns MutableCharacterViewModel instance
      * @throws Error if character not found
      */
     const getCharacter = (id: string): MutableCharacterViewModel => {
         try {
-            const character = characters.get(id);
+            // Try to get current version from storage first
+            const currentCharacter = storageServiceRef.current.getCurrentCharacter(id);
+            const character = currentCharacter || characters.get(id);
+            
             if (!character) {
                 throw new Error(`Character with id ${id} not found`);
             }
@@ -88,6 +95,7 @@ export function useCharacterViewModel() {
 
     /**
      * Create a new character using CharacterBuilder
+     * Saves as version 1 using versioned storage
      * @param builder - CharacterBuilder instance
      * @returns The new character's ID
      */
@@ -102,8 +110,8 @@ export function useCharacterViewModel() {
                 const newMap = new Map(prev);
                 newMap.set(newCharacter.id, newCharacter);
 
-                // Trigger debounced save
-                storageServiceRef.current.debouncedSave(Array.from(newMap.values()));
+                // Save as version 1 using versioned storage
+                storageServiceRef.current.saveCharacterVersion(newCharacter, "Initial creation");
 
                 return newMap;
             });
@@ -120,19 +128,23 @@ export function useCharacterViewModel() {
 
     /**
      * Update a character using an updater function
+     * Creates a new version using versioned storage
      * @param id - Character ID
      * @param updater - Function that receives MutableCharacterViewModel and returns updated Character
+     * @param description - Optional description of the changes (e.g., "Leveled up to 3")
      */
     const updateCharacter = (
         id: string,
-        updater: (vm: MutableCharacterViewModel) => Character
+        updater: (vm: MutableCharacterViewModel) => Character,
+        description?: string
     ): void => {
         try {
             setIsLoading(true);
             setError(null);
 
             setCharacters((prev) => {
-                const existing = prev.get(id);
+                // Get current version from storage
+                const existing = storageServiceRef.current.getCurrentCharacter(id) || prev.get(id);
                 if (!existing) {
                     throw new Error(`Character with id ${id} not found`);
                 }
@@ -143,8 +155,8 @@ export function useCharacterViewModel() {
                 const newMap = new Map(prev);
                 newMap.set(id, updated);
 
-                // Trigger debounced save
-                storageServiceRef.current.debouncedSave(Array.from(newMap.values()));
+                // Create new version using versioned storage
+                storageServiceRef.current.saveCharacterVersion(updated, description);
 
                 return newMap;
             });
@@ -159,6 +171,7 @@ export function useCharacterViewModel() {
 
     /**
      * Delete a character
+     * Note: This removes all versions of the character from storage
      * @param id - Character ID to delete
      */
     const deleteCharacter = (id: string): void => {
@@ -174,8 +187,8 @@ export function useCharacterViewModel() {
                 const newMap = new Map(prev);
                 newMap.delete(id);
 
-                // Trigger debounced save
-                storageServiceRef.current.debouncedSave(Array.from(newMap.values()));
+                // Save all remaining characters (this will remove the deleted character from storage)
+                storageServiceRef.current.saveCharacters(Array.from(newMap.values()));
 
                 return newMap;
             });
@@ -211,6 +224,7 @@ export function useCharacterViewModel() {
 
     /**
      * Import a character from JSON string
+     * Saves as version 1 using versioned storage
      * @param json - JSON string representation of a character
      * @returns The imported character's ID
      * @throws Error if JSON is invalid or character structure is invalid
@@ -241,8 +255,8 @@ export function useCharacterViewModel() {
                 const newMap = new Map(prev);
                 newMap.set(finalCharacter.id, finalCharacter);
 
-                // Trigger debounced save
-                storageServiceRef.current.debouncedSave(Array.from(newMap.values()));
+                // Save as version 1 using versioned storage
+                storageServiceRef.current.saveCharacterVersion(finalCharacter, "Imported character");
 
                 return newMap;
             });

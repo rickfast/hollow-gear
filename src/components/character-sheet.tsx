@@ -1,6 +1,7 @@
 import { AbilityScores } from "@/components/ability-scores";
 import type { SavingThrow } from "@/model/character-view-model";
 import { useCharacterViewModelContext } from "@/model/character-view-model-context";
+import { CharacterStorageService } from "@/service/character-storage-service";
 import { DroneStorageService } from "@/service/drone-storage-service";
 import type { Drone } from "@/types";
 import {
@@ -27,6 +28,7 @@ import {
 } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { Actions } from "./actions";
 import { Drones } from "./drones";
 import { Features } from "./features";
@@ -37,8 +39,10 @@ import { PointBar } from "./point-bar";
 import { RollButton } from "./roll-button";
 import { Skills } from "./skills";
 import { Spells } from "./spells";
+import { VersionHistory } from "./version-history";
 
 const droneStorageService = new DroneStorageService();
+const characterStorageService = new CharacterStorageService();
 
 interface CharacterSheetProps {
     id: string;
@@ -52,7 +56,8 @@ type SectionKey =
     | "features"
     | "mindcraft"
     | "mods"
-    | "drones";
+    | "drones"
+    | "versions";
 
 export function CharacterSheet({ id }: CharacterSheetProps) {
     const navigate = useNavigate();
@@ -69,6 +74,10 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
 
     const { getCharacter, updateCharacter } = useCharacterViewModelContext();
     const { summary, abilityScores, savingThrows, skills } = getCharacter(id);
+
+    // Version history state
+    const versions = characterStorageService.getCharacterVersions(id);
+    const currentVersion = characterStorageService.getCurrentVersionNumber(id);
 
     const classReferencePath = buildReferencePath(getClassReferenceTarget(summary.class));
     const speciesReferencePath = buildReferencePath(getSpeciesReferenceTarget(summary.species));
@@ -211,6 +220,18 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
         setDeleteConfirmDroneId(null);
     };
 
+    const handleRestoreVersion = (version: number) => {
+        try {
+            characterStorageService.restoreCharacterVersion(id, version);
+            toast.success(`Restored to version ${version}`);
+            // Force a re-render by updating the character
+            window.location.reload();
+        } catch (error) {
+            console.error("Failed to restore version:", error);
+            toast.error("Failed to restore version");
+        }
+    };
+
     // Get drone limit (Artifex can have 1 active drone)
     const droneLimit = 1;
     const currentDroneCount = getCharacter(id).drones.length;
@@ -250,37 +271,74 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
 
                         {/* Character Info */}
                         <div style={{ flex: "1", minWidth: "250px" }}>
-                            <h1 style={{ fontSize: "2rem", fontWeight: 700, margin: 0 }}>
-                                {summary.name}
-                            </h1>
-                            <p style={{ fontSize: "1.125rem", margin: "0.5rem 0", opacity: 0.8 }}>
-                                Level {summary.level}{" "}
-                                <Link
-                                    to={speciesReferencePath}
-                                    className="text-primary hover:underline font-semibold"
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "flex-start",
+                                    gap: "1rem",
+                                    flexWrap: "wrap",
+                                }}
+                            >
+                                <div style={{ flex: 1, minWidth: "200px" }}>
+                                    <h1 style={{ fontSize: "2rem", fontWeight: 700, margin: 0 }}>
+                                        {summary.name}
+                                    </h1>
+                                    <p
+                                        style={{
+                                            fontSize: "1.125rem",
+                                            margin: "0.5rem 0",
+                                            opacity: 0.8,
+                                        }}
+                                    >
+                                        Level {summary.level}{" "}
+                                        <Link
+                                            to={speciesReferencePath}
+                                            className="text-primary hover:underline font-semibold"
+                                        >
+                                            {summary.species}
+                                        </Link>{" "}
+                                        <Link
+                                            to={classReferencePath}
+                                            className="text-primary hover:underline font-semibold"
+                                        >
+                                            {summary.class}
+                                        </Link>
+                                    </p>
+                                    <p style={{ fontSize: "0.875rem", opacity: 0.7 }}>
+                                        <Link
+                                            to={classReferencePath}
+                                            className="text-primary hover:underline font-medium"
+                                        >
+                                            {summary.fullClass}
+                                        </Link>
+                                    </p>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            gap: "0.5rem",
+                                            marginTop: "0.5rem",
+                                            flexWrap: "wrap",
+                                        }}
+                                    >
+                                        {summary.background && (
+                                            <Chip size="sm" variant="flat">
+                                                {summary.background}
+                                            </Chip>
+                                        )}
+                                        <Chip size="sm" variant="flat" color="default">
+                                            v{currentVersion}
+                                        </Chip>
+                                    </div>
+                                </div>
+                                <Button
+                                    color="primary"
+                                    variant="flat"
+                                    onPress={() => navigate(`/characters/${id}/edit`)}
                                 >
-                                    {summary.species}
-                                </Link>{" "}
-                                <Link
-                                    to={classReferencePath}
-                                    className="text-primary hover:underline font-semibold"
-                                >
-                                    {summary.class}
-                                </Link>
-                            </p>
-                            <p style={{ fontSize: "0.875rem", opacity: 0.7 }}>
-                                <Link
-                                    to={classReferencePath}
-                                    className="text-primary hover:underline font-medium"
-                                >
-                                    {summary.fullClass}
-                                </Link>
-                            </p>
-                            {summary.background && (
-                                <Chip size="sm" variant="flat" style={{ marginTop: "0.5rem" }}>
-                                    {summary.background}
-                                </Chip>
-                            )}
+                                    Edit Character
+                                </Button>
+                            </div>
                         </div>
 
                         {/* Combat Stats */}
@@ -408,6 +466,7 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                             {showDronesTab ? <SelectItem key="drones">Drones</SelectItem> : <></>}
                             <SelectItem key="features">Features</SelectItem>
                             <SelectItem key="mindcraft">Mindcraft</SelectItem>
+                            <SelectItem key="versions">Version History</SelectItem>
                         </Select>
                     </>
                 )}
@@ -627,6 +686,16 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                         <Mindcraft powers={getCharacter(id)!.mindcraftPowers} />
                                     </div>
                                 </Tab>
+                                <Tab key="versions" title="Version History">
+                                    <div style={{ padding: "1rem" }}>
+                                        <VersionHistory
+                                            characterId={id}
+                                            versions={versions}
+                                            currentVersion={currentVersion}
+                                            onRestore={handleRestoreVersion}
+                                        />
+                                    </div>
+                                </Tab>
                             </Tabs>
                         </CardBody>
                     </Card>
@@ -703,7 +772,9 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                                 ? "Features + Traits"
                                 : activeSection === "drones"
                                   ? "Drones"
-                                  : activeSection}
+                                  : activeSection === "versions"
+                                    ? "Version History"
+                                    : activeSection}
                         </h3>
                     </ModalHeader>
                     <ModalBody>
@@ -808,6 +879,14 @@ export function CharacterSheet({ id }: CharacterSheetProps) {
                         )}
                         {activeSection === "mindcraft" && (
                             <Mindcraft powers={getCharacter(id)!.mindcraftPowers} />
+                        )}
+                        {activeSection === "versions" && (
+                            <VersionHistory
+                                characterId={id}
+                                versions={versions}
+                                currentVersion={currentVersion}
+                                onRestore={handleRestoreVersion}
+                            />
                         )}
                     </ModalBody>
                 </ModalContent>

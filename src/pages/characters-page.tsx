@@ -8,9 +8,16 @@ export function CharactersPage() {
         navigate(`/characters/${id}`);
     };
 
+    const handleEditCharacter = (id: string) => {
+        navigate(`/characters/${id}/edit`);
+    };
+
     return (
         <div style={{ padding: "2rem", maxWidth: "1400px", margin: "0 auto" }}>
-            <CharacterList onSelectCharacter={handleSelectCharacter} />
+            <CharacterList
+                onSelectCharacter={handleSelectCharacter}
+                onEditCharacter={handleEditCharacter}
+            />
         </div>
     );
 }

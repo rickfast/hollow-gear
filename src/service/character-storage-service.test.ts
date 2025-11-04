@@ -2,6 +2,27 @@ import type { Character } from "@/types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CharacterStorageService, StorageError } from "./character-storage-service";
 
+// Mock localStorage for testing
+const localStorageMock = (() => {
+    let store: Record<string, string> = {};
+
+    return {
+        getItem: (key: string) => store[key] || null,
+        setItem: (key: string, value: string) => {
+            store[key] = value;
+        },
+        removeItem: (key: string) => {
+            delete store[key];
+        },
+        clear: () => {
+            store = {};
+        },
+    };
+})();
+
+// @ts-ignore
+global.localStorage = localStorageMock;
+
 // Mock character data for testing
 const mockCharacter: Character = {
     id: "test-123",
@@ -73,9 +94,11 @@ describe("CharacterStorageService", () => {
             expect(stored).toBeTruthy();
 
             const parsed = JSON.parse(stored!);
-            expect(parsed.version).toBe(1);
+            expect(parsed.version).toBe(2);
             expect(parsed.characters).toHaveLength(1);
-            expect(parsed.characters[0].id).toBe("test-123");
+            expect(parsed.characters[0].characterId).toBe("test-123");
+            expect(parsed.characters[0].currentVersion).toBe(1);
+            expect(parsed.characters[0].versions).toHaveLength(1);
             expect(parsed.lastModified).toBeTruthy();
         });
 
@@ -228,6 +251,184 @@ describe("CharacterStorageService", () => {
 
             // Should not have called saveCharacters because cleanup cleared the timeout
             expect(saveSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("saveCharacterVersion", () => {
+        it("should create initial version for new character", () => {
+            service.saveCharacterVersion(mockCharacter, "Initial creation");
+
+            const versions = service.getCharacterVersions("test-123");
+            expect(versions).toHaveLength(1);
+            expect(versions[0]?.version).toBe(1);
+            expect(versions[0]?.character.id).toBe("test-123");
+            expect(versions[0]?.description).toBe("Initial creation");
+            expect(versions[0]?.timestamp).toBeTruthy();
+        });
+
+        it("should increment version for existing character", () => {
+            service.saveCharacterVersion(mockCharacter, "Initial creation");
+            
+            const updatedChar = { ...mockCharacter, name: "Updated Name" };
+            service.saveCharacterVersion(updatedChar, "Updated name");
+
+            const versions = service.getCharacterVersions("test-123");
+            expect(versions).toHaveLength(2);
+            expect(versions[0]?.version).toBe(1);
+            expect(versions[1]?.version).toBe(2);
+            expect(versions[1]?.character.name).toBe("Updated Name");
+            expect(versions[1]?.description).toBe("Updated name");
+        });
+
+        it("should limit version history to MAX_VERSIONS_PER_CHARACTER", () => {
+            // Create 12 versions (more than the limit of 10)
+            for (let i = 1; i <= 12; i++) {
+                const char = { ...mockCharacter, name: `Version ${i}` };
+                service.saveCharacterVersion(char, `Version ${i}`);
+            }
+
+            const versions = service.getCharacterVersions("test-123");
+            expect(versions).toHaveLength(10);
+            // Should keep the most recent 10 versions (3-12)
+            expect(versions[0]?.version).toBe(3);
+            expect(versions[9]?.version).toBe(12);
+        });
+
+        it("should use default description if not provided", () => {
+            service.saveCharacterVersion(mockCharacter);
+
+            const versions = service.getCharacterVersions("test-123");
+            expect(versions[0]?.description).toBe("Initial creation");
+        });
+    });
+
+    describe("getCharacterVersions", () => {
+        it("should return empty array for non-existent character", () => {
+            const versions = service.getCharacterVersions("non-existent");
+            expect(versions).toEqual([]);
+        });
+
+        it("should return all versions for a character", () => {
+            service.saveCharacterVersion(mockCharacter, "Version 1");
+            service.saveCharacterVersion({ ...mockCharacter, name: "V2" }, "Version 2");
+            service.saveCharacterVersion({ ...mockCharacter, name: "V3" }, "Version 3");
+
+            const versions = service.getCharacterVersions("test-123");
+            expect(versions).toHaveLength(3);
+            expect(versions.map(v => v.version)).toEqual([1, 2, 3]);
+        });
+    });
+
+    describe("getCharacterVersion", () => {
+        beforeEach(() => {
+            service.saveCharacterVersion(mockCharacter, "Version 1");
+            service.saveCharacterVersion({ ...mockCharacter, name: "V2" }, "Version 2");
+            service.saveCharacterVersion({ ...mockCharacter, name: "V3" }, "Version 3");
+        });
+
+        it("should return specific version of a character", () => {
+            const char = service.getCharacterVersion("test-123", 2);
+            expect(char).toBeTruthy();
+            expect(char?.name).toBe("V2");
+        });
+
+        it("should return undefined for non-existent version", () => {
+            const char = service.getCharacterVersion("test-123", 99);
+            expect(char).toBeUndefined();
+        });
+
+        it("should return undefined for non-existent character", () => {
+            const char = service.getCharacterVersion("non-existent", 1);
+            expect(char).toBeUndefined();
+        });
+    });
+
+    describe("getCurrentCharacter", () => {
+        it("should return undefined for non-existent character", () => {
+            const char = service.getCurrentCharacter("non-existent");
+            expect(char).toBeUndefined();
+        });
+
+        it("should return the latest version of a character", () => {
+            service.saveCharacterVersion(mockCharacter, "Version 1");
+            service.saveCharacterVersion({ ...mockCharacter, name: "V2" }, "Version 2");
+            service.saveCharacterVersion({ ...mockCharacter, name: "V3" }, "Version 3");
+
+            const char = service.getCurrentCharacter("test-123");
+            expect(char).toBeTruthy();
+            expect(char?.name).toBe("V3");
+        });
+    });
+
+    describe("restoreCharacterVersion", () => {
+        beforeEach(() => {
+            service.saveCharacterVersion(mockCharacter, "Version 1");
+            service.saveCharacterVersion({ ...mockCharacter, name: "V2" }, "Version 2");
+            service.saveCharacterVersion({ ...mockCharacter, name: "V3" }, "Version 3");
+        });
+
+        it("should restore character to previous version", () => {
+            service.restoreCharacterVersion("test-123", 1);
+
+            const current = service.getCurrentCharacter("test-123");
+            expect(current?.name).toBe("Test Character"); // Original name from version 1
+
+            const versions = service.getCharacterVersions("test-123");
+            expect(versions).toHaveLength(4); // 3 original + 1 restore
+            expect(versions[3]?.version).toBe(4);
+            expect(versions[3]?.description).toBe("Restored from version 1");
+        });
+
+        it("should throw error for non-existent version", () => {
+            expect(() => {
+                service.restoreCharacterVersion("test-123", 99);
+            }).toThrow(StorageError);
+        });
+
+        it("should throw error for non-existent character", () => {
+            expect(() => {
+                service.restoreCharacterVersion("non-existent", 1);
+            }).toThrow(StorageError);
+        });
+    });
+
+    describe("migration from legacy format", () => {
+        it("should migrate v1 data to v2 format", () => {
+            // Manually set legacy format data
+            const legacyData = {
+                version: 1,
+                characters: [mockCharacter],
+                lastModified: new Date().toISOString(),
+            };
+            localStorage.setItem("hollowgear:characters", JSON.stringify(legacyData));
+
+            // Load should trigger migration
+            const characters = service.loadCharacters();
+            expect(characters).toHaveLength(1);
+            expect(characters[0]?.id).toBe("test-123");
+
+            // Verify migrated format
+            const stored = localStorage.getItem("hollowgear:characters");
+            const parsed = JSON.parse(stored!);
+            expect(parsed.version).toBe(2);
+            expect(parsed.characters[0]?.characterId).toBe("test-123");
+            expect(parsed.characters[0]?.currentVersion).toBe(1);
+            expect(parsed.characters[0]?.versions).toHaveLength(1);
+            expect(parsed.characters[0]?.versions[0]?.description).toBe("Migrated from legacy format");
+        });
+
+        it("should filter out invalid characters during migration", () => {
+            const invalidChar = { id: "invalid", name: "Missing Fields" };
+            const legacyData = {
+                version: 1,
+                characters: [mockCharacter, invalidChar],
+                lastModified: new Date().toISOString(),
+            };
+            localStorage.setItem("hollowgear:characters", JSON.stringify(legacyData));
+
+            const characters = service.loadCharacters();
+            expect(characters).toHaveLength(1);
+            expect(characters[0]?.id).toBe("test-123");
         });
     });
 });

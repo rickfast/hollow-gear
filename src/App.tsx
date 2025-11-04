@@ -19,6 +19,7 @@ function AppContent() {
                 <Routes>
                     <Route path="/" element={<CharactersPage />} />
                     <Route path="/characters/:id" element={<CharacterSheetPage />} />
+                    <Route path="/characters/:id/edit" element={<CharacterBuilderPage />} />
                     <Route path="/builder" element={<CharacterBuilderPage />} />
                     <Route path="/drones" element={<DronesPage />} />
                     <Route path="/drones/new" element={<DroneBuilderPage />} />
