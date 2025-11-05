@@ -39,16 +39,24 @@ Crafting higher tiers requires rare materials and **25 × tier² Cogs** in parts
 
 ## ⚔️ Melee Weapons
 
-| Weapon                | Type    | Damage           | Properties                      | Cost (Cogs) | Wt    |
-| --------------------- | ------- | ---------------- | ------------------------------- | ----------- | ----- |
-| **Brass Dagger**      | Simple  | 1d4 piercing     | Light, finesse                  | 2           | 1 lb  |
-| **Cogwrench**         | Simple  | 1d6 bludgeoning  | Versatile (1d8)                 | 5           | 3 lb  |
-| **Steam Hammer**      | Martial | 1d10 bludgeoning | Two-handed                      | 15          | 8 lb  |
-| **Volt Blade**        | Martial | 1d8 slashing     | Finesse, powered (+1 lightning) | 30          | 3 lb  |
-| **Gear Axe**          | Martial | 1d12 slashing    | Heavy, two-handed               | 25          | 10 lb |
-| **Aether Spear**      | Martial | 1d8 piercing     | Thrown (20/60), reach           | 20          | 4 lb  |
-| **Monofilament Whip** | Martial | 1d6 slashing     | Finesse, reach                  | 35          | 2 lb  |
-| **Plasma Pike**       | Martial | 1d10 piercing    | Reach, two-handed, powered      | 40          | 6 lb  |
+| Weapon                 | Type    | Damage           | Properties                      | Cost (Cogs) | Wt    |
+| ---------------------- | ------- | ---------------- | ------------------------------- | ----------- | ----- |
+| **Brass Dagger**       | Simple  | 1d4 piercing     | Light, finesse                  | 2           | 1 lb  |
+| **Cogwrench**          | Simple  | 1d6 bludgeoning  | Versatile (1d8)                 | 5           | 3 lb  |
+| **Steam Gauntlet**     | Simple  | 1d6 bludgeoning  | Light                           | 10          | 2 lb  |
+| **Gearblade**          | Martial | 1d6 slashing     | Light, finesse                  | 8           | 2 lb  |
+| **Steam Hammer**       | Martial | 1d10 bludgeoning | Two-handed                      | 15          | 8 lb  |
+| **Volt Blade**         | Martial | 1d8 slashing     | Finesse, powered (+1 lightning) | 30          | 3 lb  |
+| **Gear Axe**           | Martial | 1d12 slashing    | Heavy, two-handed               | 25          | 10 lb |
+| **Aether Spear**       | Martial | 1d8 piercing     | Thrown (20/60), reach           | 20          | 4 lb  |
+| **Monofilament Whip**  | Martial | 1d6 slashing     | Finesse, reach                  | 35          | 2 lb  |
+| **Plasma Pike**        | Martial | 1d10 piercing    | Reach, two-handed, powered      | 40          | 6 lb  |
+| **Coil Sabre**         | Martial | 1d8 slashing     | Finesse, powered (+1 lightning) | 45          | 3 lb  |
+| **Pneumatic Lance**    | Martial | 1d12 piercing    | Reach, two-handed               | 55          | 8 lb  |
+| **Void Iron Mace**     | Martial | 1d8 bludgeoning  | Powered (+1d4 psychic on hit)   | 60          | 5 lb  |
+| **Aetherglass Rapier** | Martial | 1d8 piercing     | Light, finesse (−25% weight)    | 35          | 2 lb  |
+| **Arc Thrower**        | Heavy   | 2d8 lightning    | Two-handed, heavy, powered      | 90          | 14 lb |
+| **Void Resonator**     | Heavy   | 2d10 psychic     | Two-handed, heavy, powered      | 150         | 20 lb |
 
 **Powered weapons** consume **Aether Cells** (2 ⚙️ each; 10 charges). They regain 1 charge per short
 rest or can be recharged manually.
@@ -57,16 +65,18 @@ rest or can be recharged manually.
 
 ## 🔫 Ranged Weapons
 
-| Weapon                 | Type    | Damage          | Range (Normal/Max) | Ammo          | Properties                      | Cost (Cogs) | Wt    |
-| ---------------------- | ------- | --------------- | ------------------ | ------------- | ------------------------------- | ----------- | ----- |
-| **Slug Pistol**        | Simple  | 1d6 piercing    | 30/90              | Slugs         | Light, reload (6)               | 10          | 2 lb  |
-| **Rivetgun**           | Martial | 1d8 piercing    | 40/120             | Rivets        | Reload (5), mod-ready           | 25          | 4 lb  |
-| **Steam Rifle**        | Martial | 1d10 piercing   | 80/240             | Slugs         | Two-handed, reload (5)          | 35          | 7 lb  |
-| **Aether Carbine**     | Martial | 1d8 force       | 60/180             | Aether Cells  | Two-handed, powered             | 50          | 6 lb  |
-| **Repeating Crossbow** | Simple  | 1d8 piercing    | 80/320             | Bolts         | Reload (6)                      | 20          | 5 lb  |
-| **Volleygun**          | Martial | 2d6 piercing    | 30/60              | Slugs (multi) | Burst (15-ft cone), reload (1)  | 45          | 10 lb |
-| **Steam Slingshot**    | Simple  | 1d4 bludgeoning | 20/80              | Pellets       | Light, silent                   | 5           | 1 lb  |
-| **Aether Cannon**      | Heavy   | 2d10 lightning  | 60/150             | Aether Core   | Two-handed, reload (1), powered | 120         | 18 lb |
+| Weapon                   | Type    | Damage          | Range (Normal/Max) | Ammo          | Properties                      | Cost (Cogs) | Wt    |
+| ------------------------ | ------- | --------------- | ------------------ | ------------- | ------------------------------- | ----------- | ----- |
+| **Slug Pistol**          | Simple  | 1d6 piercing    | 30/90              | Slugs         | Light, reload (6)               | 10          | 2 lb  |
+| **Rivetgun**             | Martial | 1d8 piercing    | 40/120             | Rivets        | Reload (5), mod-ready           | 25          | 4 lb  |
+| **Steam Rifle**          | Martial | 1d10 piercing   | 80/240             | Slugs         | Two-handed, reload (5)          | 35          | 7 lb  |
+| **Aether Carbine**       | Martial | 1d8 force       | 60/180             | Aether Cells  | Two-handed, powered             | 50          | 6 lb  |
+| **Repeating Crossbow**   | Simple  | 1d8 piercing    | 80/320             | Bolts         | Reload (6)                      | 20          | 5 lb  |
+| **Volleygun**            | Martial | 2d6 piercing    | 30/60              | Slugs (multi) | Burst (15-ft cone), reload (1)  | 45          | 10 lb |
+| **Steam Slingshot**      | Simple  | 1d4 bludgeoning | 20/80              | Pellets       | Light, silent                   | 5           | 1 lb  |
+| **Aether Cannon**        | Heavy   | 2d10 lightning  | 60/150             | Aether Core   | Two-handed, reload (1), powered | 120         | 18 lb |
+| **Magnetron Bow**        | Martial | 1d8 piercing    | 90/300             | Bolts         | Two-handed (pull 5 ft on hit)   | 40          | 4 lb  |
+| **Aetherglass Repeater** | Martial | 1d6 force       | 50/150             | Aether Cells  | Two-handed, reload (8), powered | 60          | 4 lb  |
 
 ---
 
@@ -112,26 +122,32 @@ Some sets incorporate steam vents, powered joints, or psionic resonators.
 | **Steamweave Vest**  | 11 + Dex                  | —        | —                          | 10          | 8 lb  | Common fabric-metal hybrid.    |
 | **Wireweave Jacket** | 12 + Dex                  | —        | —                          | 25          | 10 lb | Resists shock & heat.          |
 | **Aetherweave Coat** | 12 + Dex (+1 vs psionics) | —        | Adv on Stealth vs machines | 40          | 9 lb  | Conducts Aether energy safely. |
+| **Zephyr Mesh**      | 13 + Dex                  | —        | —                          | 35          | 7 lb  | Reduces Heat gain from travel. |
+| **Voidweave Shroud** | 13 + Dex                  | —        | —                          | 55          | 8 lb  | Advantage on fear saves.       |
 
 ---
 
 ### Medium Armor
 
-| Armor                   | AC Formula       | Strength | Stealth | Cost (Cogs) | Wt    | Notes                           |
-| ----------------------- | ---------------- | -------- | ------- | ----------- | ----- | ------------------------------- |
-| **Gearmail Hauberk**    | 13 + Dex (max 2) | —        | Disadv. | 50          | 20 lb | Common militia armor.           |
-| **Steamjack Coat**      | 14 + Dex (max 2) | —        | Disadv. | 75          | 25 lb | Has mod slot for Steam Vent.    |
-| **Aetherplate Hauberk** | 15 + Dex (max 2) | —        | Disadv. | 100         | 30 lb | Resist psychic dmg 1/long rest. |
+| Armor                    | AC Formula       | Strength | Stealth | Cost (Cogs) | Wt    | Notes                            |
+| ------------------------ | ---------------- | -------- | ------- | ----------- | ----- | -------------------------------- |
+| **Gearmail Hauberk**     | 13 + Dex (max 2) | —        | Disadv. | 50          | 20 lb | Common militia armor.            |
+| **Steamjack Coat**       | 14 + Dex (max 2) | —        | Disadv. | 75          | 25 lb | Has mod slot for Steam Vent.     |
+| **Aetherplate Hauberk**  | 15 + Dex (max 2) | —        | Disadv. | 100         | 30 lb | Resist psychic dmg 1/long rest.  |
+| **Magnetron Brigandine** | 15 + Dex (max 2) | —        | Disadv. | 110         | 28 lb | Bonus action pull (1/short rest) |
+| **Steam-Linked Harness** | 16 + Dex (max 2) | —        | Disadv. | 160         | 32 lb | Ignore first Heat level daily.   |
 
 ---
 
 ### Heavy Armor
 
-| Armor                | AC                     | Strength | Stealth | Cost (Cogs) | Wt    | Notes                                                      |
-| -------------------- | ---------------------- | -------- | ------- | ----------- | ----- | ---------------------------------------------------------- |
-| **Rivetmail Plate**  | 16                     | 13       | Disadv. | 150         | 45 lb | Common industrial plate.                                   |
-| **Cog Knight Armor** | 17                     | 13       | Disadv. | 250         | 50 lb | Templar make; +1 vs radiant.                               |
-| **Powered Exo-Suit** | 18 (+Str bonus max +2) | 15       | Disadv. | 500         | 65 lb | Steam-driven servo plate; requires maintenance (1 ⚙️/day). |
+| Armor                     | AC                     | Strength | Stealth | Cost (Cogs) | Wt    | Notes                                                      |
+| ------------------------- | ---------------------- | -------- | ------- | ----------- | ----- | ---------------------------------------------------------- |
+| **Rivetmail Plate**       | 16                     | 13       | Disadv. | 150         | 45 lb | Common industrial plate.                                   |
+| **Cog Knight Armor**      | 17                     | 13       | Disadv. | 250         | 50 lb | Templar make; +1 vs radiant.                               |
+| **Powered Exo-Suit**      | 18 (+Str bonus max +2) | 15       | Disadv. | 500         | 65 lb | Steam-driven servo plate; requires maintenance (1 ⚙️/day). |
+| **Living Steel Carapace** | 18                     | 15       | Disadv. | 600         | 55 lb | Self-repairs 2 HP/hour; powered.                           |
+| **Void Iron Bastion**     | 19                     | 15       | Disadv. | 900         | 60 lb | +1d4 psychic retaliation (GM); Relic-grade.                |
 
 Powered armor consumes **1 Aether Cell per hour of use**. Running empty halves your speed and
 removes Str bonus until refueled.

@@ -2,10 +2,10 @@
  * Tests for CharacterBuilder edit mode and multiclassing functionality
  */
 
+import type { AbilityScores, Character } from "@/types";
 import { describe, expect, it } from "vitest";
 import { CharacterBuilder } from "./character-builder";
 import { ValidationError } from "./character-utils";
-import type { AbilityScores, Character } from "@/types";
 
 describe("CharacterBuilder Edit Mode", () => {
     const validAbilityScores: AbilityScores = {
@@ -165,9 +165,7 @@ describe("CharacterBuilder Edit Mode", () => {
                     dexterity: 13,
                 });
 
-            builder.setClasses([
-                { class: "Arcanist", level: 15 },
-            ]);
+            builder.setClasses([{ class: "Arcanist", level: 15 }]);
 
             expect(() => {
                 builder.addClass("Shadehand", 10); // Would exceed 20
@@ -257,9 +255,7 @@ describe("CharacterBuilder Edit Mode", () => {
                 .setSpecies("Aqualoth")
                 .setAbilityScores(validAbilityScores);
 
-            builder.setClasses([
-                { class: "Arcanist", level: 2 },
-            ]);
+            builder.setClasses([{ class: "Arcanist", level: 2 }]);
 
             builder.setClassConfigurations([
                 {

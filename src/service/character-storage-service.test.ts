@@ -268,7 +268,7 @@ describe("CharacterStorageService", () => {
 
         it("should increment version for existing character", () => {
             service.saveCharacterVersion(mockCharacter, "Initial creation");
-            
+
             const updatedChar = { ...mockCharacter, name: "Updated Name" };
             service.saveCharacterVersion(updatedChar, "Updated name");
 
@@ -315,7 +315,7 @@ describe("CharacterStorageService", () => {
 
             const versions = service.getCharacterVersions("test-123");
             expect(versions).toHaveLength(3);
-            expect(versions.map(v => v.version)).toEqual([1, 2, 3]);
+            expect(versions.map((v) => v.version)).toEqual([1, 2, 3]);
         });
     });
 
@@ -414,7 +414,9 @@ describe("CharacterStorageService", () => {
             expect(parsed.characters[0]?.characterId).toBe("test-123");
             expect(parsed.characters[0]?.currentVersion).toBe(1);
             expect(parsed.characters[0]?.versions).toHaveLength(1);
-            expect(parsed.characters[0]?.versions[0]?.description).toBe("Migrated from legacy format");
+            expect(parsed.characters[0]?.versions[0]?.description).toBe(
+                "Migrated from legacy format"
+            );
         });
 
         it("should filter out invalid characters during migration", () => {

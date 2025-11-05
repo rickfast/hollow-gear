@@ -376,8 +376,385 @@ export const GEAR_RAT: BestiaryEntry = {
     ],
 };
 
+// ============================================================================
+// NEW CREATURES (CR 1/4 - 2)
+// ============================================================================
+
+export const COGLING_SWARM: BestiaryEntry = {
+    id: "cogling-swarm",
+    name: "Cogling Swarm",
+    size: "Tiny",
+    type: "Construct",
+    subtype: "Swarm",
+    alignment: "Unaligned",
+    emoji: "🪳",
+    description:
+        "Miniature gear-ticks — maintenance mites that now roam abandoned tunnels. Individually weak, dangerous in masses.",
+    armorClass: { value: 12 },
+    hitPoints: { count: 3, die: 4, bonus: 6, average: 13 },
+    speed: { walk: 30, climb: 20 },
+    abilities: {
+        strength: 6,
+        dexterity: 14,
+        constitution: 14,
+        intelligence: 2,
+        wisdom: 10,
+        charisma: 3,
+    },
+    resistances: { damageTypes: ["Piercing", "Slashing"] },
+    immunities: {
+        conditions: [
+            "Charmed",
+            "Frightened",
+            "Grappled",
+            "Paralyzed",
+            "Petrified",
+            "Prone",
+            "Restrained",
+        ],
+    },
+    senses: { special: [{ type: "Darkvision", range: 30 }], passivePerception: 10 },
+    languages: "—",
+    challengeRating: { rating: "1/4", xp: 50 },
+    features: [
+        {
+            name: "Metal Sense",
+            description: "The swarm detects unattended metal objects within 20 ft.",
+        },
+        { name: "Distributed Form", description: "The swarm cannot be knocked prone." },
+    ],
+    actions: [
+        {
+            name: "Swarm Bite",
+            description:
+                "Melee Weapon Attack: +4 to hit, reach 5 ft, one target. Hit: 5 (2d4) piercing damage, or 3 (1d4 + 1) piercing damage if the swarm has half its hit points or fewer.",
+            attackBonus: 4,
+            reach: 5,
+            damage: [{ count: 2, die: 4, bonus: 0, damageType: "Piercing", average: 5 }],
+        },
+    ],
+};
+
+export const STEAM_STITCHER: BestiaryEntry = {
+    id: "steam-stitcher",
+    name: "Steam Stitcher",
+    size: "Small",
+    type: "Construct",
+    alignment: "Neutral",
+    emoji: "🩺",
+    description:
+        "An auto-suturing medical drone repurposed by scavengers; its needle arrays now inject destabilizing coolant.",
+    armorClass: { value: 13, source: "plated casing" },
+    hitPoints: { count: 2, die: 6, bonus: 4, average: 11 },
+    speed: { walk: 20, fly: 30, hover: true },
+    abilities: {
+        strength: 8,
+        dexterity: 14,
+        constitution: 14,
+        intelligence: 8,
+        wisdom: 12,
+        charisma: 6,
+    },
+    skills: [{ skill: "Medicine", bonus: 3 }],
+    resistances: { damageTypes: ["Lightning"] },
+    senses: { special: [{ type: "Darkvision", range: 30 }], passivePerception: 11 },
+    languages: ["Common"],
+    challengeRating: { rating: "1/4", xp: 50 },
+    features: [
+        {
+            name: "Coolant Splash",
+            description:
+                "When reduced to 0 HP, releases freezing vapor; creatures within 5 ft take 3 (1d6) cold damage.",
+        },
+    ],
+    actions: [
+        {
+            name: "Injector Needles",
+            description:
+                "Melee Weapon Attack: +4 to hit, reach 5 ft, one target. Hit: 5 (1d4 + 3) piercing damage and the target's speed is reduced by 5 ft until the end of its next turn.",
+            attackBonus: 4,
+            reach: 5,
+            damage: [{ count: 1, die: 4, bonus: 3, damageType: "Piercing", average: 5 }],
+        },
+        {
+            name: "Emergency Patch",
+            description:
+                "The Stitcher targets a construct or creature within 5 ft, restoring 1d6 hit points.",
+            recharge: "6",
+        },
+    ],
+};
+
+export const RIVET_HOUND: BestiaryEntry = {
+    id: "rivet-hound",
+    name: "Rivet Hound",
+    size: "Medium",
+    type: "Construct",
+    subtype: "Beast-Frame",
+    alignment: "Lawful Neutral",
+    emoji: "🐕",
+    description:
+        "Originally watchdog chassis for foundries; they now roam as territorial guardians with magnetic jaws.",
+    armorClass: { value: 14, source: "riveted plating" },
+    hitPoints: { count: 4, die: 8, bonus: 0, average: 18 },
+    speed: { walk: 40 },
+    abilities: {
+        strength: 14,
+        dexterity: 12,
+        constitution: 11,
+        intelligence: 3,
+        wisdom: 12,
+        charisma: 6,
+    },
+    skills: [{ skill: "Perception", bonus: 3 }],
+    senses: { special: [{ type: "Darkvision", range: 60 }], passivePerception: 13 },
+    languages: "—",
+    challengeRating: { rating: "1/2", xp: 100 },
+    features: [
+        {
+            name: "Scent of Ozone",
+            description:
+                "Advantage on Perception checks relying on smell to detect powered devices.",
+        },
+    ],
+    actions: [
+        {
+            name: "Bite",
+            description:
+                "Melee Weapon Attack: +4 to hit, reach 5 ft. Hit: 7 (1d8 + 3) piercing damage.",
+            attackBonus: 4,
+            reach: 5,
+            damage: [{ count: 1, die: 8, bonus: 3, damageType: "Piercing", average: 7 }],
+        },
+        {
+            name: "Magnetic Lock",
+            description:
+                "On a successful Bite, the target must succeed on a DC 12 Strength saving throw or be grappled (escape DC 12). Until the grapple ends, the Hound has advantage on Bite attacks against that target.",
+            recharge: "5–6",
+            savingThrow: { ability: "strength", dc: 12 },
+        },
+    ],
+};
+
+export const MAGNETRON_DRONE: BestiaryEntry = {
+    id: "magnetron-drone",
+    name: "Magnetron Drone",
+    size: "Small",
+    type: "Construct",
+    alignment: "Unaligned",
+    emoji: "🛰️",
+    description:
+        "Survey drones used to map Aether currents; their field projectors can hurl debris or deflect attacks.",
+    armorClass: { value: 13 },
+    hitPoints: { count: 5, die: 6, bonus: 0, average: 17 },
+    speed: { fly: 40, hover: true },
+    abilities: {
+        strength: 6,
+        dexterity: 16,
+        constitution: 10,
+        intelligence: 11,
+        wisdom: 12,
+        charisma: 5,
+    },
+    skills: [{ skill: "Perception", bonus: 3 }],
+    resistances: { damageTypes: ["Lightning"] },
+    senses: { special: [{ type: "Darkvision", range: 60 }], passivePerception: 13 },
+    languages: ["Common"],
+    challengeRating: { rating: "1/2", xp: 100 },
+    features: [
+        {
+            name: "Magnetic Sweep",
+            description:
+                "As a bonus action, pulls one unattended metal object (≤10 lb) within 20 ft to itself.",
+        },
+    ],
+    actions: [
+        {
+            name: "Pulse Bolt",
+            description:
+                "Ranged Weapon Attack: +5 to hit, range 60 ft. Hit: 6 (1d6 + 3) lightning damage.",
+            attackBonus: 5,
+            range: 60,
+            damage: [{ count: 1, die: 6, bonus: 3, damageType: "Lightning", average: 6 }],
+        },
+        {
+            name: "Repulsion Field",
+            description:
+                "Creatures of the Drone's choice within 10 ft must succeed on a DC 12 Strength saving throw or be pushed 10 ft.",
+            recharge: "6",
+            savingThrow: { ability: "strength", dc: 12 },
+        },
+    ],
+};
+
+export const VOID_LEECH: BestiaryEntry = {
+    id: "void-leech",
+    name: "Void Leech",
+    size: "Small",
+    type: "Aberration",
+    alignment: "Neutral Evil",
+    emoji: "🪱",
+    description:
+        "An extradimensional scavenger that feeds on psionic discharge, clinging to powered armor seams.",
+    armorClass: { value: 13, source: "slick hide" },
+    hitPoints: { count: 5, die: 6, bonus: 5, average: 22 },
+    speed: { walk: 20, climb: 20 },
+    abilities: {
+        strength: 8,
+        dexterity: 14,
+        constitution: 12,
+        intelligence: 5,
+        wisdom: 12,
+        charisma: 6,
+    },
+    resistances: { damageTypes: ["Psychic"] },
+    senses: { special: [{ type: "Darkvision", range: 60 }], passivePerception: 11 },
+    languages: "—",
+    challengeRating: { rating: "1", xp: 200 },
+    features: [
+        {
+            name: "Cling",
+            description:
+                "Can move into the space of a Medium or larger creature; has advantage on attack rolls against a creature it is clinging to.",
+        },
+    ],
+    actions: [
+        {
+            name: "Leech Bite",
+            description:
+                "Melee Weapon Attack: +4 to hit, reach 5 ft. Hit: 6 (1d6 + 3) piercing plus 3 (1d6) psychic damage.",
+            attackBonus: 4,
+            reach: 5,
+            damage: [
+                { count: 1, die: 6, bonus: 3, damageType: "Piercing", average: 6 },
+                { count: 1, die: 6, bonus: 0, damageType: "Psychic", average: 3 },
+            ],
+        },
+        {
+            name: "Siphon Field",
+            description:
+                "One powered item or creature within 10 ft loses 1 charge (or suffers −1 on next attack if no charges); the Void Leech regains 5 hit points.",
+            recharge: "5–6",
+        },
+    ],
+};
+
+export const GEAR_SENTINEL: BestiaryEntry = {
+    id: "gear-sentinel",
+    name: "Gear Sentinel",
+    size: "Medium",
+    type: "Construct",
+    alignment: "Lawful Neutral",
+    emoji: "🛡️",
+    description: "Automated corridor guardian bearing rotating shield-rings and kinetic hammers.",
+    armorClass: { value: 15, source: "geared plating" },
+    hitPoints: { count: 8, die: 8, bonus: 0, average: 36 },
+    speed: { walk: 30 },
+    abilities: {
+        strength: 16,
+        dexterity: 10,
+        constitution: 14,
+        intelligence: 8,
+        wisdom: 12,
+        charisma: 8,
+    },
+    savingThrows: [{ ability: "constitution", bonus: 4 }],
+    resistances: { damageTypes: ["Bludgeoning", "Piercing"] },
+    senses: { special: [{ type: "Darkvision", range: 60 }], passivePerception: 11 },
+    languages: ["Common", "Tharn"],
+    challengeRating: { rating: "2", xp: 450 },
+    features: [
+        {
+            name: "Kinetic Rebound",
+            description: "When hit by a melee attack, the attacker takes 3 (1d6) force damage.",
+        },
+    ],
+    actions: [
+        {
+            name: "Hammer Strike",
+            description:
+                "Melee Weapon Attack: +5 to hit, reach 5 ft. Hit: 9 (1d10 + 4) bludgeoning damage.",
+            attackBonus: 5,
+            reach: 5,
+            damage: [{ count: 1, die: 10, bonus: 4, damageType: "Bludgeoning", average: 9 }],
+        },
+        {
+            name: "Shield Ring",
+            description:
+                "The Sentinel gains +2 AC until the start of its next turn and all creatures of its choice within 5 ft gain +1 AC.",
+            recharge: "5–6",
+        },
+    ],
+};
+
+export const AETHERFORGE_MYRMIDON: BestiaryEntry = {
+    id: "aetherforge-myrmidon",
+    name: "Aetherforge Myrmidon",
+    size: "Medium",
+    type: "Construct",
+    alignment: "Neutral",
+    emoji: "🧪",
+    description:
+        "An experimental foundry servitor infused with controlled psionic matrices; its limbs glow with lattice fire.",
+    armorClass: { value: 16, source: "aether lattice" },
+    hitPoints: { count: 8, die: 8, bonus: 8, average: 42 },
+    speed: { walk: 30 },
+    abilities: {
+        strength: 14,
+        dexterity: 12,
+        constitution: 14,
+        intelligence: 11,
+        wisdom: 12,
+        charisma: 8,
+    },
+    resistances: { damageTypes: ["Fire", "Lightning", "Psychic"] },
+    senses: { special: [{ type: "Darkvision", range: 60 }], passivePerception: 11 },
+    languages: ["Common", "Avenari"],
+    challengeRating: { rating: "2", xp: 450 },
+    features: [
+        {
+            name: "Overchannel",
+            description:
+                "Once per day, the Myrmidon doubles the lightning dice of Lattice Blade for 1 minute, then gains 1 level of Heat Stress.",
+        },
+    ],
+    actions: [
+        {
+            name: "Lattice Blade",
+            description:
+                "Melee Weapon Attack: +4 to hit, reach 5 ft. Hit: 10 (2d6 + 3) slashing plus 3 (1d6) lightning damage.",
+            attackBonus: 4,
+            reach: 5,
+            damage: [
+                { count: 2, die: 6, bonus: 3, damageType: "Slashing", average: 10 },
+                { count: 1, die: 6, bonus: 0, damageType: "Lightning", average: 3 },
+            ],
+        },
+        {
+            name: "Aether Pulse",
+            description:
+                "15-ft cone; creatures make a DC 13 Constitution saving throw, taking 10 (3d6) psychic damage on a failure, half on success.",
+            recharge: "6",
+            savingThrow: { ability: "constitution", dc: 13 },
+            damage: [{ count: 3, die: 6, bonus: 0, damageType: "Psychic", average: 10 }],
+        },
+    ],
+};
+
 // Export all creatures as a collection
-export const BESTIARY_CREATURES = [RUST_CRAWLER, AETHER_WISP, IRON_HUSK, GEAR_RAT] as const;
+export const BESTIARY_CREATURES = [
+    RUST_CRAWLER,
+    AETHER_WISP,
+    IRON_HUSK,
+    GEAR_RAT,
+    COGLING_SWARM,
+    STEAM_STITCHER,
+    RIVET_HOUND,
+    MAGNETRON_DRONE,
+    VOID_LEECH,
+    GEAR_SENTINEL,
+    AETHERFORGE_MYRMIDON,
+] as const;
 
 // Helper function to get creature by ID
 export function getCreatureById(id: string): BestiaryEntry | undefined {

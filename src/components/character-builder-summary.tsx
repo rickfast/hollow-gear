@@ -1,12 +1,6 @@
 import { AbilityScores as AbilityScoresComponent } from "@/components/ability-scores";
 import { CLASSES, SPECIES } from "@/data";
-import type {
-    AbilityScores,
-    CharacterClass,
-    ClassConfiguration,
-    ClassType,
-    SpeciesType,
-} from "@/types";
+import type { AbilityScores, CharacterClass, ClassConfiguration, SpeciesType } from "@/types";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 
 interface CharacterBuilderSummaryProps {
@@ -90,14 +84,18 @@ export function CharacterBuilderSummary({
                             {classes.length > 1 ? "CLASSES" : "CLASS"}
                         </div>
                         {classes.length > 0 ? (
-                            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                            <div
+                                style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
+                            >
                                 {classes.map((charClass) => {
                                     const classData = CLASSES.find(
                                         (c) => c.type === charClass.class
                                     );
                                     return (
                                         <div key={charClass.class}>
-                                            <div style={{ fontWeight: 600, marginBottom: "0.25rem" }}>
+                                            <div
+                                                style={{ fontWeight: 600, marginBottom: "0.25rem" }}
+                                            >
                                                 {charClass.class} {charClass.level}
                                             </div>
                                             {charClass.subclass && (

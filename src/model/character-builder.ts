@@ -443,22 +443,14 @@ export class CharacterBuilder {
         }
 
         if (additionalLevels < 1) {
-            throw new ValidationError(
-                "additionalLevels",
-                additionalLevels,
-                "must be at least 1"
-            );
+            throw new ValidationError("additionalLevels", additionalLevels, "must be at least 1");
         }
 
         const currentLevel = classEntry.level;
         const newLevel = currentLevel + additionalLevels;
 
         if (newLevel > 20) {
-            throw new ValidationError(
-                "level",
-                newLevel,
-                "class level cannot exceed 20"
-            );
+            throw new ValidationError("level", newLevel, "class level cannot exceed 20");
         }
 
         // Calculate new total character level
@@ -665,7 +657,7 @@ export class CharacterBuilder {
         // Initialize features array - apply features for all levels up to character level
         const grantedFeatures: import("@/types").ClassFeature[] = [];
         const totalLevel = this.character.level || 1;
-        
+
         // Apply features for each level from 1 to totalLevel
         for (let level = 1; level <= totalLevel; level++) {
             // Base class features at this level
@@ -674,11 +666,12 @@ export class CharacterBuilder {
                     .filter((f) => f.level === level)
                     .map((f) => ({ ...f, origin: "class" as const }))
             );
-            
+
             // Subclass features at this level (if subclass is configured)
             // Check all configurations for subclass selection
             const subclassConfig = this.classConfigurations.find(
-                (config) => config.subclass && config.classType === this.character.classes![0]!.class
+                (config) =>
+                    config.subclass && config.classType === this.character.classes![0]!.class
             );
             if (subclassConfig?.subclass) {
                 const subclass = classData.subclasses.find(
@@ -692,7 +685,7 @@ export class CharacterBuilder {
                     );
                 }
             }
-            
+
             // Progression featuresGranted entries at this level
             const progressionRow = classData.levelProgression?.find((p) => p.level === level);
             if (progressionRow?.featuresGranted) {
@@ -719,7 +712,7 @@ export class CharacterBuilder {
                 }
             }
         }
-        
+
         this.character.features = grantedFeatures;
     }
 
@@ -745,8 +738,9 @@ export class CharacterBuilder {
                 // Higher levels: Calculate starting wealth based on level
                 // Use a formula: base equipment value * level multiplier
                 const startingEquipment = startingEquipmentService.getStartingEquipment(classType);
-                const baseValue = startingEquipmentService.calculateEquipmentValue(startingEquipment);
-                
+                const baseValue =
+                    startingEquipmentService.calculateEquipmentValue(startingEquipment);
+
                 // Wealth by level (approximate D&D 5E guidelines adapted for Hollow Gear)
                 // Level 1-4: base value, Level 5-10: 10x, Level 11-16: 50x, Level 17-20: 100x
                 let wealthMultiplier = 1;
@@ -757,23 +751,23 @@ export class CharacterBuilder {
                 } else if (totalLevel >= 17) {
                     wealthMultiplier = 100;
                 }
-                
+
                 const totalWealth = baseValue * wealthMultiplier;
-                
+
                 // Convert to currency (cogs, gears, cores)
                 // 1 gear = 10 cogs, 1 core = 100 cogs
                 const cores = Math.floor(totalWealth / 100);
                 const remainingAfterCores = totalWealth % 100;
                 const gears = Math.floor(remainingAfterCores / 10);
                 const cogs = remainingAfterCores % 10;
-                
+
                 // Initialize with starting currency
                 this.character.currency = {
                     cogs,
                     gears,
                     cores,
                 };
-                
+
                 // For higher levels, also give the basic starting equipment
                 const characterWithEquipment = startingEquipmentService.applyStartingEquipment(
                     this.character as Character,
@@ -793,8 +787,7 @@ export class CharacterBuilder {
      */
     private storeClassConfiguration(): void {
         // Only initialize if we have configurations to store
-        const hasConfigurations =
-            this.classConfiguration || this.classConfigurations.length > 0;
+        const hasConfigurations = this.classConfiguration || this.classConfigurations.length > 0;
 
         if (!hasConfigurations) {
             return;
@@ -901,7 +894,7 @@ export class CharacterBuilder {
         // Level 1: max hit die + CON mod
         // Levels 2+: average of hit die (rounded up) + CON mod per level
         let maxHP = hitDie + conMod; // Level 1 HP (always max)
-        
+
         if (totalLevel > 1) {
             // For levels 2+, use average hit die value (rounded up) + CON mod
             const averageHitDie = Math.ceil(hitDie / 2) + 1; // e.g., d8 = 5, d10 = 6, d6 = 4

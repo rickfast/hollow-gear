@@ -159,7 +159,9 @@ export function MultiLevelConfigurator({
                     ) : (
                         <div className="mt-3 p-3 bg-warning-50 border border-warning-200 rounded-lg">
                             <div className="text-sm font-semibold text-warning">
-                                ⚠ {totalCount - completedCount} level{totalCount - completedCount > 1 ? "s" : ""} still need configuration
+                                ⚠ {totalCount - completedCount} level
+                                {totalCount - completedCount > 1 ? "s" : ""} still need
+                                configuration
                             </div>
                         </div>
                     )}

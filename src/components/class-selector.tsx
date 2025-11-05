@@ -351,7 +351,9 @@ export function ClassSelector({
                                     >
                                         Requirements Not Met:
                                     </p>
-                                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                                    <div
+                                        style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}
+                                    >
                                         {ineligibleClasses.map((c) => (
                                             <Chip
                                                 key={c.type}

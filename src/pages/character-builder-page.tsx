@@ -7,7 +7,6 @@ import { PortraitSelector } from "@/components/portrait-selector";
 import { SPECIES } from "@/data";
 import { CharacterBuilder } from "@/model/character-builder";
 import { useCharacterViewModelContext } from "@/model/character-view-model-context";
-import { CharacterStorageService } from "@/service/character-storage-service";
 import type {
     AbilityScores,
     CharacterClass,
@@ -16,7 +15,7 @@ import type {
     SpeciesType,
 } from "@/types";
 import { Button, Card, CardBody, CardHeader, Chip, Input, Select, SelectItem } from "@heroui/react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 type BuilderStep =
@@ -71,20 +70,20 @@ export function CharacterBuilderPage() {
             try {
                 const viewModel = getCharacter(id);
                 const character = viewModel.toCharacter();
-                
+
                 // Initialize state from loaded character
                 setName(character.name);
                 setSpecies(character.species);
-                setClasses(character.classes.map(c => ({ ...c })));
+                setClasses(character.classes.map((c) => ({ ...c })));
                 setAbilityScores({ ...character.abilityScores });
                 setAbilityScoresLocked(true); // Lock ability scores in edit mode
                 setBackground(character.background || "");
                 setAvatarUrl(character.avatarUrl || "");
                 setOriginalCharacterId(character.id);
-                
+
                 // Load existing class configurations if available
                 if (character.classConfigurations) {
-                    setClassConfigurations(character.classConfigurations.map(c => ({ ...c })));
+                    setClassConfigurations(character.classConfigurations.map((c) => ({ ...c })));
                 }
             } catch (err) {
                 setError(err instanceof Error ? err.message : "Failed to load character");
@@ -148,7 +147,7 @@ export function CharacterBuilderPage() {
             }
 
             const isValid = validateStep(s.key);
-            
+
             // Determine if step has been visited (has some data)
             const hasBeenVisited = (() => {
                 switch (s.key) {
@@ -184,7 +183,17 @@ export function CharacterBuilderPage() {
 
         setCompletedSteps(newCompletedSteps);
         setIncompleteSteps(newIncompleteSteps);
-    }, [name, species, classes, classConfigurations, pendingLevels, abilityScores, avatarUrl, background, step]);
+    }, [
+        name,
+        species,
+        classes,
+        classConfigurations,
+        pendingLevels,
+        abilityScores,
+        avatarUrl,
+        background,
+        step,
+    ]);
 
     const handleStepClick = (stepKey: BuilderStep) => {
         setError(null);
@@ -195,7 +204,7 @@ export function CharacterBuilderPage() {
         try {
             // In create mode, use the starting level if this is the first class
             const actualLevels = !isEditMode && classes.length === 0 ? startingLevel : levels;
-            
+
             // Add new class to the list
             const newClass: CharacterClass = {
                 class: classType,
@@ -255,7 +264,7 @@ export function CharacterBuilderPage() {
     // Check if all required steps are complete
     const canSaveCharacter = (): { valid: boolean; errors: string[] } => {
         const errors: string[] = [];
-        
+
         if (!validateStep("basics")) {
             errors.push("Character name is required");
         }
@@ -271,10 +280,10 @@ export function CharacterBuilderPage() {
         if (!validateStep("portrait")) {
             errors.push("Portrait selection is required");
         }
-        
+
         return {
             valid: errors.length === 0,
-            errors
+            errors,
         };
     };
 
@@ -292,13 +301,13 @@ export function CharacterBuilderPage() {
     const handleSave = () => {
         try {
             const validation = canSaveCharacter();
-            
+
             if (!validation.valid) {
                 // Navigate to first incomplete step
                 navigateToFirstIncompleteStep();
-                
+
                 // Show error with all incomplete requirements
-                const errorMessage = `Cannot save character. Please complete the following:\n${validation.errors.map(e => `• ${e}`).join('\n')}`;
+                const errorMessage = `Cannot save character. Please complete the following:\n${validation.errors.map((e) => `• ${e}`).join("\n")}`;
                 setError(errorMessage);
                 return;
             }
@@ -310,13 +319,13 @@ export function CharacterBuilderPage() {
                 // Edit mode: load existing character and update
                 const viewModel = getCharacter(originalCharacterId);
                 const existingCharacter = viewModel.toCharacter();
-                
+
                 // Update character using context method
                 updateCharacter(
                     originalCharacterId,
                     (vm) => {
                         builder = CharacterBuilder.fromCharacter(vm.toCharacter());
-                        
+
                         // Update modifiable fields
                         builder
                             .setName(name)
@@ -337,7 +346,7 @@ export function CharacterBuilderPage() {
                         background: background || "Adventurer",
                     } as any)
                 );
-                
+
                 characterId = originalCharacterId;
             } else {
                 // Create mode: build new character
@@ -360,7 +369,11 @@ export function CharacterBuilderPage() {
 
             navigate(`/characters/${characterId}`);
         } catch (err) {
-            setError(err instanceof Error ? err.message : `Failed to ${isEditMode ? 'update' : 'create'} character`);
+            setError(
+                err instanceof Error
+                    ? err.message
+                    : `Failed to ${isEditMode ? "update" : "create"} character`
+            );
         }
     };
 
@@ -370,18 +383,18 @@ export function CharacterBuilderPage() {
             navigate(`/characters/${originalCharacterId}`);
         } else {
             // Return to character list
-            navigate('/');
+            navigate("/");
         }
     };
 
     // Generate a description for the version based on changes
     const generateVersionDescription = (oldChar: any, newChar: any): string => {
         const changes: string[] = [];
-        
+
         if (oldChar.name !== newChar.name) {
             changes.push(`renamed to "${newChar.name}"`);
         }
-        
+
         if (oldChar.classes.length !== newChar.classes.length) {
             changes.push("added class");
         } else {
@@ -391,15 +404,15 @@ export function CharacterBuilderPage() {
                 }
             }
         }
-        
+
         if (oldChar.background !== newChar.background) {
             changes.push("updated background");
         }
-        
+
         if (changes.length === 0) {
             return "Character updated";
         }
-        
+
         return changes.join(", ");
     };
 
@@ -512,11 +525,13 @@ export function CharacterBuilderPage() {
                                                 size="lg"
                                                 description="Choose the level your character starts at (1-20)"
                                             >
-                                                {Array.from({ length: 20 }, (_, i) => i + 1).map((level) => (
-                                                    <SelectItem key={level.toString()}>
-                                                        Level {level}
-                                                    </SelectItem>
-                                                ))}
+                                                {Array.from({ length: 20 }, (_, i) => i + 1).map(
+                                                    (level) => (
+                                                        <SelectItem key={level.toString()}>
+                                                            Level {level}
+                                                        </SelectItem>
+                                                    )
+                                                )}
                                             </Select>
                                             {startingLevel > 1 && (
                                                 <div
@@ -524,12 +539,17 @@ export function CharacterBuilderPage() {
                                                         padding: "1rem",
                                                         backgroundColor: "var(--heroui-primary-50)",
                                                         borderRadius: "0.5rem",
-                                                        borderLeft: "4px solid var(--heroui-primary)",
+                                                        borderLeft:
+                                                            "4px solid var(--heroui-primary)",
                                                     }}
                                                 >
                                                     <p style={{ fontSize: "0.875rem" }}>
-                                                        Starting at level {startingLevel} will require you to configure all levels from 1 to {startingLevel} during class selection. 
-                                                        Your character will receive all class features, ability score improvements, and benefits for these levels.
+                                                        Starting at level {startingLevel} will
+                                                        require you to configure all levels from 1
+                                                        to {startingLevel} during class selection.
+                                                        Your character will receive all class
+                                                        features, ability score improvements, and
+                                                        benefits for these levels.
                                                     </p>
                                                 </div>
                                             )}
@@ -671,99 +691,101 @@ export function CharacterBuilderPage() {
                                     </p>
 
                                     {/* Group pending levels by class */}
-                                    {Array.from(
-                                        new Set(pendingLevels.map((p) => p.classType))
-                                    ).map((classType) => {
-                                        const levelsForClass = pendingLevels
-                                            .filter((p) => p.classType === classType)
-                                            .map((p) => p.level)
-                                            .sort((a, b) => a - b);
+                                    {Array.from(new Set(pendingLevels.map((p) => p.classType))).map(
+                                        (classType) => {
+                                            const levelsForClass = pendingLevels
+                                                .filter((p) => p.classType === classType)
+                                                .map((p) => p.level)
+                                                .sort((a, b) => a - b);
 
-                                        return (
-                                            <div
-                                                key={classType}
-                                                style={{
-                                                    display: "flex",
-                                                    flexDirection: "column",
-                                                    gap: "1rem",
-                                                }}
-                                            >
-                                                <h3
+                                            return (
+                                                <div
+                                                    key={classType}
                                                     style={{
-                                                        fontSize: "1.25rem",
-                                                        fontWeight: 600,
+                                                        display: "flex",
+                                                        flexDirection: "column",
+                                                        gap: "1rem",
                                                     }}
                                                 >
-                                                    {classType}
-                                                </h3>
+                                                    <h3
+                                                        style={{
+                                                            fontSize: "1.25rem",
+                                                            fontWeight: 600,
+                                                        }}
+                                                    >
+                                                        {classType}
+                                                    </h3>
 
-                                                {levelsForClass.map((level) => {
-                                                    const existingConfig =
-                                                        classConfigurations.find(
-                                                            (c) =>
-                                                                c.classType === classType &&
-                                                                c.level === level
-                                                        );
+                                                    {levelsForClass.map((level) => {
+                                                        const existingConfig =
+                                                            classConfigurations.find(
+                                                                (c) =>
+                                                                    c.classType === classType &&
+                                                                    c.level === level
+                                                            );
 
-                                                    return (
-                                                        <Card key={`${classType}-${level}`}>
-                                                            <CardHeader>
-                                                                <h4
-                                                                    style={{
-                                                                        fontWeight: 600,
-                                                                    }}
-                                                                >
-                                                                    Level {level}
-                                                                </h4>
-                                                            </CardHeader>
-                                                            <CardBody>
-                                                                <ClassLevelConfigurator
-                                                                    classType={classType}
-                                                                    level={level}
-                                                                    existingConfig={
-                                                                        existingConfig
-                                                                    }
-                                                                    onConfigurationChange={(
-                                                                        config
-                                                                    ) => {
-                                                                        // Only add if config is complete
-                                                                        if (
-                                                                            config.classType &&
-                                                                            config.level
-                                                                        ) {
-                                                                            setClassConfigurations(
-                                                                                (prev) => {
-                                                                                    // Remove existing config for this class/level
-                                                                                    const filtered =
-                                                                                        prev.filter(
-                                                                                            (c) =>
-                                                                                                !(
-                                                                                                    c.classType ===
-                                                                                                        classType &&
-                                                                                                    c.level ===
-                                                                                                        level
-                                                                                                )
-                                                                                        );
-                                                                                    // Add new config
-                                                                                    return [
-                                                                                        ...filtered,
-                                                                                        config as ClassConfiguration,
-                                                                                    ];
-                                                                                }
-                                                                            );
+                                                        return (
+                                                            <Card key={`${classType}-${level}`}>
+                                                                <CardHeader>
+                                                                    <h4
+                                                                        style={{
+                                                                            fontWeight: 600,
+                                                                        }}
+                                                                    >
+                                                                        Level {level}
+                                                                    </h4>
+                                                                </CardHeader>
+                                                                <CardBody>
+                                                                    <ClassLevelConfigurator
+                                                                        classType={classType}
+                                                                        level={level}
+                                                                        existingConfig={
+                                                                            existingConfig
                                                                         }
-                                                                    }}
-                                                                    onValidationChange={() => {
-                                                                        // Validation handled by canProceed
-                                                                    }}
-                                                                />
-                                                            </CardBody>
-                                                        </Card>
-                                                    );
-                                                })}
-                                            </div>
-                                        );
-                                    })}
+                                                                        onConfigurationChange={(
+                                                                            config
+                                                                        ) => {
+                                                                            // Only add if config is complete
+                                                                            if (
+                                                                                config.classType &&
+                                                                                config.level
+                                                                            ) {
+                                                                                setClassConfigurations(
+                                                                                    (prev) => {
+                                                                                        // Remove existing config for this class/level
+                                                                                        const filtered =
+                                                                                            prev.filter(
+                                                                                                (
+                                                                                                    c
+                                                                                                ) =>
+                                                                                                    !(
+                                                                                                        c.classType ===
+                                                                                                            classType &&
+                                                                                                        c.level ===
+                                                                                                            level
+                                                                                                    )
+                                                                                            );
+                                                                                        // Add new config
+                                                                                        return [
+                                                                                            ...filtered,
+                                                                                            config as ClassConfiguration,
+                                                                                        ];
+                                                                                    }
+                                                                                );
+                                                                            }
+                                                                        }}
+                                                                        onValidationChange={() => {
+                                                                            // Validation handled by canProceed
+                                                                        }}
+                                                                    />
+                                                                </CardBody>
+                                                            </Card>
+                                                        );
+                                                    })}
+                                                </div>
+                                            );
+                                        }
+                                    )}
                                 </div>
                             )}
 
@@ -789,8 +811,14 @@ export function CharacterBuilderPage() {
                                                     borderLeft: "4px solid var(--heroui-primary)",
                                                 }}
                                             >
-                                                <p style={{ fontSize: "0.875rem", marginBottom: "1rem" }}>
-                                                    Ability scores cannot be modified after initial character creation.
+                                                <p
+                                                    style={{
+                                                        fontSize: "0.875rem",
+                                                        marginBottom: "1rem",
+                                                    }}
+                                                >
+                                                    Ability scores cannot be modified after initial
+                                                    character creation.
                                                 </p>
                                                 <div
                                                     style={{
@@ -801,7 +829,11 @@ export function CharacterBuilderPage() {
                                                 >
                                                     {Object.entries(abilityScores).map(
                                                         ([ability, score]) => (
-                                                            <Chip key={ability} size="lg" variant="flat">
+                                                            <Chip
+                                                                key={ability}
+                                                                size="lg"
+                                                                variant="flat"
+                                                            >
                                                                 {ability
                                                                     .substring(0, 3)
                                                                     .toUpperCase()}
@@ -883,9 +915,11 @@ export function CharacterBuilderPage() {
                                                         <div
                                                             style={{
                                                                 padding: "1rem",
-                                                                backgroundColor: "var(--heroui-warning-50)",
+                                                                backgroundColor:
+                                                                    "var(--heroui-warning-50)",
                                                                 borderRadius: "0.5rem",
-                                                                borderLeft: "4px solid var(--heroui-warning)",
+                                                                borderLeft:
+                                                                    "4px solid var(--heroui-warning)",
                                                             }}
                                                         >
                                                             <h3
@@ -904,7 +938,8 @@ export function CharacterBuilderPage() {
                                                                     color: "var(--heroui-warning-700)",
                                                                 }}
                                                             >
-                                                                Please complete the following before creating your character:
+                                                                Please complete the following before
+                                                                creating your character:
                                                             </p>
                                                             <ul
                                                                 style={{
@@ -914,9 +949,11 @@ export function CharacterBuilderPage() {
                                                                     color: "var(--heroui-warning-700)",
                                                                 }}
                                                             >
-                                                                {validation.errors.map((error, idx) => (
-                                                                    <li key={idx}>{error}</li>
-                                                                ))}
+                                                                {validation.errors.map(
+                                                                    (error, idx) => (
+                                                                        <li key={idx}>{error}</li>
+                                                                    )
+                                                                )}
                                                             </ul>
                                                             <Button
                                                                 color="warning"
@@ -969,18 +1006,14 @@ export function CharacterBuilderPage() {
                                                                 variant="flat"
                                                             >
                                                                 {c.class} {c.level}
-                                                                {c.subclass &&
-                                                                    ` (${c.subclass})`}
+                                                                {c.subclass && ` (${c.subclass})`}
                                                             </Chip>
                                                         ))}
                                                     </div>
                                                 </div>
                                                 <div>
                                                     <strong>Total Level:</strong>{" "}
-                                                    {classes.reduce(
-                                                        (sum, c) => sum + c.level,
-                                                        0
-                                                    )}
+                                                    {classes.reduce((sum, c) => sum + c.level, 0)}
                                                 </div>
                                                 <div>
                                                     <strong>Background:</strong>{" "}
@@ -1080,10 +1113,7 @@ export function CharacterBuilderPage() {
                                 borderTop: "1px solid var(--heroui-divider)",
                             }}
                         >
-                            <Button
-                                variant="flat"
-                                onPress={handleCancel}
-                            >
+                            <Button variant="flat" onPress={handleCancel}>
                                 Cancel
                             </Button>
                             <Button color="success" onPress={handleSave}>

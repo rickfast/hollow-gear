@@ -214,9 +214,7 @@ export class CharacterStorageService {
     restoreCharacterVersion(characterId: string, version: number): void {
         const character = this.getCharacterVersion(characterId, version);
         if (!character) {
-            throw new StorageError(
-                `Character version not found: ${characterId} v${version}`
-            );
+            throw new StorageError(`Character version not found: ${characterId} v${version}`);
         }
 
         this.saveCharacterVersion(character, `Restored from version ${version}`);

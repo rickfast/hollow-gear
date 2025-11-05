@@ -28,14 +28,15 @@ describe("CharacterBuilder - Starting Level", () => {
 
             expect(character.level).toBe(1);
             expect(character.classes[0]?.level).toBe(1);
-            
+
             // Should have starting equipment
             expect(character.inventory.length).toBeGreaterThan(0);
-            
+
             // Should have starting currency (not multiplied)
-            const totalCogs = character.currency.cogs + 
-                             (character.currency.gears * 10) + 
-                             (character.currency.cores * 100);
+            const totalCogs =
+                character.currency.cogs +
+                character.currency.gears * 10 +
+                character.currency.cores * 100;
             expect(totalCogs).toBeLessThan(1000); // Standard starting wealth
         });
 
@@ -72,7 +73,7 @@ describe("CharacterBuilder - Starting Level", () => {
 
             expect(character.level).toBe(5);
             expect(character.classes[0]?.level).toBe(5);
-            
+
             // HP calculation for Vanguard (d10):
             // Level 1: 10 + CON mod (1) = 11
             // Levels 2-5: (6 + 1) * 4 = 28
@@ -92,14 +93,15 @@ describe("CharacterBuilder - Starting Level", () => {
             const character = builder.build();
 
             expect(character.level).toBe(10);
-            
+
             // Should have starting equipment
             expect(character.inventory.length).toBeGreaterThan(0);
-            
+
             // Should have increased wealth (10x multiplier for level 5-10)
-            const totalCogs = character.currency.cogs + 
-                             (character.currency.gears * 10) + 
-                             (character.currency.cores * 100);
+            const totalCogs =
+                character.currency.cogs +
+                character.currency.gears * 10 +
+                character.currency.cores * 100;
             expect(totalCogs).toBeGreaterThan(1000); // Significantly more than level 1
         });
 
@@ -115,11 +117,12 @@ describe("CharacterBuilder - Starting Level", () => {
             const character = builder.build();
 
             expect(character.level).toBe(15);
-            
+
             // Should have very high wealth (50x multiplier for level 11-16)
-            const totalCogs = character.currency.cogs + 
-                             (character.currency.gears * 10) + 
-                             (character.currency.cores * 100);
+            const totalCogs =
+                character.currency.cogs +
+                character.currency.gears * 10 +
+                character.currency.cores * 100;
             expect(totalCogs).toBeGreaterThan(10000); // Much more than level 10
         });
 
@@ -136,17 +139,17 @@ describe("CharacterBuilder - Starting Level", () => {
 
             expect(character.level).toBe(5);
             expect(character.features).toBeDefined();
-            
+
             // Should have features from levels 1-5
             // Vanguard gets features at multiple levels
             expect(character.features!.length).toBeGreaterThan(0);
-            
+
             // Check that features from level 1 are present
-            const featureLevels = character.features!.map(f => f.level);
+            const featureLevels = character.features!.map((f) => f.level);
             expect(featureLevels).toContain(1);
-            
+
             // Vanguard should have features at level 1 at minimum
-            const level1Features = character.features!.filter(f => f.level === 1);
+            const level1Features = character.features!.filter((f) => f.level === 1);
             expect(level1Features.length).toBeGreaterThan(0);
         });
 
@@ -166,7 +169,7 @@ describe("CharacterBuilder - Starting Level", () => {
 
             expect(character.level).toBe(5);
             expect(character.spellSlots).toBeDefined();
-            
+
             // Level 5 Arcanist should have spell slots
             expect(character.spellSlots!.level1.maximum).toBeGreaterThan(0);
             expect(character.spellSlots!.level2.maximum).toBeGreaterThan(0);
@@ -177,21 +180,18 @@ describe("CharacterBuilder - Starting Level", () => {
     describe("Multiclass with Starting Level", () => {
         it("should handle multiclass characters starting at higher levels", () => {
             const builder = new CharacterBuilder();
-            builder
-                .setName("Multiclass Test")
-                .setSpecies("Vulmir")
-                .setAbilityScores({
-                    strength: 15,
-                    dexterity: 14,
-                    constitution: 13,
-                    intelligence: 13, // Meets multiclass requirement
-                    wisdom: 10,
-                    charisma: 8,
-                });
+            builder.setName("Multiclass Test").setSpecies("Vulmir").setAbilityScores({
+                strength: 15,
+                dexterity: 14,
+                constitution: 13,
+                intelligence: 13, // Meets multiclass requirement
+                wisdom: 10,
+                charisma: 8,
+            });
 
             // Add first class at level 3
             builder.addClass("Vanguard", 3);
-            
+
             // Add second class at level 2
             builder.addClass("Artifex", 2);
 
@@ -199,8 +199,8 @@ describe("CharacterBuilder - Starting Level", () => {
 
             expect(character.level).toBe(5); // Total level
             expect(character.classes).toHaveLength(2);
-            expect(character.classes.find(c => c.class === "Vanguard")?.level).toBe(3);
-            expect(character.classes.find(c => c.class === "Artifex")?.level).toBe(2);
+            expect(character.classes.find((c) => c.class === "Vanguard")?.level).toBe(3);
+            expect(character.classes.find((c) => c.class === "Artifex")?.level).toBe(2);
         });
     });
 });

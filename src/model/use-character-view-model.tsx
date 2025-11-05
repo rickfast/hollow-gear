@@ -73,7 +73,7 @@ export function useCharacterViewModel() {
             // Try to get current version from storage first
             const currentCharacter = storageServiceRef.current.getCurrentCharacter(id);
             const character = currentCharacter || characters.get(id);
-            
+
             if (!character) {
                 throw new Error(`Character with id ${id} not found`);
             }
@@ -256,7 +256,10 @@ export function useCharacterViewModel() {
                 newMap.set(finalCharacter.id, finalCharacter);
 
                 // Save as version 1 using versioned storage
-                storageServiceRef.current.saveCharacterVersion(finalCharacter, "Imported character");
+                storageServiceRef.current.saveCharacterVersion(
+                    finalCharacter,
+                    "Imported character"
+                );
 
                 return newMap;
             });

@@ -513,7 +513,7 @@ export const PREGENS: Character[] = [
     },
 
     // ========================================================================
-    // Selenn Vire — Avenar Arcanist (Aethermancer)
+    // Selenn Vire — Avenar Arcanist (Aetherwright)
     // ========================================================================
     {
         id: "selenn-vire-pregen-006",
@@ -524,7 +524,7 @@ export const PREGENS: Character[] = [
             {
                 level: 1,
                 class: "Arcanist",
-                subclass: "Aethermancer",
+                subclass: "Aetherwright",
             },
         ],
         level: 1,
@@ -542,7 +542,7 @@ export const PREGENS: Character[] = [
             temporary: 0,
         },
         heatPoints: {
-            current: 7,
+            current: 0,
             maximum: 10,
         },
         skills: {

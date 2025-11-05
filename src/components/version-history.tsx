@@ -19,11 +19,7 @@ interface VersionHistoryProps {
     onRestore: (version: number) => void;
 }
 
-export function VersionHistory({
-    versions,
-    currentVersion,
-    onRestore,
-}: VersionHistoryProps) {
+export function VersionHistory({ versions, currentVersion, onRestore }: VersionHistoryProps) {
     const [restoreVersion, setRestoreVersion] = useState<number | null>(null);
 
     const handleRestoreClick = (version: number) => {

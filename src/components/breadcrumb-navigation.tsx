@@ -17,14 +17,28 @@ interface BreadcrumbNavigationProps<T extends string = string> {
 
 // Simple SVG icon components
 const CheckCircleIcon = () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+    >
         <circle cx="12" cy="12" r="10" />
         <path d="M9 12l2 2 4-4" />
     </svg>
 );
 
 const AlertCircleIcon = () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+    >
         <circle cx="12" cy="12" r="10" />
         <line x1="12" y1="8" x2="12" y2="12" />
         <line x1="12" y1="16" x2="12.01" y2="16" />
@@ -32,7 +46,14 @@ const AlertCircleIcon = () => (
 );
 
 const CircleIcon = () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+    >
         <circle cx="12" cy="12" r="10" />
     </svg>
 );
@@ -110,7 +131,10 @@ export function BreadcrumbNavigation<T extends string = string>({
                 const variant = getStepVariant(status);
 
                 return (
-                    <div key={step.key} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <div
+                        key={step.key}
+                        style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                    >
                         <Button
                             size="sm"
                             color={color}

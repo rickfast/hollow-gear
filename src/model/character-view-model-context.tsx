@@ -9,7 +9,11 @@ interface CharacterViewModelContextType {
     getCharacter: (id: string) => MutableCharacterViewModel;
     getAllCharacters: () => MutableCharacterViewModel[];
     createCharacter: (builder: CharacterBuilder) => string;
-    updateCharacter: (id: string, updater: (vm: MutableCharacterViewModel) => Character, description?: string) => void;
+    updateCharacter: (
+        id: string,
+        updater: (vm: MutableCharacterViewModel) => Character,
+        description?: string
+    ) => void;
     deleteCharacter: (id: string) => void;
     exportCharacter: (id: string) => string;
     importCharacter: (json: string) => string;
