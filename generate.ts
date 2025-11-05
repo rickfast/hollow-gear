@@ -1,3 +1,4 @@
+import { generateBestiaryPawns } from "./src/image/generate-bestiary";
 import { generateDronePawns } from "./src/image/generate-drones";
 import { generatePawns } from "./src/image/generate-pawns";
 
@@ -17,6 +18,25 @@ try {
     console.log("✓ All character pawns generated successfully!");
 } catch (error) {
     console.error("✗ Character pawn generation failed:", error);
+    process.exit(1);
+}
+
+console.log();
+console.log("=".repeat(60));
+console.log();
+
+// Step 4: Generate Monster Pawns & Portraits
+console.log("STEP 4: Generating Monster Pawns and Portraits");
+console.log("Output directory: public/monsters/pawns/");
+console.log("Output directory: public/monsters/portraits/");
+console.log("---");
+
+try {
+    await generateBestiaryPawns();
+    console.log("---");
+    console.log("✓ All monster pawns and portraits generated successfully!");
+} catch (error) {
+    console.error("✗ Monster generation failed:", error);
     process.exit(1);
 }
 
@@ -68,4 +88,6 @@ console.log("  - Character pawns: public/pawns/");
 console.log("  - Character portraits: public/portraits/");
 console.log("  - Drone pawns: public/drones/pawns/");
 console.log("  - Drone portraits: public/drones/portraits/");
+console.log("  - Monster pawns: public/monsters/pawns/");
+console.log("  - Monster portraits: public/monsters/portraits/");
 console.log("=".repeat(60));

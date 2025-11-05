@@ -196,7 +196,7 @@ export const IRON_HUSK: BestiaryEntry = {
     emoji: "🧟",
 
     description:
-        "A fallen worker reanimated by psionic residue and mechanical rot. Its flesh is threaded with copper wire, and its voice is the hiss of escaping steam.",
+        "A fallen etherborne worker (typically tharn or aqualoth) reanimated by psionic residue and mechanical rot. Its flesh is threaded with copper wire, and its voice is the hiss of escaping steam.",
 
     armorClass: {
         value: 14,

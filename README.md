@@ -123,3 +123,21 @@ Check formatting:
 ```bash
 bun run format:check
 ```
+
+## Image Generation
+
+Generate all AI-driven visual assets (characters, drones, monsters):
+
+```bash
+bun generate.ts
+```
+
+Steps performed:
+
+1. Character pawns (species × class) at `public/pawns/` + portraits at `public/portraits/`.
+2. Drone pawns & portraits at `public/drones/pawns/` and `public/drones/portraits/`.
+3. Monster (bestiary) pawns & portraits at `public/monsters/pawns/` and `public/monsters/portraits/`.
+
+Idempotent: existing files are skipped.
+
+Style guidance lives in `src/image/prompts.ts` – all prompts request: hand‑drawn ink lines, watercolor fills, warm steampunk palette, subtle aether glow, transparent background for pawns.
