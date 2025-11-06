@@ -6,6 +6,8 @@ export const SPECIES: Species[] = [
     // ============================================================================
     {
         type: "Aqualoth",
+        description:
+            "Amphibious bio-engineered mystics attuned to aether flows and ancient mechanisms.",
         abilityScoreIncrease: {
             intelligence: 2,
             wisdom: 1,
@@ -58,6 +60,8 @@ export const SPECIES: Species[] = [
     // ============================================================================
     {
         type: "Vulmir",
+        description:
+            "Quick-witted foxfolk of echoes and misdirection, agile scouts and subtle infiltrators.",
         abilityScoreIncrease: {
             dexterity: 2,
             charisma: 1,
@@ -114,6 +118,8 @@ export const SPECIES: Species[] = [
     // ============================================================================
     {
         type: "Rendai",
+        description:
+            "Ingenious red‑panda tinkerers whose curiosity fuels constant mechanical improvisation.",
         abilityScoreIncrease: {
             intelligence: 2,
             dexterity: 1,
@@ -166,6 +172,8 @@ export const SPECIES: Species[] = [
     // ============================================================================
     {
         type: "Karnathi",
+        description:
+            "Stalwart ibex climbers channeling disciplined psionics and indomitable resolve.",
         abilityScoreIncrease: {
             strength: 2,
             wisdom: 1,
@@ -217,6 +225,8 @@ export const SPECIES: Species[] = [
     // ============================================================================
     {
         type: "Tharn",
+        description:
+            "Enduring elk nomads whose surging vitality and wilderness instinct anchor expeditions.",
         abilityScoreIncrease: {
             constitution: 2,
             strength: 1,
@@ -269,6 +279,8 @@ export const SPECIES: Species[] = [
     // ============================================================================
     {
         type: "Skellin",
+        description:
+            "Wall‑skittering geckofolk blending adaptation, stealth, and uncanny surface mastery.",
         abilityScoreIncrease: {
             dexterity: 2,
             intelligence: 1,
@@ -317,6 +329,8 @@ export const SPECIES: Species[] = [
     // ============================================================================
     {
         type: "Avenar",
+        description:
+            "Scholarly avians who soar on disciplined logic, memory, and resonant aether insight.",
         abilityScoreIncrease: {
             intelligence: 2,
             wisdom: 1,

@@ -2,6 +2,7 @@ import { CLASSES } from "@/data/classes";
 import { EQUIPMENT_BY_ID } from "@/data/equipment";
 import { SPELLS } from "@/data/spells";
 import type { Class, Equipment } from "@/types";
+import { getAvatarForClass } from "@/utils/avatar";
 import {
     buildReferencePath,
     getClassReferenceTarget,
@@ -11,7 +12,6 @@ import {
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 import { Link } from "react-router-dom";
 import { CardTitle, Description, SecondaryText, Stat, StatRow, TertiaryText } from "./typography";
-import { getAvatarForClass } from "@/utils/avatar";
 
 interface ClassDetailProps {
     classData: Class;
@@ -120,50 +120,52 @@ export function ClassDetail({ classData }: ClassDetailProps) {
     // Sort features by level
     const sortedFeatures = allFeatures.sort((a, b) => a.level - b.level);
 
-    const avatarUrl = getAvatarForClass(classData.type);
+    const portraitUrl = getAvatarForClass(classData.type);
 
     return (
         <Card className="w-full">
             <CardHeader className="flex-col items-start gap-2 pb-2 p-3 sm:p-4">
-                <div className="flex w-full gap-3">
-                    {avatarUrl && (
-                        <img
-                            src={avatarUrl}
-                            alt={`${classData.type} avatar`}
-                            className="w-16 h-16 rounded-lg object-cover border border-default-300 shadow-sm hidden sm:block"
-                            loading="lazy"
-                        />
-                    )}
-                    <div className="flex-1">
+                <div className="flex w-full items-start gap-4">
+                    <div className="flex flex-col flex-1 gap-1">
                         <CardTitle className="text-base sm:text-lg break-words">
                             {classData.type}
                         </CardTitle>
                         <TertiaryText className="text-xs sm:text-sm break-words">
                             {classData.description.role}
                         </TertiaryText>
+                        <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-1">
+                            <Chip
+                                size="sm"
+                                variant="flat"
+                                color="primary"
+                                classNames={{ base: "min-h-[32px]" }}
+                            >
+                                {formatAbility(classData.primaryAbility)}
+                            </Chip>
+                            <Chip size="sm" variant="flat" classNames={{ base: "min-h-[32px]" }}>
+                                {classData.hitDie} Hit Die
+                            </Chip>
+                            <Chip
+                                size="sm"
+                                variant="flat"
+                                color="secondary"
+                                classNames={{ base: "min-h-[32px]" }}
+                            >
+                                {classData.primaryResource}
+                            </Chip>
+                        </div>
                     </div>
+                    {portraitUrl && (
+                        <img
+                            src={portraitUrl}
+                            alt={`${classData.type} portrait`}
+                            className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-2 border-default-200 shadow-md shrink-0"
+                            loading="lazy"
+                        />
+                    )}
                 </div>
-                <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                    <Chip
-                        size="sm"
-                        variant="flat"
-                        color="primary"
-                        classNames={{ base: "min-h-[32px]" }}
-                    >
-                        {formatAbility(classData.primaryAbility)}
-                    </Chip>
-                    <Chip size="sm" variant="flat" classNames={{ base: "min-h-[32px]" }}>
-                        {classData.hitDie} Hit Die
-                    </Chip>
-                    <Chip
-                        size="sm"
-                        variant="flat"
-                        color="secondary"
-                        classNames={{ base: "min-h-[32px]" }}
-                    >
-                        {classData.primaryResource}
-                    </Chip>
-                </div>
+                {/* Badges moved into header row above */}
+                {/* Removed separate badges container */}
             </CardHeader>
 
             <CardBody className="gap-3 sm:gap-4 pt-2 p-3 sm:p-4">

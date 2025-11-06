@@ -1,10 +1,10 @@
 import { SPECIES } from "@/data/species";
 import type { Species } from "@/types";
+import { getAvatarForSpecies } from "@/utils/avatar";
 import { buildReferencePath, getSpeciesReferenceTarget } from "@/utils/reference-links";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 import { Link } from "react-router-dom";
-import { CardTitle, Description, SecondaryText, Stat, StatRow, TertiaryText } from "./typography";
-import { getAvatarForSpecies } from "@/utils/avatar";
+import { CardTitle, Description, SecondaryText, TertiaryText } from "./typography";
 
 interface SpeciesDetailProps {
     species: Species;
@@ -62,55 +62,67 @@ export function SpeciesDetail({ species }: SpeciesDetailProps) {
         .sort((a, b) => a.type.localeCompare(b.type))
         .slice(0, 6);
 
-    const avatarUrl = getAvatarForSpecies(species.type);
+    const portraitUrl = getAvatarForSpecies(species.type);
 
     return (
         <Card className="w-full">
             <CardHeader className="flex-col items-start gap-2 pb-2 p-3 sm:p-4">
-                <div className="flex w-full gap-3">
-                    {avatarUrl && (
-                        <img
-                            src={avatarUrl}
-                            alt={`${species.type} avatar`}
-                            className="w-16 h-16 rounded-lg object-cover border border-default-300 shadow-sm hidden sm:block"
-                            loading="lazy"
-                        />
-                    )}
-                    <div className="flex-1">
+                <div className="flex w-full items-start gap-4">
+                    <div className="flex flex-col flex-1 gap-1">
                         <CardTitle className="text-base sm:text-lg break-words">
                             {species.type}
                         </CardTitle>
+                        {species.description && (
+                            <TertiaryText className="text-[11px] sm:text-xs mt-0.5 leading-snug break-words text-foreground-600">
+                                {species.description}
+                            </TertiaryText>
+                        )}
+                        <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-1">
+                            <Chip
+                                size="sm"
+                                variant="flat"
+                                color="primary"
+                                classNames={{ base: "min-h-[32px]" }}
+                            >
+                                {formatAbilityScoreIncrease()}
+                            </Chip>
+                            <Chip size="sm" variant="flat" classNames={{ base: "min-h-[32px]" }}>
+                                Walk {species.speed} ft
+                            </Chip>
+                            {species.swimSpeed && (
+                                <Chip
+                                    size="sm"
+                                    variant="flat"
+                                    classNames={{ base: "min-h-[32px]" }}
+                                >
+                                    Swim {species.swimSpeed} ft
+                                </Chip>
+                            )}
+                            {species.climbSpeed && (
+                                <Chip
+                                    size="sm"
+                                    variant="flat"
+                                    classNames={{ base: "min-h-[32px]" }}
+                                >
+                                    Climb {species.climbSpeed} ft
+                                </Chip>
+                            )}
+                        </div>
                     </div>
+                    {portraitUrl && (
+                        <img
+                            src={portraitUrl}
+                            alt={`${species.type} portrait`}
+                            className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-2 border-default-200 shadow-md shrink-0"
+                            loading="lazy"
+                        />
+                    )}
                 </div>
-                <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                    <Chip
-                        size="sm"
-                        variant="flat"
-                        color="primary"
-                        classNames={{ base: "min-h-[32px]" }}
-                    >
-                        {formatAbilityScoreIncrease()}
-                    </Chip>
-                </div>
+                {/* Badges (ability + movement) moved into header row above */}
             </CardHeader>
 
             <CardBody className="gap-3 sm:gap-4 pt-2 p-3 sm:p-4">
-                {/* Movement Speeds */}
-                <div>
-                    <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
-                        Movement
-                    </SecondaryText>
-                    <StatRow>
-                        <Stat label="Base Speed" value={`${species.speed} ft`} />
-                        {species.swimSpeed && (
-                            <Stat label="Swim Speed" value={`${species.swimSpeed} ft`} />
-                        )}
-                        {species.climbSpeed && (
-                            <Stat label="Climb Speed" value={`${species.climbSpeed} ft`} />
-                        )}
-                    </StatRow>
-                </div>
-
+                {/* Movement speeds integrated into header; section removed */}
                 <Divider />
 
                 {/* Racial Traits */}

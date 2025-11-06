@@ -1,8 +1,8 @@
 import type { BestiaryEntry, CreatureAction, CreatureDamage } from "@/types";
+import { getPortraitForMonster } from "@/utils/avatar";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 import { Fragment } from "react";
 import { CardTitle, Description, SecondaryText, Stat, StatRow, TertiaryText } from "./typography";
-import { getPortraitForMonster } from "@/utils/avatar";
 
 const ABILITY_ORDER: (keyof BestiaryEntry["abilities"])[] = [
     "strength",
@@ -124,54 +124,52 @@ export function MonsterDetail({ monster }: MonsterDetailProps) {
     return (
         <Card className="w-full">
             <CardHeader className="flex-col items-start gap-3 pb-2 p-3 sm:p-4">
-                <div className="flex items-start gap-3 w-full">
+                <div className="flex items-start gap-4 w-full">
+                    <div className="flex flex-col flex-1 gap-1">
+                        <div className="flex items-center gap-2">
+                            <CardTitle className="text-base sm:text-lg break-words">
+                                {monster.name}
+                            </CardTitle>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-1">
+                            <Chip size="sm" variant="flat" classNames={{ base: "min-h-[28px]" }}>
+                                {monster.size}
+                            </Chip>
+                            <Chip size="sm" variant="flat" classNames={{ base: "min-h-[28px]" }}>
+                                {monster.type}
+                                {monster.subtype ? ` (${monster.subtype})` : ""}
+                            </Chip>
+                            <Chip size="sm" variant="flat" classNames={{ base: "min-h-[28px]" }}>
+                                {monster.alignment}
+                            </Chip>
+                            <Chip
+                                size="sm"
+                                variant="flat"
+                                color="primary"
+                                classNames={{ base: "min-h-[28px]" }}
+                            >
+                                CR {monster.challengeRating.rating}
+                            </Chip>
+                            <Chip
+                                size="sm"
+                                variant="flat"
+                                color="secondary"
+                                classNames={{ base: "min-h-[28px]" }}
+                            >
+                                {monster.challengeRating.xp} XP
+                            </Chip>
+                        </div>
+                    </div>
                     {portraitUrl && (
                         <img
                             src={portraitUrl}
                             alt={`${monster.name} portrait`}
-                            className="w-20 h-20 rounded-lg object-cover border border-default-300 shadow-sm hidden sm:block"
+                            className="block w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-2 border-default-200 shadow-md shrink-0"
                             loading="lazy"
                         />
                     )}
-                    <div className="flex items-center gap-2 flex-1">
-                        {monster.emoji && (
-                            <span className="text-2xl" aria-hidden>
-                                {monster.emoji}
-                            </span>
-                        )}
-                        <CardTitle className="text-base sm:text-lg break-words">
-                            {monster.name}
-                        </CardTitle>
-                    </div>
                 </div>
-                <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                    <Chip size="sm" variant="flat" classNames={{ base: "min-h-[28px]" }}>
-                        {monster.size}
-                    </Chip>
-                    <Chip size="sm" variant="flat" classNames={{ base: "min-h-[28px]" }}>
-                        {monster.type}
-                        {monster.subtype ? ` (${monster.subtype})` : ""}
-                    </Chip>
-                    <Chip size="sm" variant="flat" classNames={{ base: "min-h-[28px]" }}>
-                        {monster.alignment}
-                    </Chip>
-                    <Chip
-                        size="sm"
-                        variant="flat"
-                        color="primary"
-                        classNames={{ base: "min-h-[28px]" }}
-                    >
-                        CR {monster.challengeRating.rating}
-                    </Chip>
-                    <Chip
-                        size="sm"
-                        variant="flat"
-                        color="secondary"
-                        classNames={{ base: "min-h-[28px]" }}
-                    >
-                        {monster.challengeRating.xp} XP
-                    </Chip>
-                </div>
+                {/* Badges moved into header row above */}
             </CardHeader>
 
             <CardBody className="gap-3 sm:gap-4 pt-2 p-3 sm:p-4">

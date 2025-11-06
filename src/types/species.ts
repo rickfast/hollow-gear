@@ -17,6 +17,10 @@ export type SpeciesType =
 
 export interface Species {
     type: SpeciesType;
+    /**
+     * A short flavorful overview of the species – appears in the reference header.
+     */
+    description: string;
     abilityScoreIncrease: Partial<AbilityScores>;
     speed: number;
     swimSpeed?: number;

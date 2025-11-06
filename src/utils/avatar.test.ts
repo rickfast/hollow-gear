@@ -1,39 +1,45 @@
-import { describe, it, expect } from 'vitest';
-import { getAvatarForClass, getAvatarForSpecies, getAvatarForSpeciesClass, getPortraitForMonster, _debugAvatarIndex } from './avatar';
+import { describe, expect, it } from "vitest";
+import {
+    _debugAvatarIndex,
+    getAvatarForClass,
+    getAvatarForSpecies,
+    getAvatarForSpeciesClass,
+    getPortraitForMonster,
+} from "./avatar";
 
-describe('avatar utility', () => {
-  it('returns deterministic avatar for class', () => {
-    const first = getAvatarForClass('Engineer');
-    const second = getAvatarForClass('Engineer');
-    expect(first).toEqual(second);
-  });
+describe("avatar utility", () => {
+    it("returns deterministic portrait path for class", () => {
+        const first = getAvatarForClass("Arcanist");
+        const second = getAvatarForClass("Arcanist");
+        expect(first).toEqual(second);
+        expect(first.startsWith("/portraits/")).toBe(true);
+        expect(first.includes("-Arcanist.portrait.png")).toBe(true);
+    });
 
-  it('returns different avatar indices for different classes (likely)', () => {
-    const idxA = _debugAvatarIndex('class:Engineer');
-    const idxB = _debugAvatarIndex('class:Scrapper');
-    // Not strictly guaranteed, but extremely likely with distinct strings
-    expect(idxA).not.toEqual(idxB);
-  });
+    it("returns deterministic portrait path for species", () => {
+        const first = getAvatarForSpecies("Aqualoth");
+        const second = getAvatarForSpecies("Aqualoth");
+        expect(first).toEqual(second);
+        expect(first.startsWith("/portraits/Aqualoth-")).toBe(true);
+        expect(first.endsWith(".portrait.png")).toBe(true);
+    });
 
-  it('combines species and class for combo selection', () => {
-    const combo1 = getAvatarForSpeciesClass('Cogborn', 'Engineer');
-    const combo2 = getAvatarForSpeciesClass('Cogborn', 'Engineer');
-    const combo3 = getAvatarForSpeciesClass('Cogborn', 'Scrapper');
-    expect(combo1).toEqual(combo2);
-    expect(combo1).not.toEqual(combo3);
-  });
+    it("combines species and class directly", () => {
+        const combo = getAvatarForSpeciesClass("Avenar", "Vanguard");
+        expect(combo).toEqual("/portraits/Avenar-Vanguard.portrait.png");
+    });
 
-  it('falls back to avatar when monster portrait missing', () => {
-    const portrait = getPortraitForMonster('Nonexistent Creature');
-    expect(portrait.startsWith('/avatars/')).toBe(true);
-  });
+    it("falls back to generic avatar when monster portrait missing", () => {
+        const portrait = getPortraitForMonster("Nonexistent Creature");
+        expect(portrait.startsWith("/avatars/")).toBe(true);
+    });
 
-  it('returns portrait path for known monster slug', () => {
-    const portrait = getPortraitForMonster('Aether Wisp');
-    expect(portrait).toEqual('/monsters/portraits/aether-wisp.portrait.png');
-  });
+    it("returns portrait path for known monster slug", () => {
+        const portrait = getPortraitForMonster("Aether Wisp");
+        expect(portrait).toEqual("/monsters/portraits/aether-wisp.portrait.png");
+    });
 
-  it('species selection deterministic', () => {
-    expect(getAvatarForSpecies('Cogborn')).toEqual(getAvatarForSpecies('Cogborn'));
-  });
+    it("debug avatar index stable", () => {
+        expect(_debugAvatarIndex("class:Arcanist")).toEqual(_debugAvatarIndex("class:Arcanist"));
+    });
 });
