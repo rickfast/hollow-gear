@@ -184,7 +184,7 @@ describe("ClassConfigurationService", () => {
             expect(result.errors.some((e) => e.includes("Subclass"))).toBe(true);
         });
 
-        it("should validate subclass selection when provided", () => {
+        it("should validate subclass selection when provided (with required Mindweaver power)", () => {
             const config: Partial<ClassConfiguration> = {
                 classType: "Mindweaver",
                 level: 1,
@@ -192,6 +192,8 @@ describe("ClassConfigurationService", () => {
                 featureChoices: {
                     "Primary Ability": "intelligence",
                 },
+                // Mindweavers must select exactly level number of powers; include one to satisfy validation
+                powersSelected: ["Telepathic Whispers"],
             };
 
             const result = service.validateConfiguration("Mindweaver", 1, config);

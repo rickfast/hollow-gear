@@ -2,6 +2,25 @@ import type { Drone } from "@/types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { DroneStorageService } from "./drone-storage-service";
 
+// Provide a simple localStorage mock for node test environment
+if (typeof globalThis.localStorage === "undefined") {
+    const store: Record<string, string> = {};
+    globalThis.localStorage = {
+        getItem: (key: string) => (key in store ? store[key] : null),
+        setItem: (key: string, value: string) => {
+            store[key] = value;
+        },
+        removeItem: (key: string) => {
+            delete store[key];
+        },
+        clear: () => {
+            for (const k of Object.keys(store)) delete store[k];
+        },
+        key: (index: number) => Object.keys(store)[index] ?? null,
+        length: 0, // length getter is not strictly needed for tests
+    } as Storage;
+}
+
 // Mock drone data for testing
 const mockDrone: Drone = {
     id: "drone-123",
@@ -19,9 +38,9 @@ describe("DroneStorageService", () => {
     let service: DroneStorageService;
 
     beforeEach(() => {
-        // Clear localStorage before each test
+        // Clear localStorage before each test and disable example seeding
         localStorage.clear();
-        service = new DroneStorageService();
+        service = new DroneStorageService({ seedExamples: false });
     });
 
     describe("getAllDrones", () => {
@@ -229,7 +248,7 @@ describe("DroneStorageService", () => {
             await new Promise((resolve) => setTimeout(resolve, 600));
 
             // Create new service instance
-            const newService = new DroneStorageService();
+            const newService = new DroneStorageService({ seedExamples: false });
 
             const drones = newService.getAllDrones();
             expect(drones).toHaveLength(1);
@@ -239,7 +258,7 @@ describe("DroneStorageService", () => {
         it("should handle invalid localStorage data gracefully", () => {
             localStorage.setItem("hollowgear:drones", "invalid json{");
 
-            const newService = new DroneStorageService();
+            const newService = new DroneStorageService({ seedExamples: false });
             expect(newService.getAllDrones()).toEqual([]);
         });
 
@@ -256,7 +275,7 @@ describe("DroneStorageService", () => {
                 })
             );
 
-            const newService = new DroneStorageService();
+            const newService = new DroneStorageService({ seedExamples: false });
             const drones = newService.getAllDrones();
             expect(drones).toHaveLength(1);
             expect(drones[0]?.id).toBe("drone-123");

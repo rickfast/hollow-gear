@@ -28,7 +28,7 @@ describe("DroneStorageService Validation", () => {
 
     beforeEach(() => {
         localStorage.clear();
-        service = new DroneStorageService();
+        service = new DroneStorageService({ seedExamples: false });
     });
 
     describe("Name Uniqueness Validation", () => {

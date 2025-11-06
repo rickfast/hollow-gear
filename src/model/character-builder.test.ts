@@ -241,7 +241,8 @@ describe("CharacterBuilder", () => {
             expect(character.spellSlots?.level1.current).toBe(2);
         });
 
-        it("should initialize Arcanist with Aether Flux Points", () => {
+        // Arcanist no longer uses Aether Flux Points (design change to spell slots only)
+        it("should not initialize Arcanist with Aether Flux Points", () => {
             const builder = new CharacterBuilder();
             const character = builder
                 .setName("Test Character")
@@ -252,14 +253,10 @@ describe("CharacterBuilder", () => {
                     intelligence: 16, // +3 modifier
                 })
                 .build();
-
-            // AFP = Level (1) + INT mod (3) = 4, but after species bonus INT becomes 18 (+4)
-            expect(character.aetherFluxPoints).toBeDefined();
-            expect(character.aetherFluxPoints?.maximum).toBe(5); // 1 + 4
-            expect(character.aetherFluxPoints?.current).toBe(5);
+            expect(character.aetherFluxPoints).toBeUndefined();
         });
 
-        it("should initialize Templar with Resonance Charges", () => {
+        it("should initialize Templar with Resonance Charges (Cha based)", () => {
             const builder = new CharacterBuilder();
             const character = builder
                 .setName("Test Character")
@@ -267,11 +264,11 @@ describe("CharacterBuilder", () => {
                 .setClass("Templar")
                 .setAbilityScores({
                     ...validAbilityScores,
-                    wisdom: 14, // +2 modifier
+                    charisma: 14, // +2 modifier for Resonance Charges
                 })
                 .build();
 
-            // RC = Level (1) + WIS mod (2), but after species bonus WIS becomes 15 (+2)
+            // RC = Level (1) + CHA mod (2)
             expect(character.resonanceCharges).toBeDefined();
             expect(character.resonanceCharges?.maximum).toBe(3); // 1 + 2
             expect(character.resonanceCharges?.current).toBe(3);

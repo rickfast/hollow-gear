@@ -54,7 +54,7 @@ const CLASS_TYPES = CLASSES.map((c) => c.type);
 
 function buildPortraitPath(speciesType: string, classType: string): string {
     // Assets use exact casing: Species-Class.portrait.png
-    return `/portraits/${speciesType}-${classType}.png`;
+    return `/portraits/${speciesType}-${classType}.portrait.png`;
 }
 
 // NOTE: We cannot statically verify file existence here without bundling steps; we optimistically

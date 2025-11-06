@@ -46,8 +46,10 @@ export class StorageError extends Error {
 export class DroneStorageService {
     private saveTimeout: NodeJS.Timeout | null = null;
     private drones: Map<string, Drone> = new Map();
+    private readonly seedExamples: boolean;
 
-    constructor() {
+    constructor(opts?: { seedExamples?: boolean }) {
+        this.seedExamples = opts?.seedExamples ?? true;
         this.loadFromStorage();
     }
 
@@ -59,8 +61,8 @@ export class DroneStorageService {
         const drones = this.loadDrones();
         this.drones.clear();
 
-        // If no drones exist, initialize with example drones
-        if (drones.length === 0) {
+        // If no drones exist, optionally initialize with example drones
+        if (drones.length === 0 && this.seedExamples) {
             for (const drone of EXAMPLE_DRONES) {
                 this.drones.set(drone.id, drone);
             }
