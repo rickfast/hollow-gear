@@ -58,15 +58,5 @@ jobs:
                   cache-from: type=gha
                   cache-to: type=gha,mode=max
 
-            - name: Update Docker Hub description
-              if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-              uses: peter-evans/dockerhub-description@v4
-              with:
-                  username: ${{ secrets.DOCKERHUB_USERNAME }}
-                  password: ${{ secrets.DOCKERHUB_TOKEN }}
-                  repository: ${{ env.IMAGE_NAME }}
-                  short-description: "Hollow Gear 5E - Steampunk & Psionics Character Management for D&D 5E"
-                  readme-filepath: ./README.md
-
             - name: Image digest
               run: echo "Image pushed with digest ${{ steps.meta.outputs.digest }}"
