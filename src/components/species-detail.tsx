@@ -4,6 +4,7 @@ import { buildReferencePath, getSpeciesReferenceTarget } from "@/utils/reference
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 import { Link } from "react-router-dom";
 import { CardTitle, Description, SecondaryText, Stat, StatRow, TertiaryText } from "./typography";
+import { getAvatarForSpecies } from "@/utils/avatar";
 
 interface SpeciesDetailProps {
     species: Species;
@@ -61,13 +62,25 @@ export function SpeciesDetail({ species }: SpeciesDetailProps) {
         .sort((a, b) => a.type.localeCompare(b.type))
         .slice(0, 6);
 
+    const avatarUrl = getAvatarForSpecies(species.type);
+
     return (
         <Card className="w-full">
             <CardHeader className="flex-col items-start gap-2 pb-2 p-3 sm:p-4">
-                <div className="w-full">
-                    <CardTitle className="text-base sm:text-lg break-words">
-                        {species.type}
-                    </CardTitle>
+                <div className="flex w-full gap-3">
+                    {avatarUrl && (
+                        <img
+                            src={avatarUrl}
+                            alt={`${species.type} avatar`}
+                            className="w-16 h-16 rounded-lg object-cover border border-default-300 shadow-sm hidden sm:block"
+                            loading="lazy"
+                        />
+                    )}
+                    <div className="flex-1">
+                        <CardTitle className="text-base sm:text-lg break-words">
+                            {species.type}
+                        </CardTitle>
+                    </div>
                 </div>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     <Chip

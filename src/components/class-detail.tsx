@@ -11,6 +11,7 @@ import {
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 import { Link } from "react-router-dom";
 import { CardTitle, Description, SecondaryText, Stat, StatRow, TertiaryText } from "./typography";
+import { getAvatarForClass } from "@/utils/avatar";
 
 interface ClassDetailProps {
     classData: Class;
@@ -119,16 +120,28 @@ export function ClassDetail({ classData }: ClassDetailProps) {
     // Sort features by level
     const sortedFeatures = allFeatures.sort((a, b) => a.level - b.level);
 
+    const avatarUrl = getAvatarForClass(classData.type);
+
     return (
         <Card className="w-full">
             <CardHeader className="flex-col items-start gap-2 pb-2 p-3 sm:p-4">
-                <div className="w-full">
-                    <CardTitle className="text-base sm:text-lg break-words">
-                        {classData.type}
-                    </CardTitle>
-                    <TertiaryText className="text-xs sm:text-sm break-words">
-                        {classData.description.role}
-                    </TertiaryText>
+                <div className="flex w-full gap-3">
+                    {avatarUrl && (
+                        <img
+                            src={avatarUrl}
+                            alt={`${classData.type} avatar`}
+                            className="w-16 h-16 rounded-lg object-cover border border-default-300 shadow-sm hidden sm:block"
+                            loading="lazy"
+                        />
+                    )}
+                    <div className="flex-1">
+                        <CardTitle className="text-base sm:text-lg break-words">
+                            {classData.type}
+                        </CardTitle>
+                        <TertiaryText className="text-xs sm:text-sm break-words">
+                            {classData.description.role}
+                        </TertiaryText>
+                    </div>
                 </div>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     <Chip

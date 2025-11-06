@@ -2,6 +2,7 @@ import type { BestiaryEntry, CreatureAction, CreatureDamage } from "@/types";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 import { Fragment } from "react";
 import { CardTitle, Description, SecondaryText, Stat, StatRow, TertiaryText } from "./typography";
+import { getPortraitForMonster } from "@/utils/avatar";
 
 const ABILITY_ORDER: (keyof BestiaryEntry["abilities"])[] = [
     "strength",
@@ -118,18 +119,30 @@ export function MonsterDetail({ monster }: MonsterDetailProps) {
         });
     }
 
+    const portraitUrl = getPortraitForMonster(monster.name);
+
     return (
         <Card className="w-full">
             <CardHeader className="flex-col items-start gap-3 pb-2 p-3 sm:p-4">
-                <div className="flex items-center gap-2 w-full">
-                    {monster.emoji && (
-                        <span className="text-2xl" aria-hidden>
-                            {monster.emoji}
-                        </span>
+                <div className="flex items-start gap-3 w-full">
+                    {portraitUrl && (
+                        <img
+                            src={portraitUrl}
+                            alt={`${monster.name} portrait`}
+                            className="w-20 h-20 rounded-lg object-cover border border-default-300 shadow-sm hidden sm:block"
+                            loading="lazy"
+                        />
                     )}
-                    <CardTitle className="text-base sm:text-lg break-words">
-                        {monster.name}
-                    </CardTitle>
+                    <div className="flex items-center gap-2 flex-1">
+                        {monster.emoji && (
+                            <span className="text-2xl" aria-hidden>
+                                {monster.emoji}
+                            </span>
+                        )}
+                        <CardTitle className="text-base sm:text-lg break-words">
+                            {monster.name}
+                        </CardTitle>
+                    </div>
                 </div>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     <Chip size="sm" variant="flat" classNames={{ base: "min-h-[28px]" }}>
