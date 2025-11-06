@@ -13,7 +13,7 @@ describe("avatar utility", () => {
         const second = getAvatarForClass("Arcanist");
         expect(first).toEqual(second);
         expect(first.startsWith("/portraits/")).toBe(true);
-        expect(first.includes("-Arcanist.portrait.png")).toBe(true);
+        expect(first.includes("-Arcanist.png")).toBe(true);
     });
 
     it("returns deterministic portrait path for species", () => {
@@ -21,12 +21,12 @@ describe("avatar utility", () => {
         const second = getAvatarForSpecies("Aqualoth");
         expect(first).toEqual(second);
         expect(first.startsWith("/portraits/Aqualoth-")).toBe(true);
-        expect(first.endsWith(".portrait.png")).toBe(true);
+        expect(first.endsWith(".png")).toBe(true);
     });
 
     it("combines species and class directly", () => {
         const combo = getAvatarForSpeciesClass("Avenar", "Vanguard");
-        expect(combo).toEqual("/portraits/Avenar-Vanguard.portrait.png");
+        expect(combo).toEqual("/portraits/Avenar-Vanguard.png");
     });
 
     it("falls back to generic avatar when monster portrait missing", () => {
@@ -36,7 +36,7 @@ describe("avatar utility", () => {
 
     it("returns portrait path for known monster slug", () => {
         const portrait = getPortraitForMonster("Aether Wisp");
-        expect(portrait).toEqual("/monsters/portraits/aether-wisp.portrait.png");
+        expect(portrait).toEqual("/monsters/portraits/aether-wisp.png");
     });
 
     it("debug avatar index stable", () => {

@@ -102,7 +102,7 @@ function slugify(name: string): string {
 export function getPortraitForMonster(monsterName: string): string {
     const slug = slugify(monsterName);
     if (MONSTER_PORTRAIT_SLUGS.has(slug)) {
-        return `/monsters/portraits/${slug}.portrait.png`;
+        return `/monsters/portraits/${slug}.png`;
     }
     // Fallback to generic avatar selection so all monsters get an image
     return pickFallbackAvatar(`monster:${monsterName}`);
