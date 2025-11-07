@@ -1,0 +1,60 @@
+name: Deploy to Cloud Run
+
+on:
+  # Trigger after the image publish workflow completes successfully on main
+  workflow_run:
+    workflows: ["Build and Push to Docker Hub"]
+    types: [completed]
+    branches: [main]
+  # Allow manual runs
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write  # required for Workload Identity Federation
+
+    env:
+      CLOUD_RUN_SERVICE: roll-initiative
+      # We assume the image tagged 'latest' exists from the docker-publish workflow on main
+      DOCKER_IMAGE: docker.io/rickfast/hollowgear:latest
+
+    steps:
+      - name: Checkout (for potential ancillary files)
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud (Workload Identity Federation)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+
+      - name: Set up gcloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Deploy to Cloud Run
+        run: |
+          REGION="${{ secrets.GCP_REGION }}"
+          SERVICE="${{ env.CLOUD_RUN_SERVICE }}"
+          IMAGE="${{ env.DOCKER_IMAGE }}"
+          echo "Deploying $IMAGE to Cloud Run service $SERVICE in $REGION"
+          gcloud run deploy "$SERVICE" \
+            --image "$IMAGE" \
+            --region "$REGION" \
+            --platform managed \
+            --allow-unauthenticated \
+            --quiet
+          echo "Fetch deployed URL:" 
+          gcloud run services describe "$SERVICE" --region "$REGION" --format 'value(status.url)'
+
+      - name: Output revision details
+        run: |
+          REGION="${{ secrets.GCP_REGION }}"
+          SERVICE="${{ env.CLOUD_RUN_SERVICE }}"
+          echo "Latest revisions:" 
+          gcloud run revisions list --region "$REGION" --service "$SERVICE" --format='table(metadata.name,status.conditions[0].status,status.conditions[0].type,metadata.creationTimestamp)'
