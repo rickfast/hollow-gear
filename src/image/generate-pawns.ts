@@ -60,7 +60,7 @@ export const generatePawns = async () => {
                 console.log(`⊘ Skipping ${species} ${cls} (already exists)`);
             }
 
-            const porttraitFile = Bun.file(join(portraits, `${species}-${cls}.portrait.png`));
+            const porttraitFile = Bun.file(join(portraits, `${species}-${cls}.png`));
 
             if (await porttraitFile.exists()) {
                 console.log(`⊘ Skipping portrait for ${species} ${cls} (already exists)`);
@@ -79,7 +79,7 @@ export const generatePawns = async () => {
 
             await sharp(Buffer.from(pawnImage))
                 .extract({ left, top, width, height })
-                .toFile(join(portraits, `${species}-${cls}.portrait.png`));
+                .toFile(join(portraits, `${species}-${cls}.png`));
 
             console.log(
                 `✓ Generated portrait for ${species} ${cls}: left=${left}, top=${top}, width=${width}, height=${height}`
