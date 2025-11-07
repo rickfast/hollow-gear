@@ -8,6 +8,7 @@ import {
     getClassReferenceTarget,
     getEquipmentReferenceTarget,
     getSpellReferenceTarget,
+    getSubclassReferenceTarget,
 } from "@/utils/reference-links";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 import { Link } from "react-router-dom";
@@ -295,8 +296,30 @@ export function ClassDetail({ classData }: ClassDetailProps) {
                 {/* Class Features */}
                 <div>
                     <SecondaryText className="font-semibold mb-1.5 sm:mb-2 block text-sm sm:text-base">
-                        Class Features
+                        Class Features & Subclasses
                     </SecondaryText>
+                    {classData.subclasses && classData.subclasses.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-2">
+                            {classData.subclasses.map((sub) => (
+                                <Link
+                                    key={sub.type}
+                                    to={buildReferencePath(
+                                        getSubclassReferenceTarget(classData.type, sub.type)
+                                    )}
+                                    className="inline-flex"
+                                >
+                                    <Chip
+                                        size="sm"
+                                        variant="bordered"
+                                        color="warning"
+                                        classNames={{ base: "min-h-[32px]" }}
+                                    >
+                                        {sub.type}
+                                    </Chip>
+                                </Link>
+                            ))}
+                        </div>
+                    )}
                     <div className="flex flex-col gap-2 sm:gap-3">
                         {sortedFeatures.map((feature, index) => (
                             <div key={index} className="flex flex-col gap-1">

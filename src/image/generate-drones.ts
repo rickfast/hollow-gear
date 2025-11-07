@@ -65,9 +65,7 @@ export const generateDronePawns = async () => {
             }
 
             // Generate portrait using smartcrop
-            const portraitFile = Bun.file(
-                join(portraitsDir, `${droneType}-${archetype}.portrait.png`)
-            );
+            const portraitFile = Bun.file(join(portraitsDir, `${droneType}-${archetype}.png`));
 
             if (await portraitFile.exists()) {
                 console.log(
@@ -89,7 +87,7 @@ export const generateDronePawns = async () => {
 
             await sharp(Buffer.from(pawnImage))
                 .extract({ left, top, width, height })
-                .toFile(join(portraitsDir, `${droneType}-${archetype}.portrait.png`));
+                .toFile(join(portraitsDir, `${droneType}-${archetype}.png`));
 
             console.log(
                 `✓ Generated portrait for ${droneType} ${archetype} drone: left=${left}, top=${top}, width=${width}, height=${height}`

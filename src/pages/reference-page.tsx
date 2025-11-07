@@ -12,6 +12,7 @@ const REFERENCE_CATEGORIES: ReferenceCategory[] = [
     "Mod",
     "Species",
     "Class",
+    "Subclass",
     "Monster",
 ];
 
@@ -40,6 +41,8 @@ export function ReferencePage() {
     const dropdownRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const [searchParams, setSearchParams] = useSearchParams();
+    // When we programmatically set the input (e.g. via URL params) we suppress opening the dropdown once
+    const suppressNextDropdownRef = useRef(false);
 
     // Debounce search query (300ms)
     useEffect(() => {
@@ -55,7 +58,13 @@ export function ReferencePage() {
         if (debouncedQuery.trim()) {
             const results = referenceSearchService.searchAll(debouncedQuery);
             setSearchResults(results);
-            setShowDropdown(true);
+            if (suppressNextDropdownRef.current) {
+                // Do not open dropdown for programmatic value changes (e.g., routing to a detail page)
+                setShowDropdown(false);
+                suppressNextDropdownRef.current = false; // reset flag
+            } else {
+                setShowDropdown(true);
+            }
         } else {
             setSearchResults([]);
             setShowDropdown(false);
@@ -88,6 +97,8 @@ export function ReferencePage() {
             const item = referenceSearchService.getItemById(itemIdParam, categoryParam);
             setSelectedItem(item);
             if (item) {
+                // Programmatic selection: populate input but do not show dropdown
+                suppressNextDropdownRef.current = true;
                 setSearchQuery(item.name);
                 setShowDropdown(false);
             }
@@ -132,10 +143,10 @@ export function ReferencePage() {
                                     onValueChange={setSearchQuery}
                                     isClearable
                                     onClear={() => {
+                                        // Clearing the input no longer clears the selected detail content.
                                         setSearchQuery("");
                                         setShowDropdown(false);
-                                        setSelectedItem(null);
-                                        setSearchParams({});
+                                        // Preserve selectedItem and URL params so right pane content remains.
                                     }}
                                     onFocus={(e) => {
                                         // Select all text when focused

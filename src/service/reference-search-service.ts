@@ -84,13 +84,26 @@ class ReferenceSearchService {
             });
         });
 
-        // Add classes
+        // Add classes and subclasses
         CLASSES.forEach((classData) => {
+            // Parent class entry
             items.push({
                 id: `class-${classData.type}`,
                 name: classData.type,
                 category: "Class",
                 data: classData,
+            });
+
+            // Subclasses (if any)
+            classData.subclasses.forEach((sub) => {
+                // Sanitize ID to avoid spaces
+                const subclassSlug = sub.type.replace(/\s+/g, "-");
+                items.push({
+                    id: `subclass-${classData.type}-${subclassSlug}`,
+                    name: `${sub.type} (${classData.type})`, // include parent for disambiguation in search
+                    category: "Subclass",
+                    data: { parentClass: classData, subclass: sub },
+                });
             });
         });
 

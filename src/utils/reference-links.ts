@@ -1,4 +1,5 @@
 import type { BestiaryEntry, ClassType, MindcraftPower, Mod, SpeciesType, Spell } from "@/types";
+import type { SubclassType } from "@/types/classes";
 import type { ReferenceCategory } from "@/types/reference";
 
 export interface ReferenceLinkTarget {
@@ -23,6 +24,14 @@ export function buildReferencePath({ category, itemId }: ReferenceLinkTarget): s
 export const getClassReferenceTarget = (classType: ClassType | string): ReferenceLinkTarget => ({
     category: "Class",
     itemId: `class-${classType}`,
+});
+
+export const getSubclassReferenceTarget = (
+    classType: ClassType | string,
+    subclassType: SubclassType | string
+): ReferenceLinkTarget => ({
+    category: "Subclass",
+    itemId: `subclass-${classType}-${String(subclassType).replace(/\s+/g, "-")}`,
 });
 
 export const getSpeciesReferenceTarget = (

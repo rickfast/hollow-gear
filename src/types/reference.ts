@@ -3,7 +3,7 @@
 // ============================================================================
 
 import type { BestiaryEntry } from "./bestiary";
-import type { Class } from "./classes";
+import type { Class, Subclass } from "./classes";
 import type { Equipment } from "./equipment";
 import type { MindcraftPower } from "./mindcraft";
 import type { Mod } from "./mods";
@@ -17,7 +17,14 @@ export type ReferenceCategory =
     | "Mod"
     | "Species"
     | "Class"
+    | "Subclass" // Newly added: dedicated subclass detail pages
     | "Monster";
+
+// Data structure for subclass reference entries, pairing the subclass with its parent class
+export interface SubclassReferenceData {
+    parentClass: Class; // full parent class object for context
+    subclass: Subclass; // specific subclass definition
+}
 
 export type ReferenceItemData =
     | Spell
@@ -26,6 +33,7 @@ export type ReferenceItemData =
     | Mod
     | Species
     | Class
+    | SubclassReferenceData
     | BestiaryEntry;
 
 export interface ReferenceItem {

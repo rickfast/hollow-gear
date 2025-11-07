@@ -9,7 +9,7 @@ const Smartcrop = require("smartcrop-sharp");
 // Generate AI art pawns & portraits for each bestiary creature.
 // Output:
 //   - public/monsters/pawns/<id>.png (full body, transparent background)
-//   - public/monsters/portraits/<id>.portrait.png (cropped avatar)
+//   - public/monsters/portraits/<id>.png (cropped avatar)
 // Idempotent: skips files that already exist.
 export const generateBestiaryPawns = async () => {
     const pawnsDir = join(process.cwd(), "public", "monsters", "pawns");
@@ -27,7 +27,7 @@ export const generateBestiaryPawns = async () => {
     for (const creature of BESTIARY_CREATURES) {
         const { id, name, type, size, description, emoji } = creature;
         const pawnFilename = join(pawnsDir, `${id}.png`);
-        const portraitFilename = join(portraitsDir, `${id}.portrait.png`);
+        const portraitFilename = join(portraitsDir, `${id}.png`);
 
         // ---------------- Pawn Generation ----------------
         const pawnFile = Bun.file(pawnFilename);

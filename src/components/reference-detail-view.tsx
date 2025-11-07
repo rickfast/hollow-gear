@@ -12,6 +12,7 @@ import { ModDetail } from "./mod-detail";
 import { MonsterDetail } from "./monster-detail";
 import { SpeciesDetail } from "./species-detail";
 import { SpellDetail } from "./spell-detail";
+import { SubclassDetail } from "./subclass-detail";
 import { SecondaryText } from "./typography";
 
 interface ReferenceDetailViewProps {
@@ -338,6 +339,9 @@ export function ReferenceDetailView({ item }: ReferenceDetailViewProps) {
 
         case "Class":
             return <ClassDetail classData={item.data as any} />;
+
+        case "Subclass":
+            return <SubclassDetail data={item.data as any} />;
 
         case "Monster":
             return <MonsterDetail monster={item.data as any} />;
