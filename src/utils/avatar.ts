@@ -1,6 +1,6 @@
 // Utility functions for selecting portrait images for species, classes, and monsters.
 // Updated: class & species reference views now use species/class specific portrait assets
-// located in /public/portraits (e.g. Aqualoth-Arcanist.portrait.png).
+// located in /public/portraits (e.g. Aqualoth-Arcanist.png).
 // We retain a small generic avatar fallback set for cases where a generated combo doesn't exist.
 
 import { CLASSES } from "@/data/classes";
@@ -18,7 +18,7 @@ const AVATAR_FILES = [
 ];
 
 // Monster portrait files discovered in /public/monsters/portraits
-// Filenames follow <slug>.portrait.png
+// Filenames follow <slug>.png
 const MONSTER_PORTRAIT_SLUGS = new Set([
     "aether-wisp",
     "aetherforge-myrmidon",
@@ -53,8 +53,8 @@ const SPECIES_TYPES = SPECIES.map((s) => s.type);
 const CLASS_TYPES = CLASSES.map((c) => c.type);
 
 function buildPortraitPath(speciesType: string, classType: string): string {
-    // Assets use exact casing: Species-Class.portrait.png
-    return `/portraits/${speciesType}-${classType}.portrait.png`;
+    // Assets use exact casing: Species-Class.png
+    return `/portraits/${speciesType}-${classType}.png`;
 }
 
 // NOTE: We cannot statically verify file existence here without bundling steps; we optimistically
@@ -102,6 +102,7 @@ function slugify(name: string): string {
 export function getPortraitForMonster(monsterName: string): string {
     const slug = slugify(monsterName);
     if (MONSTER_PORTRAIT_SLUGS.has(slug)) {
+        // Assets are stored with .png suffix per directory listing
         return `/monsters/portraits/${slug}.png`;
     }
     // Fallback to generic avatar selection so all monsters get an image

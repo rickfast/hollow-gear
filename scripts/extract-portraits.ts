@@ -11,7 +11,7 @@ const OUTPUT_SIZE = 400; // 400x400
 // We first read image metadata to get dimensions and then compute crop box.
 async function processImage(file: string) {
     const inputPath = path.join(SOURCE_DIR, file);
-    const outputPath = path.join(DEST_DIR, file.replace(/\.png$/i, ".portrait.png"));
+    const outputPath = path.join(DEST_DIR, file);
 
     try {
         const image = sharp(inputPath);
