@@ -1,3 +1,6 @@
+import { ARCANE_ITEMS, ARMOR, BASIC_EQUIPMENT, SHIELDS, WEAPONS } from "@/data/equipment";
+import { MINDCRAFT_POWERS } from "@/data/mindcraft";
+import { FORMULAE, MIRACLES, SPELLS } from "@/data/spells";
 import { referenceSearchService } from "@/service/reference-search-service";
 import type { ReferenceItem } from "@/types/reference";
 import { Card, CardBody } from "@heroui/react";
@@ -20,18 +23,86 @@ interface ReferenceDetailViewProps {
  * Shows an empty state when no item is selected
  */
 export function ReferenceDetailView({ item }: ReferenceDetailViewProps) {
-    // Empty state when no item is selected
+    const location = useLocation(); // Hook must be unconditionally called
+
+    // Helper builds link to detail view via query params
+    const buildLink = (category: string, id: string) => {
+        return `${location.pathname}?category=${encodeURIComponent(category)}&itemId=${encodeURIComponent(id)}`;
+    };
+
+    // Empty state when no item selected: prepare data sets
     if (!item) {
-        // Preload category lists for quick navigation
         const species = referenceSearchService.getItemsByCategory("Species");
         const classes = referenceSearchService.getItemsByCategory("Class");
         const monsters = referenceSearchService.getItemsByCategory("Monster");
-        const location = useLocation();
-
-        const buildLink = (category: string, id: string) => {
-            // Preserve pathname, replace search params
-            return `${location.pathname}?category=${encodeURIComponent(category)}&itemId=${encodeURIComponent(id)}`;
+        const mindcraftPowers = MINDCRAFT_POWERS; // direct import for ordering
+        // Group mindcraft powers by tier
+        const mindcraftByTier: Record<number, typeof mindcraftPowers> = {};
+        mindcraftPowers.forEach((p) => {
+            mindcraftByTier[p.tier] ||= [] as any;
+            (mindcraftByTier[p.tier] as any).push(p);
+        });
+        const mindcraftTiers = Object.keys(mindcraftByTier)
+            .map(Number)
+            .sort((a, b) => a - b);
+        // Group spell subsets by level (Formulae = Arcanist, Miracles = Templar)
+        const groupByLevel = (list: typeof SPELLS) => {
+            const map: Record<number, typeof list> = {};
+            list.forEach((spell) => {
+                map[spell.level] ||= [] as any;
+                (map[spell.level] as any).push(spell);
+            });
+            return map;
         };
+        const formulaeByLevel = groupByLevel(FORMULAE);
+        const miraclesByLevel = groupByLevel(MIRACLES);
+        const formulaeLevels = Object.keys(formulaeByLevel)
+            .map(Number)
+            .sort((a, b) => a - b);
+        const miraclesLevels = Object.keys(miraclesByLevel)
+            .map(Number)
+            .sort((a, b) => a - b);
+        // Equipment groupings
+        const equipmentGroups: { label: string; items: { id: string; name: string }[] }[] = [
+            {
+                label: "Weapons",
+                items: WEAPONS.map((w) => ({ id: `equipment-${w.id}`, name: w.name })),
+            },
+            {
+                label: "Armor",
+                items: ARMOR.map((a) => ({ id: `equipment-${a.id}`, name: a.name })),
+            },
+            {
+                label: "Shields",
+                items: SHIELDS.map((s) => ({ id: `equipment-${s.id}`, name: s.name })),
+            },
+            {
+                label: "Basic Gear",
+                items: BASIC_EQUIPMENT.map((e) => ({ id: `equipment-${e.id}`, name: e.name })),
+            },
+            {
+                label: "Arcane Items",
+                items: ARCANE_ITEMS.map((e) => ({ id: `equipment-${e.id}`, name: e.name })),
+            },
+        ];
+
+        // Simple collapsible section component using <details>
+        const Collapsible = ({
+            title,
+            children,
+            defaultOpen = false,
+        }: {
+            title: string;
+            children: React.ReactNode;
+            defaultOpen?: boolean;
+        }) => (
+            <details className="border border-default-200 rounded-md" open={defaultOpen}>
+                <summary className="cursor-pointer select-none px-3 py-2 font-semibold text-sm sm:text-base bg-default-50">
+                    {title}
+                </summary>
+                <div className="px-3 py-2 space-y-2">{children}</div>
+            </details>
+        );
 
         return (
             <Card className="w-full h-full min-h-[300px] sm:min-h-[400px]">
@@ -108,9 +179,139 @@ export function ReferenceDetailView({ item }: ReferenceDetailViewProps) {
                                 </ul>
                             </section>
                         </div>
+                        {/* Mindcraft Powers grouped by Tier */}
+                        <section className="space-y-3">
+                            <h3 className="text-lg font-semibold">Mindcraft</h3>
+                            <SecondaryText className="text-xs sm:text-sm leading-relaxed">
+                                Psionic disciplines and powers organized by tier.
+                            </SecondaryText>
+                            <div className="space-y-2">
+                                {mindcraftTiers.map((tier) => (
+                                    <Collapsible
+                                        key={`mindcraft-tier-${tier}`}
+                                        title={`Tier ${tier} (${(mindcraftByTier[tier] || []).length})`}
+                                        defaultOpen={tier === 1}
+                                    >
+                                        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-1 text-xs sm:text-sm">
+                                            {(mindcraftByTier[tier] || []).map((p) => (
+                                                <li key={p.id}>
+                                                    <Link
+                                                        to={buildLink(
+                                                            "Mindcraft",
+                                                            `mindcraft-${p.id}`
+                                                        )}
+                                                        className="text-primary hover:underline"
+                                                    >
+                                                        {p.name}
+                                                    </Link>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </Collapsible>
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* Formulae (Arcanist Spells) */}
+                        <section className="space-y-3">
+                            <h3 className="text-lg font-semibold">Formulae (Arcanist)</h3>
+                            <SecondaryText className="text-xs sm:text-sm leading-relaxed">
+                                Arcane engineering spells known to Arcanists. Grouped by level.
+                            </SecondaryText>
+                            <div className="space-y-2">
+                                {formulaeLevels.map((lvl) => (
+                                    <Collapsible
+                                        key={`formulae-${lvl}`}
+                                        title={lvl === 0 ? "Cantrips (Level 0)" : `Level ${lvl}`}
+                                        defaultOpen={lvl <= 1}
+                                    >
+                                        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-1 text-xs sm:text-sm">
+                                            {(formulaeByLevel[lvl] || []).map((spell) => (
+                                                <li key={`formulae-${spell.name}`}>
+                                                    <Link
+                                                        to={buildLink(
+                                                            "Spell",
+                                                            `spell-${spell.name}`
+                                                        )}
+                                                        className="text-primary hover:underline"
+                                                    >
+                                                        {spell.hollowgearName || spell.name}
+                                                    </Link>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </Collapsible>
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* Miracles (Templar Spells) */}
+                        <section className="space-y-3">
+                            <h3 className="text-lg font-semibold">Miracles (Templar)</h3>
+                            <SecondaryText className="text-xs sm:text-sm leading-relaxed">
+                                Radiant psionic invocations channeled by Templars. Grouped by level.
+                            </SecondaryText>
+                            <div className="space-y-2">
+                                {miraclesLevels.map((lvl) => (
+                                    <Collapsible
+                                        key={`miracles-${lvl}`}
+                                        title={lvl === 0 ? "Cantrips (Level 0)" : `Level ${lvl}`}
+                                        defaultOpen={false}
+                                    >
+                                        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-1 text-xs sm:text-sm">
+                                            {(miraclesByLevel[lvl] || []).map((spell) => (
+                                                <li key={`miracle-${spell.name}`}>
+                                                    <Link
+                                                        to={buildLink(
+                                                            "Spell",
+                                                            `spell-${spell.name}`
+                                                        )}
+                                                        className="text-primary hover:underline"
+                                                    >
+                                                        {spell.hollowgearName || spell.name}
+                                                    </Link>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </Collapsible>
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* Equipment */}
+                        <section className="space-y-3">
+                            <h3 className="text-lg font-semibold">Equipment</h3>
+                            <SecondaryText className="text-xs sm:text-sm leading-relaxed">
+                                Weapons, armor, shields, gear, and arcane items. Expand a group to
+                                browse.
+                            </SecondaryText>
+                            <div className="space-y-2">
+                                {equipmentGroups.map((group) => (
+                                    <Collapsible
+                                        key={group.label}
+                                        title={`${group.label} (${group.items.length})`}
+                                        defaultOpen={group.label === "Weapons"}
+                                    >
+                                        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-1 text-xs sm:text-sm">
+                                            {group.items.map((eq) => (
+                                                <li key={eq.id}>
+                                                    <Link
+                                                        to={buildLink("Equipment", eq.id)}
+                                                        className="text-primary hover:underline"
+                                                    >
+                                                        {eq.name}
+                                                    </Link>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </Collapsible>
+                                ))}
+                            </div>
+                        </section>
+
                         <SecondaryText className="text-[11px] sm:text-xs pt-2">
-                            Tip: Start typing to instantly search spells, mindcraft powers,
-                            equipment, mods and more.
+                            Tip: Start typing to instantly search any item or use these quick browse
+                            lists.
                         </SecondaryText>
                     </div>
                 </CardBody>
